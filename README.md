@@ -42,54 +42,7 @@ A complete 21-chapter CSS reference for developers — from fundamentals to cutt
 | 20 | Architecture & Best Practices |
 | 21 | Modern CSS |
 
-## Running Locally
 
-No build required. Serve with any static file server:
-
-```bash
-# Python
-python -m http.server 8080
-
-# Node.js
-npx serve .
-```
-
-> The Service Worker and Clipboard API require a secure context (HTTPS or localhost). Opening `file://` URLs directly will disable those features.
-
-## Deploying to Netlify
-
-1. Push this repo to GitHub.
-2. Go to [app.netlify.com](https://app.netlify.com) → **Add new site → Import an existing project**.
-3. Select your repository. Netlify picks up `netlify.toml` automatically — publish directory is `.` (the repo root).
-4. Click **Deploy site**.
-
-The `netlify.toml` configures security headers, asset caching, service-worker cache control, and the custom 404 page.
-
-## Setting Up Google Search Console
-
-1. Go to [Google Search Console](https://search.google.com/search-console) and add your property.
-2. Verify ownership (HTML file upload or DNS record).
-3. Submit your sitemap: `https://YOUR_DOMAIN/sitemap.xml`
-
-**After deploying, replace the `YOUR_DOMAIN` placeholder** in these files with your actual domain (e.g. `my-css-guide.netlify.app`):
-
-- `sitemap.xml` — all `<loc>` entries
-- `robots.txt` — `Sitemap:` line
-- Every `.html` file — `og:url` and `<link rel="canonical">`
-
-Quick replace (run from the project root):
-
-```bash
-# macOS / Linux
-find . \( -name "*.html" -o -name "*.xml" -o -name "*.txt" \) \
-  | xargs sed -i 's|YOUR_DOMAIN|your-site.netlify.app|g'
-
-# Windows PowerShell
-Get-ChildItem -Recurse -Include *.html,*.xml,*.txt |
-  ForEach-Object {
-    (Get-Content $_.FullName) -replace 'YOUR_DOMAIN','your-site.netlify.app' |
-    Set-Content $_.FullName
-  }
 ```
 
 ## Browser Support
