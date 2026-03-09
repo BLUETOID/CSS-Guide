@@ -299,6 +299,9 @@ tr:hover td { background: var(--hover-bg); }
 }
 
 /* ===== SCROLLBAR ===== */
+/* Firefox */
+html { scrollbar-width: thin; scrollbar-color: var(--scrollbar-thumb) transparent; }
+/* Chrome / Safari / Edge */
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 3px; }

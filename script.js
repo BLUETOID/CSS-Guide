@@ -74,11 +74,29 @@ function initScrollProgress() {
 }
 
 // ===== COPY TO CLIPBOARD =====
+function copyToClipboard(text) {
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    return navigator.clipboard.writeText(text);
+  }
+  // Fallback for Firefox <63, older Safari, HTTP contexts
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.cssText = 'position:fixed;top:0;left:0;opacity:0;pointer-events:none';
+  document.body.appendChild(ta);
+  ta.focus();
+  ta.select();
+  try {
+    document.execCommand('copy');
+  } catch (_) {}
+  document.body.removeChild(ta);
+  return Promise.resolve();
+}
+
 function initCopyButtons() {
   document.addEventListener('click', e => {
     if (e.target.classList.contains('copy-btn')) {
       const code = e.target.closest('.code-block').querySelector('pre').textContent;
-      navigator.clipboard.writeText(code).then(() => {
+      copyToClipboard(code).then(() => {
         e.target.textContent = 'Copied!';
         setTimeout(() => e.target.textContent = 'Copy', 1500);
       });
