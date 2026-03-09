@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Page not found — CSS Reference Guide">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>{ }</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<title>404 — CSS Reference Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div id="progress"></div>
+<header class="header">
+  <h1><span>CSS</span> Reference Guide</h1>
+  <div class="header-nav"><a href="index.html">All Topics</a><a href="playground.html">Playground</a></div>
+  <button class="theme-toggle" aria-label="Toggle theme" onclick="toggleTheme()">&#9790; Dark</button>
+</header>
+
+<main class="main no-sidebar" style="padding-top:calc(var(--header-h) + 20px)">
+  <div style="text-align:center;padding:80px 20px 60px;">
+    <h1 style="font-size:5rem;font-weight:700;color:var(--accent);margin-bottom:8px;">404</h1>
+    <p style="font-size:1.3rem;color:var(--text);margin-bottom:8px;">Page not found</p>
+    <p style="font-size:1rem;color:var(--text-muted);max-width:440px;margin:0 auto 32px;">The page you're looking for doesn't exist or has been moved.</p>
+    <a href="index.html" style="color:var(--accent);text-decoration:none;font-weight:600;font-size:.95rem;border:1px solid var(--accent);padding:8px 20px;border-radius:var(--radius);display:inline-block;transition:all .25s">&larr; Back to All Topics</a>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <p>CSS Reference Guide</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

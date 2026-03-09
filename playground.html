@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CSS Playground — CSS Reference Guide</title>
+<meta name="description" content="Live CSS playground — write HTML and CSS in real-time and see results instantly. Experiment with flexbox, grid, animations, gradients, transforms and more.">
+<meta property="og:title" content="CSS Playground — CSS Reference Guide">
+<meta property="og:description" content="Live CSS playground — write HTML and CSS in real-time and see results instantly.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>{ }</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+.playground-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 0; height: calc(100vh - var(--header-h) - 80px); min-height: 400px; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; margin-top: 20px; }
+.pg-editor { display: flex; flex-direction: column; border-right: 1px solid var(--border); }
+.pg-preview { display: flex; flex-direction: column; background: #fff; }
+.pg-tab-bar { display: flex; background: var(--bg-code); border-bottom: 1px solid var(--border); }
+.pg-tab { padding: 8px 16px; font-size: .78rem; font-weight: 600; color: var(--text-muted); cursor: pointer; border: none; background: none; font-family: var(--font-body); transition: all .15s; border-bottom: 2px solid transparent; }
+.pg-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+.pg-tab:hover { color: var(--accent); }
+.pg-textarea { flex: 1; resize: none; border: none; background: var(--bg-code); color: var(--text); font-family: var(--font-code); font-size: .85rem; line-height: 1.7; padding: 16px; outline: none; tab-size: 2; }
+.pg-preview-frame { flex: 1; border: none; background: #fff; }
+.pg-preview-label { padding: 8px 16px; font-size: .78rem; font-weight: 600; color: #888; background: #f8f8f8; border-bottom: 1px solid #e0e0e0; text-transform: uppercase; letter-spacing: .05em; }
+.pg-templates { display: flex; gap: 6px; padding: 10px 16px; flex-wrap: wrap; background: var(--bg-code); border-bottom: 1px solid var(--border); }
+.pg-templates button { padding: 4px 12px; font-size: .72rem; border: 1px solid var(--border); border-radius: 14px; background: none; color: var(--text-muted); cursor: pointer; font-family: var(--font-body); transition: all .15s; }
+.pg-templates button:hover { border-color: var(--accent); color: var(--accent); }
+.playground-info { display: flex; gap: 12px; align-items: center; margin-top: 12px; flex-wrap: wrap; }
+.playground-info span { font-size: .78rem; color: var(--text-muted); }
+
+@media (max-width: 768px) {
+  .playground-wrap { grid-template-columns: 1fr; grid-template-rows: 1fr 1fr; height: calc(100vh - var(--header-h) - 60px); }
+  .pg-editor { border-right: none; border-bottom: 1px solid var(--border); }
+}
+</style>
+</head>
+<body>
+
+<a href="#playground-editor" class="skip-link">Skip to playground</a>
+<div id="progress"></div>
+<header class="header">
+  <button class="menu-toggle" aria-label="Toggle menu" onclick="document.querySelector('.sidebar')&&document.querySelector('.sidebar').classList.toggle('open')">&#9776;</button>
+  <h1><span>CSS</span> Reference Guide</h1>
+  <div class="header-nav"><a href="index.html">All Topics</a><a href="playground.html" style="color:var(--accent)">Playground</a></div>
+  <button class="theme-toggle" aria-label="Toggle theme" onclick="toggleTheme()">&#9790; Dark</button>
+</header>
+
+<main class="main no-sidebar" style="padding-top:calc(var(--header-h) + 20px)">
+
+<div class="page-hero">
+  <h1>CSS <span>Playground</span></h1>
+  <p>Write HTML and CSS in real-time and see the result instantly. Experiment with any CSS property from the guide.</p>
+</div>
+
+<div class="pg-templates" id="templates">
+  <button onclick="loadTemplate('flexbox')">Flexbox</button>
+  <button onclick="loadTemplate('grid')">Grid</button>
+  <button onclick="loadTemplate('animation')">Animation</button>
+  <button onclick="loadTemplate('gradient')">Gradients</button>
+  <button onclick="loadTemplate('transforms')">Transforms</button>
+  <button onclick="loadTemplate('variables')">Variables</button>
+  <button onclick="loadTemplate('blank')">Blank</button>
+</div>
+
+<div class="playground-wrap" id="playground-editor">
+  <div class="pg-editor">
+    <div class="pg-tab-bar">
+      <button class="pg-tab active" data-tab="html" onclick="switchTab('html')">HTML</button>
+      <button class="pg-tab" data-tab="css" onclick="switchTab('css')">CSS</button>
+    </div>
+    <textarea class="pg-textarea" id="htmlEditor" spellcheck="false" aria-label="HTML editor" oninput="updatePreview()"></textarea>
+    <textarea class="pg-textarea" id="cssEditor" spellcheck="false" aria-label="CSS editor" style="display:none" oninput="updatePreview()"></textarea>
+  </div>
+  <div class="pg-preview">
+    <div class="pg-preview-label">Preview</div>
+    <iframe class="pg-preview-frame" id="previewFrame" title="Live preview"></iframe>
+  </div>
+</div>
+
+<div class="playground-info">
+  <span>Changes apply instantly as you type.</span>
+  <span>Press <kbd style="font-family:var(--font-code);font-size:.72rem;padding:2px 6px;background:var(--bg-code);border:1px solid var(--border);border-radius:4px">Tab</kbd> to indent.</span>
+</div>
+
+</main>
+
+<footer class="site-footer">
+  <p>CSS Reference Guide</p>
+</footer>
+
+<script src="script.js"></script>
+<script>
+var htmlEditor = document.getElementById('htmlEditor');
+var cssEditor = document.getElementById('cssEditor');
+var previewFrame = document.getElementById('previewFrame');
+
+function switchTab(tab) {
+  document.querySelectorAll('.pg-tab').forEach(function(t) { t.classList.remove('active'); });
+  document.querySelector('.pg-tab[data-tab="' + tab + '"]').classList.add('active');
+  htmlEditor.style.display = tab === 'html' ? '' : 'none';
+  cssEditor.style.display = tab === 'css' ? '' : 'none';
+}
+
+function updatePreview() {
+  var html = htmlEditor.value;
+  var css = cssEditor.value;
+  var doc = previewFrame.contentDocument;
+  doc.open();
+  doc.write('<!DOCTYPE html><html><head><style>body{font-family:"Inter",system-ui,sans-serif;margin:0;padding:0;}' + css + '<\/style><\/head><body>' + html + '<\/body><\/html>');
+  doc.close();
+}
+
+// Handle Tab key in textareas
+[htmlEditor, cssEditor].forEach(function(editor) {
+  editor.addEventListener('keydown', function(e) {
+    if (e.key === 'Tab') {
+      e.preventDefault();
+      var start = editor.selectionStart;
+      var end = editor.selectionEnd;
+      editor.value = editor.value.substring(0, start) + '  ' + editor.value.substring(end);
+      editor.selectionStart = editor.selectionEnd = start + 2;
+      updatePreview();
+    }
+  });
+});
+
+var TEMPLATES = {
+  flexbox: {
+    html: '<div class="container">\n  <div class="box box-1">1<\/div>\n  <div class="box box-2">2<\/div>\n  <div class="box box-3">3<\/div>\n<\/div>',
+    css: '.container {\n  display: flex;\n  gap: 12px;\n  padding: 20px;\n  justify-content: center;\n  align-items: center;\n  min-height: 200px;\n}\n\n.box {\n  width: 80px;\n  height: 80px;\n  border-radius: 12px;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  font-weight: bold;\n  font-size: 1.2rem;\n  color: white;\n  transition: transform 0.3s ease;\n}\n\n.box:hover {\n  transform: scale(1.15);\n}\n\n.box-1 { background: #6c8cff; }\n.box-2 { background: #a78bfa; }\n.box-3 { background: #2ecc71; }'
+  },
+  grid: {
+    html: '<div class="grid">\n  <div class="item a">Header<\/div>\n  <div class="item b">Sidebar<\/div>\n  <div class="item c">Main Content<\/div>\n  <div class="item d">Footer<\/div>\n<\/div>',
+    css: '.grid {\n  display: grid;\n  grid-template-areas:\n    "header header"\n    "sidebar main"\n    "footer footer";\n  grid-template-columns: 200px 1fr;\n  grid-template-rows: 60px 1fr 50px;\n  gap: 8px;\n  padding: 12px;\n  min-height: 300px;\n}\n\n.item {\n  border-radius: 8px;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  font-weight: 600;\n  color: white;\n}\n\n.a { grid-area: header; background: #6c8cff; }\n.b { grid-area: sidebar; background: #a78bfa; }\n.c { grid-area: main; background: #2ecc71; }\n.d { grid-area: footer; background: #e74c3c; }'
+  },
+  animation: {
+    html: '<div class="scene">\n  <div class="spinner"><\/div>\n  <div class="pulse"><\/div>\n  <div class="bounce-ball"><\/div>\n<\/div>',
+    css: '.scene {\n  display: flex;\n  gap: 40px;\n  align-items: center;\n  justify-content: center;\n  min-height: 200px;\n}\n\n@keyframes spin {\n  to { transform: rotate(360deg); }\n}\n.spinner {\n  width: 40px; height: 40px;\n  border: 4px solid #e0e0e0;\n  border-top-color: #6c8cff;\n  border-radius: 50%;\n  animation: spin 0.8s linear infinite;\n}\n\n@keyframes pulse {\n  0%, 100% { transform: scale(1); opacity: 1; }\n  50% { transform: scale(1.3); opacity: 0.5; }\n}\n.pulse {\n  width: 40px; height: 40px;\n  background: #a78bfa;\n  border-radius: 50%;\n  animation: pulse 1.5s ease-in-out infinite;\n}\n\n@keyframes bounceAnim {\n  0%, 100% { transform: translateY(0); }\n  50% { transform: translateY(-40px); }\n}\n.bounce-ball {\n  width: 40px; height: 40px;\n  background: #2ecc71;\n  border-radius: 50%;\n  animation: bounceAnim 0.8s ease-in-out infinite;\n}'
+  },
+  gradient: {
+    html: '<div class="gradients">\n  <div class="grad linear">Linear<\/div>\n  <div class="grad radial">Radial<\/div>\n  <div class="grad conic">Conic<\/div>\n<\/div>',
+    css: '.gradients {\n  display: flex; gap: 16px; padding: 20px;\n  justify-content: center; flex-wrap: wrap;\n}\n\n.grad {\n  width: 140px; height: 140px; border-radius: 16px;\n  display: flex; align-items: center; justify-content: center;\n  color: white; font-weight: 700; font-size: 0.9rem;\n  text-shadow: 0 1px 3px rgba(0,0,0,.3);\n}\n\n.linear {\n  background: linear-gradient(135deg, #6c8cff, #a78bfa, #e74c3c);\n}\n.radial {\n  background: radial-gradient(circle at 30% 30%, #2ecc71, #1a1d27);\n}\n.conic {\n  background: conic-gradient(from 45deg, #6c8cff, #a78bfa, #e74c3c, #f39c12, #6c8cff);\n}'
+  },
+  transforms: {
+    html: '<div class="scene">\n  <div class="card">\n    <div class="front">Front<\/div>\n    <div class="back">Back<\/div>\n  <\/div>\n<\/div>',
+    css: '.scene {\n  display: flex; justify-content: center;\n  align-items: center; min-height: 250px;\n  perspective: 800px;\n}\n\n.card {\n  width: 160px; height: 200px; position: relative;\n  transform-style: preserve-3d;\n  transition: transform 0.8s ease;\n  cursor: pointer;\n}\n\n.card:hover {\n  transform: rotateY(180deg);\n}\n\n.front, .back {\n  position: absolute; inset: 0;\n  border-radius: 14px; display: flex;\n  align-items: center; justify-content: center;\n  font-weight: 700; font-size: 1.2rem; color: white;\n  backface-visibility: hidden;\n}\n\n.front { background: #6c8cff; }\n.back { background: #e74c3c; transform: rotateY(180deg); }'
+  },
+  variables: {
+    html: '<div class="demo">\n  <div class="card" style="--hue: 220">Card 1<\/div>\n  <div class="card" style="--hue: 280">Card 2<\/div>\n  <div class="card" style="--hue: 150">Card 3<\/div>\n  <div class="card" style="--hue: 0">Card 4<\/div>\n<\/div>',
+    css: ':root {\n  --radius: 14px;\n  --padding: 20px;\n}\n\n.demo {\n  display: flex; gap: 12px; padding: 20px;\n  justify-content: center; flex-wrap: wrap;\n}\n\n.card {\n  --bg: hsl(var(--hue), 70%, 55%);\n  --bg-hover: hsl(var(--hue), 75%, 45%);\n  \n  background: var(--bg);\n  color: white;\n  padding: var(--padding);\n  border-radius: var(--radius);\n  width: 100px; height: 100px;\n  display: flex; align-items: center;\n  justify-content: center;\n  font-weight: 600;\n  transition: all 0.3s ease;\n  cursor: pointer;\n}\n\n.card:hover {\n  background: var(--bg-hover);\n  transform: translateY(-4px);\n  box-shadow: 0 8px 24px hsla(var(--hue), 70%, 40%, 0.3);\n}'
+  },
+  blank: {
+    html: '<div class="container">\n  <h1>Hello CSS!<\/h1>\n  <p>Start writing your styles...<\/p>\n<\/div>',
+    css: '.container {\n  padding: 20px;\n  text-align: center;\n}\n\nh1 {\n  color: #6c8cff;\n  margin-bottom: 8px;\n}\n\np {\n  color: #666;\n}'
+  }
+};
+
+function loadTemplate(name) {
+  var t = TEMPLATES[name];
+  if (!t) return;
+  htmlEditor.value = t.html;
+  cssEditor.value = t.css;
+  updatePreview();
+}
+
+// Load default template and render
+loadTemplate('flexbox');
+</script>
+</body>
+</html>

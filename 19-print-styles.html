@@ -1,10 +1,18 @@
 <!DOCTYPE html><html lang="en" data-theme="dark"><head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="description" content="CSS Print Styles — @media print, page breaks, print-friendly colors, and showing link URLs.">
+<meta property="og:title" content="CSS Print Styles — CSS Reference Guide">
+<meta property="og:description" content="CSS Print Styles — @media print, page breaks, print-friendly colors, and showing link URLs.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>{ }</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <title>Print Styles — CSS Reference Guide</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet"><link rel="stylesheet" href="styles.css">
 </head><body>
+<a href="#main-content" class="skip-link">Skip to main content</a>
 <div id="progress"></div>
-<header class="header"><button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">&#9776;</button><h1><span>CSS</span> Reference Guide</h1><div class="header-nav"><a href="index.html">All Topics</a></div><button class="theme-toggle" onclick="toggleTheme()">&#9790; Dark</button></header>
+<header class="header"><button class="menu-toggle" aria-label="Toggle menu" onclick="document.querySelector('.sidebar').classList.toggle('open')">&#9776;</button><h1><span>CSS</span> Reference Guide</h1><div class="header-nav"><a href="index.html">All Topics</a><a href="playground.html">Playground</a></div><button class="theme-toggle" aria-label="Toggle theme" onclick="toggleTheme()">&#9790; Dark</button></header>
 <nav class="sidebar" id="sidebar"><a href="index.html" class="nav-back">&#8592; All Topics</a><div class="nav-group"><div class="nav-group-title">On This Page</div>
 <a href="#media-print">@media print</a>
 <a href="#hiding-elements">Hiding Elements</a>
@@ -20,7 +28,7 @@
 <a href="#gotchas">Gotchas</a>
 <a href="#pro-tips">Pro Tips</a>
 </div></nav>
-<main class="main"><div class="page-hero"><h1>CSS Print Styles</h1><p>Create professional print-ready pages by hiding interactive elements, optimizing typography, controlling page breaks, and ensuring your web content looks great on paper.</p><div class="tags"><span>Print</span><span>Media Queries</span><span>Page Layout</span><span>Accessibility</span></div></div>
+<main class="main" id="main-content"><div class="page-hero"><h1>CSS Print Styles</h1><p>Create professional print-ready pages by hiding interactive elements, optimizing typography, controlling page breaks, and ensuring your web content looks great on paper.</p><div class="tags"><span>Print</span><span>Media Queries</span><span>Page Layout</span><span>Accessibility</span></div></div>
 
 <!-- @media print -->
 <div class="section" id="media-print">
@@ -578,4 +586,7 @@ The paragraph continues naturally on the next page.
 </div>
 
 <div class="topic-nav"><a href="18-scrollbar-styling.html"><span class="label">Previous</span><span class="title">Scrollbar Styling</span></a><a href="20-architecture-best-practices.html" class="next"><span class="label">Next</span><span class="title">Architecture &amp; Best Practices</span></a></div></main>
+<footer class="site-footer">
+  <p>CSS Reference Guide</p>
+</footer>
 <script src="script.js"></script></body></html>

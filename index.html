@@ -3,25 +3,34 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="The Complete CSS Reference Guide — 21 comprehensive chapters covering every CSS topic from basics to cutting-edge features.">
+<meta property="og:title" content="CSS Reference Guide">
+<meta property="og:description" content="21 comprehensive chapters covering every CSS topic — from basics to cutting-edge features.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>{ }</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <title>CSS Reference Guide</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+<a href="#main-content" class="skip-link">Skip to main content</a>
 
 <div id="progress"></div>
 
 <header class="header">
   <h1><span>CSS</span> Reference Guide</h1>
-  <div style="flex:1"></div>
-  <button class="theme-toggle" onclick="toggleTheme()">&#9790; Dark</button>
+  <div class="header-nav"><a href="index.html">All Topics</a><a href="playground.html">Playground</a></div>
+  <button class="theme-toggle" aria-label="Toggle theme" onclick="toggleTheme()">&#9790; Dark</button>
 </header>
 
-<main class="main no-sidebar" style="padding-top:calc(var(--header-h) + 20px)">
+<main id="main-content" class="main no-sidebar" style="padding-top:calc(var(--header-h) + 20px)">
 
 <div class="landing-hero">
   <h1>The Complete <span>CSS</span> Guide</h1>
   <p>21 comprehensive chapters covering every CSS topic — from basics to cutting-edge features. Your one-stop reference for mastering CSS.</p>
+  <p style="margin-top:12px"><a href="playground.html" style="color:var(--accent);text-decoration:none;font-weight:600;font-size:.95rem;border:1px solid var(--accent);padding:8px 20px;border-radius:var(--radius);display:inline-block;transition:all .25s">Open CSS Playground &rarr;</a></p>
 </div>
 
 <div class="topics-grid">
@@ -133,6 +142,10 @@
 </div>
 
 </main>
+
+<footer class="site-footer">
+  <p>CSS Reference Guide</p>
+</footer>
 
 <script src="script.js"></script>
 </body>

@@ -1,10 +1,18 @@
 <!DOCTYPE html><html lang="en" data-theme="dark"><head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="description" content="CSS Responsive Design — Media queries, mobile-first approach, breakpoints, fluid typography with clamp(), and container queries.">
+<meta property="og:title" content="CSS Responsive Design — CSS Reference Guide">
+<meta property="og:description" content="CSS Responsive Design — Media queries, mobile-first approach, breakpoints, fluid typography with clamp(), and container queries.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>{ }</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <title>Responsive Design — CSS Reference Guide</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet"><link rel="stylesheet" href="styles.css">
 </head><body>
+<a href="#main-content" class="skip-link">Skip to main content</a>
 <div id="progress"></div>
-<header class="header"><button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">&#9776;</button><h1><span>CSS</span> Reference Guide</h1><div class="header-nav"><a href="index.html">All Topics</a></div><button class="theme-toggle" onclick="toggleTheme()">&#9790; Dark</button></header>
+<header class="header"><button class="menu-toggle" aria-label="Toggle menu" onclick="document.querySelector('.sidebar').classList.toggle('open')">&#9776;</button><h1><span>CSS</span> Reference Guide</h1><div class="header-nav"><a href="index.html">All Topics</a><a href="playground.html">Playground</a></div><button class="theme-toggle" aria-label="Toggle theme" onclick="toggleTheme()">&#9790; Dark</button></header>
 <nav class="sidebar" id="sidebar"><a href="index.html" class="nav-back">&#8592; All Topics</a><div class="nav-group"><div class="nav-group-title">On This Page</div>
 <a href="#viewport-meta">Viewport Meta Tag</a>
 <a href="#mobile-first">Mobile-First vs Desktop-First</a>
@@ -21,7 +29,7 @@
 <a href="#gotchas">Gotchas</a>
 <a href="#pro-tips">Pro Tips</a>
 </div></nav>
-<main class="main"><div class="page-hero"><h1>Responsive Design</h1><p>Building websites that adapt to any screen size, from mobile phones to ultra-wide monitors. Master the techniques that make layouts flexible and content accessible everywhere.</p><div class="tags"><span class="tag">Layout</span><span class="tag">Mobile</span><span class="tag">Media Queries</span><span class="tag">Essential</span></div></div>
+<main class="main" id="main-content"><div class="page-hero"><h1>Responsive Design</h1><p>Building websites that adapt to any screen size, from mobile phones to ultra-wide monitors. Master the techniques that make layouts flexible and content accessible everywhere.</p><div class="tags"><span class="tag">Layout</span><span class="tag">Mobile</span><span class="tag">Media Queries</span><span class="tag">Essential</span></div></div>
 
 <!-- ============================================ -->
 <!-- VIEWPORT META TAG -->
@@ -879,4 +887,7 @@
 </section>
 
 <div class="topic-nav"><a href="07-css-grid.html"><span class="label">Previous</span><span class="title">CSS Grid</span></a><a href="09-pseudo-classes-elements.html" class="next"><span class="label">Next</span><span class="title">Pseudo-Classes &amp; Elements</span></a></div></main>
+<footer class="site-footer">
+  <p>CSS Reference Guide</p>
+</footer>
 <script src="script.js"></script></body></html>
