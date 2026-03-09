@@ -1,0 +1,581 @@
+<!DOCTYPE html><html lang="en" data-theme="dark"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Print Styles — CSS Reference Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet"><link rel="stylesheet" href="styles.css">
+</head><body>
+<div id="progress"></div>
+<header class="header"><button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">&#9776;</button><h1><span>CSS</span> Reference Guide</h1><div class="header-nav"><a href="index.html">All Topics</a></div><button class="theme-toggle" onclick="toggleTheme()">&#9790; Dark</button></header>
+<nav class="sidebar" id="sidebar"><a href="index.html" class="nav-back">&#8592; All Topics</a><div class="nav-group"><div class="nav-group-title">On This Page</div>
+<a href="#media-print">@media print</a>
+<a href="#hiding-elements">Hiding Elements</a>
+<a href="#print-only">Showing Print-Only Elements</a>
+<a href="#typography">Typography for Print</a>
+<a href="#removing-backgrounds">Removing Backgrounds</a>
+<a href="#showing-urls">Showing Link URLs</a>
+<a href="#page-breaks">Page Breaks</a>
+<a href="#page-rule">@page Rule</a>
+<a href="#widows-orphans">Widows &amp; Orphans</a>
+<a href="#complete-template">Complete Print Stylesheet</a>
+<a href="#testing">Testing with DevTools</a>
+<a href="#gotchas">Gotchas</a>
+<a href="#pro-tips">Pro Tips</a>
+</div></nav>
+<main class="main"><div class="page-hero"><h1>CSS Print Styles</h1><p>Create professional print-ready pages by hiding interactive elements, optimizing typography, controlling page breaks, and ensuring your web content looks great on paper.</p><div class="tags"><span>Print</span><span>Media Queries</span><span>Page Layout</span><span>Accessibility</span></div></div>
+
+<!-- @media print -->
+<div class="section" id="media-print">
+<h2>@media print</h2>
+<p>The <code class="at">@media print</code> query applies styles only when the document is being printed or previewed for printing. Everything inside the block is ignored on screen.</p>
+
+<div class="code-block"><div class="code-header"><span>Basic @media print</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><span class="cmt">/* These styles apply ONLY when printing */</span>
+<span class="at">@media</span> <span class="val">print</span> {
+  <span class="sel">body</span> {
+    <span class="prop">font-family</span>: <span class="val">Georgia, "Times New Roman", serif</span>;
+    <span class="prop">font-size</span>: <span class="val">12pt</span>;
+    <span class="prop">line-height</span>: <span class="val">1.5</span>;
+    <span class="prop">color</span>: <span class="val">#000</span>;
+    <span class="prop">background</span>: <span class="val">#fff</span>;
+  }
+}
+
+<span class="cmt">/* Alternative: link a separate print stylesheet */</span>
+<span class="cmt">&lt;link rel="stylesheet" href="print.css" media="print"&gt;</span></pre></div>
+
+<div class="callout info">
+<strong>When does @media print apply?</strong> It activates when the user prints the page (Ctrl/Cmd + P), uses "Save as PDF", or when you emulate print media in DevTools.
+</div>
+</div>
+
+<!-- Hiding Elements -->
+<div class="section" id="hiding-elements">
+<h2>Hiding Elements for Print</h2>
+<p>Navigation bars, sidebars, buttons, ads, and interactive widgets are useless on paper. Hide them to keep the printout clean.</p>
+
+<div class="code-block"><div class="code-header"><span>Hiding UI Elements</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><span class="at">@media</span> <span class="val">print</span> {
+  <span class="cmt">/* Hide navigation */</span>
+  <span class="sel">nav</span>,
+  <span class="sel">.sidebar</span>,
+  <span class="sel">.navbar</span>,
+  <span class="sel">.breadcrumbs</span> {
+    <span class="prop">display</span>: <span class="val">none !important</span>;
+  }
+
+  <span class="cmt">/* Hide interactive elements */</span>
+  <span class="sel">button</span>,
+  <span class="sel">.btn</span>,
+  <span class="sel">input</span>,
+  <span class="sel">select</span>,
+  <span class="sel">textarea</span> {
+    <span class="prop">display</span>: <span class="val">none !important</span>;
+  }
+
+  <span class="cmt">/* Hide ads and decorative elements */</span>
+  <span class="sel">.ad</span>,
+  <span class="sel">.cookie-banner</span>,
+  <span class="sel">.popup</span>,
+  <span class="sel">.modal</span>,
+  <span class="sel">.tooltip</span>,
+  <span class="sel">video</span>,
+  <span class="sel">iframe</span> {
+    <span class="prop">display</span>: <span class="val">none !important</span>;
+  }
+
+  <span class="cmt">/* Hide footer social links but keep copyright */</span>
+  <span class="sel">.footer-social</span>,
+  <span class="sel">.share-buttons</span> {
+    <span class="prop">display</span>: <span class="val">none !important</span>;
+  }
+
+  <span class="cmt">/* Use a utility class for anything that shouldn't print */</span>
+  <span class="sel">.no-print</span> {
+    <span class="prop">display</span>: <span class="val">none !important</span>;
+  }
+}</pre></div>
+</div>
+
+<!-- Print-Only Elements -->
+<div class="section" id="print-only">
+<h2>Showing Print-Only Elements</h2>
+<p>Sometimes you want content that only appears in print — like a URL notice, page header, or copyright line.</p>
+
+<div class="code-block"><div class="code-header"><span>Print-Only Content</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><span class="cmt">/* Hidden on screen, visible when printed */</span>
+<span class="sel">.print-only</span> {
+  <span class="prop">display</span>: <span class="val">none</span>;
+}
+
+<span class="at">@media</span> <span class="val">print</span> {
+  <span class="sel">.print-only</span> {
+    <span class="prop">display</span>: <span class="val">block</span>;
+  }
+}
+
+<span class="cmt">/* HTML usage: */</span>
+<span class="cmt">&lt;div class="print-only"&gt;</span>
+<span class="cmt">  Printed from: https://example.com/article</span>
+<span class="cmt">  Date: March 9, 2026</span>
+<span class="cmt">&lt;/div&gt;</span></pre></div>
+</div>
+
+<!-- Typography for Print -->
+<div class="section" id="typography">
+<h2>Typography for Print</h2>
+<p>Print works best with serif fonts, point-based sizes, and high-contrast black-on-white text.</p>
+
+<div class="code-block"><div class="code-header"><span>Print Typography</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><span class="at">@media</span> <span class="val">print</span> {
+  <span class="sel">body</span> {
+    <span class="prop">font-family</span>: <span class="val">Georgia, "Times New Roman", "Palatino Linotype", serif</span>;
+    <span class="prop">font-size</span>: <span class="val">12pt</span>;       <span class="cmt">/* use pt for print, not px/rem */</span>
+    <span class="prop">line-height</span>: <span class="val">1.5</span>;
+    <span class="prop">color</span>: <span class="val">#000</span>;
+  }
+
+  <span class="sel">h1</span> {
+    <span class="prop">font-size</span>: <span class="val">24pt</span>;
+    <span class="prop">margin-bottom</span>: <span class="val">12pt</span>;
+  }
+
+  <span class="sel">h2</span> {
+    <span class="prop">font-size</span>: <span class="val">18pt</span>;
+    <span class="prop">margin-top</span>: <span class="val">18pt</span>;
+    <span class="prop">margin-bottom</span>: <span class="val">8pt</span>;
+  }
+
+  <span class="sel">h3</span> {
+    <span class="prop">font-size</span>: <span class="val">14pt</span>;
+  }
+
+  <span class="sel">p</span> {
+    <span class="prop">font-size</span>: <span class="val">11pt</span>;
+    <span class="prop">margin-bottom</span>: <span class="val">8pt</span>;
+  }
+
+  <span class="cmt">/* Keep code blocks readable */</span>
+  <span class="sel">code, pre</span> {
+    <span class="prop">font-family</span>: <span class="val">"Courier New", Courier, monospace</span>;
+    <span class="prop">font-size</span>: <span class="val">10pt</span>;
+    <span class="prop">border</span>: <span class="val">1px solid #ccc</span>;
+    <span class="prop">padding</span>: <span class="val">4pt</span>;
+  }
+}</pre></div>
+
+<div class="callout info">
+<strong>Why pt instead of px?</strong> Points (pt) are a physical unit — 1pt = 1/72 inch. They translate directly to paper dimensions, making your printed text predictable. 12pt is the standard body text size for documents.
+</div>
+</div>
+
+<!-- Removing Backgrounds -->
+<div class="section" id="removing-backgrounds">
+<h2>Removing Backgrounds &amp; Shadows</h2>
+<p>Background colors and images waste ink and can make text unreadable when printed. Remove them for clean output.</p>
+
+<div class="code-block"><div class="code-header"><span>Clean Print Backgrounds</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><span class="at">@media</span> <span class="val">print</span> {
+  <span class="cmt">/* Force white background and black text */</span>
+  <span class="sel">*</span> {
+    <span class="prop">background</span>: <span class="val">transparent !important</span>;
+    <span class="prop">color</span>: <span class="val">#000 !important</span>;
+    <span class="prop">box-shadow</span>: <span class="val">none !important</span>;
+    <span class="prop">text-shadow</span>: <span class="val">none !important</span>;
+  }
+
+  <span class="cmt">/* Exception: keep images visible */</span>
+  <span class="sel">img</span> {
+    <span class="prop">max-width</span>: <span class="val">100%</span>;
+    <span class="prop">page-break-inside</span>: <span class="val">avoid</span>;
+  }
+
+  <span class="cmt">/* Keep important visual indicators */</span>
+  <span class="sel">.badge</span>,
+  <span class="sel">.status-indicator</span> {
+    <span class="prop">border</span>: <span class="val">1px solid #000</span>;
+    <span class="prop">padding</span>: <span class="val">2pt 6pt</span>;
+  }
+}</pre></div>
+</div>
+
+<!-- Showing Link URLs -->
+<div class="section" id="showing-urls">
+<h2>Showing Link URLs with ::after</h2>
+<p>Links are useless on paper unless the reader can see the URL. Use <code class="sel">::after</code> with <code class="fn">attr()</code> to display the href.</p>
+
+<div class="code-block"><div class="code-header"><span>Display Link URLs in Print</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><span class="at">@media</span> <span class="val">print</span> {
+  <span class="cmt">/* Show the URL after each link */</span>
+  <span class="sel">a[href]::after</span> {
+    <span class="prop">content</span>: <span class="val">" (" <span class="fn">attr</span>(href) ")"</span>;
+    <span class="prop">font-size</span>: <span class="val">0.85em</span>;
+    <span class="prop">font-style</span>: <span class="val">italic</span>;
+    <span class="prop">color</span>: <span class="val">#555</span>;
+    <span class="prop">word-break</span>: <span class="val">break-all</span>;
+  }
+
+  <span class="cmt">/* Don't show URL for anchor links or javascript: */</span>
+  <span class="sel">a[href^="#"]::after</span>,
+  <span class="sel">a[href^="javascript:"]::after</span> {
+    <span class="prop">content</span>: <span class="val">""</span>;
+  }
+
+  <span class="cmt">/* Don't show URL for links that ARE the URL text */</span>
+  <span class="sel">a[href]:where([href*="mailto:"])::after</span> {
+    <span class="prop">content</span>: <span class="val">""</span>;
+  }
+
+  <span class="cmt">/* Similarly show abbreviation expansions */</span>
+  <span class="sel">abbr[title]::after</span> {
+    <span class="prop">content</span>: <span class="val">" (" <span class="fn">attr</span>(title) ")"</span>;
+  }
+}</pre></div>
+
+<div class="live-example"><div class="live-example-label">How links look in print (simulated)</div>
+<div style="padding:1rem; background:white; color:#000; border-radius:8px; font-family:Georgia,serif; font-size:0.95rem; line-height:1.6;">
+<p style="margin:0 0 0.75rem; color:#000;">For more information, visit <span style="color:#000; text-decoration:underline;">our documentation</span> <span style="color:#555; font-style:italic; font-size:0.85em;">(https://docs.example.com/guide)</span> or contact <span style="color:#000; text-decoration:underline;">support</span> <span style="color:#555; font-style:italic; font-size:0.85em;">(https://example.com/support)</span>.</p>
+<p style="margin:0; color:#000;">The <span style="border-bottom:1px dotted #555;">CSS</span> <span style="color:#555; font-style:italic; font-size:0.85em;">(Cascading Style Sheets)</span> specification is maintained by the W3C.</p>
+</div>
+</div>
+</div>
+
+<!-- Page Breaks -->
+<div class="section" id="page-breaks">
+<h2>Page Breaks</h2>
+<p>Control where page breaks occur to keep related content together and prevent awkward splits.</p>
+
+<div class="code-block"><div class="code-header"><span>Page Break Properties</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><span class="at">@media</span> <span class="val">print</span> {
+  <span class="cmt">/* Modern properties (recommended) */</span>
+  <span class="sel">h2, h3</span> {
+    <span class="prop">break-after</span>: <span class="val">avoid</span>;      <span class="cmt">/* don't break right after a heading */</span>
+  }
+
+  <span class="sel">.chapter</span> {
+    <span class="prop">break-before</span>: <span class="val">page</span>;      <span class="cmt">/* always start on a new page */</span>
+  }
+
+  <span class="sel">img, table, figure, pre</span> {
+    <span class="prop">break-inside</span>: <span class="val">avoid</span>;     <span class="cmt">/* don't split across pages */</span>
+  }
+
+  <span class="sel">blockquote</span> {
+    <span class="prop">break-inside</span>: <span class="val">avoid</span>;
+  }
+
+  <span class="cmt">/* Legacy properties (still widely supported) */</span>
+  <span class="sel">.new-page</span> {
+    <span class="prop">page-break-before</span>: <span class="val">always</span>;
+  }
+
+  <span class="sel">.keep-together</span> {
+    <span class="prop">page-break-inside</span>: <span class="val">avoid</span>;
+  }
+
+  <span class="sel">h1, h2, h3</span> {
+    <span class="prop">page-break-after</span>: <span class="val">avoid</span>;
+  }
+}
+
+<span class="cmt">/* break-before / break-after values:
+   auto    — default behavior
+   avoid   — avoid breaking here
+   page    — force a page break
+   left    — force break, next page is a left page
+   right   — force break, next page is a right page
+*/</span></pre></div>
+</div>
+
+<!-- @page Rule -->
+<div class="section" id="page-rule">
+<h2>@page Rule</h2>
+<p>The <code class="at">@page</code> rule controls the page itself — margins, size, and named pages for different sections.</p>
+
+<div class="code-block"><div class="code-header"><span>@page Configuration</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><span class="cmt">/* Set margins for all pages */</span>
+<span class="at">@page</span> {
+  <span class="prop">margin</span>: <span class="val">2cm</span>;               <span class="cmt">/* generous margins for print */</span>
+  <span class="prop">size</span>: <span class="val">A4</span>;                  <span class="cmt">/* paper size */</span>
+}
+
+<span class="cmt">/* First page can have different margins */</span>
+<span class="at">@page</span> <span class="sel">:first</span> {
+  <span class="prop">margin-top</span>: <span class="val">4cm</span>;           <span class="cmt">/* extra top margin on first page */</span>
+}
+
+<span class="cmt">/* Left and right pages (for book-style printing) */</span>
+<span class="at">@page</span> <span class="sel">:left</span> {
+  <span class="prop">margin-left</span>: <span class="val">3cm</span>;          <span class="cmt">/* binding side margin */</span>
+  <span class="prop">margin-right</span>: <span class="val">2cm</span>;
+}
+
+<span class="at">@page</span> <span class="sel">:right</span> {
+  <span class="prop">margin-left</span>: <span class="val">2cm</span>;
+  <span class="prop">margin-right</span>: <span class="val">3cm</span>;         <span class="cmt">/* binding side margin */</span>
+}
+
+<span class="cmt">/* Common paper sizes */</span>
+<span class="at">@page</span> { <span class="prop">size</span>: <span class="val">A4</span>; }           <span class="cmt">/* 210mm x 297mm */</span>
+<span class="at">@page</span> { <span class="prop">size</span>: <span class="val">letter</span>; }       <span class="cmt">/* 8.5in x 11in */</span>
+<span class="at">@page</span> { <span class="prop">size</span>: <span class="val">A4 landscape</span>; } <span class="cmt">/* landscape orientation */</span>
+<span class="at">@page</span> { <span class="prop">size</span>: <span class="val">5in 7in</span>; }      <span class="cmt">/* custom dimensions */</span></pre></div>
+</div>
+
+<!-- Widows & Orphans -->
+<div class="section" id="widows-orphans">
+<h2>Widows &amp; Orphans</h2>
+<p>Widows and orphans control the minimum number of lines at the top/bottom of a page, preventing awkward single lines.</p>
+
+<div class="code-block"><div class="code-header"><span>Widows &amp; Orphans</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><span class="at">@media</span> <span class="val">print</span> {
+  <span class="sel">p</span> {
+    <span class="prop">orphans</span>: <span class="val">3</span>;   <span class="cmt">/* min lines at BOTTOM of a page (before break) */</span>
+    <span class="prop">widows</span>: <span class="val">3</span>;    <span class="cmt">/* min lines at TOP of a page (after break) */</span>
+  }
+}
+
+<span class="cmt">/* orphans: If a paragraph would leave fewer than 3 lines
+   at the bottom of a page, the entire paragraph moves to
+   the next page instead.
+
+   widows: If a paragraph would have fewer than 3 lines
+   at the top of a new page, the break is adjusted so
+   at least 3 lines appear on the new page. */</span></pre></div>
+
+<div class="live-example"><div class="live-example-label">Widows &amp; Orphans Visualized</div>
+<div style="display:grid; grid-template-columns:1fr 1fr; gap:1.5rem;">
+<div>
+<div style="font-size:0.8rem; font-weight:600; color:#ef4444; margin-bottom:0.5rem;">Bad: Orphan (1 line left behind)</div>
+<div style="border:1px solid rgba(255,255,255,0.1); border-radius:8px; overflow:hidden;">
+<div style="padding:0.75rem; border-bottom:2px dashed rgba(239,68,68,0.3); min-height:80px; display:flex; flex-direction:column; justify-content:flex-end; font-size:0.8rem; font-family:Georgia,serif; color:rgba(255,255,255,0.7);">
+<span>...end of previous content.</span>
+<span style="color:#ef4444;">This lonely line is an orphan.</span>
+</div>
+<div style="padding:0.75rem; font-size:0.8rem; font-family:Georgia,serif; color:rgba(255,255,255,0.7);">
+The rest of the paragraph continues on the next page with plenty of room.
+</div>
+</div>
+</div>
+<div>
+<div style="font-size:0.8rem; font-weight:600; color:#34d399; margin-bottom:0.5rem;">Good: orphans: 3 (at least 3 lines)</div>
+<div style="border:1px solid rgba(255,255,255,0.1); border-radius:8px; overflow:hidden;">
+<div style="padding:0.75rem; border-bottom:2px dashed rgba(52,211,153,0.3); min-height:80px; display:flex; flex-direction:column; justify-content:flex-end; font-size:0.8rem; font-family:Georgia,serif; color:rgba(255,255,255,0.7);">
+<span>...end of previous content.</span>
+<span style="color:#34d399;">At least three lines remain</span>
+<span style="color:#34d399;">on this page before the break</span>
+<span style="color:#34d399;">to keep things readable.</span>
+</div>
+<div style="padding:0.75rem; font-size:0.8rem; font-family:Georgia,serif; color:rgba(255,255,255,0.7);">
+The paragraph continues naturally on the next page.
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Complete Print Stylesheet Template -->
+<div class="section" id="complete-template">
+<h2>Complete Print Stylesheet Template</h2>
+<p>A production-ready print stylesheet you can copy and adapt for any project.</p>
+
+<div class="code-block"><div class="code-header"><span>Complete Print Stylesheet (ready to copy)</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><span class="cmt">/* ==========================================
+   PRINT STYLESHEET
+   ========================================== */</span>
+
+<span class="at">@media</span> <span class="val">print</span> {
+
+  <span class="cmt">/* --- Page Setup --- */</span>
+  <span class="at">@page</span> {
+    <span class="prop">margin</span>: <span class="val">2cm</span>;
+    <span class="prop">size</span>: <span class="val">A4</span>;
+  }
+
+  <span class="at">@page</span> <span class="sel">:first</span> {
+    <span class="prop">margin-top</span>: <span class="val">3cm</span>;
+  }
+
+  <span class="cmt">/* --- Base Reset --- */</span>
+  <span class="sel">*</span>,
+  <span class="sel">*::before</span>,
+  <span class="sel">*::after</span> {
+    <span class="prop">background</span>: <span class="val">transparent !important</span>;
+    <span class="prop">color</span>: <span class="val">#000 !important</span>;
+    <span class="prop">box-shadow</span>: <span class="val">none !important</span>;
+    <span class="prop">text-shadow</span>: <span class="val">none !important</span>;
+  }
+
+  <span class="cmt">/* --- Typography --- */</span>
+  <span class="sel">body</span> {
+    <span class="prop">font-family</span>: <span class="val">Georgia, "Times New Roman", serif</span>;
+    <span class="prop">font-size</span>: <span class="val">12pt</span>;
+    <span class="prop">line-height</span>: <span class="val">1.5</span>;
+  }
+
+  <span class="sel">h1</span> { <span class="prop">font-size</span>: <span class="val">24pt</span>; <span class="prop">margin-bottom</span>: <span class="val">12pt</span>; }
+  <span class="sel">h2</span> { <span class="prop">font-size</span>: <span class="val">18pt</span>; <span class="prop">margin</span>: <span class="val">18pt 0 8pt</span>; }
+  <span class="sel">h3</span> { <span class="prop">font-size</span>: <span class="val">14pt</span>; <span class="prop">margin</span>: <span class="val">14pt 0 6pt</span>; }
+  <span class="sel">p</span>  { <span class="prop">orphans</span>: <span class="val">3</span>; <span class="prop">widows</span>: <span class="val">3</span>; }
+
+  <span class="cmt">/* --- Hide UI Elements --- */</span>
+  <span class="sel">nav</span>,
+  <span class="sel">.sidebar</span>,
+  <span class="sel">.navbar</span>,
+  <span class="sel">.header</span>,
+  <span class="sel">.footer</span>,
+  <span class="sel">button</span>,
+  <span class="sel">.btn</span>,
+  <span class="sel">.no-print</span>,
+  <span class="sel">.ad</span>,
+  <span class="sel">.cookie-banner</span>,
+  <span class="sel">.modal</span>,
+  <span class="sel">video</span>,
+  <span class="sel">iframe</span>,
+  <span class="sel">.social-share</span> {
+    <span class="prop">display</span>: <span class="val">none !important</span>;
+  }
+
+  <span class="cmt">/* --- Show print-only content --- */</span>
+  <span class="sel">.print-only</span> {
+    <span class="prop">display</span>: <span class="val">block !important</span>;
+  }
+
+  <span class="cmt">/* --- Links: show URL --- */</span>
+  <span class="sel">a[href]::after</span> {
+    <span class="prop">content</span>: <span class="val">" (" attr(href) ")"</span>;
+    <span class="prop">font-size</span>: <span class="val">0.85em</span>;
+    <span class="prop">font-style</span>: <span class="val">italic</span>;
+    <span class="prop">word-break</span>: <span class="val">break-all</span>;
+  }
+
+  <span class="sel">a[href^="#"]::after</span>,
+  <span class="sel">a[href^="javascript:"]::after</span> {
+    <span class="prop">content</span>: <span class="val">""</span>;
+  }
+
+  <span class="cmt">/* --- Images --- */</span>
+  <span class="sel">img</span> {
+    <span class="prop">max-width</span>: <span class="val">100% !important</span>;
+    <span class="prop">break-inside</span>: <span class="val">avoid</span>;
+  }
+
+  <span class="cmt">/* --- Page Breaks --- */</span>
+  <span class="sel">h1, h2, h3</span> {
+    <span class="prop">break-after</span>: <span class="val">avoid</span>;
+  }
+
+  <span class="sel">table, figure, img, pre, blockquote</span> {
+    <span class="prop">break-inside</span>: <span class="val">avoid</span>;
+  }
+
+  <span class="sel">.page-break</span> {
+    <span class="prop">break-before</span>: <span class="val">page</span>;
+  }
+
+  <span class="cmt">/* --- Tables --- */</span>
+  <span class="sel">table</span> {
+    <span class="prop">border-collapse</span>: <span class="val">collapse</span>;
+    <span class="prop">width</span>: <span class="val">100%</span>;
+  }
+
+  <span class="sel">th, td</span> {
+    <span class="prop">border</span>: <span class="val">1px solid #ccc</span>;
+    <span class="prop">padding</span>: <span class="val">6pt 8pt</span>;
+  }
+
+  <span class="sel">thead</span> {
+    <span class="prop">display</span>: <span class="val">table-header-group</span>;  <span class="cmt">/* repeat header on every page */</span>
+  }
+
+  <span class="cmt">/* --- Code blocks --- */</span>
+  <span class="sel">pre, code</span> {
+    <span class="prop">font-family</span>: <span class="val">"Courier New", monospace</span>;
+    <span class="prop">font-size</span>: <span class="val">10pt</span>;
+    <span class="prop">border</span>: <span class="val">1px solid #ddd !important</span>;
+    <span class="prop">padding</span>: <span class="val">4pt 6pt</span>;
+    <span class="prop">white-space</span>: <span class="val">pre-wrap</span>;
+    <span class="prop">word-wrap</span>: <span class="val">break-word</span>;
+  }
+
+  <span class="cmt">/* --- Layout: single column --- */</span>
+  <span class="sel">.main</span>,
+  <span class="sel">.content</span> {
+    <span class="prop">width</span>: <span class="val">100% !important</span>;
+    <span class="prop">margin</span>: <span class="val">0 !important</span>;
+    <span class="prop">padding</span>: <span class="val">0 !important</span>;
+    <span class="prop">float</span>: <span class="val">none !important</span>;
+  }
+}</pre></div>
+</div>
+
+<!-- Testing with DevTools -->
+<div class="section" id="testing">
+<h2>Testing with DevTools</h2>
+<p>You don't need to actually print a page to test print styles. Every major browser has a print media emulator built in.</p>
+
+<div class="code-block"><div class="code-header"><span>Testing Print Styles</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><span class="cmt">/* Chrome / Edge DevTools:
+   1. Open DevTools (F12)
+   2. Press Ctrl+Shift+P (Command Palette)
+   3. Type "rendering"
+   4. Select "Show Rendering"
+   5. Scroll to "Emulate CSS media type"
+   6. Select "print"
+
+   Firefox DevTools:
+   1. Open DevTools (F12)
+   2. Click the "Toggle print media simulation" button
+      in the Inspector toolbar (small page icon)
+
+   Safari:
+   1. Open Web Inspector
+   2. Elements tab → toggle "Force Print Media Styles"
+
+   Or simply use Ctrl/Cmd + P to open Print Preview */</span></pre></div>
+
+<div class="callout tip">
+<strong>Quick test:</strong> Press <code>Ctrl + P</code> (or <code>Cmd + P</code> on Mac) to instantly see how your page looks in print preview. This is the fastest way to check your print styles.
+</div>
+</div>
+
+<!-- Gotchas -->
+<div class="section" id="gotchas">
+<h2>Gotchas</h2>
+
+<div class="callout gotcha">
+<strong>Background colors/images don't print by default.</strong> Most browsers have "Background graphics" unchecked by default in print settings. Never rely on background colors to convey meaning in print — use borders instead.
+</div>
+
+<div class="callout gotcha">
+<strong>Flexbox and Grid layout can cause issues in print.</strong> Some print renderers struggle with complex flex/grid layouts. For print, consider resetting to simple block layout with <code>display: block; float: none; width: 100%;</code>.
+</div>
+
+<div class="callout gotcha">
+<strong>position: fixed elements appear on EVERY page.</strong> Fixed-position elements repeat on each printed page, overlapping content. Always hide or unfixed them in print styles.
+</div>
+
+<div class="callout gotcha">
+<strong>!important is often necessary in print styles.</strong> Print styles typically need to override specific screen styles, so <code>!important</code> is acceptable here — this is one of the few legitimate use cases.
+</div>
+
+<div class="callout gotcha">
+<strong>break-inside: avoid doesn't work on all elements.</strong> Some browsers only support it on block-level elements. If it's not working on a flex/grid child, wrap the content in a block container.
+</div>
+</div>
+
+<!-- Pro Tips -->
+<div class="section" id="pro-tips">
+<h2>Pro Tips</h2>
+
+<div class="callout tip">
+<strong>Use <code>thead { display: table-header-group; }</code></strong> to repeat table headers on every printed page. This makes long tables much easier to read across pages.
+</div>
+
+<div class="callout tip">
+<strong>Add a print-only header with page info.</strong> Include the document title, URL, and print date in a <code>.print-only</code> element so printed pages are self-documenting.
+</div>
+
+<div class="callout tip">
+<strong>Test in actual Print Preview, not just media emulation.</strong> DevTools media emulation doesn't simulate page breaks, @page rules, or widows/orphans. Always do a final check with Ctrl+P.
+</div>
+
+<div class="callout tip">
+<strong>Consider a separate print stylesheet file.</strong> For complex sites, use <code>&lt;link rel="stylesheet" href="print.css" media="print"&gt;</code> instead of @media print blocks. This keeps your main CSS clean and avoids downloading print styles on mobile.
+</div>
+
+<div class="callout tip">
+<strong>Use cm or mm for @page margins.</strong> These physical units map directly to paper dimensions. A margin of 2cm is standard for most documents. Use 2.5-3cm for bound documents to allow for the binding gutter.
+</div>
+</div>
+
+<div class="topic-nav"><a href="18-scrollbar-styling.html"><span class="label">Previous</span><span class="title">Scrollbar Styling</span></a><a href="20-architecture-best-practices.html" class="next"><span class="label">Next</span><span class="title">Architecture &amp; Best Practices</span></a></div></main>
+<script src="script.js"></script></body></html>

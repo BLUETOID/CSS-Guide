@@ -1,0 +1,824 @@
+<!DOCTYPE html><html lang="en" data-theme="dark"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Modern CSS — CSS Reference Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet"><link rel="stylesheet" href="styles.css">
+</head><body>
+<div id="progress"></div>
+<header class="header"><button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">&#9776;</button><h1><span>CSS</span> Reference Guide</h1><div class="header-nav"><a href="index.html">All Topics</a></div><button class="theme-toggle" onclick="toggleTheme()">&#9790; Dark</button></header>
+<nav class="sidebar" id="sidebar"><a href="index.html" class="nav-back">&#8592; All Topics</a><div class="nav-group"><div class="nav-group-title">On This Page</div>
+<a href="#container-queries">Container Queries</a>
+<a href="#has-selector">:has() Selector</a>
+<a href="#cascade-layers">Cascade Layers</a>
+<a href="#native-nesting">Native CSS Nesting</a>
+<a href="#subgrid">Subgrid</a>
+<a href="#color-mix">color-mix()</a>
+<a href="#accent-color">accent-color</a>
+<a href="#viewport-units">New Viewport Units</a>
+<a href="#individual-transforms">Individual Transforms</a>
+<a href="#at-property">@property</a>
+<a href="#starting-style">@starting-style</a>
+<a href="#text-wrap-balance">text-wrap: balance</a>
+<a href="#supports">@supports</a>
+<a href="#browser-support">Browser Support</a>
+<a href="#gotchas">Gotchas</a>
+<a href="#pro-tips">Pro Tips</a>
+</div></nav>
+<main class="main"><div class="page-hero"><h1>Modern CSS Features</h1><p>Explore the latest CSS features that are transforming how we build for the web — container queries, :has(), cascade layers, native nesting, and much more.</p><div class="tags"><span>Modern CSS</span><span>Container Queries</span><span>:has()</span><span>Cascade Layers</span><span>Nesting</span></div></div>
+
+<!-- Container Queries -->
+<div class="section" id="container-queries">
+<h2>Container Queries</h2>
+<p>Container queries let components respond to their <em>parent container's</em> size, not the viewport. This makes truly reusable, context-aware components possible.</p>
+
+<div class="code-block"><div class="code-header"><span>Container Query Syntax</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><span class="cmt">/* 1. Define a containment context */</span>
+<span class="sel">.card-container</span> {
+  <span class="prop">container-type</span>: <span class="val">inline-size</span>;  <span class="cmt">/* respond to width */</span>
+  <span class="prop">container-name</span>: <span class="val">card-wrap</span>;    <span class="cmt">/* optional: name the container */</span>
+}
+
+<span class="cmt">/* Shorthand */</span>
+<span class="sel">.card-container</span> {
+  <span class="prop">container</span>: <span class="val">card-wrap / inline-size</span>;
+}
+
+<span class="cmt">/* 2. Query the container */</span>
+<span class="at">@container</span> (<span class="prop">min-width</span>: <span class="val">400px</span>) {
+  <span class="sel">.card</span> {
+    <span class="prop">display</span>: <span class="val">grid</span>;
+    <span class="prop">grid-template-columns</span>: <span class="val">200px 1fr</span>;
+  }
+}
+
+<span class="cmt">/* Query a named container */</span>
+<span class="at">@container</span> <span class="val">card-wrap</span> (<span class="prop">min-width</span>: <span class="val">600px</span>) {
+  <span class="sel">.card__title</span> {
+    <span class="prop">font-size</span>: <span class="val">1.5rem</span>;
+  }
+}
+
+<span class="cmt">/* container-type values:
+   inline-size  — query inline dimension (width in horizontal)
+   size         — query both dimensions
+   normal       — no containment (default) */</span></pre></div>
+
+<div class="live-example"><div class="live-example-label">Container Query Demo — Resize to see layout change</div>
+<style>
+.cq-container {
+  container-type: inline-size;
+  container-name: demo;
+  resize: horizontal;
+  overflow: hidden;
+  border: 2px dashed rgba(99,102,241,0.3);
+  border-radius:12px;
+  padding: 1rem;
+  min-width: 200px;
+  max-width: 100%;
+}
+.cq-card {
+  background: rgba(99,102,241,0.08);
+  border-radius:8px;
+  overflow: hidden;
+}
+.cq-card-img {
+  height: 100px;
+  background: linear-gradient(135deg,#6366f1,#8b5cf6);
+}
+.cq-card-body {
+  padding: 1rem;
+}
+.cq-card-body h3 { font-size: 1rem; margin: 0 0 0.5rem; }
+.cq-card-body p { font-size: 0.85rem; opacity:0.7; margin:0; }
+@container demo (min-width: 450px) {
+  .cq-card {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+  }
+  .cq-card-img { height: auto; min-height: 120px; }
+  .cq-card-body h3 { font-size: 1.2rem; }
+}
+@container demo (min-width: 650px) {
+  .cq-card-body h3 { font-size: 1.4rem; }
+  .cq-card-body p { font-size: 0.95rem; }
+}
+</style>
+<p style="font-size:0.8rem; opacity:0.6; margin-bottom:0.75rem;">Drag the bottom-right corner to resize the container:</p>
+<div class="cq-container">
+<div class="cq-card">
+<div class="cq-card-img"></div>
+<div class="cq-card-body">
+<h3>Container Query Card</h3>
+<p>This card's layout changes based on the container width, not the viewport. Narrow = stacked, wide = side-by-side. Resize the dashed border to see it in action.</p>
+</div>
+</div>
+</div>
+</div>
+
+<div class="callout info">
+<strong>Container queries vs media queries:</strong> Media queries respond to the <em>viewport</em> size. Container queries respond to the <em>parent element</em> size. This means a component can be narrow in a sidebar and wide in a main content area, adapting its layout independently.
+</div>
+</div>
+
+<!-- :has() Selector -->
+<div class="section" id="has-selector">
+<h2>:has() — The Parent Selector</h2>
+<p>The <code class="sel">:has()</code> pseudo-class selects an element based on its <em>descendants</em> or <em>subsequent siblings</em>. Often called the "parent selector" — something CSS lacked for over 20 years.</p>
+
+<div class="code-block"><div class="code-header"><span>:has() Use Cases</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><span class="cmt">/* Select a parent that contains a specific child */</span>
+<span class="sel">.card:has(img)</span> {
+  <span class="prop">padding-top</span>: <span class="val">0</span>;  <span class="cmt">/* remove top padding when card has an image */</span>
+}
+
+<span class="cmt">/* Style a label when its input is focused */</span>
+<span class="sel">label:has(+ input:focus)</span> {
+  <span class="prop">color</span>: <span class="val">#6366f1</span>;
+}
+
+<span class="cmt">/* Highlight a form group with an invalid field */</span>
+<span class="sel">.form-group:has(:invalid)</span> {
+  <span class="prop">border-color</span>: <span class="val">#ef4444</span>;
+}
+
+<span class="cmt">/* Select an element that does NOT contain something */</span>
+<span class="sel">.card:not(:has(img))</span> {
+  <span class="prop">background</span>: <span class="val">#f0f0f0</span>;  <span class="cmt">/* text-only cards */</span>
+}
+
+<span class="cmt">/* Style body based on modal being open */</span>
+<span class="sel">body:has(.modal.open)</span> {
+  <span class="prop">overflow</span>: <span class="val">hidden</span>;
+}
+
+<span class="cmt">/* Style a grid differently based on child count */</span>
+<span class="sel">.grid:has(> :nth-child(4))</span> {
+  <span class="prop">grid-template-columns</span>: <span class="val">repeat(2, 1fr)</span>;  <span class="cmt">/* 4+ items = 2 columns */</span>
+}</pre></div>
+
+<div class="live-example"><div class="live-example-label">:has() — Interactive Checkbox Demo</div>
+<style>
+.has-demo { padding:1rem; border-radius:8px; border:1px solid rgba(255,255,255,0.1); transition: all 0.3s ease; }
+.has-demo:has(input:checked) { border-color: #6366f1; background: rgba(99,102,241,0.08); box-shadow: 0 0 20px rgba(99,102,241,0.1); }
+.has-demo:has(input:checked) .has-demo-label { color: #818cf8; font-weight: 600; }
+.has-demo:has(input:checked) .has-demo-text { opacity: 1; }
+.has-demo-label { font-size:0.95rem; cursor:pointer; transition: color 0.3s; display:flex; align-items:center; gap:0.5rem; }
+.has-demo-text { font-size:0.85rem; opacity:0.5; margin-top:0.5rem; transition: opacity 0.3s; }
+</style>
+<div class="has-demo">
+<label class="has-demo-label"><input type="checkbox" style="accent-color:#6366f1; width:18px; height:18px;"> Toggle this checkbox</label>
+<p class="has-demo-text">The parent container changes style when the checkbox is checked — powered by <code>:has(input:checked)</code>. No JavaScript needed!</p>
+</div>
+</div>
+
+<div class="live-example"><div class="live-example-label">:has() — Form Validation Styling</div>
+<style>
+.has-form-group { padding:0.75rem; border:2px solid rgba(255,255,255,0.1); border-radius:8px; margin-bottom:0.75rem; transition: all 0.3s; }
+.has-form-group:has(:focus) { border-color: #6366f1; }
+.has-form-group:has(:invalid:not(:placeholder-shown)) { border-color: #ef4444; background: rgba(239,68,68,0.05); }
+.has-form-group:has(:valid:not(:placeholder-shown)) { border-color: #34d399; background: rgba(52,211,153,0.05); }
+.has-form-group label { display:block; font-size:0.8rem; font-weight:600; margin-bottom:0.25rem; opacity:0.7; }
+.has-form-group input { width:100%; padding:0.5rem; border:none; background:transparent; color:inherit; font:inherit; outline:none; }
+</style>
+<div style="max-width:400px;">
+<div class="has-form-group">
+<label>Email (try typing an invalid email)</label>
+<input type="email" placeholder="you@example.com">
+</div>
+<div class="has-form-group">
+<label>Name (required, min 2 chars)</label>
+<input type="text" required minlength="2" placeholder="Your name">
+</div>
+</div>
+</div>
+</div>
+
+<!-- Cascade Layers -->
+<div class="section" id="cascade-layers">
+<h2>Cascade Layers (@layer)</h2>
+<p>Cascade layers give you explicit control over the cascade order, independent of specificity and source order. Layers declared first have <em>lower</em> priority.</p>
+
+<div class="code-block"><div class="code-header"><span>@layer Syntax</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><span class="cmt">/* 1. Declare layer order (low → high priority) */</span>
+<span class="at">@layer</span> reset, base, components, utilities;
+
+<span class="cmt">/* 2. Add styles to layers */</span>
+<span class="at">@layer</span> reset {
+  <span class="sel">*, *::before, *::after</span> {
+    <span class="prop">box-sizing</span>: <span class="val">border-box</span>;
+    <span class="prop">margin</span>: <span class="val">0</span>;
+  }
+}
+
+<span class="at">@layer</span> base {
+  <span class="sel">a</span> { <span class="prop">color</span>: <span class="val">#6366f1</span>; }
+  <span class="sel">h1</span> { <span class="prop">font-size</span>: <span class="val">2rem</span>; }
+}
+
+<span class="at">@layer</span> components {
+  <span class="sel">.btn</span> {
+    <span class="prop">padding</span>: <span class="val">0.5rem 1rem</span>;
+    <span class="prop">background</span>: <span class="val">#6366f1</span>;
+    <span class="prop">color</span>: <span class="val">white</span>;
+  }
+}
+
+<span class="at">@layer</span> utilities {
+  <span class="sel">.text-center</span> { <span class="prop">text-align</span>: <span class="val">center</span>; }
+  <span class="sel">.hidden</span> { <span class="prop">display</span>: <span class="val">none</span>; }
+}
+
+<span class="cmt">/* Utilities layer wins over components, even with
+   lower specificity, because it's declared later! */</span>
+
+<span class="cmt">/* Import a stylesheet into a layer */</span>
+<span class="at">@import</span> <span class="fn">url</span>(<span class="str">'vendor.css'</span>) <span class="val">layer(vendor)</span>;</pre></div>
+
+<div class="live-example"><div class="live-example-label">@layer Priority Demo</div>
+<style>
+@layer demo-reset, demo-base, demo-override;
+@layer demo-reset { .layer-demo-text { color: gray; font-weight: 400; } }
+@layer demo-base { .layer-demo-text { color: #f472b6; font-weight: 500; } }
+@layer demo-override { .layer-demo-text { color: #34d399; font-weight: 700; } }
+</style>
+<div style="padding:1rem; border:1px solid rgba(255,255,255,0.1); border-radius:8px;">
+<p class="layer-demo-text" style="font-size:1.2rem; margin:0;">This text is styled by @layer demo-override (green, bold)</p>
+<p style="font-size:0.8rem; opacity:0.6; margin-top:0.5rem;">Layer order: demo-reset (gray) &lt; demo-base (pink) &lt; demo-override (green). The last layer wins regardless of specificity.</p>
+</div>
+</div>
+</div>
+
+<!-- Native CSS Nesting -->
+<div class="section" id="native-nesting">
+<h2>Native CSS Nesting</h2>
+<p>CSS now supports nesting natively — no preprocessor required. Use <code>&amp;</code> to reference the parent selector, just like Sass.</p>
+
+<div class="code-block"><div class="code-header"><span>Native CSS Nesting Syntax</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><span class="cmt">/* Native CSS nesting — works in all modern browsers */</span>
+<span class="sel">.card</span> {
+  <span class="prop">padding</span>: <span class="val">1.5rem</span>;
+  <span class="prop">border-radius</span>: <span class="val">12px</span>;
+  <span class="prop">background</span>: <span class="val">var(--bg-surface)</span>;
+
+  <span class="cmt">/* Nested element */</span>
+  <span class="sel">& .card-title</span> {
+    <span class="prop">font-size</span>: <span class="val">1.25rem</span>;
+    <span class="prop">font-weight</span>: <span class="val">600</span>;
+  }
+
+  <span class="cmt">/* Pseudo-classes */</span>
+  <span class="sel">&:hover</span> {
+    <span class="prop">transform</span>: <span class="val">translateY(-2px)</span>;
+    <span class="prop">box-shadow</span>: <span class="val">var(--shadow-md)</span>;
+  }
+
+  <span class="cmt">/* Pseudo-elements */</span>
+  <span class="sel">&::before</span> {
+    <span class="prop">content</span>: <span class="val">""</span>;
+    <span class="prop">display</span>: <span class="val">block</span>;
+  }
+
+  <span class="cmt">/* Media queries can nest too! */</span>
+  <span class="at">@media</span> (<span class="prop">width</span> >= <span class="val">768px</span>) {
+    <span class="prop">display</span>: <span class="val">grid</span>;
+    <span class="prop">grid-template-columns</span>: <span class="val">200px 1fr</span>;
+  }
+
+  <span class="cmt">/* Modifier patterns */</span>
+  <span class="sel">&.card--featured</span> {
+    <span class="prop">border-color</span>: <span class="val">var(--color-primary)</span>;
+  }
+}
+
+<span class="cmt">/* Deeply nested (but keep it shallow for readability!) */</span>
+<span class="sel">.nav</span> {
+  <span class="sel">& .nav-list</span> {
+    <span class="prop">display</span>: <span class="val">flex</span>;
+
+    <span class="sel">& .nav-item</span> {
+      <span class="sel">&:hover</span> {
+        <span class="prop">color</span>: <span class="val">var(--color-primary)</span>;
+      }
+    }
+  }
+}</pre></div>
+
+<div class="live-example"><div class="live-example-label">Native Nesting — Live Styled Component</div>
+<style>
+.nest-demo {
+  border: 1px solid rgba(99,102,241,0.2);
+  border-radius: 12px;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+
+  & .nest-title {
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #818cf8;
+  }
+
+  & .nest-text {
+    font-size: 0.9rem;
+    opacity: 0.7;
+    line-height: 1.6;
+  }
+
+  &:hover {
+    border-color: rgba(99,102,241,0.5);
+    background: rgba(99,102,241,0.05);
+    box-shadow: 0 4px 20px rgba(99,102,241,0.1);
+  }
+
+  & .nest-badge {
+    display: inline-block;
+    margin-top: 0.75rem;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border-radius: 999px;
+    background: rgba(99,102,241,0.15);
+    color: #818cf8;
+  }
+}
+</style>
+<div class="nest-demo">
+<div class="nest-title">Styled with Native Nesting</div>
+<div class="nest-text">This entire component is styled using native CSS nesting. Hover over it to see the nested :hover styles activate. No Sass, no PostCSS — just plain CSS.</div>
+<span class="nest-badge">Native CSS</span>
+</div>
+</div>
+</div>
+
+<!-- Subgrid -->
+<div class="section" id="subgrid">
+<h2>Subgrid</h2>
+<p>Subgrid allows a grid item's children to participate in the parent grid's track sizing. This solves the alignment problem where cards in a grid have different-height sections.</p>
+
+<div class="code-block"><div class="code-header"><span>Subgrid Syntax</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><span class="sel">.grid</span> {
+  <span class="prop">display</span>: <span class="val">grid</span>;
+  <span class="prop">grid-template-columns</span>: <span class="val">repeat(3, 1fr)</span>;
+  <span class="prop">gap</span>: <span class="val">1.5rem</span>;
+}
+
+<span class="sel">.grid-item</span> {
+  <span class="prop">display</span>: <span class="val">grid</span>;
+  <span class="cmt">/* Inherit row tracks from parent grid */</span>
+  <span class="prop">grid-row</span>: <span class="val">span 3</span>;               <span class="cmt">/* item spans 3 row tracks */</span>
+  <span class="prop">grid-template-rows</span>: <span class="val">subgrid</span>;    <span class="cmt">/* children use parent's rows */</span>
+}
+
+<span class="cmt">/* Now all .grid-item children align perfectly across the grid,
+   even if their content has different lengths! */</span>
+
+<span class="cmt">/* Works for columns too */</span>
+<span class="sel">.wide-item</span> {
+  <span class="prop">grid-column</span>: <span class="val">span 2</span>;
+  <span class="prop">grid-template-columns</span>: <span class="val">subgrid</span>;
+}</pre></div>
+
+<div class="callout info">
+<strong>The classic problem subgrid solves:</strong> In a card grid, each card has a title, description, and button. Without subgrid, the titles, descriptions, and buttons don't align across cards because each card sizes its rows independently. Subgrid forces them all to use the same row tracks.
+</div>
+</div>
+
+<!-- color-mix() -->
+<div class="section" id="color-mix">
+<h2>color-mix()</h2>
+<p>The <code class="fn">color-mix()</code> function blends two colors in a specified color space. Perfect for generating tints, shades, and transparent variations.</p>
+
+<div class="code-block"><div class="code-header"><span>color-mix() Syntax</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><span class="cmt">/* color-mix(in colorspace, color1 percentage, color2 percentage) */</span>
+
+<span class="cmt">/* Mix colors 50/50 */</span>
+<span class="prop">background</span>: <span class="fn">color-mix</span>(<span class="kw">in</span> <span class="val">srgb</span>, <span class="val">#6366f1</span>, <span class="val">#f472b6</span>);
+
+<span class="cmt">/* Create a tint (mix with white) */</span>
+<span class="prop">--primary-light</span>: <span class="fn">color-mix</span>(<span class="kw">in</span> <span class="val">srgb</span>, <span class="val">#6366f1</span> <span class="num">30%</span>, <span class="val">white</span>);
+
+<span class="cmt">/* Create a shade (mix with black) */</span>
+<span class="prop">--primary-dark</span>: <span class="fn">color-mix</span>(<span class="kw">in</span> <span class="val">srgb</span>, <span class="val">#6366f1</span> <span class="num">70%</span>, <span class="val">black</span>);
+
+<span class="cmt">/* Create semi-transparent version */</span>
+<span class="prop">--primary-50</span>: <span class="fn">color-mix</span>(<span class="kw">in</span> <span class="val">srgb</span>, <span class="val">#6366f1</span> <span class="num">50%</span>, <span class="val">transparent</span>);
+
+<span class="cmt">/* Use oklch for perceptually uniform mixing */</span>
+<span class="prop">--blend</span>: <span class="fn">color-mix</span>(<span class="kw">in</span> <span class="val">oklch</span>, <span class="val">#6366f1</span>, <span class="val">#34d399</span>);
+
+<span class="cmt">/* Works with CSS variables! */</span>
+<span class="prop">--hover-bg</span>: <span class="fn">color-mix</span>(<span class="kw">in</span> <span class="val">srgb</span>, <span class="fn">var</span>(<span class="val">--color-primary</span>) <span class="num">15%</span>, <span class="val">transparent</span>);</pre></div>
+
+<div class="live-example"><div class="live-example-label">color-mix() Live Swatches</div>
+<div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(90px,1fr)); gap:0.75rem;">
+<div style="text-align:center;">
+<div style="height:60px; border-radius:8px; background:color-mix(in srgb, #6366f1 100%, white);"></div>
+<code style="font-size:0.65rem; display:block; margin-top:0.25rem;">100%</code>
+</div>
+<div style="text-align:center;">
+<div style="height:60px; border-radius:8px; background:color-mix(in srgb, #6366f1 80%, white);"></div>
+<code style="font-size:0.65rem; display:block; margin-top:0.25rem;">80% + white</code>
+</div>
+<div style="text-align:center;">
+<div style="height:60px; border-radius:8px; background:color-mix(in srgb, #6366f1 60%, white);"></div>
+<code style="font-size:0.65rem; display:block; margin-top:0.25rem;">60% + white</code>
+</div>
+<div style="text-align:center;">
+<div style="height:60px; border-radius:8px; background:color-mix(in srgb, #6366f1 40%, white);"></div>
+<code style="font-size:0.65rem; display:block; margin-top:0.25rem;">40% + white</code>
+</div>
+<div style="text-align:center;">
+<div style="height:60px; border-radius:8px; background:color-mix(in srgb, #6366f1 20%, white);"></div>
+<code style="font-size:0.65rem; display:block; margin-top:0.25rem;">20% + white</code>
+</div>
+<div style="text-align:center;">
+<div style="height:60px; border-radius:8px; background:color-mix(in srgb, #6366f1, #f472b6);"></div>
+<code style="font-size:0.65rem; display:block; margin-top:0.25rem;">mix pink</code>
+</div>
+<div style="text-align:center;">
+<div style="height:60px; border-radius:8px; background:color-mix(in srgb, #6366f1, #34d399);"></div>
+<code style="font-size:0.65rem; display:block; margin-top:0.25rem;">mix green</code>
+</div>
+<div style="text-align:center;">
+<div style="height:60px; border-radius:8px; background:color-mix(in oklch, #6366f1, #34d399);"></div>
+<code style="font-size:0.65rem; display:block; margin-top:0.25rem;">oklch mix</code>
+</div>
+</div>
+</div>
+</div>
+
+<!-- accent-color -->
+<div class="section" id="accent-color">
+<h2>accent-color</h2>
+<p>The <code class="prop">accent-color</code> property themes native form controls (checkboxes, radio buttons, range sliders, progress bars) with a single line of CSS.</p>
+
+<div class="code-block"><div class="code-header"><span>accent-color Usage</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><span class="cmt">/* Theme all form controls globally */</span>
+<span class="sel">:root</span> {
+  <span class="prop">accent-color</span>: <span class="val">#6366f1</span>;
+}
+
+<span class="cmt">/* Or per-element */</span>
+<span class="sel">.custom-checkbox</span> {
+  <span class="prop">accent-color</span>: <span class="val">#34d399</span>;
+}
+
+<span class="sel">.danger-checkbox</span> {
+  <span class="prop">accent-color</span>: <span class="val">#ef4444</span>;
+}</pre></div>
+
+<div class="live-example"><div class="live-example-label">accent-color — Live Form Controls</div>
+<div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px,1fr)); gap:1.5rem;">
+<div>
+<strong style="font-size:0.85rem; display:block; margin-bottom:0.75rem; color:#818cf8;">Indigo accent-color</strong>
+<label style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.5rem; font-size:0.9rem; cursor:pointer;">
+<input type="checkbox" checked style="accent-color:#6366f1; width:18px; height:18px;"> Checkbox
+</label>
+<label style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.5rem; font-size:0.9rem; cursor:pointer;">
+<input type="radio" name="demo1" checked style="accent-color:#6366f1; width:18px; height:18px;"> Radio A
+</label>
+<label style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.5rem; font-size:0.9rem; cursor:pointer;">
+<input type="radio" name="demo1" style="accent-color:#6366f1; width:18px; height:18px;"> Radio B
+</label>
+<input type="range" style="accent-color:#6366f1; width:100%; margin-top:0.25rem;">
+<progress value="70" max="100" style="accent-color:#6366f1; width:100%; margin-top:0.5rem; height:8px;"></progress>
+</div>
+<div>
+<strong style="font-size:0.85rem; display:block; margin-bottom:0.75rem; color:#f472b6;">Pink accent-color</strong>
+<label style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.5rem; font-size:0.9rem; cursor:pointer;">
+<input type="checkbox" checked style="accent-color:#f472b6; width:18px; height:18px;"> Checkbox
+</label>
+<label style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.5rem; font-size:0.9rem; cursor:pointer;">
+<input type="radio" name="demo2" checked style="accent-color:#f472b6; width:18px; height:18px;"> Radio A
+</label>
+<label style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.5rem; font-size:0.9rem; cursor:pointer;">
+<input type="radio" name="demo2" style="accent-color:#f472b6; width:18px; height:18px;"> Radio B
+</label>
+<input type="range" style="accent-color:#f472b6; width:100%; margin-top:0.25rem;">
+<progress value="45" max="100" style="accent-color:#f472b6; width:100%; margin-top:0.5rem; height:8px;"></progress>
+</div>
+<div>
+<strong style="font-size:0.85rem; display:block; margin-bottom:0.75rem; color:#34d399;">Green accent-color</strong>
+<label style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.5rem; font-size:0.9rem; cursor:pointer;">
+<input type="checkbox" checked style="accent-color:#34d399; width:18px; height:18px;"> Checkbox
+</label>
+<label style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.5rem; font-size:0.9rem; cursor:pointer;">
+<input type="radio" name="demo3" checked style="accent-color:#34d399; width:18px; height:18px;"> Radio A
+</label>
+<label style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.5rem; font-size:0.9rem; cursor:pointer;">
+<input type="radio" name="demo3" style="accent-color:#34d399; width:18px; height:18px;"> Radio B
+</label>
+<input type="range" style="accent-color:#34d399; width:100%; margin-top:0.25rem;">
+<progress value="90" max="100" style="accent-color:#34d399; width:100%; margin-top:0.5rem; height:8px;"></progress>
+</div>
+</div>
+</div>
+</div>
+
+<!-- New Viewport Units -->
+<div class="section" id="viewport-units">
+<h2>New Viewport Units</h2>
+<p>The classic <code class="val">vh</code> unit is unreliable on mobile because it doesn't account for browser chrome (address bar). New units solve this.</p>
+
+<div class="code-block"><div class="code-header"><span>New Viewport Units</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><span class="cmt">/* Classic (problematic on mobile) */</span>
+<span class="prop">height</span>: <span class="val">100vh</span>;      <span class="cmt">/* includes space behind address bar on mobile */</span>
+
+<span class="cmt">/* Dynamic viewport height — changes as browser chrome shows/hides */</span>
+<span class="prop">height</span>: <span class="val">100dvh</span>;     <span class="cmt">/* updates dynamically — RECOMMENDED for most cases */</span>
+
+<span class="cmt">/* Small viewport height — minimum visible area (address bar showing) */</span>
+<span class="prop">height</span>: <span class="val">100svh</span>;     <span class="cmt">/* safe: never extends behind browser chrome */</span>
+
+<span class="cmt">/* Large viewport height — maximum visible area (address bar hidden) */</span>
+<span class="prop">height</span>: <span class="val">100lvh</span>;     <span class="cmt">/* same as 100vh on desktop */</span>
+
+<span class="cmt">/* Width equivalents also exist: dvw, svw, lvw */</span>
+<span class="cmt">/* Block/inline equivalents: dvb, svb, lvb, dvi, svi, lvi */</span>
+
+<span class="cmt">/* Common pattern for mobile-safe full-height layouts */</span>
+<span class="sel">.hero</span> {
+  <span class="prop">min-height</span>: <span class="val">100svh</span>;  <span class="cmt">/* or 100dvh */</span>
+}</pre></div>
+
+<div class="callout tip">
+<strong>Rule of thumb:</strong> Use <code class="val">100dvh</code> for hero sections and full-screen layouts. Use <code class="val">100svh</code> when you need a guaranteed minimum height that won't cause content to jump as the address bar animates.
+</div>
+</div>
+
+<!-- Individual Transform Properties -->
+<div class="section" id="individual-transforms">
+<h2>Individual Transform Properties</h2>
+<p>Instead of a single <code class="prop">transform</code> with multiple functions, you can now use individual properties that can be animated independently.</p>
+
+<div class="code-block"><div class="code-header"><span>Individual Transform Properties</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><span class="cmt">/* Old way: single transform property */</span>
+<span class="sel">.element</span> {
+  <span class="prop">transform</span>: <span class="fn">translateX</span>(<span class="val">50px</span>) <span class="fn">rotate</span>(<span class="val">45deg</span>) <span class="fn">scale</span>(<span class="val">1.2</span>);
+}
+
+<span class="cmt">/* New way: individual properties */</span>
+<span class="sel">.element</span> {
+  <span class="prop">translate</span>: <span class="val">50px 0</span>;
+  <span class="prop">rotate</span>: <span class="val">45deg</span>;
+  <span class="prop">scale</span>: <span class="val">1.2</span>;
+}
+
+<span class="cmt">/* The big advantage: animate them independently! */</span>
+<span class="sel">.card</span> {
+  <span class="prop">translate</span>: <span class="val">0 0</span>;
+  <span class="prop">scale</span>: <span class="val">1</span>;
+  <span class="prop">transition</span>: <span class="val">translate 0.3s ease, scale 0.2s ease</span>;
+}
+
+<span class="sel">.card:hover</span> {
+  <span class="prop">translate</span>: <span class="val">0 -4px</span>;  <span class="cmt">/* lifts up slowly */</span>
+  <span class="prop">scale</span>: <span class="val">1.02</span>;         <span class="cmt">/* grows quickly */</span>
+}
+
+<span class="cmt">/* No more overriding the entire transform chain */</span>
+<span class="sel">.base</span> { <span class="prop">rotate</span>: <span class="val">10deg</span>; }
+<span class="sel">.base:hover</span> { <span class="prop">scale</span>: <span class="val">1.1</span>; }  <span class="cmt">/* rotation is preserved! */</span></pre></div>
+</div>
+
+<!-- @property -->
+<div class="section" id="at-property">
+<h2>@property — Typed Custom Properties</h2>
+<p><code class="at">@property</code> registers custom properties with a type, initial value, and inheritance. This enables <strong>animating custom properties</strong> — something impossible with regular <code>--</code> variables.</p>
+
+<div class="code-block"><div class="code-header"><span>@property Syntax</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><span class="cmt">/* Register a custom property with type information */</span>
+<span class="at">@property</span> <span class="val">--gradient-angle</span> {
+  <span class="prop">syntax</span>: <span class="val">"&lt;angle&gt;"</span>;
+  <span class="prop">initial-value</span>: <span class="val">0deg</span>;
+  <span class="prop">inherits</span>: <span class="val">false</span>;
+}
+
+<span class="at">@property</span> <span class="val">--color-start</span> {
+  <span class="prop">syntax</span>: <span class="val">"&lt;color&gt;"</span>;
+  <span class="prop">initial-value</span>: <span class="val">#6366f1</span>;
+  <span class="prop">inherits</span>: <span class="val">false</span>;
+}
+
+<span class="cmt">/* Now you can ANIMATE the gradient! */</span>
+<span class="sel">.gradient-box</span> {
+  <span class="prop">background</span>: <span class="fn">linear-gradient</span>(
+    <span class="fn">var</span>(<span class="val">--gradient-angle</span>),
+    <span class="fn">var</span>(<span class="val">--color-start</span>),
+    <span class="val">#f472b6</span>
+  );
+  <span class="prop">transition</span>: <span class="val">--gradient-angle 1s, --color-start 0.5s</span>;
+}
+
+<span class="sel">.gradient-box:hover</span> {
+  <span class="val">--gradient-angle</span>: <span class="val">180deg</span>;
+  <span class="val">--color-start</span>: <span class="val">#34d399</span>;
+}
+
+<span class="cmt">/* Supported syntax types:
+   "&lt;length&gt;"    "&lt;number&gt;"     "&lt;percentage&gt;"
+   "&lt;color&gt;"     "&lt;angle&gt;"      "&lt;time&gt;"
+   "&lt;integer&gt;"   "&lt;length-percentage&gt;"
+   "&lt;custom-ident&gt;"  "&lt;image&gt;"  "*" (any) */</span></pre></div>
+</div>
+
+<!-- @starting-style -->
+<div class="section" id="starting-style">
+<h2>@starting-style</h2>
+<p><code class="at">@starting-style</code> defines styles for when an element first appears (entry animation). It enables CSS-only appear transitions for elements added to the DOM or changing from <code>display: none</code>.</p>
+
+<div class="code-block"><div class="code-header"><span>@starting-style Syntax</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><span class="cmt">/* Element's normal state */</span>
+<span class="sel">.toast</span> {
+  <span class="prop">opacity</span>: <span class="val">1</span>;
+  <span class="prop">translate</span>: <span class="val">0 0</span>;
+  <span class="prop">transition</span>: <span class="val">opacity 0.3s, translate 0.3s</span>;
+}
+
+<span class="cmt">/* State when element first appears */</span>
+<span class="at">@starting-style</span> {
+  <span class="sel">.toast</span> {
+    <span class="prop">opacity</span>: <span class="val">0</span>;
+    <span class="prop">translate</span>: <span class="val">0 20px</span>;
+  }
+}
+
+<span class="cmt">/* Works with display transitions too! */</span>
+<span class="sel">.dialog[open]</span> {
+  <span class="prop">opacity</span>: <span class="val">1</span>;
+  <span class="prop">scale</span>: <span class="val">1</span>;
+  <span class="prop">transition</span>: <span class="val">opacity 0.3s, scale 0.3s, display 0.3s allow-discrete</span>;
+}
+
+<span class="at">@starting-style</span> {
+  <span class="sel">.dialog[open]</span> {
+    <span class="prop">opacity</span>: <span class="val">0</span>;
+    <span class="prop">scale</span>: <span class="val">0.9</span>;
+  }
+}</pre></div>
+</div>
+
+<!-- text-wrap: balance -->
+<div class="section" id="text-wrap-balance">
+<h2>text-wrap: balance</h2>
+<p>Automatically balances the number of characters per line in a text block so lines are roughly equal length. Perfect for headings.</p>
+
+<div class="code-block"><div class="code-header"><span>text-wrap: balance</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><span class="cmt">/* Apply to headings for balanced line wrapping */</span>
+<span class="sel">h1, h2, h3</span> {
+  <span class="prop">text-wrap</span>: <span class="val">balance</span>;     <span class="cmt">/* balances lines evenly */</span>
+}
+
+<span class="cmt">/* For body text that should fill all available space */</span>
+<span class="sel">p</span> {
+  <span class="prop">text-wrap</span>: <span class="val">pretty</span>;      <span class="cmt">/* avoids orphans on last line */</span>
+}
+
+<span class="cmt">/* Note: balance works best on short text (max ~6 lines).
+   For longer text, the browser falls back to normal wrapping. */</span></pre></div>
+
+<div class="live-example"><div class="live-example-label">text-wrap: balance vs normal</div>
+<div style="display:grid; grid-template-columns:1fr 1fr; gap:1.5rem;">
+<div>
+<strong style="font-size:0.8rem; opacity:0.6; display:block; margin-bottom:0.5rem;">text-wrap: normal (default)</strong>
+<h3 style="font-size:1.3rem; font-weight:700; max-width:280px; text-wrap:auto;">A Long Heading That Wraps Awkwardly Across Lines</h3>
+</div>
+<div>
+<strong style="font-size:0.8rem; opacity:0.6; display:block; margin-bottom:0.5rem;">text-wrap: balance</strong>
+<h3 style="font-size:1.3rem; font-weight:700; max-width:280px; text-wrap:balance;">A Long Heading That Wraps Elegantly Across Lines</h3>
+</div>
+</div>
+</div>
+</div>
+
+<!-- @supports -->
+<div class="section" id="supports">
+<h2>@supports — Feature Queries</h2>
+<p>Use <code class="at">@supports</code> to conditionally apply CSS based on browser support. Essential for progressive enhancement.</p>
+
+<div class="code-block"><div class="code-header"><span>@supports Syntax</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><span class="cmt">/* Check if a property is supported */</span>
+<span class="at">@supports</span> (<span class="prop">container-type</span>: <span class="val">inline-size</span>) {
+  <span class="sel">.card-wrapper</span> {
+    <span class="prop">container-type</span>: <span class="val">inline-size</span>;
+  }
+}
+
+<span class="cmt">/* Check if NOT supported (fallback) */</span>
+<span class="at">@supports not</span> (<span class="prop">container-type</span>: <span class="val">inline-size</span>) {
+  <span class="sel">.card</span> {
+    <span class="cmt">/* media query fallback */</span>
+  }
+}
+
+<span class="cmt">/* Check for a selector */</span>
+<span class="at">@supports</span> <span class="fn">selector</span>(<span class="sel">:has(*)</span>) {
+  <span class="cmt">/* use :has() safely */</span>
+}
+
+<span class="cmt">/* Combine with AND / OR */</span>
+<span class="at">@supports</span> (<span class="prop">display</span>: <span class="val">grid</span>) <span class="kw">and</span> (<span class="prop">gap</span>: <span class="val">1rem</span>) {
+  <span class="cmt">/* grid with gap support */</span>
+}
+
+<span class="at">@supports</span> (<span class="prop">backdrop-filter</span>: <span class="val">blur(10px)</span>) <span class="kw">or</span> (<span class="prop">-webkit-backdrop-filter</span>: <span class="val">blur(10px)</span>) {
+  <span class="sel">.glass</span> {
+    <span class="prop">backdrop-filter</span>: <span class="val">blur(10px)</span>;
+    <span class="prop">-webkit-backdrop-filter</span>: <span class="val">blur(10px)</span>;
+  }
+}</pre></div>
+</div>
+
+<!-- Browser Support Table -->
+<div class="section" id="browser-support">
+<h2>Browser Support Table</h2>
+
+<div style="overflow-x:auto;">
+<table style="width:100%; border-collapse:collapse; font-size:0.85rem; border-radius:8px; overflow:hidden;">
+<thead>
+<tr style="background:rgba(99,102,241,0.15);">
+<th style="padding:0.75rem 1rem; text-align:left; border-bottom:2px solid rgba(99,102,241,0.3);">Feature</th>
+<th style="padding:0.75rem 1rem; text-align:center; border-bottom:2px solid rgba(99,102,241,0.3);">Chrome</th>
+<th style="padding:0.75rem 1rem; text-align:center; border-bottom:2px solid rgba(99,102,241,0.3);">Firefox</th>
+<th style="padding:0.75rem 1rem; text-align:center; border-bottom:2px solid rgba(99,102,241,0.3);">Safari</th>
+<th style="padding:0.75rem 1rem; text-align:center; border-bottom:2px solid rgba(99,102,241,0.3);">Edge</th>
+</tr>
+</thead>
+<tbody>
+<tr style="border-bottom:1px solid rgba(255,255,255,0.06);"><td style="padding:0.5rem 1rem;">Container Queries</td><td style="padding:0.5rem; text-align:center;">105+</td><td style="padding:0.5rem; text-align:center;">110+</td><td style="padding:0.5rem; text-align:center;">16+</td><td style="padding:0.5rem; text-align:center;">105+</td></tr>
+<tr style="border-bottom:1px solid rgba(255,255,255,0.06); background:rgba(255,255,255,0.02);"><td style="padding:0.5rem 1rem;">:has()</td><td style="padding:0.5rem; text-align:center;">105+</td><td style="padding:0.5rem; text-align:center;">121+</td><td style="padding:0.5rem; text-align:center;">15.4+</td><td style="padding:0.5rem; text-align:center;">105+</td></tr>
+<tr style="border-bottom:1px solid rgba(255,255,255,0.06);"><td style="padding:0.5rem 1rem;">@layer</td><td style="padding:0.5rem; text-align:center;">99+</td><td style="padding:0.5rem; text-align:center;">97+</td><td style="padding:0.5rem; text-align:center;">15.4+</td><td style="padding:0.5rem; text-align:center;">99+</td></tr>
+<tr style="border-bottom:1px solid rgba(255,255,255,0.06); background:rgba(255,255,255,0.02);"><td style="padding:0.5rem 1rem;">Native Nesting</td><td style="padding:0.5rem; text-align:center;">120+</td><td style="padding:0.5rem; text-align:center;">117+</td><td style="padding:0.5rem; text-align:center;">17.2+</td><td style="padding:0.5rem; text-align:center;">120+</td></tr>
+<tr style="border-bottom:1px solid rgba(255,255,255,0.06);"><td style="padding:0.5rem 1rem;">Subgrid</td><td style="padding:0.5rem; text-align:center;">117+</td><td style="padding:0.5rem; text-align:center;">71+</td><td style="padding:0.5rem; text-align:center;">16+</td><td style="padding:0.5rem; text-align:center;">117+</td></tr>
+<tr style="border-bottom:1px solid rgba(255,255,255,0.06); background:rgba(255,255,255,0.02);"><td style="padding:0.5rem 1rem;">color-mix()</td><td style="padding:0.5rem; text-align:center;">111+</td><td style="padding:0.5rem; text-align:center;">113+</td><td style="padding:0.5rem; text-align:center;">16.2+</td><td style="padding:0.5rem; text-align:center;">111+</td></tr>
+<tr style="border-bottom:1px solid rgba(255,255,255,0.06);"><td style="padding:0.5rem 1rem;">accent-color</td><td style="padding:0.5rem; text-align:center;">93+</td><td style="padding:0.5rem; text-align:center;">92+</td><td style="padding:0.5rem; text-align:center;">15.4+</td><td style="padding:0.5rem; text-align:center;">93+</td></tr>
+<tr style="border-bottom:1px solid rgba(255,255,255,0.06); background:rgba(255,255,255,0.02);"><td style="padding:0.5rem 1rem;">dvh/svh/lvh</td><td style="padding:0.5rem; text-align:center;">108+</td><td style="padding:0.5rem; text-align:center;">101+</td><td style="padding:0.5rem; text-align:center;">15.4+</td><td style="padding:0.5rem; text-align:center;">108+</td></tr>
+<tr style="border-bottom:1px solid rgba(255,255,255,0.06);"><td style="padding:0.5rem 1rem;">Individual Transforms</td><td style="padding:0.5rem; text-align:center;">104+</td><td style="padding:0.5rem; text-align:center;">72+</td><td style="padding:0.5rem; text-align:center;">14.1+</td><td style="padding:0.5rem; text-align:center;">104+</td></tr>
+<tr style="border-bottom:1px solid rgba(255,255,255,0.06); background:rgba(255,255,255,0.02);"><td style="padding:0.5rem 1rem;">@property</td><td style="padding:0.5rem; text-align:center;">85+</td><td style="padding:0.5rem; text-align:center;">128+</td><td style="padding:0.5rem; text-align:center;">15.4+</td><td style="padding:0.5rem; text-align:center;">85+</td></tr>
+<tr style="border-bottom:1px solid rgba(255,255,255,0.06);"><td style="padding:0.5rem 1rem;">@starting-style</td><td style="padding:0.5rem; text-align:center;">117+</td><td style="padding:0.5rem; text-align:center;">129+</td><td style="padding:0.5rem; text-align:center;">17.5+</td><td style="padding:0.5rem; text-align:center;">117+</td></tr>
+<tr style="border-bottom:1px solid rgba(255,255,255,0.06); background:rgba(255,255,255,0.02);"><td style="padding:0.5rem 1rem;">text-wrap: balance</td><td style="padding:0.5rem; text-align:center;">114+</td><td style="padding:0.5rem; text-align:center;">121+</td><td style="padding:0.5rem; text-align:center;">17.5+</td><td style="padding:0.5rem; text-align:center;">114+</td></tr>
+<tr><td style="padding:0.5rem 1rem;">@supports selector()</td><td style="padding:0.5rem; text-align:center;">83+</td><td style="padding:0.5rem; text-align:center;">69+</td><td style="padding:0.5rem; text-align:center;">14.1+</td><td style="padding:0.5rem; text-align:center;">83+</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<!-- Gotchas -->
+<div class="section" id="gotchas">
+<h2>Gotchas</h2>
+
+<div class="callout gotcha">
+<strong>Container queries require containment.</strong> You must set <code>container-type: inline-size</code> on the parent. Without it, <code>@container</code> queries won't work. This also means the container's inline size can't depend on its children's size.
+</div>
+
+<div class="callout gotcha">
+<strong>:has() can be performance-sensitive.</strong> Complex <code>:has()</code> selectors (especially with deep descendant checks) can be expensive. Browsers are optimizing rapidly, but keep selectors as simple as possible.
+</div>
+
+<div class="callout gotcha">
+<strong>Unlayered styles beat layered styles.</strong> Any CSS <em>not</em> inside a <code>@layer</code> has higher priority than all layered styles, regardless of layer order. This is by design but can be surprising.
+</div>
+
+<div class="callout gotcha">
+<strong>Native nesting increases specificity.</strong> <code>.card { &amp; .title {} }</code> is equivalent to <code>.card .title</code> with specificity (0,0,2,0), not (0,0,1,0). Be aware of this when migrating from Sass.
+</div>
+
+<div class="callout gotcha">
+<strong>@property requires all three descriptors.</strong> <code>syntax</code>, <code>initial-value</code>, and <code>inherits</code> are all mandatory. Omitting any one of them will cause the rule to be ignored.
+</div>
+
+<div class="callout gotcha">
+<strong>text-wrap: balance has a line limit.</strong> It only works on blocks with approximately 6 or fewer wrapped lines. Longer text blocks fall back to normal wrapping behavior.
+</div>
+</div>
+
+<!-- Pro Tips -->
+<div class="section" id="pro-tips">
+<h2>Pro Tips</h2>
+
+<div class="callout tip">
+<strong>Use container queries for component libraries.</strong> Design systems built with container queries are truly portable — drop a card component in any layout context and it adapts automatically.
+</div>
+
+<div class="callout tip">
+<strong>Use :has() to eliminate JavaScript state classes.</strong> Instead of toggling <code>.has-image</code> via JS, use <code>.card:has(img)</code>. Less JS, more declarative, automatically stays in sync.
+</div>
+
+<div class="callout tip">
+<strong>Layer your architecture.</strong> Use <code>@layer reset, base, layout, components, utilities</code> to create a clear priority order. Third-party CSS should always go in its own low-priority layer.
+</div>
+
+<div class="code-block"><div class="code-header"><span>Recommended @layer Architecture</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><span class="cmt">/* Declare order from lowest to highest priority */</span>
+<span class="at">@layer</span> reset, vendor, base, layout, components, utilities;
+
+<span class="cmt">/* Import third-party CSS into a low-priority layer */</span>
+<span class="at">@import</span> <span class="fn">url</span>(<span class="str">'normalize.css'</span>) <span class="val">layer(reset)</span>;
+<span class="at">@import</span> <span class="fn">url</span>(<span class="str">'library.css'</span>) <span class="val">layer(vendor)</span>;
+
+<span class="cmt">/* Utility classes always win (highest layer) */</span>
+<span class="at">@layer</span> utilities {
+  <span class="sel">.hidden</span> { <span class="prop">display</span>: <span class="val">none !important</span>; }
+  <span class="sel">.sr-only</span> { <span class="cmt">/* screen reader only */</span> }
+}</pre></div>
+
+<div class="callout tip">
+<strong>Use @property for gradient animations.</strong> Regular CSS can't animate gradients. But with <code>@property</code>, you register the angle or color as typed custom properties and animate those instead.
+</div>
+
+<div class="callout tip">
+<strong>Progressively enhance with @supports.</strong> Use modern features freely behind <code>@supports</code>, with sensible fallbacks for older browsers. Most modern CSS features degrade gracefully.
+</div>
+
+<div class="callout tip">
+<strong>Apply text-wrap: balance to all headings globally.</strong> It's a safe enhancement: browsers that don't support it simply ignore it. Add <code>h1, h2, h3, h4 { text-wrap: balance; }</code> to your base styles.
+</div>
+</div>
+
+<div class="topic-nav"><a href="20-architecture-best-practices.html"><span class="label">Previous</span><span class="title">Architecture &amp; Best Practices</span></a><a href="index.html" class="next"><span class="label">Next</span><span class="title">All Topics</span></a></div></main>
+<script src="script.js"></script></body></html>

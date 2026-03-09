@@ -1,0 +1,762 @@
+<!DOCTYPE html><html lang="en" data-theme="dark"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Flexbox — CSS Reference Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet"><link rel="stylesheet" href="styles.css">
+</head><body>
+<div id="progress"></div>
+<header class="header"><button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">&#9776;</button><h1><span>CSS</span> Reference Guide</h1><div class="header-nav"><a href="index.html">All Topics</a></div><button class="theme-toggle" onclick="toggleTheme()">&#9790; Dark</button></header>
+<nav class="sidebar" id="sidebar"><a href="index.html" class="nav-back">&#8592; All Topics</a><div class="nav-group"><div class="nav-group-title">On This Page</div>
+<a href="#display-flex">Display Flex</a>
+<a href="#flex-direction">Flex Direction</a>
+<a href="#flex-wrap">Flex Wrap</a>
+<a href="#justify-content">Justify Content</a>
+<a href="#align-items">Align Items</a>
+<a href="#align-content">Align Content</a>
+<a href="#gap">Gap</a>
+<a href="#flex-grow">Flex Grow</a>
+<a href="#flex-shrink">Flex Shrink</a>
+<a href="#flex-basis">Flex Basis</a>
+<a href="#flex-shorthand">Flex Shorthand</a>
+<a href="#align-self">Align Self</a>
+<a href="#order">Order</a>
+<a href="#perfect-centering">Perfect Centering</a>
+<a href="#real-world-patterns">Real-World Patterns</a>
+<a href="#gotchas">Gotchas</a>
+<a href="#pro-tips">Pro Tips</a>
+</div></nav>
+<main class="main"><div class="page-hero"><h1>Flexbox</h1><p>The Flexible Box Layout module provides an efficient way to lay out, align, and distribute space among items in a container — even when their size is unknown or dynamic.</p><div class="tags"><span class="tag">Layout</span><span class="tag">Alignment</span><span class="tag">One-Dimensional</span><span class="tag">Essential</span></div></div>
+
+<!-- ============================================ -->
+<!-- DISPLAY FLEX -->
+<!-- ============================================ -->
+<section id="display-flex" class="section">
+<h2>Display Flex</h2>
+<p>Setting <code>display: flex</code> on a container makes it a <strong>flex container</strong>, and its direct children become <strong>flex items</strong>. This is the foundation of all flexbox layouts.</p>
+
+<div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="sel">.container</span> {
+  <span class="prop">display</span>: <span class="val">flex</span>;         <span class="cmt">/* block-level flex container */</span>
+}
+
+<span class="sel">.container-inline</span> {
+  <span class="prop">display</span>: <span class="val">inline-flex</span>;  <span class="cmt">/* inline-level flex container */</span>
+}
+</pre></div>
+
+<div class="live-example"><div class="live-example-label">Live Example — display: flex vs block</div>
+<p style="margin-bottom:0.5rem;font-size:0.85rem;opacity:0.7;">Without flex (normal block flow):</p>
+<div style="background:var(--code-bg);padding:0.75rem;border-radius:6px;margin-bottom:1rem;">
+  <div style="background:var(--accent);color:#fff;padding:0.5rem 1rem;margin-bottom:0.25rem;border-radius:4px;">Item 1</div>
+  <div style="background:var(--accent);color:#fff;padding:0.5rem 1rem;margin-bottom:0.25rem;border-radius:4px;">Item 2</div>
+  <div style="background:var(--accent);color:#fff;padding:0.5rem 1rem;border-radius:4px;">Item 3</div>
+</div>
+<p style="margin-bottom:0.5rem;font-size:0.85rem;opacity:0.7;">With display: flex:</p>
+<div style="display:flex;background:var(--code-bg);padding:0.75rem;border-radius:6px;gap:0.5rem;">
+  <div style="background:var(--accent);color:#fff;padding:0.5rem 1rem;border-radius:4px;">Item 1</div>
+  <div style="background:var(--accent);color:#fff;padding:0.5rem 1rem;border-radius:4px;">Item 2</div>
+  <div style="background:var(--accent);color:#fff;padding:0.5rem 1rem;border-radius:4px;">Item 3</div>
+</div>
+</div>
+
+<div class="callout info"><div class="callout-title">Key Concept: Axes</div><p>Flexbox works along two axes: the <strong>main axis</strong> (defined by <code>flex-direction</code>) and the <strong>cross axis</strong> (perpendicular to it). By default, the main axis runs left-to-right and the cross axis runs top-to-bottom.</p></div>
+</section>
+
+<!-- ============================================ -->
+<!-- FLEX DIRECTION -->
+<!-- ============================================ -->
+<section id="flex-direction" class="section">
+<h2>Flex Direction</h2>
+<p>The <code>flex-direction</code> property defines the <strong>main axis</strong> direction — the direction flex items are placed in the container.</p>
+
+<div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="sel">.container</span> {
+  <span class="prop">display</span>: <span class="val">flex</span>;
+  <span class="prop">flex-direction</span>: <span class="val">row</span>;             <span class="cmt">/* default — left to right */</span>
+  <span class="prop">flex-direction</span>: <span class="val">row-reverse</span>;     <span class="cmt">/* right to left */</span>
+  <span class="prop">flex-direction</span>: <span class="val">column</span>;          <span class="cmt">/* top to bottom */</span>
+  <span class="prop">flex-direction</span>: <span class="val">column-reverse</span>;  <span class="cmt">/* bottom to top */</span>
+}
+</pre></div>
+
+<div class="live-example"><div class="live-example-label">Live Example — All flex-direction Values</div>
+
+<p style="margin-bottom:0.5rem;font-weight:600;font-size:0.85rem;">flex-direction: row <span style="opacity:0.5">(default)</span></p>
+<div style="display:flex;flex-direction:row;background:var(--code-bg);padding:0.75rem;border-radius:6px;gap:0.5rem;margin-bottom:1rem;">
+  <div style="background:#6366f1;color:#fff;padding:0.4rem 1rem;border-radius:4px;font-size:0.85rem;">1</div>
+  <div style="background:#6366f1;color:#fff;padding:0.4rem 1rem;border-radius:4px;font-size:0.85rem;">2</div>
+  <div style="background:#6366f1;color:#fff;padding:0.4rem 1rem;border-radius:4px;font-size:0.85rem;">3</div>
+</div>
+
+<p style="margin-bottom:0.5rem;font-weight:600;font-size:0.85rem;">flex-direction: row-reverse</p>
+<div style="display:flex;flex-direction:row-reverse;background:var(--code-bg);padding:0.75rem;border-radius:6px;gap:0.5rem;margin-bottom:1rem;">
+  <div style="background:#8b5cf6;color:#fff;padding:0.4rem 1rem;border-radius:4px;font-size:0.85rem;">1</div>
+  <div style="background:#8b5cf6;color:#fff;padding:0.4rem 1rem;border-radius:4px;font-size:0.85rem;">2</div>
+  <div style="background:#8b5cf6;color:#fff;padding:0.4rem 1rem;border-radius:4px;font-size:0.85rem;">3</div>
+</div>
+
+<p style="margin-bottom:0.5rem;font-weight:600;font-size:0.85rem;">flex-direction: column</p>
+<div style="display:flex;flex-direction:column;background:var(--code-bg);padding:0.75rem;border-radius:6px;gap:0.5rem;margin-bottom:1rem;max-width:200px;">
+  <div style="background:#a78bfa;color:#fff;padding:0.4rem 1rem;border-radius:4px;font-size:0.85rem;">1</div>
+  <div style="background:#a78bfa;color:#fff;padding:0.4rem 1rem;border-radius:4px;font-size:0.85rem;">2</div>
+  <div style="background:#a78bfa;color:#fff;padding:0.4rem 1rem;border-radius:4px;font-size:0.85rem;">3</div>
+</div>
+
+<p style="margin-bottom:0.5rem;font-weight:600;font-size:0.85rem;">flex-direction: column-reverse</p>
+<div style="display:flex;flex-direction:column-reverse;background:var(--code-bg);padding:0.75rem;border-radius:6px;gap:0.5rem;max-width:200px;">
+  <div style="background:#c4b5fd;color:#1a1a2e;padding:0.4rem 1rem;border-radius:4px;font-size:0.85rem;">1</div>
+  <div style="background:#c4b5fd;color:#1a1a2e;padding:0.4rem 1rem;border-radius:4px;font-size:0.85rem;">2</div>
+  <div style="background:#c4b5fd;color:#1a1a2e;padding:0.4rem 1rem;border-radius:4px;font-size:0.85rem;">3</div>
+</div>
+</div>
+</section>
+
+<!-- ============================================ -->
+<!-- FLEX WRAP -->
+<!-- ============================================ -->
+<section id="flex-wrap" class="section">
+<h2>Flex Wrap</h2>
+<p>By default, flex items try to fit onto one line. <code>flex-wrap</code> controls whether items are forced onto a single line or can wrap onto multiple lines.</p>
+
+<div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="sel">.container</span> {
+  <span class="prop">display</span>: <span class="val">flex</span>;
+  <span class="prop">flex-wrap</span>: <span class="val">nowrap</span>;        <span class="cmt">/* default — single line, items may shrink */</span>
+  <span class="prop">flex-wrap</span>: <span class="val">wrap</span>;          <span class="cmt">/* items wrap to new lines */</span>
+  <span class="prop">flex-wrap</span>: <span class="val">wrap-reverse</span>;  <span class="cmt">/* items wrap in reverse order */</span>
+}
+
+<span class="cmt">/* Shorthand: flex-flow combines direction + wrap */</span>
+<span class="sel">.container</span> {
+  <span class="prop">flex-flow</span>: <span class="val">row wrap</span>;
+}
+</pre></div>
+
+<div class="live-example"><div class="live-example-label">Live Example — flex-wrap: wrap</div>
+<div style="display:flex;flex-wrap:wrap;background:var(--code-bg);padding:0.75rem;border-radius:6px;gap:0.5rem;">
+  <div style="background:var(--accent);color:#fff;padding:0.5rem 1.5rem;border-radius:4px;font-size:0.85rem;min-width:120px;text-align:center;">Item 1</div>
+  <div style="background:var(--accent);color:#fff;padding:0.5rem 1.5rem;border-radius:4px;font-size:0.85rem;min-width:120px;text-align:center;">Item 2</div>
+  <div style="background:var(--accent);color:#fff;padding:0.5rem 1.5rem;border-radius:4px;font-size:0.85rem;min-width:120px;text-align:center;">Item 3</div>
+  <div style="background:var(--accent);color:#fff;padding:0.5rem 1.5rem;border-radius:4px;font-size:0.85rem;min-width:120px;text-align:center;">Item 4</div>
+  <div style="background:var(--accent);color:#fff;padding:0.5rem 1.5rem;border-radius:4px;font-size:0.85rem;min-width:120px;text-align:center;">Item 5</div>
+  <div style="background:var(--accent);color:#fff;padding:0.5rem 1.5rem;border-radius:4px;font-size:0.85rem;min-width:120px;text-align:center;">Item 6</div>
+  <div style="background:var(--accent);color:#fff;padding:0.5rem 1.5rem;border-radius:4px;font-size:0.85rem;min-width:120px;text-align:center;">Item 7</div>
+</div>
+<p style="font-size:0.8rem;opacity:0.6;margin-top:0.5rem;">Resize the browser to see items wrap to new lines.</p>
+</div>
+</section>
+
+<!-- ============================================ -->
+<!-- JUSTIFY CONTENT -->
+<!-- ============================================ -->
+<section id="justify-content" class="section">
+<h2>Justify Content</h2>
+<p>Distributes space along the <strong>main axis</strong>. This is the most commonly used alignment property in flexbox.</p>
+
+<div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="sel">.container</span> {
+  <span class="prop">display</span>: <span class="val">flex</span>;
+  <span class="prop">justify-content</span>: <span class="val">flex-start</span>;      <span class="cmt">/* default — pack items to start */</span>
+  <span class="prop">justify-content</span>: <span class="val">flex-end</span>;        <span class="cmt">/* pack items to end */</span>
+  <span class="prop">justify-content</span>: <span class="val">center</span>;          <span class="cmt">/* center items */</span>
+  <span class="prop">justify-content</span>: <span class="val">space-between</span>;   <span class="cmt">/* equal space between items */</span>
+  <span class="prop">justify-content</span>: <span class="val">space-around</span>;    <span class="cmt">/* equal space around items */</span>
+  <span class="prop">justify-content</span>: <span class="val">space-evenly</span>;    <span class="cmt">/* truly equal spacing */</span>
+}
+</pre></div>
+
+<div class="live-example"><div class="live-example-label">Live Example — All justify-content Values</div>
+
+<p style="margin-bottom:0.4rem;font-weight:600;font-size:0.8rem;color:var(--accent);">justify-content: flex-start</p>
+<div style="display:flex;justify-content:flex-start;background:var(--code-bg);padding:0.6rem;border-radius:6px;margin-bottom:0.75rem;">
+  <div style="background:#6366f1;color:#fff;padding:0.35rem 0.8rem;border-radius:4px;font-size:0.8rem;margin:0 2px;">A</div>
+  <div style="background:#6366f1;color:#fff;padding:0.35rem 0.8rem;border-radius:4px;font-size:0.8rem;margin:0 2px;">B</div>
+  <div style="background:#6366f1;color:#fff;padding:0.35rem 0.8rem;border-radius:4px;font-size:0.8rem;margin:0 2px;">C</div>
+</div>
+
+<p style="margin-bottom:0.4rem;font-weight:600;font-size:0.8rem;color:var(--accent);">justify-content: flex-end</p>
+<div style="display:flex;justify-content:flex-end;background:var(--code-bg);padding:0.6rem;border-radius:6px;margin-bottom:0.75rem;">
+  <div style="background:#6366f1;color:#fff;padding:0.35rem 0.8rem;border-radius:4px;font-size:0.8rem;margin:0 2px;">A</div>
+  <div style="background:#6366f1;color:#fff;padding:0.35rem 0.8rem;border-radius:4px;font-size:0.8rem;margin:0 2px;">B</div>
+  <div style="background:#6366f1;color:#fff;padding:0.35rem 0.8rem;border-radius:4px;font-size:0.8rem;margin:0 2px;">C</div>
+</div>
+
+<p style="margin-bottom:0.4rem;font-weight:600;font-size:0.8rem;color:var(--accent);">justify-content: center</p>
+<div style="display:flex;justify-content:center;background:var(--code-bg);padding:0.6rem;border-radius:6px;margin-bottom:0.75rem;">
+  <div style="background:#6366f1;color:#fff;padding:0.35rem 0.8rem;border-radius:4px;font-size:0.8rem;margin:0 2px;">A</div>
+  <div style="background:#6366f1;color:#fff;padding:0.35rem 0.8rem;border-radius:4px;font-size:0.8rem;margin:0 2px;">B</div>
+  <div style="background:#6366f1;color:#fff;padding:0.35rem 0.8rem;border-radius:4px;font-size:0.8rem;margin:0 2px;">C</div>
+</div>
+
+<p style="margin-bottom:0.4rem;font-weight:600;font-size:0.8rem;color:var(--accent);">justify-content: space-between</p>
+<div style="display:flex;justify-content:space-between;background:var(--code-bg);padding:0.6rem;border-radius:6px;margin-bottom:0.75rem;">
+  <div style="background:#8b5cf6;color:#fff;padding:0.35rem 0.8rem;border-radius:4px;font-size:0.8rem;">A</div>
+  <div style="background:#8b5cf6;color:#fff;padding:0.35rem 0.8rem;border-radius:4px;font-size:0.8rem;">B</div>
+  <div style="background:#8b5cf6;color:#fff;padding:0.35rem 0.8rem;border-radius:4px;font-size:0.8rem;">C</div>
+</div>
+
+<p style="margin-bottom:0.4rem;font-weight:600;font-size:0.8rem;color:var(--accent);">justify-content: space-around</p>
+<div style="display:flex;justify-content:space-around;background:var(--code-bg);padding:0.6rem;border-radius:6px;margin-bottom:0.75rem;">
+  <div style="background:#a78bfa;color:#fff;padding:0.35rem 0.8rem;border-radius:4px;font-size:0.8rem;">A</div>
+  <div style="background:#a78bfa;color:#fff;padding:0.35rem 0.8rem;border-radius:4px;font-size:0.8rem;">B</div>
+  <div style="background:#a78bfa;color:#fff;padding:0.35rem 0.8rem;border-radius:4px;font-size:0.8rem;">C</div>
+</div>
+
+<p style="margin-bottom:0.4rem;font-weight:600;font-size:0.8rem;color:var(--accent);">justify-content: space-evenly</p>
+<div style="display:flex;justify-content:space-evenly;background:var(--code-bg);padding:0.6rem;border-radius:6px;">
+  <div style="background:#c4b5fd;color:#1a1a2e;padding:0.35rem 0.8rem;border-radius:4px;font-size:0.8rem;">A</div>
+  <div style="background:#c4b5fd;color:#1a1a2e;padding:0.35rem 0.8rem;border-radius:4px;font-size:0.8rem;">B</div>
+  <div style="background:#c4b5fd;color:#1a1a2e;padding:0.35rem 0.8rem;border-radius:4px;font-size:0.8rem;">C</div>
+</div>
+</div>
+
+<div class="callout tip"><div class="callout-title">space-between vs space-around vs space-evenly</div><p><strong>space-between</strong>: First item at start, last at end, equal space between. <strong>space-around</strong>: Equal space around each item (edges get half-size space). <strong>space-evenly</strong>: Truly equal space everywhere, including edges.</p></div>
+</section>
+
+<!-- ============================================ -->
+<!-- ALIGN ITEMS -->
+<!-- ============================================ -->
+<section id="align-items" class="section">
+<h2>Align Items</h2>
+<p>Aligns items along the <strong>cross axis</strong> (perpendicular to flex-direction). Works on a single line of items.</p>
+
+<div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="sel">.container</span> {
+  <span class="prop">display</span>: <span class="val">flex</span>;
+  <span class="prop">align-items</span>: <span class="val">stretch</span>;     <span class="cmt">/* default — fill the container height */</span>
+  <span class="prop">align-items</span>: <span class="val">flex-start</span>;  <span class="cmt">/* align to top */</span>
+  <span class="prop">align-items</span>: <span class="val">flex-end</span>;    <span class="cmt">/* align to bottom */</span>
+  <span class="prop">align-items</span>: <span class="val">center</span>;      <span class="cmt">/* center vertically */</span>
+  <span class="prop">align-items</span>: <span class="val">baseline</span>;    <span class="cmt">/* align text baselines */</span>
+}
+</pre></div>
+
+<div class="live-example"><div class="live-example-label">Live Example — All align-items Values</div>
+
+<p style="margin-bottom:0.4rem;font-weight:600;font-size:0.8rem;color:var(--accent);">align-items: stretch (default)</p>
+<div style="display:flex;align-items:stretch;background:var(--code-bg);padding:0.6rem;border-radius:6px;margin-bottom:0.75rem;height:80px;gap:0.5rem;">
+  <div style="background:#6366f1;color:#fff;padding:0.35rem 0.8rem;border-radius:4px;font-size:0.8rem;">Short</div>
+  <div style="background:#6366f1;color:#fff;padding:0.35rem 0.8rem;border-radius:4px;font-size:0.8rem;">Medium<br>text</div>
+  <div style="background:#6366f1;color:#fff;padding:0.35rem 0.8rem;border-radius:4px;font-size:0.8rem;">Tall</div>
+</div>
+
+<p style="margin-bottom:0.4rem;font-weight:600;font-size:0.8rem;color:var(--accent);">align-items: flex-start</p>
+<div style="display:flex;align-items:flex-start;background:var(--code-bg);padding:0.6rem;border-radius:6px;margin-bottom:0.75rem;height:80px;gap:0.5rem;">
+  <div style="background:#6366f1;color:#fff;padding:0.35rem 0.8rem;border-radius:4px;font-size:0.8rem;">Short</div>
+  <div style="background:#6366f1;color:#fff;padding:0.35rem 0.8rem;border-radius:4px;font-size:0.8rem;">Medium<br>text</div>
+  <div style="background:#6366f1;color:#fff;padding:0.35rem 0.8rem;border-radius:4px;font-size:0.8rem;">Tall</div>
+</div>
+
+<p style="margin-bottom:0.4rem;font-weight:600;font-size:0.8rem;color:var(--accent);">align-items: flex-end</p>
+<div style="display:flex;align-items:flex-end;background:var(--code-bg);padding:0.6rem;border-radius:6px;margin-bottom:0.75rem;height:80px;gap:0.5rem;">
+  <div style="background:#8b5cf6;color:#fff;padding:0.35rem 0.8rem;border-radius:4px;font-size:0.8rem;">Short</div>
+  <div style="background:#8b5cf6;color:#fff;padding:0.35rem 0.8rem;border-radius:4px;font-size:0.8rem;">Medium<br>text</div>
+  <div style="background:#8b5cf6;color:#fff;padding:0.35rem 0.8rem;border-radius:4px;font-size:0.8rem;">Tall</div>
+</div>
+
+<p style="margin-bottom:0.4rem;font-weight:600;font-size:0.8rem;color:var(--accent);">align-items: center</p>
+<div style="display:flex;align-items:center;background:var(--code-bg);padding:0.6rem;border-radius:6px;margin-bottom:0.75rem;height:80px;gap:0.5rem;">
+  <div style="background:#a78bfa;color:#fff;padding:0.35rem 0.8rem;border-radius:4px;font-size:0.8rem;">Short</div>
+  <div style="background:#a78bfa;color:#fff;padding:0.35rem 0.8rem;border-radius:4px;font-size:0.8rem;">Medium<br>text</div>
+  <div style="background:#a78bfa;color:#fff;padding:0.35rem 0.8rem;border-radius:4px;font-size:0.8rem;">Tall</div>
+</div>
+
+<p style="margin-bottom:0.4rem;font-weight:600;font-size:0.8rem;color:var(--accent);">align-items: baseline</p>
+<div style="display:flex;align-items:baseline;background:var(--code-bg);padding:0.6rem;border-radius:6px;height:80px;gap:0.5rem;">
+  <div style="background:#c4b5fd;color:#1a1a2e;padding:0.35rem 0.8rem;border-radius:4px;font-size:0.7rem;">Small text</div>
+  <div style="background:#c4b5fd;color:#1a1a2e;padding:0.35rem 0.8rem;border-radius:4px;font-size:1.2rem;">Big text</div>
+  <div style="background:#c4b5fd;color:#1a1a2e;padding:0.35rem 0.8rem;border-radius:4px;font-size:0.9rem;">Normal</div>
+</div>
+</div>
+</section>
+
+<!-- ============================================ -->
+<!-- ALIGN CONTENT -->
+<!-- ============================================ -->
+<section id="align-content" class="section">
+<h2>Align Content</h2>
+<p>Aligns <strong>multiple lines</strong> of flex items along the cross axis. Only works when <code>flex-wrap: wrap</code> is set and there are multiple lines.</p>
+
+<div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="sel">.container</span> {
+  <span class="prop">display</span>: <span class="val">flex</span>;
+  <span class="prop">flex-wrap</span>: <span class="val">wrap</span>;
+  <span class="prop">align-content</span>: <span class="val">flex-start</span>;     <span class="cmt">/* lines packed to top */</span>
+  <span class="prop">align-content</span>: <span class="val">flex-end</span>;       <span class="cmt">/* lines packed to bottom */</span>
+  <span class="prop">align-content</span>: <span class="val">center</span>;         <span class="cmt">/* lines centered */</span>
+  <span class="prop">align-content</span>: <span class="val">space-between</span>;  <span class="cmt">/* equal space between lines */</span>
+  <span class="prop">align-content</span>: <span class="val">space-around</span>;   <span class="cmt">/* equal space around lines */</span>
+  <span class="prop">align-content</span>: <span class="val">stretch</span>;        <span class="cmt">/* default — lines stretch */</span>
+}
+</pre></div>
+
+<div class="live-example"><div class="live-example-label">Live Example — align-content: center</div>
+<div style="display:flex;flex-wrap:wrap;align-content:center;background:var(--code-bg);padding:0.6rem;border-radius:6px;height:160px;gap:0.5rem;">
+  <div style="background:var(--accent);color:#fff;padding:0.35rem 2rem;border-radius:4px;font-size:0.8rem;">1</div>
+  <div style="background:var(--accent);color:#fff;padding:0.35rem 2rem;border-radius:4px;font-size:0.8rem;">2</div>
+  <div style="background:var(--accent);color:#fff;padding:0.35rem 2rem;border-radius:4px;font-size:0.8rem;">3</div>
+  <div style="background:var(--accent);color:#fff;padding:0.35rem 2rem;border-radius:4px;font-size:0.8rem;">4</div>
+  <div style="background:var(--accent);color:#fff;padding:0.35rem 2rem;border-radius:4px;font-size:0.8rem;">5</div>
+  <div style="background:var(--accent);color:#fff;padding:0.35rem 2rem;border-radius:4px;font-size:0.8rem;">6</div>
+</div>
+</div>
+
+<div class="callout info"><div class="callout-title">align-items vs align-content</div><p><strong>align-items</strong> aligns items within a single flex line. <strong>align-content</strong> aligns the lines themselves when there is extra space on the cross axis. <code>align-content</code> has no effect on single-line flex containers.</p></div>
+</section>
+
+<!-- ============================================ -->
+<!-- GAP -->
+<!-- ============================================ -->
+<section id="gap" class="section">
+<h2>Gap</h2>
+<p>The <code>gap</code> property sets spacing between flex items without adding margins. Clean, simple, and predictable.</p>
+
+<div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="sel">.container</span> {
+  <span class="prop">display</span>: <span class="val">flex</span>;
+  <span class="prop">gap</span>: <span class="num">1rem</span>;                 <span class="cmt">/* both row and column gap */</span>
+  <span class="prop">row-gap</span>: <span class="num">1rem</span>;             <span class="cmt">/* gap between rows */</span>
+  <span class="prop">column-gap</span>: <span class="num">0.5rem</span>;        <span class="cmt">/* gap between columns */</span>
+  <span class="prop">gap</span>: <span class="num">1rem</span> <span class="num">0.5rem</span>;           <span class="cmt">/* row-gap column-gap */</span>
+}
+</pre></div>
+
+<div class="live-example"><div class="live-example-label">Live Example — gap: 1rem</div>
+<div style="display:flex;flex-wrap:wrap;gap:1rem;background:var(--code-bg);padding:0.75rem;border-radius:6px;">
+  <div style="background:var(--accent);color:#fff;padding:0.5rem 1.5rem;border-radius:4px;font-size:0.85rem;">Item 1</div>
+  <div style="background:var(--accent);color:#fff;padding:0.5rem 1.5rem;border-radius:4px;font-size:0.85rem;">Item 2</div>
+  <div style="background:var(--accent);color:#fff;padding:0.5rem 1.5rem;border-radius:4px;font-size:0.85rem;">Item 3</div>
+  <div style="background:var(--accent);color:#fff;padding:0.5rem 1.5rem;border-radius:4px;font-size:0.85rem;">Item 4</div>
+</div>
+</div>
+
+<div class="callout tip"><div class="callout-title">Gap vs Margins</div><p>Unlike margins, <code>gap</code> only creates space <strong>between</strong> items, never on the outer edges. This eliminates the need for negative margin hacks on the container.</p></div>
+</section>
+
+<!-- ============================================ -->
+<!-- FLEX GROW -->
+<!-- ============================================ -->
+<section id="flex-grow" class="section">
+<h2>Flex Grow</h2>
+<p><code>flex-grow</code> defines how much a flex item should grow relative to other items when there is extra space on the main axis. Default is <code>0</code> (do not grow).</p>
+
+<div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="sel">.item</span> {
+  <span class="prop">flex-grow</span>: <span class="num">0</span>;   <span class="cmt">/* default — don't grow */</span>
+  <span class="prop">flex-grow</span>: <span class="num">1</span>;   <span class="cmt">/* take up available space */</span>
+  <span class="prop">flex-grow</span>: <span class="num">2</span>;   <span class="cmt">/* grow twice as much as flex-grow:1 */</span>
+}
+</pre></div>
+
+<div class="live-example"><div class="live-example-label">Live Example — flex-grow Ratio Demo</div>
+<p style="font-size:0.8rem;opacity:0.7;margin-bottom:0.5rem;">All items start with equal base size, but grow at different rates:</p>
+
+<p style="margin-bottom:0.3rem;font-weight:600;font-size:0.8rem;">All flex-grow: 1 (equal distribution)</p>
+<div style="display:flex;background:var(--code-bg);padding:0.6rem;border-radius:6px;gap:0.5rem;margin-bottom:0.75rem;">
+  <div style="flex-grow:1;background:#6366f1;color:#fff;padding:0.4rem 0.5rem;border-radius:4px;font-size:0.8rem;text-align:center;">grow: 1</div>
+  <div style="flex-grow:1;background:#6366f1;color:#fff;padding:0.4rem 0.5rem;border-radius:4px;font-size:0.8rem;text-align:center;">grow: 1</div>
+  <div style="flex-grow:1;background:#6366f1;color:#fff;padding:0.4rem 0.5rem;border-radius:4px;font-size:0.8rem;text-align:center;">grow: 1</div>
+</div>
+
+<p style="margin-bottom:0.3rem;font-weight:600;font-size:0.8rem;">Ratio 1 : 2 : 1</p>
+<div style="display:flex;background:var(--code-bg);padding:0.6rem;border-radius:6px;gap:0.5rem;margin-bottom:0.75rem;">
+  <div style="flex-grow:1;background:#8b5cf6;color:#fff;padding:0.4rem 0.5rem;border-radius:4px;font-size:0.8rem;text-align:center;">grow: 1</div>
+  <div style="flex-grow:2;background:#a78bfa;color:#fff;padding:0.4rem 0.5rem;border-radius:4px;font-size:0.8rem;text-align:center;">grow: 2</div>
+  <div style="flex-grow:1;background:#8b5cf6;color:#fff;padding:0.4rem 0.5rem;border-radius:4px;font-size:0.8rem;text-align:center;">grow: 1</div>
+</div>
+
+<p style="margin-bottom:0.3rem;font-weight:600;font-size:0.8rem;">Ratio 1 : 3 : 1</p>
+<div style="display:flex;background:var(--code-bg);padding:0.6rem;border-radius:6px;gap:0.5rem;">
+  <div style="flex-grow:1;background:#c4b5fd;color:#1a1a2e;padding:0.4rem 0.5rem;border-radius:4px;font-size:0.8rem;text-align:center;">grow: 1</div>
+  <div style="flex-grow:3;background:#ddd6fe;color:#1a1a2e;padding:0.4rem 0.5rem;border-radius:4px;font-size:0.8rem;text-align:center;">grow: 3</div>
+  <div style="flex-grow:1;background:#c4b5fd;color:#1a1a2e;padding:0.4rem 0.5rem;border-radius:4px;font-size:0.8rem;text-align:center;">grow: 1</div>
+</div>
+</div>
+</section>
+
+<!-- ============================================ -->
+<!-- FLEX SHRINK -->
+<!-- ============================================ -->
+<section id="flex-shrink" class="section">
+<h2>Flex Shrink</h2>
+<p><code>flex-shrink</code> defines how much a flex item should shrink relative to other items when there is not enough space. Default is <code>1</code>.</p>
+
+<div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="sel">.item</span> {
+  <span class="prop">flex-shrink</span>: <span class="num">1</span>;   <span class="cmt">/* default — will shrink */</span>
+  <span class="prop">flex-shrink</span>: <span class="num">0</span>;   <span class="cmt">/* won't shrink — maintains size */</span>
+  <span class="prop">flex-shrink</span>: <span class="num">2</span>;   <span class="cmt">/* shrinks twice as fast */</span>
+}
+</pre></div>
+
+<div class="live-example"><div class="live-example-label">Live Example — flex-shrink: 0 prevents shrinking</div>
+<div style="display:flex;background:var(--code-bg);padding:0.6rem;border-radius:6px;gap:0.5rem;max-width:400px;">
+  <div style="flex-shrink:0;width:150px;background:#6366f1;color:#fff;padding:0.4rem 0.5rem;border-radius:4px;font-size:0.75rem;text-align:center;">shrink:0 (150px fixed)</div>
+  <div style="flex-shrink:1;background:#a78bfa;color:#fff;padding:0.4rem 0.5rem;border-radius:4px;font-size:0.75rem;text-align:center;">shrink:1 (will shrink)</div>
+  <div style="flex-shrink:1;background:#a78bfa;color:#fff;padding:0.4rem 0.5rem;border-radius:4px;font-size:0.75rem;text-align:center;">shrink:1 (will shrink)</div>
+</div>
+</div>
+</section>
+
+<!-- ============================================ -->
+<!-- FLEX BASIS -->
+<!-- ============================================ -->
+<section id="flex-basis" class="section">
+<h2>Flex Basis</h2>
+<p><code>flex-basis</code> sets the initial main size of a flex item before growing or shrinking. Think of it as the "ideal" size.</p>
+
+<div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="sel">.item</span> {
+  <span class="prop">flex-basis</span>: <span class="val">auto</span>;     <span class="cmt">/* default — use width/height or content */</span>
+  <span class="prop">flex-basis</span>: <span class="num">200px</span>;    <span class="cmt">/* fixed starting size */</span>
+  <span class="prop">flex-basis</span>: <span class="num">30%</span>;      <span class="cmt">/* percentage of container */</span>
+  <span class="prop">flex-basis</span>: <span class="num">0</span>;        <span class="cmt">/* ignore content size, distribute all space */</span>
+}
+</pre></div>
+
+<div class="callout info"><div class="callout-title">flex-basis vs width</div><p>When both <code>flex-basis</code> (not <code>auto</code>) and <code>width</code> are set, <code>flex-basis</code> wins. Use <code>flex-basis</code> for flex layouts — it's the semantically correct property and works regardless of <code>flex-direction</code>.</p></div>
+</section>
+
+<!-- ============================================ -->
+<!-- FLEX SHORTHAND -->
+<!-- ============================================ -->
+<section id="flex-shorthand" class="section">
+<h2>Flex Shorthand</h2>
+<p>The <code>flex</code> shorthand combines <code>flex-grow</code>, <code>flex-shrink</code>, and <code>flex-basis</code>. Always prefer the shorthand — it sets better defaults.</p>
+
+<div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="sel">.item</span> {
+  <span class="cmt">/* flex: grow shrink basis */</span>
+  <span class="prop">flex</span>: <span class="num">0</span> <span class="num">1</span> <span class="val">auto</span>;          <span class="cmt">/* default (when not using shorthand) */</span>
+
+  <span class="prop">flex</span>: <span class="num">1</span>;                   <span class="cmt">/* flex: 1 1 0   — grow equally, ignore content size */</span>
+  <span class="prop">flex</span>: <span class="val">auto</span>;                <span class="cmt">/* flex: 1 1 auto — grow equally, respect content */</span>
+  <span class="prop">flex</span>: <span class="val">none</span>;                <span class="cmt">/* flex: 0 0 auto — rigid, no grow, no shrink */</span>
+  <span class="prop">flex</span>: <span class="num">0</span> <span class="num">0</span> <span class="num">200px</span>;           <span class="cmt">/* fixed 200px, no flexibility */</span>
+}
+</pre></div>
+
+<div class="live-example"><div class="live-example-label">Live Example — Common flex Shorthand Values</div>
+
+<p style="margin-bottom:0.3rem;font-weight:600;font-size:0.8rem;color:var(--accent);">flex: 1 (equal sizing, ignores content)</p>
+<div style="display:flex;background:var(--code-bg);padding:0.6rem;border-radius:6px;gap:0.5rem;margin-bottom:0.75rem;">
+  <div style="flex:1;background:#6366f1;color:#fff;padding:0.4rem;border-radius:4px;font-size:0.75rem;text-align:center;">Short</div>
+  <div style="flex:1;background:#6366f1;color:#fff;padding:0.4rem;border-radius:4px;font-size:0.75rem;text-align:center;">Much longer content here</div>
+  <div style="flex:1;background:#6366f1;color:#fff;padding:0.4rem;border-radius:4px;font-size:0.75rem;text-align:center;">Mid</div>
+</div>
+
+<p style="margin-bottom:0.3rem;font-weight:600;font-size:0.8rem;color:var(--accent);">flex: auto (equal sizing, respects content)</p>
+<div style="display:flex;background:var(--code-bg);padding:0.6rem;border-radius:6px;gap:0.5rem;margin-bottom:0.75rem;">
+  <div style="flex:auto;background:#8b5cf6;color:#fff;padding:0.4rem;border-radius:4px;font-size:0.75rem;text-align:center;">Short</div>
+  <div style="flex:auto;background:#8b5cf6;color:#fff;padding:0.4rem;border-radius:4px;font-size:0.75rem;text-align:center;">Much longer content here</div>
+  <div style="flex:auto;background:#8b5cf6;color:#fff;padding:0.4rem;border-radius:4px;font-size:0.75rem;text-align:center;">Mid</div>
+</div>
+
+<p style="margin-bottom:0.3rem;font-weight:600;font-size:0.8rem;color:var(--accent);">flex: none (rigid, content-sized)</p>
+<div style="display:flex;background:var(--code-bg);padding:0.6rem;border-radius:6px;gap:0.5rem;margin-bottom:0.75rem;">
+  <div style="flex:none;background:#a78bfa;color:#fff;padding:0.4rem;border-radius:4px;font-size:0.75rem;text-align:center;">Short</div>
+  <div style="flex:none;background:#a78bfa;color:#fff;padding:0.4rem;border-radius:4px;font-size:0.75rem;text-align:center;">Much longer content here</div>
+  <div style="flex:none;background:#a78bfa;color:#fff;padding:0.4rem;border-radius:4px;font-size:0.75rem;text-align:center;">Mid</div>
+</div>
+
+<p style="margin-bottom:0.3rem;font-weight:600;font-size:0.8rem;color:var(--accent);">flex: 0 0 200px (fixed 200px)</p>
+<div style="display:flex;background:var(--code-bg);padding:0.6rem;border-radius:6px;gap:0.5rem;">
+  <div style="flex:0 0 200px;background:#c4b5fd;color:#1a1a2e;padding:0.4rem;border-radius:4px;font-size:0.75rem;text-align:center;">200px fixed</div>
+  <div style="flex:0 0 200px;background:#c4b5fd;color:#1a1a2e;padding:0.4rem;border-radius:4px;font-size:0.75rem;text-align:center;">200px fixed</div>
+</div>
+</div>
+
+<div class="callout gotcha"><div class="callout-title">flex:1 vs flex:auto</div><p><code>flex:1</code> sets <code>flex-basis:0</code>, so items size equally regardless of content. <code>flex:auto</code> sets <code>flex-basis:auto</code>, so items with more content get more space. For equal columns, use <code>flex:1</code>.</p></div>
+</section>
+
+<!-- ============================================ -->
+<!-- ALIGN SELF -->
+<!-- ============================================ -->
+<section id="align-self" class="section">
+<h2>Align Self</h2>
+<p>Overrides <code>align-items</code> for a single flex item. Allows individual items to position themselves differently on the cross axis.</p>
+
+<div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="sel">.item</span> {
+  <span class="prop">align-self</span>: <span class="val">auto</span>;        <span class="cmt">/* default — follow align-items */</span>
+  <span class="prop">align-self</span>: <span class="val">flex-start</span>;  <span class="cmt">/* top */</span>
+  <span class="prop">align-self</span>: <span class="val">flex-end</span>;    <span class="cmt">/* bottom */</span>
+  <span class="prop">align-self</span>: <span class="val">center</span>;      <span class="cmt">/* center */</span>
+  <span class="prop">align-self</span>: <span class="val">stretch</span>;     <span class="cmt">/* fill */</span>
+  <span class="prop">align-self</span>: <span class="val">baseline</span>;    <span class="cmt">/* text baseline */</span>
+}
+</pre></div>
+
+<div class="live-example"><div class="live-example-label">Live Example — align-self Overrides</div>
+<div style="display:flex;align-items:flex-start;background:var(--code-bg);padding:0.6rem;border-radius:6px;height:120px;gap:0.5rem;">
+  <div style="background:#6366f1;color:#fff;padding:0.4rem 0.8rem;border-radius:4px;font-size:0.75rem;text-align:center;">default<br>(flex-start)</div>
+  <div style="align-self:center;background:#8b5cf6;color:#fff;padding:0.4rem 0.8rem;border-radius:4px;font-size:0.75rem;text-align:center;">align-self:<br>center</div>
+  <div style="align-self:flex-end;background:#a78bfa;color:#fff;padding:0.4rem 0.8rem;border-radius:4px;font-size:0.75rem;text-align:center;">align-self:<br>flex-end</div>
+  <div style="align-self:stretch;background:#c4b5fd;color:#1a1a2e;padding:0.4rem 0.8rem;border-radius:4px;font-size:0.75rem;text-align:center;">align-self:<br>stretch</div>
+</div>
+</div>
+</section>
+
+<!-- ============================================ -->
+<!-- ORDER -->
+<!-- ============================================ -->
+<section id="order" class="section">
+<h2>Order</h2>
+<p>The <code>order</code> property controls the visual order of flex items without changing the HTML source order. Default is <code>0</code>.</p>
+
+<div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="sel">.item-a</span> { <span class="prop">order</span>: <span class="num">3</span>; }  <span class="cmt">/* appears last */</span>
+<span class="sel">.item-b</span> { <span class="prop">order</span>: <span class="num">1</span>; }  <span class="cmt">/* appears first */</span>
+<span class="sel">.item-c</span> { <span class="prop">order</span>: <span class="num">2</span>; }  <span class="cmt">/* appears second */</span>
+</pre></div>
+
+<div class="live-example"><div class="live-example-label">Live Example — Visual Reordering with order</div>
+<p style="font-size:0.8rem;opacity:0.7;margin-bottom:0.5rem;">HTML order: A, B, C, D. Visual order changed via CSS order property:</p>
+<div style="display:flex;background:var(--code-bg);padding:0.6rem;border-radius:6px;gap:0.5rem;">
+  <div style="order:3;background:#6366f1;color:#fff;padding:0.4rem 1rem;border-radius:4px;font-size:0.8rem;">A (order:3)</div>
+  <div style="order:1;background:#8b5cf6;color:#fff;padding:0.4rem 1rem;border-radius:4px;font-size:0.8rem;">B (order:1)</div>
+  <div style="order:4;background:#a78bfa;color:#fff;padding:0.4rem 1rem;border-radius:4px;font-size:0.8rem;">C (order:4)</div>
+  <div style="order:2;background:#c4b5fd;color:#1a1a2e;padding:0.4rem 1rem;border-radius:4px;font-size:0.8rem;">D (order:2)</div>
+</div>
+<p style="font-size:0.75rem;opacity:0.6;margin-top:0.4rem;">Displayed: B, D, A, C</p>
+</div>
+
+<div class="callout gotcha"><div class="callout-title">Accessibility Warning</div><p><code>order</code> only changes visual rendering, not tab order or screen reader order. Users navigating with a keyboard or assistive technology will encounter items in their DOM order. Use with caution.</p></div>
+</section>
+
+<!-- ============================================ -->
+<!-- PERFECT CENTERING -->
+<!-- ============================================ -->
+<section id="perfect-centering" class="section">
+<h2>Perfect Centering</h2>
+<p>The classic CSS centering problem, solved elegantly with flexbox in just 3 lines.</p>
+
+<div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="cmt">/* The holy grail of centering */</span>
+<span class="sel">.center-perfect</span> {
+  <span class="prop">display</span>: <span class="val">flex</span>;
+  <span class="prop">justify-content</span>: <span class="val">center</span>;  <span class="cmt">/* horizontal center */</span>
+  <span class="prop">align-items</span>: <span class="val">center</span>;      <span class="cmt">/* vertical center */</span>
+}
+
+<span class="cmt">/* Alternative: place-content shorthand */</span>
+<span class="sel">.center-alt</span> {
+  <span class="prop">display</span>: <span class="val">flex</span>;
+  <span class="prop">place-content</span>: <span class="val">center</span>;   <span class="cmt">/* centers both axes */</span>
+}
+
+<span class="cmt">/* Another way: margin auto on the child */</span>
+<span class="sel">.center-container</span> {
+  <span class="prop">display</span>: <span class="val">flex</span>;
+}
+<span class="sel">.center-container</span> <span class="sel">&gt; .child</span> {
+  <span class="prop">margin</span>: <span class="val">auto</span>;             <span class="cmt">/* centers in both directions */</span>
+}
+</pre></div>
+
+<div class="live-example"><div class="live-example-label">Live Example — Perfect Centering</div>
+<div style="display:flex;justify-content:center;align-items:center;background:var(--code-bg);padding:1rem;border-radius:6px;height:150px;">
+  <div style="background:var(--accent);color:#fff;padding:1rem 2rem;border-radius:8px;font-weight:600;box-shadow:0 4px 15px rgba(99,102,241,0.4);">Perfectly Centered</div>
+</div>
+</div>
+</section>
+
+<!-- ============================================ -->
+<!-- REAL-WORLD PATTERNS -->
+<!-- ============================================ -->
+<section id="real-world-patterns" class="section">
+<h2>Real-World Patterns</h2>
+<p>Common UI layouts built with flexbox. Copy these patterns for your projects.</p>
+
+<h3>Navbar</h3>
+<div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="sel">.navbar</span> {
+  <span class="prop">display</span>: <span class="val">flex</span>;
+  <span class="prop">justify-content</span>: <span class="val">space-between</span>;
+  <span class="prop">align-items</span>: <span class="val">center</span>;
+  <span class="prop">padding</span>: <span class="num">0.75rem</span> <span class="num">1.5rem</span>;
+}
+<span class="sel">.navbar-links</span> {
+  <span class="prop">display</span>: <span class="val">flex</span>;
+  <span class="prop">gap</span>: <span class="num">1.5rem</span>;
+  <span class="prop">align-items</span>: <span class="val">center</span>;
+}
+</pre></div>
+
+<div class="live-example"><div class="live-example-label">Live Example — Navbar Layout</div>
+<div style="display:flex;justify-content:space-between;align-items:center;background:var(--code-bg);padding:0.75rem 1.5rem;border-radius:8px;">
+  <div style="font-weight:700;font-size:1.1rem;color:var(--accent);">Logo</div>
+  <div style="display:flex;gap:1.5rem;align-items:center;">
+    <span style="font-size:0.9rem;opacity:0.8;cursor:pointer;">Home</span>
+    <span style="font-size:0.9rem;opacity:0.8;cursor:pointer;">About</span>
+    <span style="font-size:0.9rem;opacity:0.8;cursor:pointer;">Contact</span>
+    <span style="background:var(--accent);color:#fff;padding:0.35rem 1rem;border-radius:6px;font-size:0.85rem;cursor:pointer;">Sign Up</span>
+  </div>
+</div>
+</div>
+
+<h3>Card Row</h3>
+<div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="sel">.card-row</span> {
+  <span class="prop">display</span>: <span class="val">flex</span>;
+  <span class="prop">gap</span>: <span class="num">1.5rem</span>;
+  <span class="prop">flex-wrap</span>: <span class="val">wrap</span>;
+}
+<span class="sel">.card</span> {
+  <span class="prop">flex</span>: <span class="num">1</span> <span class="num">1</span> <span class="num">300px</span>;    <span class="cmt">/* grow, shrink, min 300px */</span>
+}
+</pre></div>
+
+<div class="live-example"><div class="live-example-label">Live Example — Responsive Card Row</div>
+<div style="display:flex;gap:1rem;flex-wrap:wrap;">
+  <div style="flex:1 1 200px;background:var(--code-bg);padding:1.25rem;border-radius:8px;border:1px solid var(--border);">
+    <div style="font-weight:600;margin-bottom:0.5rem;">Card One</div>
+    <p style="font-size:0.8rem;opacity:0.7;margin:0;">This card will grow and shrink. Try resizing the browser window.</p>
+  </div>
+  <div style="flex:1 1 200px;background:var(--code-bg);padding:1.25rem;border-radius:8px;border:1px solid var(--border);">
+    <div style="font-weight:600;margin-bottom:0.5rem;">Card Two</div>
+    <p style="font-size:0.8rem;opacity:0.7;margin:0;">Equal sizing with flex:1, wrapping when items reach their minimum width.</p>
+  </div>
+  <div style="flex:1 1 200px;background:var(--code-bg);padding:1.25rem;border-radius:8px;border:1px solid var(--border);">
+    <div style="font-weight:600;margin-bottom:0.5rem;">Card Three</div>
+    <p style="font-size:0.8rem;opacity:0.7;margin:0;">Responsive without a single media query.</p>
+  </div>
+</div>
+</div>
+
+<h3>Media Object</h3>
+<div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="sel">.media</span> {
+  <span class="prop">display</span>: <span class="val">flex</span>;
+  <span class="prop">gap</span>: <span class="num">1rem</span>;
+  <span class="prop">align-items</span>: <span class="val">flex-start</span>;
+}
+<span class="sel">.media-image</span> {
+  <span class="prop">flex-shrink</span>: <span class="num">0</span>;           <span class="cmt">/* don't shrink the image */</span>
+  <span class="prop">width</span>: <span class="num">64px</span>;
+  <span class="prop">height</span>: <span class="num">64px</span>;
+  <span class="prop">border-radius</span>: <span class="num">50%</span>;
+}
+<span class="sel">.media-body</span> {
+  <span class="prop">flex</span>: <span class="num">1</span>;                  <span class="cmt">/* take remaining space */</span>
+}
+</pre></div>
+
+<div class="live-example"><div class="live-example-label">Live Example — Media Object</div>
+<div style="display:flex;gap:1rem;align-items:flex-start;background:var(--code-bg);padding:1rem;border-radius:8px;">
+  <div style="flex-shrink:0;width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#6366f1,#a78bfa);"></div>
+  <div style="flex:1;">
+    <div style="font-weight:600;font-size:0.9rem;margin-bottom:0.25rem;">Jane Cooper</div>
+    <p style="font-size:0.8rem;opacity:0.7;margin:0;">This is the classic media object pattern. The avatar never shrinks thanks to flex-shrink:0, and the text takes all remaining space with flex:1.</p>
+  </div>
+</div>
+</div>
+
+<h3>Input Group</h3>
+<div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="sel">.input-group</span> {
+  <span class="prop">display</span>: <span class="val">flex</span>;
+}
+<span class="sel">.input-group</span> <span class="sel">input</span> {
+  <span class="prop">flex</span>: <span class="num">1</span>;                 <span class="cmt">/* input takes available space */</span>
+}
+<span class="sel">.input-group</span> <span class="sel">button</span> {
+  <span class="prop">flex-shrink</span>: <span class="num">0</span>;          <span class="cmt">/* button stays fixed */</span>
+}
+</pre></div>
+
+<div class="live-example"><div class="live-example-label">Live Example — Input Group</div>
+<div style="display:flex;background:var(--code-bg);border-radius:8px;overflow:hidden;border:1px solid var(--border);">
+  <div style="flex:1;padding:0.6rem 1rem;font-size:0.85rem;opacity:0.5;">Enter your email...</div>
+  <div style="flex-shrink:0;background:var(--accent);color:#fff;padding:0.6rem 1.25rem;font-size:0.85rem;font-weight:600;cursor:pointer;">Subscribe</div>
+</div>
+</div>
+</section>
+
+<!-- ============================================ -->
+<!-- GOTCHAS -->
+<!-- ============================================ -->
+<section id="gotchas" class="section">
+<h2>Gotchas</h2>
+
+<div class="callout gotcha"><div class="callout-title">The min-width: 0 Problem</div><p>Flex items have <code>min-width: auto</code> by default, which means they won't shrink smaller than their content. This causes overflow with long text or code. Fix: add <code>min-width: 0</code> or <code>overflow: hidden</code> to the flex item.</p></div>
+
+<div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="cmt">/* Problem: text overflows flex container */</span>
+<span class="sel">.flex-item</span> {
+  <span class="prop">flex</span>: <span class="num">1</span>;
+  <span class="cmt">/* Long text or pre elements will overflow! */</span>
+}
+
+<span class="cmt">/* Solution */</span>
+<span class="sel">.flex-item</span> {
+  <span class="prop">flex</span>: <span class="num">1</span>;
+  <span class="prop">min-width</span>: <span class="num">0</span>;   <span class="cmt">/* allow shrinking below content size */</span>
+}
+</pre></div>
+
+<div class="callout gotcha"><div class="callout-title">The margin: auto Trick</div><p>In flexbox, <code>margin: auto</code> absorbs extra space. A common trick: <code>margin-left: auto</code> on the last nav item pushes it to the right. This is more powerful than it seems — it works on both axes.</p></div>
+
+<div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="cmt">/* Push the last item to the right */</span>
+<span class="sel">.nav-item:last-child</span> {
+  <span class="prop">margin-left</span>: <span class="val">auto</span>;   <span class="cmt">/* absorbs all extra space */</span>
+}
+</pre></div>
+
+<div class="live-example"><div class="live-example-label">Live Example — margin-left: auto Push</div>
+<div style="display:flex;align-items:center;background:var(--code-bg);padding:0.6rem 1rem;border-radius:8px;gap:1rem;">
+  <span style="font-size:0.85rem;">Home</span>
+  <span style="font-size:0.85rem;">About</span>
+  <span style="font-size:0.85rem;">Blog</span>
+  <span style="margin-left:auto;background:var(--accent);color:#fff;padding:0.35rem 1rem;border-radius:6px;font-size:0.85rem;">Login</span>
+</div>
+<p style="font-size:0.75rem;opacity:0.6;margin-top:0.4rem;">Login button pushed to the right with margin-left: auto</p>
+</div>
+
+<div class="callout gotcha"><div class="callout-title">Column Direction Pitfall</div><p>When using <code>flex-direction: column</code>, the main axis becomes vertical. This means <code>justify-content</code> works vertically and <code>align-items</code> works horizontally. The container also needs a defined <code>height</code> for <code>justify-content</code> to have visible effect.</p></div>
+</section>
+
+<!-- ============================================ -->
+<!-- PRO TIPS -->
+<!-- ============================================ -->
+<section id="pro-tips" class="section">
+<h2>Pro Tips</h2>
+
+<div class="callout tip"><div class="callout-title">Sticky Footer with Flexbox</div><p>Wrap your page in a flex container with <code>flex-direction: column</code> and <code>min-height: 100vh</code>. Set <code>flex: 1</code> on the main content area — the footer automatically sticks to the bottom.</p></div>
+
+<div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="cmt">/* Sticky footer pattern */</span>
+<span class="sel">body</span> {
+  <span class="prop">display</span>: <span class="val">flex</span>;
+  <span class="prop">flex-direction</span>: <span class="val">column</span>;
+  <span class="prop">min-height</span>: <span class="num">100vh</span>;
+}
+<span class="sel">main</span> {
+  <span class="prop">flex</span>: <span class="num">1</span>;   <span class="cmt">/* pushes footer down */</span>
+}
+</pre></div>
+
+<div class="callout tip"><div class="callout-title">Equal Height Cards</div><p>Flex items in a row automatically get equal heights (because of <code>align-items: stretch</code>). To make the card content push the button to the bottom, make the card itself a flex column with <code>flex-direction: column</code>, and use <code>margin-top: auto</code> on the button.</p></div>
+
+<div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="sel">.card-row</span> {
+  <span class="prop">display</span>: <span class="val">flex</span>;
+  <span class="prop">gap</span>: <span class="num">1rem</span>;
+}
+<span class="sel">.card</span> {
+  <span class="prop">flex</span>: <span class="num">1</span>;
+  <span class="prop">display</span>: <span class="val">flex</span>;
+  <span class="prop">flex-direction</span>: <span class="val">column</span>;
+}
+<span class="sel">.card-button</span> {
+  <span class="prop">margin-top</span>: <span class="val">auto</span>;  <span class="cmt">/* pushes to bottom of card */</span>
+}
+</pre></div>
+
+<div class="callout tip"><div class="callout-title">Flex vs Grid: When to Choose</div><p>Use <strong>Flexbox</strong> for one-dimensional layouts (a single row or column) and for content-driven sizing. Use <strong>Grid</strong> for two-dimensional layouts (rows AND columns) and for layout-driven sizing. They work beautifully together — use grid for the page layout and flex for components inside it.</p></div>
+
+<div class="callout tip"><div class="callout-title">Debug with Outline</div><p>When debugging flex layouts, add <code>outline: 1px solid red</code> to flex items (not border — outlines don't affect layout). Or use browser DevTools which now have excellent flexbox overlays.</p></div>
+</section>
+
+<div class="topic-nav"><a href="05-display-positioning.html"><span class="label">Previous</span><span class="title">Display &amp; Positioning</span></a><a href="07-css-grid.html" class="next"><span class="label">Next</span><span class="title">CSS Grid</span></a></div></main>
+<script src="script.js"></script></body></html>

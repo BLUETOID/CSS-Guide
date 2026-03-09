@@ -1,0 +1,470 @@
+<!DOCTYPE html><html lang="en" data-theme="dark"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Shapes &amp; Clip-Path — CSS Reference Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet"><link rel="stylesheet" href="styles.css">
+</head><body>
+<div id="progress"></div>
+<header class="header"><button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">&#9776;</button><h1><span>CSS</span> Reference Guide</h1><div class="header-nav"><a href="index.html">All Topics</a></div><button class="theme-toggle" onclick="toggleTheme()">&#9790; Dark</button></header>
+<nav class="sidebar" id="sidebar"><a href="index.html" class="nav-back">&#8592; All Topics</a><div class="nav-group"><div class="nav-group-title">On This Page</div>
+<a href="#clip-path-basics">clip-path Basics</a>
+<a href="#circle-ellipse">circle() &amp; ellipse()</a>
+<a href="#inset">inset()</a>
+<a href="#polygon">polygon()</a>
+<a href="#shape-gallery">Shape Gallery</a>
+<a href="#clip-path-path">clip-path: path()</a>
+<a href="#animating-clip-path">Animating clip-path</a>
+<a href="#shape-outside">shape-outside</a>
+<a href="#shape-margin">shape-margin</a>
+<a href="#pure-css-shapes">Pure CSS Shapes</a>
+<a href="#gotchas">Gotchas</a>
+<a href="#pro-tips">Pro Tips</a>
+</div></nav>
+<main class="main"><div class="page-hero"><h1>CSS Shapes &amp; Clip-Path</h1><p>Create complex geometric shapes, clip elements to custom outlines, wrap text around shapes, and build stunning visual effects — all with pure CSS.</p><div class="tags"><span>Visual Effects</span><span>Shapes</span><span>Clipping</span><span>Text Wrapping</span></div></div>
+
+<!-- clip-path Basics -->
+<div class="section" id="clip-path-basics">
+<h2>clip-path Basics</h2>
+<p>The <code class="prop">clip-path</code> property clips an element to a specific shape. Only the area inside the shape is visible; everything outside is hidden (but the element still occupies its original space in the layout).</p>
+
+<div class="code-block"><div class="code-header"><span>clip-path Shape Functions</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><span class="sel">.element</span> {
+  <span class="cmt">/* Basic shape functions */</span>
+  <span class="prop">clip-path</span>: <span class="fn">circle</span>(<span class="val">50%</span>);
+  <span class="prop">clip-path</span>: <span class="fn">ellipse</span>(<span class="val">50% 30% at center</span>);
+  <span class="prop">clip-path</span>: <span class="fn">inset</span>(<span class="val">10px 20px 30px 40px round 8px</span>);
+  <span class="prop">clip-path</span>: <span class="fn">polygon</span>(<span class="val">50% 0%, 100% 100%, 0% 100%</span>);
+  <span class="prop">clip-path</span>: <span class="fn">path</span>(<span class="str">'M0,0 L100,0 L100,100 Z'</span>);
+
+  <span class="cmt">/* Reference an SVG clipPath */</span>
+  <span class="prop">clip-path</span>: <span class="fn">url</span>(<span class="str">#myClipPath</span>);
+
+  <span class="cmt">/* Remove clipping */</span>
+  <span class="prop">clip-path</span>: <span class="val">none</span>;
+}</pre></div>
+</div>
+
+<!-- circle() & ellipse() -->
+<div class="section" id="circle-ellipse">
+<h2>circle() &amp; ellipse()</h2>
+
+<div class="code-block"><div class="code-header"><span>circle() Syntax</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><span class="cmt">/* circle(radius at position) */</span>
+<span class="prop">clip-path</span>: <span class="fn">circle</span>(<span class="val">50%</span>);                  <span class="cmt">/* centered, fills element */</span>
+<span class="prop">clip-path</span>: <span class="fn">circle</span>(<span class="val">100px at 50% 50%</span>);     <span class="cmt">/* 100px radius, centered */</span>
+<span class="prop">clip-path</span>: <span class="fn">circle</span>(<span class="val">40% at 30% 70%</span>);      <span class="cmt">/* offset position */</span>
+<span class="prop">clip-path</span>: <span class="fn">circle</span>(<span class="val">closest-side</span>);        <span class="cmt">/* radius = closest edge */</span>
+<span class="prop">clip-path</span>: <span class="fn">circle</span>(<span class="val">farthest-side</span>);       <span class="cmt">/* radius = farthest edge */</span></pre></div>
+
+<div class="code-block"><div class="code-header"><span>ellipse() Syntax</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><span class="cmt">/* ellipse(rx ry at position) */</span>
+<span class="prop">clip-path</span>: <span class="fn">ellipse</span>(<span class="val">50% 30% at 50% 50%</span>);  <span class="cmt">/* horizontal ellipse */</span>
+<span class="prop">clip-path</span>: <span class="fn">ellipse</span>(<span class="val">30% 50% at center</span>);   <span class="cmt">/* vertical ellipse */</span></pre></div>
+
+<div class="live-example"><div class="live-example-label">circle() &amp; ellipse() Demos</div>
+<div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(140px,1fr)); gap:1.5rem; text-align:center;">
+<div>
+<div style="width:140px; height:140px; margin:0 auto; background:linear-gradient(135deg,#6366f1,#8b5cf6); clip-path:circle(50%);"></div>
+<code style="font-size:0.75rem; margin-top:0.5rem; display:block;">circle(50%)</code>
+</div>
+<div>
+<div style="width:140px; height:140px; margin:0 auto; background:linear-gradient(135deg,#f472b6,#ec4899); clip-path:circle(40% at 30% 30%);"></div>
+<code style="font-size:0.75rem; margin-top:0.5rem; display:block;">circle(40% at 30% 30%)</code>
+</div>
+<div>
+<div style="width:140px; height:140px; margin:0 auto; background:linear-gradient(135deg,#34d399,#10b981); clip-path:ellipse(50% 35% at 50% 50%);"></div>
+<code style="font-size:0.75rem; margin-top:0.5rem; display:block;">ellipse(50% 35%)</code>
+</div>
+<div>
+<div style="width:140px; height:140px; margin:0 auto; background:linear-gradient(135deg,#fbbf24,#f59e0b); clip-path:ellipse(30% 50% at 50% 50%);"></div>
+<code style="font-size:0.75rem; margin-top:0.5rem; display:block;">ellipse(30% 50%)</code>
+</div>
+</div>
+</div>
+</div>
+
+<!-- inset() -->
+<div class="section" id="inset">
+<h2>inset()</h2>
+<p>The <code class="fn">inset()</code> function clips the element by specifying inward offsets from each edge, with optional border-radius.</p>
+
+<div class="code-block"><div class="code-header"><span>inset() Syntax</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><span class="cmt">/* inset(top right bottom left round border-radius) */</span>
+<span class="prop">clip-path</span>: <span class="fn">inset</span>(<span class="val">10px</span>);                     <span class="cmt">/* 10px from all edges */</span>
+<span class="prop">clip-path</span>: <span class="fn">inset</span>(<span class="val">10px 20px</span>);                 <span class="cmt">/* TB=10 LR=20 */</span>
+<span class="prop">clip-path</span>: <span class="fn">inset</span>(<span class="val">10px 20px 30px 40px</span>);       <span class="cmt">/* T R B L */</span>
+<span class="prop">clip-path</span>: <span class="fn">inset</span>(<span class="val">10px round 16px</span>);           <span class="cmt">/* with rounded corners */</span>
+<span class="prop">clip-path</span>: <span class="fn">inset</span>(<span class="val">5% 10% round 50%</span>);         <span class="cmt">/* pill/capsule shape */</span></pre></div>
+
+<div class="live-example"><div class="live-example-label">inset() Demos</div>
+<div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(140px,1fr)); gap:1.5rem; text-align:center;">
+<div>
+<div style="width:140px; height:140px; margin:0 auto; background:linear-gradient(135deg,#6366f1,#a78bfa); clip-path:inset(10px);"></div>
+<code style="font-size:0.75rem; margin-top:0.5rem; display:block;">inset(10px)</code>
+</div>
+<div>
+<div style="width:140px; height:140px; margin:0 auto; background:linear-gradient(135deg,#f472b6,#e879f9); clip-path:inset(10px round 20px);"></div>
+<code style="font-size:0.75rem; margin-top:0.5rem; display:block;">inset(10px round 20px)</code>
+</div>
+<div>
+<div style="width:140px; height:140px; margin:0 auto; background:linear-gradient(135deg,#34d399,#2dd4bf); clip-path:inset(20% 5% round 50%);"></div>
+<code style="font-size:0.75rem; margin-top:0.5rem; display:block;">inset(20% 5% round 50%)</code>
+</div>
+</div>
+</div>
+</div>
+
+<!-- polygon() -->
+<div class="section" id="polygon">
+<h2>polygon()</h2>
+<p>The <code class="fn">polygon()</code> function defines a clipping shape using a series of x/y coordinate pairs. This is the most versatile shape function.</p>
+
+<div class="code-block"><div class="code-header"><span>polygon() Syntax</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><span class="cmt">/* polygon(fill-rule, x1 y1, x2 y2, ...) */</span>
+
+<span class="cmt">/* Triangle */</span>
+<span class="prop">clip-path</span>: <span class="fn">polygon</span>(<span class="val">50% 0%, 100% 100%, 0% 100%</span>);
+
+<span class="cmt">/* Diamond / Rhombus */</span>
+<span class="prop">clip-path</span>: <span class="fn">polygon</span>(<span class="val">50% 0%, 100% 50%, 50% 100%, 0% 50%</span>);
+
+<span class="cmt">/* Pentagon */</span>
+<span class="prop">clip-path</span>: <span class="fn">polygon</span>(<span class="val">50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%</span>);
+
+<span class="cmt">/* Hexagon */</span>
+<span class="prop">clip-path</span>: <span class="fn">polygon</span>(<span class="val">25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%</span>);
+
+<span class="cmt">/* Star (5-pointed) */</span>
+<span class="prop">clip-path</span>: <span class="fn">polygon</span>(<span class="val">50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%</span>);
+
+<span class="cmt">/* Arrow pointing right */</span>
+<span class="prop">clip-path</span>: <span class="fn">polygon</span>(<span class="val">0% 20%, 60% 20%, 60% 0%, 100% 50%, 60% 100%, 60% 80%, 0% 80%</span>);
+
+<span class="cmt">/* Cross / Plus */</span>
+<span class="prop">clip-path</span>: <span class="fn">polygon</span>(<span class="val">35% 0%, 65% 0%, 65% 35%, 100% 35%, 100% 65%, 65% 65%, 65% 100%, 35% 100%, 35% 65%, 0% 65%, 0% 35%, 35% 35%</span>);</pre></div>
+</div>
+
+<!-- Shape Gallery -->
+<div class="section" id="shape-gallery">
+<h2>Live Shape Gallery</h2>
+<p>All shapes below are created with <code class="prop">clip-path</code> applied to simple colored <code class="sel">div</code> elements. Hover over each shape to see it grow.</p>
+
+<div class="live-example"><div class="live-example-label">clip-path Shape Gallery</div>
+<style>
+.shape-gallery-item { transition: transform 0.3s ease; cursor: pointer; }
+.shape-gallery-item:hover { transform: scale(1.1); }
+</style>
+<div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(130px,1fr)); gap:2rem; text-align:center; padding:1rem 0;">
+
+<!-- Triangle -->
+<div>
+<div class="shape-gallery-item" style="width:120px; height:120px; margin:0 auto; background:linear-gradient(135deg,#6366f1,#818cf8); clip-path:polygon(50% 0%, 100% 100%, 0% 100%);"></div>
+<strong style="display:block; margin-top:0.75rem; font-size:0.85rem;">Triangle</strong>
+<code style="font-size:0.7rem; opacity:0.7;">polygon(50% 0%, 100% 100%, 0% 100%)</code>
+</div>
+
+<!-- Diamond -->
+<div>
+<div class="shape-gallery-item" style="width:120px; height:120px; margin:0 auto; background:linear-gradient(135deg,#f472b6,#ec4899); clip-path:polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);"></div>
+<strong style="display:block; margin-top:0.75rem; font-size:0.85rem;">Diamond</strong>
+<code style="font-size:0.7rem; opacity:0.7;">polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)</code>
+</div>
+
+<!-- Hexagon -->
+<div>
+<div class="shape-gallery-item" style="width:120px; height:120px; margin:0 auto; background:linear-gradient(135deg,#34d399,#10b981); clip-path:polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);"></div>
+<strong style="display:block; margin-top:0.75rem; font-size:0.85rem;">Hexagon</strong>
+<code style="font-size:0.7rem; opacity:0.7;">polygon(25% 0%, 75% 0%, ...)</code>
+</div>
+
+<!-- Star -->
+<div>
+<div class="shape-gallery-item" style="width:120px; height:120px; margin:0 auto; background:linear-gradient(135deg,#fbbf24,#f59e0b); clip-path:polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);"></div>
+<strong style="display:block; margin-top:0.75rem; font-size:0.85rem;">Star</strong>
+<code style="font-size:0.7rem; opacity:0.7;">polygon(50% 0%, 61% 35%, ...)</code>
+</div>
+
+<!-- Pentagon -->
+<div>
+<div class="shape-gallery-item" style="width:120px; height:120px; margin:0 auto; background:linear-gradient(135deg,#e879f9,#a855f7); clip-path:polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);"></div>
+<strong style="display:block; margin-top:0.75rem; font-size:0.85rem;">Pentagon</strong>
+<code style="font-size:0.7rem; opacity:0.7;">polygon(50% 0%, 100% 38%, ...)</code>
+</div>
+
+<!-- Arrow -->
+<div>
+<div class="shape-gallery-item" style="width:120px; height:120px; margin:0 auto; background:linear-gradient(135deg,#38bdf8,#0ea5e9); clip-path:polygon(0% 20%, 60% 20%, 60% 0%, 100% 50%, 60% 100%, 60% 80%, 0% 80%);"></div>
+<strong style="display:block; margin-top:0.75rem; font-size:0.85rem;">Arrow</strong>
+<code style="font-size:0.7rem; opacity:0.7;">polygon(0% 20%, 60% 20%, ...)</code>
+</div>
+
+<!-- Cross -->
+<div>
+<div class="shape-gallery-item" style="width:120px; height:120px; margin:0 auto; background:linear-gradient(135deg,#fb7185,#ef4444); clip-path:polygon(35% 0%, 65% 0%, 65% 35%, 100% 35%, 100% 65%, 65% 65%, 65% 100%, 35% 100%, 35% 65%, 0% 65%, 0% 35%, 35% 35%);"></div>
+<strong style="display:block; margin-top:0.75rem; font-size:0.85rem;">Cross</strong>
+<code style="font-size:0.7rem; opacity:0.7;">polygon(35% 0%, 65% 0%, ...)</code>
+</div>
+
+</div>
+</div>
+</div>
+
+<!-- clip-path: path() -->
+<div class="section" id="clip-path-path">
+<h2>clip-path: path()</h2>
+<p>The <code class="fn">path()</code> function accepts an SVG path string, enabling curves, arcs, and any shape SVG can describe.</p>
+
+<div class="code-block"><div class="code-header"><span>path() Syntax</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><span class="cmt">/* Uses SVG path commands: M (move), L (line), C (curve), Z (close) */</span>
+<span class="sel">.heart</span> {
+  <span class="prop">clip-path</span>: <span class="fn">path</span>(<span class="str">'M 50,30 A 20,20,0,0,1,90,30 A 20,20,0,0,1,50,75 A 20,20,0,0,1,10,30 A 20,20,0,0,1,50,30 Z'</span>);
+}
+
+<span class="sel">.blob</span> {
+  <span class="prop">clip-path</span>: <span class="fn">path</span>(<span class="str">'M 0,50 C 0,20 20,0 50,0 C 80,0 100,20 100,50 C 100,80 80,100 50,100 C 20,100 0,80 0,50 Z'</span>);
+}
+
+<span class="cmt">/* Note: path() values use the element's own coordinate system.
+   The coordinates are in pixels relative to the element's box. */</span></pre></div>
+
+<div class="callout info">
+<strong>path() vs polygon():</strong> Use <code class="fn">polygon()</code> for straight-edged shapes (it's easier and supports percentages). Use <code class="fn">path()</code> when you need curves (Bezier curves, arcs). Note that <code class="fn">path()</code> only supports pixel coordinates, not percentages.
+</div>
+</div>
+
+<!-- Animating clip-path -->
+<div class="section" id="animating-clip-path">
+<h2>Animating clip-path</h2>
+<p>You can animate <code class="prop">clip-path</code> between shapes of the <strong>same type and same number of points</strong>. The browser interpolates between the coordinate values for smooth transitions.</p>
+
+<div class="code-block"><div class="code-header"><span>Hover Transition: Circle to Full</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><span class="sel">.reveal</span> {
+  <span class="prop">clip-path</span>: <span class="fn">circle</span>(<span class="val">0% at 50% 50%</span>);
+  <span class="prop">transition</span>: <span class="val">clip-path 0.6s ease-out</span>;
+}
+
+<span class="sel">.reveal:hover</span> {
+  <span class="prop">clip-path</span>: <span class="fn">circle</span>(<span class="val">100% at 50% 50%</span>);
+}</pre></div>
+
+<div class="code-block"><div class="code-header"><span>Polygon Morph Animation</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><span class="sel">.morph</span> {
+  <span class="prop">clip-path</span>: <span class="fn">polygon</span>(<span class="val">50% 0%, 100% 50%, 50% 100%, 0% 50%</span>);
+  <span class="prop">transition</span>: <span class="val">clip-path 0.5s ease</span>;
+}
+
+<span class="sel">.morph:hover</span> {
+  <span class="cmt">/* Same number of points — morphs from diamond to rectangle */</span>
+  <span class="prop">clip-path</span>: <span class="fn">polygon</span>(<span class="val">0% 0%, 100% 0%, 100% 100%, 0% 100%</span>);
+}</pre></div>
+
+<div class="live-example"><div class="live-example-label">Hover to Animate clip-path</div>
+<style>
+.clip-anim-circle {
+  width:180px; height:180px; background:linear-gradient(135deg,#6366f1,#8b5cf6);
+  clip-path: circle(30% at 50% 50%);
+  transition: clip-path 0.5s ease-out;
+  display:flex; align-items:center; justify-content:center;
+  color:white; font-weight:700; font-size:0.85rem; text-align:center; cursor:pointer;
+}
+.clip-anim-circle:hover { clip-path: circle(70% at 50% 50%); }
+
+.clip-anim-morph {
+  width:180px; height:180px; background:linear-gradient(135deg,#f472b6,#ec4899);
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+  transition: clip-path 0.5s ease;
+  display:flex; align-items:center; justify-content:center;
+  color:white; font-weight:700; font-size:0.85rem; text-align:center; cursor:pointer;
+}
+.clip-anim-morph:hover { clip-path: polygon(5% 5%, 95% 5%, 95% 95%, 5% 95%); }
+
+.clip-anim-star {
+  width:180px; height:180px; background:linear-gradient(135deg,#fbbf24,#f59e0b);
+  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+  transition: clip-path 0.5s ease;
+  display:flex; align-items:center; justify-content:center;
+  color:white; font-weight:700; font-size:0.85rem; text-align:center; cursor:pointer;
+}
+.clip-anim-star:hover { clip-path: polygon(50% 5%, 55% 40%, 95% 40%, 62% 60%, 75% 95%, 50% 72%, 25% 95%, 38% 60%, 5% 40%, 45% 40%); }
+</style>
+<div style="display:flex; flex-wrap:wrap; gap:2rem; justify-content:center; padding:1rem 0;">
+<div style="text-align:center;">
+<div class="clip-anim-circle">Hover me!<br>Circle reveal</div>
+<code style="font-size:0.75rem; display:block; margin-top:0.5rem;">circle(30%) &rarr; circle(70%)</code>
+</div>
+<div style="text-align:center;">
+<div class="clip-anim-morph">Hover me!<br>Diamond &rarr; Rect</div>
+<code style="font-size:0.75rem; display:block; margin-top:0.5rem;">diamond &rarr; rectangle</code>
+</div>
+<div style="text-align:center;">
+<div class="clip-anim-star">Hover me!<br>Star morph</div>
+<code style="font-size:0.75rem; display:block; margin-top:0.5rem;">pointy star &rarr; rounded star</code>
+</div>
+</div>
+</div>
+</div>
+
+<!-- shape-outside -->
+<div class="section" id="shape-outside">
+<h2>shape-outside — Text Wrapping</h2>
+<p>The <code class="prop">shape-outside</code> property controls how inline content wraps around a floated element. Instead of wrapping around the element's rectangular box, text flows along the shape you define.</p>
+
+<div class="code-block"><div class="code-header"><span>shape-outside Syntax</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><span class="sel">.float-circle</span> {
+  <span class="prop">float</span>: <span class="val">left</span>;
+  <span class="prop">width</span>: <span class="val">200px</span>;
+  <span class="prop">height</span>: <span class="val">200px</span>;
+  <span class="prop">shape-outside</span>: <span class="fn">circle</span>(<span class="val">50%</span>);
+  <span class="prop">clip-path</span>: <span class="fn">circle</span>(<span class="val">50%</span>);       <span class="cmt">/* also clip visually to match */</span>
+}
+
+<span class="cmt">/* All shape functions work: circle(), ellipse(), polygon(), inset(), url() */</span>
+<span class="sel">.float-polygon</span> {
+  <span class="prop">float</span>: <span class="val">left</span>;
+  <span class="prop">width</span>: <span class="val">200px</span>;
+  <span class="prop">height</span>: <span class="val">200px</span>;
+  <span class="prop">shape-outside</span>: <span class="fn">polygon</span>(<span class="val">0% 0%, 100% 0%, 50% 100%</span>);
+}</pre></div>
+
+<div class="live-example"><div class="live-example-label">shape-outside: circle() — Text Wrapping Demo</div>
+<div style="overflow:hidden; line-height:1.6; font-size:0.9rem; padding:0.5rem;">
+<div style="float:left; width:150px; height:150px; margin:0 1rem 0.5rem 0; background:linear-gradient(135deg,#6366f1,#a78bfa); border-radius:50%; shape-outside:circle(50%); clip-path:circle(50%);"></div>
+<p style="margin:0;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Curabitur pretium tincidunt lacus. Nulla gravida orci a odio. Nullam varius, turpis et commodo pharetra.</p>
+</div>
+</div>
+
+<div class="live-example"><div class="live-example-label">shape-outside: polygon() — Triangle Text Wrap</div>
+<div style="overflow:hidden; line-height:1.6; font-size:0.9rem; padding:0.5rem;">
+<div style="float:left; width:150px; height:150px; margin:0 1rem 0.5rem 0; background:linear-gradient(135deg,#f472b6,#ec4899); shape-outside:polygon(0% 0%, 100% 50%, 0% 100%); clip-path:polygon(0% 0%, 100% 50%, 0% 100%);"></div>
+<p style="margin:0;">Notice how the text wraps along the diagonal edge of the triangle shape rather than the rectangular bounding box. This creates a much more dynamic and interesting layout. The shape-outside property defines the invisible boundary, while clip-path makes the element visually match. You can combine these with images to create magazine-style layouts where text flows around the actual contour of a photo subject. This technique works with floated elements only.</p>
+</div>
+</div>
+
+<div class="callout info">
+<strong>Important:</strong> <code class="prop">shape-outside</code> only works on <strong>floated elements</strong>. The element must also have explicit <code class="prop">width</code> and <code class="prop">height</code>. Pair it with <code class="prop">clip-path</code> using the same shape to make the element visually match its text-wrapping boundary.
+</div>
+</div>
+
+<!-- shape-margin -->
+<div class="section" id="shape-margin">
+<h2>shape-margin</h2>
+<p>The <code class="prop">shape-margin</code> property adds spacing between the shape boundary and the wrapping text.</p>
+
+<div class="code-block"><div class="code-header"><span>shape-margin</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><span class="sel">.float-shape</span> {
+  <span class="prop">float</span>: <span class="val">left</span>;
+  <span class="prop">width</span>: <span class="val">200px</span>;
+  <span class="prop">height</span>: <span class="val">200px</span>;
+  <span class="prop">shape-outside</span>: <span class="fn">circle</span>(<span class="val">50%</span>);
+  <span class="prop">shape-margin</span>: <span class="val">1rem</span>;       <span class="cmt">/* adds 1rem gap between shape edge and text */</span>
+  <span class="prop">clip-path</span>: <span class="fn">circle</span>(<span class="val">50%</span>);
+}</pre></div>
+</div>
+
+<!-- Pure CSS Shapes -->
+<div class="section" id="pure-css-shapes">
+<h2>Pure CSS Shapes with Borders</h2>
+<p>Before <code class="prop">clip-path</code>, CSS shapes were made using border tricks. These are still useful for small UI elements like tooltip arrows.</p>
+
+<div class="code-block"><div class="code-header"><span>CSS Triangle (Border Trick)</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><span class="cmt">/* Triangle pointing down */</span>
+<span class="sel">.triangle-down</span> {
+  <span class="prop">width</span>: <span class="val">0</span>;
+  <span class="prop">height</span>: <span class="val">0</span>;
+  <span class="prop">border-left</span>: <span class="val">30px solid transparent</span>;
+  <span class="prop">border-right</span>: <span class="val">30px solid transparent</span>;
+  <span class="prop">border-top</span>: <span class="val">40px solid #6366f1</span>;
+}
+
+<span class="cmt">/* Triangle pointing right */</span>
+<span class="sel">.triangle-right</span> {
+  <span class="prop">width</span>: <span class="val">0</span>;
+  <span class="prop">height</span>: <span class="val">0</span>;
+  <span class="prop">border-top</span>: <span class="val">30px solid transparent</span>;
+  <span class="prop">border-bottom</span>: <span class="val">30px solid transparent</span>;
+  <span class="prop">border-left</span>: <span class="val">40px solid #f472b6</span>;
+}
+
+<span class="cmt">/* CSS Circle */</span>
+<span class="sel">.circle</span> {
+  <span class="prop">width</span>: <span class="val">80px</span>;
+  <span class="prop">height</span>: <span class="val">80px</span>;
+  <span class="prop">border-radius</span>: <span class="val">50%</span>;
+  <span class="prop">background</span>: <span class="val">#34d399</span>;
+}</pre></div>
+
+<div class="live-example"><div class="live-example-label">Pure CSS Shapes (Border Trick)</div>
+<div style="display:flex; flex-wrap:wrap; gap:2rem; align-items:center; justify-content:center; padding:1rem 0;">
+<div style="text-align:center;">
+<div style="width:0; height:0; border-left:35px solid transparent; border-right:35px solid transparent; border-bottom:50px solid #6366f1; margin:0 auto;"></div>
+<code style="font-size:0.75rem; display:block; margin-top:0.75rem;">Triangle Up</code>
+</div>
+<div style="text-align:center;">
+<div style="width:0; height:0; border-left:35px solid transparent; border-right:35px solid transparent; border-top:50px solid #f472b6; margin:0 auto;"></div>
+<code style="font-size:0.75rem; display:block; margin-top:0.75rem;">Triangle Down</code>
+</div>
+<div style="text-align:center;">
+<div style="width:0; height:0; border-top:35px solid transparent; border-bottom:35px solid transparent; border-left:50px solid #fbbf24; margin:0 auto;"></div>
+<code style="font-size:0.75rem; display:block; margin-top:0.75rem;">Triangle Right</code>
+</div>
+<div style="text-align:center;">
+<div style="width:0; height:0; border-top:35px solid transparent; border-bottom:35px solid transparent; border-right:50px solid #34d399; margin:0 auto;"></div>
+<code style="font-size:0.75rem; display:block; margin-top:0.75rem;">Triangle Left</code>
+</div>
+<div style="text-align:center;">
+<div style="width:70px; height:70px; border-radius:50%; background:linear-gradient(135deg,#e879f9,#a855f7); margin:0 auto;"></div>
+<code style="font-size:0.75rem; display:block; margin-top:0.75rem;">Circle</code>
+</div>
+<div style="text-align:center;">
+<div style="width:70px; height:70px; border-radius:50% 50% 50% 0; background:linear-gradient(135deg,#38bdf8,#0ea5e9); margin:0 auto; transform:rotate(-45deg);"></div>
+<code style="font-size:0.75rem; display:block; margin-top:0.75rem;">Map Pin</code>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Gotchas -->
+<div class="section" id="gotchas">
+<h2>Gotchas</h2>
+
+<div class="callout gotcha">
+<strong>clip-path hides content but doesn't remove it from layout.</strong> The clipped element still occupies its full rectangular space. Use it for visual effects, not layout changes.
+</div>
+
+<div class="callout gotcha">
+<strong>Animating between different shape types doesn't work.</strong> You cannot animate from <code>circle()</code> to <code>polygon()</code>. For polygon-to-polygon, both must have the <em>same number of points</em>.
+</div>
+
+<div class="callout gotcha">
+<strong>clip-path clips everything — including shadows and outlines.</strong> <code class="prop">box-shadow</code> and <code class="prop">outline</code> applied to a clipped element will be clipped too. Apply shadows to a parent wrapper instead.
+</div>
+
+<div class="callout gotcha">
+<strong>shape-outside only works on floated elements.</strong> It has no effect on grid items, flex items, or normally positioned elements. The element must be floated and have explicit dimensions.
+</div>
+
+<div class="callout gotcha">
+<strong>path() doesn't support percentages.</strong> Unlike <code class="fn">polygon()</code>, the <code class="fn">path()</code> function only accepts pixel values. This makes it harder to create responsive shapes.
+</div>
+</div>
+
+<!-- Pro Tips -->
+<div class="section" id="pro-tips">
+<h2>Pro Tips</h2>
+
+<div class="callout tip">
+<strong>Use Clippy for polygon coordinates.</strong> <a href="https://bennettfeely.com/clippy/" style="color:#818cf8;">bennettfeely.com/clippy</a> is an interactive tool that lets you visually create clip-path polygons and copy the CSS.
+</div>
+
+<div class="callout tip">
+<strong>Wrap clip-path in a parent for shadows.</strong> Since clip-path clips box-shadow, apply <code class="prop">filter: drop-shadow()</code> on a parent element — it follows the clip-path contour.
+</div>
+
+<div class="code-block"><div class="code-header"><span>drop-shadow on clipped element</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><span class="sel">.shadow-wrapper</span> {
+  <span class="prop">filter</span>: <span class="fn">drop-shadow</span>(<span class="val">4px 4px 8px rgba(0,0,0,0.3)</span>);
+}
+
+<span class="sel">.shadow-wrapper .clipped</span> {
+  <span class="prop">clip-path</span>: <span class="fn">polygon</span>(<span class="val">50% 0%, 100% 100%, 0% 100%</span>);
+  <span class="prop">background</span>: <span class="val">#6366f1</span>;
+}</pre></div>
+
+<div class="callout tip">
+<strong>Use clip-path for page transitions.</strong> Animate <code>clip-path: circle(0%)</code> to <code>circle(150%)</code> on an overlay for a dramatic reveal effect during page transitions or image reveals.
+</div>
+
+<div class="callout tip">
+<strong>Combine shape-outside with images.</strong> Use <code>shape-outside: url(image.png)</code> to automatically wrap text around the transparent areas of a PNG image. Set <code>shape-image-threshold</code> to control the alpha cutoff.
+</div>
+</div>
+
+<div class="topic-nav"><a href="16-logical-properties.html"><span class="label">Previous</span><span class="title">Logical Properties</span></a><a href="18-scrollbar-styling.html" class="next"><span class="label">Next</span><span class="title">Scrollbar Styling</span></a></div></main>
+<script src="script.js"></script></body></html>

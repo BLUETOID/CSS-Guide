@@ -1,0 +1,882 @@
+<!DOCTYPE html><html lang="en" data-theme="dark"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Responsive Design — CSS Reference Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet"><link rel="stylesheet" href="styles.css">
+</head><body>
+<div id="progress"></div>
+<header class="header"><button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">&#9776;</button><h1><span>CSS</span> Reference Guide</h1><div class="header-nav"><a href="index.html">All Topics</a></div><button class="theme-toggle" onclick="toggleTheme()">&#9790; Dark</button></header>
+<nav class="sidebar" id="sidebar"><a href="index.html" class="nav-back">&#8592; All Topics</a><div class="nav-group"><div class="nav-group-title">On This Page</div>
+<a href="#viewport-meta">Viewport Meta Tag</a>
+<a href="#mobile-first">Mobile-First vs Desktop-First</a>
+<a href="#media-queries">Media Queries</a>
+<a href="#common-breakpoints">Common Breakpoints</a>
+<a href="#modern-range-syntax">Modern Range Syntax</a>
+<a href="#feature-queries">Feature &amp; Preference Queries</a>
+<a href="#responsive-units">Responsive Units</a>
+<a href="#fluid-typography">Fluid Typography with clamp()</a>
+<a href="#responsive-images">Responsive Images</a>
+<a href="#responsive-grid">Responsive Grid Pattern</a>
+<a href="#container-queries">Container Queries</a>
+<a href="#responsive-navigation">Responsive Navigation</a>
+<a href="#gotchas">Gotchas</a>
+<a href="#pro-tips">Pro Tips</a>
+</div></nav>
+<main class="main"><div class="page-hero"><h1>Responsive Design</h1><p>Building websites that adapt to any screen size, from mobile phones to ultra-wide monitors. Master the techniques that make layouts flexible and content accessible everywhere.</p><div class="tags"><span class="tag">Layout</span><span class="tag">Mobile</span><span class="tag">Media Queries</span><span class="tag">Essential</span></div></div>
+
+<!-- ============================================ -->
+<!-- VIEWPORT META TAG -->
+<!-- ============================================ -->
+<section id="viewport-meta" class="section">
+<h2>Viewport Meta Tag</h2>
+<p>The single most important line for responsive design. Without it, mobile browsers render the page at a virtual desktop width (~980px) and then scale it down.</p>
+
+<div class="code-block"><div class="code-header"><span>HTML</span><button class="copy-btn">Copy</button></div><pre>
+<span class="cmt">&lt;!-- Required in every responsive page's &lt;head&gt; --&gt;</span>
+&lt;<span class="kw">meta</span> <span class="prop">name</span>=<span class="str">"viewport"</span> <span class="prop">content</span>=<span class="str">"width=device-width, initial-scale=1.0"</span>&gt;
+</pre></div>
+
+<div style="overflow-x:auto;">
+<table style="width:100%;border-collapse:collapse;font-size:0.85rem;margin:1rem 0;">
+<thead>
+<tr style="border-bottom:2px solid var(--border);">
+  <th style="text-align:left;padding:0.75rem;font-weight:600;">Attribute</th>
+  <th style="text-align:left;padding:0.75rem;font-weight:600;">Value</th>
+  <th style="text-align:left;padding:0.75rem;font-weight:600;">Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr style="border-bottom:1px solid var(--border);">
+  <td style="padding:0.6rem 0.75rem;"><code>width</code></td>
+  <td style="padding:0.6rem 0.75rem;"><code>device-width</code></td>
+  <td style="padding:0.6rem 0.75rem;">Match the screen's width in CSS pixels</td>
+</tr>
+<tr style="border-bottom:1px solid var(--border);">
+  <td style="padding:0.6rem 0.75rem;"><code>initial-scale</code></td>
+  <td style="padding:0.6rem 0.75rem;"><code>1.0</code></td>
+  <td style="padding:0.6rem 0.75rem;">No zoom on page load</td>
+</tr>
+<tr style="border-bottom:1px solid var(--border);">
+  <td style="padding:0.6rem 0.75rem;"><code>maximum-scale</code></td>
+  <td style="padding:0.6rem 0.75rem;"><code>1.0</code></td>
+  <td style="padding:0.6rem 0.75rem;">Prevent zoom (avoid this for accessibility!)</td>
+</tr>
+<tr>
+  <td style="padding:0.6rem 0.75rem;"><code>user-scalable</code></td>
+  <td style="padding:0.6rem 0.75rem;"><code>no</code></td>
+  <td style="padding:0.6rem 0.75rem;">Disable pinch-to-zoom (avoid this!)</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<div class="callout gotcha"><div class="callout-title">Never disable user zoom</div><p>Avoid <code>maximum-scale=1</code> and <code>user-scalable=no</code>. These break accessibility by preventing users with low vision from zooming in. Many accessibility guidelines (WCAG) require that zoom is not disabled.</p></div>
+</section>
+
+<!-- ============================================ -->
+<!-- MOBILE FIRST VS DESKTOP FIRST -->
+<!-- ============================================ -->
+<section id="mobile-first" class="section">
+<h2>Mobile-First vs Desktop-First</h2>
+<p>Two approaches to writing responsive CSS. Mobile-first is the industry standard and recommended approach.</p>
+
+<div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="cmt">/* ==============================
+   MOBILE-FIRST (recommended)
+   Base styles = mobile
+   Add complexity as screen grows
+   Uses: min-width
+   ============================== */</span>
+
+<span class="cmt">/* Base: mobile styles (no media query needed) */</span>
+<span class="sel">.container</span> {
+  <span class="prop">padding</span>: <span class="num">1rem</span>;
+  <span class="prop">font-size</span>: <span class="num">0.875rem</span>;
+}
+
+<span class="at">@media</span> (<span class="prop">min-width</span>: <span class="num">768px</span>) {
+  <span class="sel">.container</span> {
+    <span class="prop">padding</span>: <span class="num">2rem</span>;
+    <span class="prop">font-size</span>: <span class="num">1rem</span>;
+  }
+}
+
+<span class="at">@media</span> (<span class="prop">min-width</span>: <span class="num">1024px</span>) {
+  <span class="sel">.container</span> {
+    <span class="prop">padding</span>: <span class="num">3rem</span>;
+    <span class="prop">max-width</span>: <span class="num">1200px</span>;
+    <span class="prop">margin</span>: <span class="num">0</span> <span class="val">auto</span>;
+  }
+}
+</pre></div>
+
+<div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="cmt">/* ==============================
+   DESKTOP-FIRST (legacy approach)
+   Base styles = desktop
+   Remove complexity as screen shrinks
+   Uses: max-width
+   ============================== */</span>
+
+<span class="cmt">/* Base: desktop styles */</span>
+<span class="sel">.container</span> {
+  <span class="prop">padding</span>: <span class="num">3rem</span>;
+  <span class="prop">max-width</span>: <span class="num">1200px</span>;
+  <span class="prop">margin</span>: <span class="num">0</span> <span class="val">auto</span>;
+}
+
+<span class="at">@media</span> (<span class="prop">max-width</span>: <span class="num">1023px</span>) {
+  <span class="sel">.container</span> {
+    <span class="prop">padding</span>: <span class="num">2rem</span>;
+    <span class="prop">max-width</span>: <span class="val">none</span>;
+  }
+}
+
+<span class="at">@media</span> (<span class="prop">max-width</span>: <span class="num">767px</span>) {
+  <span class="sel">.container</span> {
+    <span class="prop">padding</span>: <span class="num">1rem</span>;
+  }
+}
+</pre></div>
+
+<div class="callout tip"><div class="callout-title">Why Mobile-First Wins</div><p><strong>1. Performance</strong>: Mobile devices get only the CSS they need; desktop enhancements load progressively. <strong>2. Simplicity</strong>: It is easier to add layout complexity than to undo it. <strong>3. Future-proof</strong>: Most web traffic is mobile, so start there.</p></div>
+</section>
+
+<!-- ============================================ -->
+<!-- MEDIA QUERIES -->
+<!-- ============================================ -->
+<section id="media-queries" class="section">
+<h2>Media Queries</h2>
+<p>The core mechanism for responsive design. Apply CSS rules conditionally based on viewport characteristics.</p>
+
+<div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="cmt">/* Basic syntax */</span>
+<span class="at">@media</span> (<span class="prop">min-width</span>: <span class="num">768px</span>) {
+  <span class="cmt">/* styles for 768px and wider */</span>
+}
+
+<span class="at">@media</span> (<span class="prop">max-width</span>: <span class="num">767px</span>) {
+  <span class="cmt">/* styles for 767px and narrower */</span>
+}
+
+<span class="cmt">/* Combining with AND */</span>
+<span class="at">@media</span> (<span class="prop">min-width</span>: <span class="num">768px</span>) <span class="kw">and</span> (<span class="prop">max-width</span>: <span class="num">1023px</span>) {
+  <span class="cmt">/* tablet only */</span>
+}
+
+<span class="cmt">/* OR (comma-separated) */</span>
+<span class="at">@media</span> (<span class="prop">max-width</span>: <span class="num">480px</span>), (<span class="prop">orientation</span>: <span class="val">portrait</span>) {
+  <span class="cmt">/* small screens OR portrait orientation */</span>
+}
+
+<span class="cmt">/* NOT */</span>
+<span class="at">@media</span> <span class="kw">not</span> <span class="val">print</span> {
+  <span class="cmt">/* everything except print */</span>
+}
+
+<span class="cmt">/* Media types */</span>
+<span class="at">@media</span> <span class="val">screen</span> { }   <span class="cmt">/* screens only */</span>
+<span class="at">@media</span> <span class="val">print</span> { }    <span class="cmt">/* print only */</span>
+<span class="at">@media</span> <span class="val">all</span> { }      <span class="cmt">/* all media (default) */</span>
+</pre></div>
+
+<div class="live-example"><div class="live-example-label">Live Example — Resize to See Changes</div>
+<div style="background:var(--code-bg);padding:1rem;border-radius:8px;text-align:center;">
+  <div style="font-size:0.9rem;margin-bottom:0.5rem;opacity:0.7;">Try resizing your browser window:</div>
+  <style>
+    .responsive-demo-box { background: #6366f1; color: #fff; padding: 1rem 2rem; border-radius: 8px; display: inline-block; font-weight: 600; transition: all 0.3s ease; }
+    @media (max-width: 768px) { .responsive-demo-box { background: #ef4444; } .responsive-demo-box::after { content: "Mobile (<768px)"; } }
+    @media (min-width: 769px) and (max-width: 1024px) { .responsive-demo-box::after { content: "Tablet (769-1024px)"; } }
+    @media (min-width: 1025px) { .responsive-demo-box::after { content: "Desktop (>1024px)"; } }
+  </style>
+  <div class="responsive-demo-box"></div>
+</div>
+</div>
+</section>
+
+<!-- ============================================ -->
+<!-- COMMON BREAKPOINTS -->
+<!-- ============================================ -->
+<section id="common-breakpoints" class="section">
+<h2>Common Breakpoints</h2>
+<p>Standard breakpoints used by major CSS frameworks and design systems. These are starting points — adjust based on your content.</p>
+
+<div style="overflow-x:auto;">
+<table style="width:100%;border-collapse:collapse;font-size:0.85rem;margin:1rem 0;">
+<thead>
+<tr style="border-bottom:2px solid var(--border);">
+  <th style="text-align:left;padding:0.75rem;font-weight:600;">Name</th>
+  <th style="text-align:left;padding:0.75rem;font-weight:600;">Min-Width</th>
+  <th style="text-align:left;padding:0.75rem;font-weight:600;">Typical Devices</th>
+  <th style="text-align:left;padding:0.75rem;font-weight:600;">CSS Variable</th>
+</tr>
+</thead>
+<tbody>
+<tr style="border-bottom:1px solid var(--border);">
+  <td style="padding:0.6rem 0.75rem;font-weight:500;">xs</td>
+  <td style="padding:0.6rem 0.75rem;"><code>0px</code></td>
+  <td style="padding:0.6rem 0.75rem;">Small phones</td>
+  <td style="padding:0.6rem 0.75rem;">(base styles)</td>
+</tr>
+<tr style="border-bottom:1px solid var(--border);">
+  <td style="padding:0.6rem 0.75rem;font-weight:500;">sm</td>
+  <td style="padding:0.6rem 0.75rem;"><code>576px</code></td>
+  <td style="padding:0.6rem 0.75rem;">Large phones (landscape)</td>
+  <td style="padding:0.6rem 0.75rem;"><code>--bp-sm: 576px</code></td>
+</tr>
+<tr style="border-bottom:1px solid var(--border);">
+  <td style="padding:0.6rem 0.75rem;font-weight:500;">md</td>
+  <td style="padding:0.6rem 0.75rem;"><code>768px</code></td>
+  <td style="padding:0.6rem 0.75rem;">Tablets</td>
+  <td style="padding:0.6rem 0.75rem;"><code>--bp-md: 768px</code></td>
+</tr>
+<tr style="border-bottom:1px solid var(--border);">
+  <td style="padding:0.6rem 0.75rem;font-weight:500;">lg</td>
+  <td style="padding:0.6rem 0.75rem;"><code>1024px</code></td>
+  <td style="padding:0.6rem 0.75rem;">Small laptops, tablets landscape</td>
+  <td style="padding:0.6rem 0.75rem;"><code>--bp-lg: 1024px</code></td>
+</tr>
+<tr style="border-bottom:1px solid var(--border);">
+  <td style="padding:0.6rem 0.75rem;font-weight:500;">xl</td>
+  <td style="padding:0.6rem 0.75rem;"><code>1280px</code></td>
+  <td style="padding:0.6rem 0.75rem;">Desktops</td>
+  <td style="padding:0.6rem 0.75rem;"><code>--bp-xl: 1280px</code></td>
+</tr>
+<tr>
+  <td style="padding:0.6rem 0.75rem;font-weight:500;">2xl</td>
+  <td style="padding:0.6rem 0.75rem;"><code>1536px</code></td>
+  <td style="padding:0.6rem 0.75rem;">Large desktops, ultra-wide</td>
+  <td style="padding:0.6rem 0.75rem;"><code>--bp-2xl: 1536px</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="cmt">/* Mobile-first breakpoints (most common) */</span>
+<span class="cmt">/* Base: 0 - 575px (mobile) */</span>
+
+<span class="at">@media</span> (<span class="prop">min-width</span>: <span class="num">576px</span>)  { <span class="cmt">/* sm: landscape phones */</span> }
+<span class="at">@media</span> (<span class="prop">min-width</span>: <span class="num">768px</span>)  { <span class="cmt">/* md: tablets */</span> }
+<span class="at">@media</span> (<span class="prop">min-width</span>: <span class="num">1024px</span>) { <span class="cmt">/* lg: laptops */</span> }
+<span class="at">@media</span> (<span class="prop">min-width</span>: <span class="num">1280px</span>) { <span class="cmt">/* xl: desktops */</span> }
+<span class="at">@media</span> (<span class="prop">min-width</span>: <span class="num">1536px</span>) { <span class="cmt">/* 2xl: large screens */</span> }
+</pre></div>
+
+<div class="callout tip"><div class="callout-title">Content-Based Breakpoints</div><p>Rather than targeting specific devices, set breakpoints where your content naturally breaks. Resize the browser and add a breakpoint when the layout starts looking awkward. This future-proofs your design against new device sizes.</p></div>
+</section>
+
+<!-- ============================================ -->
+<!-- MODERN RANGE SYNTAX -->
+<!-- ============================================ -->
+<section id="modern-range-syntax" class="section">
+<h2>Modern Range Syntax</h2>
+<p>Modern CSS allows comparison operators in media queries, making them more readable and less error-prone.</p>
+
+<div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="cmt">/* Old syntax */</span>
+<span class="at">@media</span> (<span class="prop">min-width</span>: <span class="num">768px</span>) { }
+<span class="at">@media</span> (<span class="prop">max-width</span>: <span class="num">1023px</span>) { }
+<span class="at">@media</span> (<span class="prop">min-width</span>: <span class="num">768px</span>) <span class="kw">and</span> (<span class="prop">max-width</span>: <span class="num">1023px</span>) { }
+
+<span class="cmt">/* NEW range syntax (supported in all modern browsers) */</span>
+<span class="at">@media</span> (<span class="prop">width</span> &gt;= <span class="num">768px</span>) { }
+<span class="at">@media</span> (<span class="prop">width</span> &lt; <span class="num">1024px</span>) { }
+<span class="at">@media</span> (<span class="num">768px</span> &lt;= <span class="prop">width</span> &lt; <span class="num">1024px</span>) { }
+
+<span class="cmt">/* Also works with height */</span>
+<span class="at">@media</span> (<span class="prop">height</span> &gt;= <span class="num">600px</span>) { }
+<span class="at">@media</span> (<span class="num">400px</span> &lt;= <span class="prop">height</span> &lt;= <span class="num">800px</span>) { }
+</pre></div>
+
+<div class="callout tip"><div class="callout-title">Why Range Syntax is Better</div><p>The traditional <code>min-width: 768px</code> and <code>max-width: 767px</code> gap can cause issues with fractional pixels. The range syntax (<code>width >= 768px</code> and <code>width < 768px</code>) eliminates this 1px overlap problem entirely. Supported in all browsers since late 2023.</p></div>
+</section>
+
+<!-- ============================================ -->
+<!-- FEATURE & PREFERENCE QUERIES -->
+<!-- ============================================ -->
+<section id="feature-queries" class="section">
+<h2>Feature &amp; Preference Queries</h2>
+<p>Media queries go beyond screen size. Detect user preferences, device capabilities, and more.</p>
+
+<h3>prefers-color-scheme</h3>
+<div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="cmt">/* Match the user's OS dark/light preference */</span>
+<span class="at">@media</span> (<span class="prop">prefers-color-scheme</span>: <span class="val">dark</span>) {
+  <span class="sel">:root</span> {
+    <span class="prop">--bg</span>: <span class="val">#0f172a</span>;
+    <span class="prop">--text</span>: <span class="val">#e2e8f0</span>;
+  }
+}
+
+<span class="at">@media</span> (<span class="prop">prefers-color-scheme</span>: <span class="val">light</span>) {
+  <span class="sel">:root</span> {
+    <span class="prop">--bg</span>: <span class="val">#ffffff</span>;
+    <span class="prop">--text</span>: <span class="val">#1e293b</span>;
+  }
+}
+</pre></div>
+
+<h3>prefers-reduced-motion</h3>
+<div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="cmt">/* Respect users who prefer reduced motion */</span>
+<span class="at">@media</span> (<span class="prop">prefers-reduced-motion</span>: <span class="val">reduce</span>) {
+  * {
+    <span class="prop">animation-duration</span>: <span class="num">0.01ms</span> <span class="val">!important</span>;
+    <span class="prop">animation-iteration-count</span>: <span class="num">1</span> <span class="val">!important</span>;
+    <span class="prop">transition-duration</span>: <span class="num">0.01ms</span> <span class="val">!important</span>;
+  }
+}
+
+<span class="cmt">/* Progressive approach: only animate for users who are OK with it */</span>
+<span class="at">@media</span> (<span class="prop">prefers-reduced-motion</span>: <span class="val">no-preference</span>) {
+  <span class="sel">.element</span> {
+    <span class="prop">transition</span>: <span class="val">transform</span> <span class="num">0.3s</span> <span class="val">ease</span>;
+  }
+}
+</pre></div>
+
+<h3>orientation</h3>
+<div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="at">@media</span> (<span class="prop">orientation</span>: <span class="val">portrait</span>) {
+  <span class="cmt">/* taller than wide */</span>
+}
+
+<span class="at">@media</span> (<span class="prop">orientation</span>: <span class="val">landscape</span>) {
+  <span class="cmt">/* wider than tall */</span>
+}
+</pre></div>
+
+<h3>Other Useful Feature Queries</h3>
+<div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="cmt">/* High-resolution (retina) displays */</span>
+<span class="at">@media</span> (<span class="prop">min-resolution</span>: <span class="num">2dppx</span>) { }
+
+<span class="cmt">/* Hover capability (touchscreens vs mouse) */</span>
+<span class="at">@media</span> (<span class="prop">hover</span>: <span class="val">hover</span>) {
+  <span class="cmt">/* device has a mouse/pointer that can hover */</span>
+  <span class="sel">.card:hover</span> { <span class="prop">transform</span>: <span class="fn">translateY</span>(<span class="num">-4px</span>); }
+}
+
+<span class="at">@media</span> (<span class="prop">hover</span>: <span class="val">none</span>) {
+  <span class="cmt">/* touchscreen — no hover capability */</span>
+}
+
+<span class="cmt">/* Pointer precision */</span>
+<span class="at">@media</span> (<span class="prop">pointer</span>: <span class="val">coarse</span>) {
+  <span class="cmt">/* touch — make tap targets larger */</span>
+  <span class="sel">button</span> { <span class="prop">min-height</span>: <span class="num">44px</span>; }
+}
+
+<span class="cmt">/* Prefers contrast */</span>
+<span class="at">@media</span> (<span class="prop">prefers-contrast</span>: <span class="val">high</span>) {
+  <span class="sel">.card</span> { <span class="prop">border</span>: <span class="num">2px</span> <span class="val">solid</span>; }
+}
+</pre></div>
+
+<div class="callout info"><div class="callout-title">Accessibility First</div><p>Always implement <code>prefers-reduced-motion</code> and <code>prefers-color-scheme</code> in production sites. These are not nice-to-haves — they are essential for users with vestibular disorders and visual sensitivities. Use the progressive enhancement approach: add motion for users who want it.</p></div>
+</section>
+
+<!-- ============================================ -->
+<!-- RESPONSIVE UNITS -->
+<!-- ============================================ -->
+<section id="responsive-units" class="section">
+<h2>Responsive Units</h2>
+<p>Choose the right unit for the right purpose. Each responsive unit has specific strengths.</p>
+
+<div style="overflow-x:auto;">
+<table style="width:100%;border-collapse:collapse;font-size:0.85rem;margin:1rem 0;">
+<thead>
+<tr style="border-bottom:2px solid var(--border);">
+  <th style="text-align:left;padding:0.75rem;font-weight:600;">Unit</th>
+  <th style="text-align:left;padding:0.75rem;font-weight:600;">Relative To</th>
+  <th style="text-align:left;padding:0.75rem;font-weight:600;">Best For</th>
+</tr>
+</thead>
+<tbody>
+<tr style="border-bottom:1px solid var(--border);">
+  <td style="padding:0.6rem 0.75rem;"><code>%</code></td>
+  <td style="padding:0.6rem 0.75rem;">Parent element</td>
+  <td style="padding:0.6rem 0.75rem;">Widths, fluid layouts</td>
+</tr>
+<tr style="border-bottom:1px solid var(--border);">
+  <td style="padding:0.6rem 0.75rem;"><code>vw</code></td>
+  <td style="padding:0.6rem 0.75rem;">1% of viewport width</td>
+  <td style="padding:0.6rem 0.75rem;">Full-width sections, fluid typography</td>
+</tr>
+<tr style="border-bottom:1px solid var(--border);">
+  <td style="padding:0.6rem 0.75rem;"><code>vh</code></td>
+  <td style="padding:0.6rem 0.75rem;">1% of viewport height</td>
+  <td style="padding:0.6rem 0.75rem;">Full-height sections, hero banners</td>
+</tr>
+<tr style="border-bottom:1px solid var(--border);">
+  <td style="padding:0.6rem 0.75rem;"><code>dvh</code></td>
+  <td style="padding:0.6rem 0.75rem;">Dynamic viewport height</td>
+  <td style="padding:0.6rem 0.75rem;">Mobile full-height (accounts for address bar)</td>
+</tr>
+<tr style="border-bottom:1px solid var(--border);">
+  <td style="padding:0.6rem 0.75rem;"><code>svh</code></td>
+  <td style="padding:0.6rem 0.75rem;">Small viewport height</td>
+  <td style="padding:0.6rem 0.75rem;">Smallest possible viewport (address bar visible)</td>
+</tr>
+<tr style="border-bottom:1px solid var(--border);">
+  <td style="padding:0.6rem 0.75rem;"><code>lvh</code></td>
+  <td style="padding:0.6rem 0.75rem;">Large viewport height</td>
+  <td style="padding:0.6rem 0.75rem;">Largest possible viewport (address bar hidden)</td>
+</tr>
+<tr style="border-bottom:1px solid var(--border);">
+  <td style="padding:0.6rem 0.75rem;"><code>rem</code></td>
+  <td style="padding:0.6rem 0.75rem;">Root font size (usually 16px)</td>
+  <td style="padding:0.6rem 0.75rem;">Spacing, font sizes, consistent scaling</td>
+</tr>
+<tr>
+  <td style="padding:0.6rem 0.75rem;"><code>em</code></td>
+  <td style="padding:0.6rem 0.75rem;">Parent element's font size</td>
+  <td style="padding:0.6rem 0.75rem;">Component-local spacing, media queries</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="cmt">/* Responsive units in action */</span>
+<span class="sel">.hero</span> {
+  <span class="prop">height</span>: <span class="num">100dvh</span>;     <span class="cmt">/* full viewport on mobile (dynamic) */</span>
+  <span class="prop">padding</span>: <span class="num">5vw</span>;       <span class="cmt">/* scales with viewport width */</span>
+}
+
+<span class="sel">.sidebar</span> {
+  <span class="prop">width</span>: <span class="num">25%</span>;         <span class="cmt">/* 25% of parent */</span>
+}
+
+<span class="sel">.container</span> {
+  <span class="prop">max-width</span>: <span class="num">75rem</span>;   <span class="cmt">/* 1200px at default font size */</span>
+  <span class="prop">padding</span>: <span class="num">2rem</span>;       <span class="cmt">/* scales if user changes font size */</span>
+}
+</pre></div>
+
+<div class="callout gotcha"><div class="callout-title">vh on mobile is broken</div><p>On mobile browsers, <code>100vh</code> includes the area behind the address bar, causing content to be hidden. Use <code>100dvh</code> (dynamic viewport height) instead, which adjusts when the address bar shows/hides. Alternatively use <code>100svh</code> for the smallest viewport size.</p></div>
+</section>
+
+<!-- ============================================ -->
+<!-- FLUID TYPOGRAPHY -->
+<!-- ============================================ -->
+<section id="fluid-typography" class="section">
+<h2>Fluid Typography with clamp()</h2>
+<p>Create text that scales smoothly between a minimum and maximum size based on the viewport width. No breakpoints needed.</p>
+
+<div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="cmt">/* clamp(minimum, preferred, maximum) */</span>
+<span class="sel">h1</span> {
+  <span class="prop">font-size</span>: <span class="fn">clamp</span>(<span class="num">1.5rem</span>, <span class="num">4vw</span>, <span class="num">3rem</span>);
+  <span class="cmt">/*
+    - Never smaller than 1.5rem (24px)
+    - Scales with viewport at 4vw
+    - Never larger than 3rem (48px)
+  */</span>
+}
+
+<span class="sel">h2</span> {
+  <span class="prop">font-size</span>: <span class="fn">clamp</span>(<span class="num">1.25rem</span>, <span class="num">3vw</span>, <span class="num">2rem</span>);
+}
+
+<span class="sel">p</span> {
+  <span class="prop">font-size</span>: <span class="fn">clamp</span>(<span class="num">0.875rem</span>, <span class="num">1.5vw</span>, <span class="num">1.125rem</span>);
+}
+
+<span class="cmt">/* Fluid spacing too! */</span>
+<span class="sel">section</span> {
+  <span class="prop">padding</span>: <span class="fn">clamp</span>(<span class="num">1rem</span>, <span class="num">5vw</span>, <span class="num">4rem</span>);
+}
+</pre></div>
+
+<div class="live-example"><div class="live-example-label">Live Example — Fluid Typography with clamp()</div>
+<div style="background:var(--code-bg);padding:1.5rem;border-radius:8px;">
+  <h3 style="font-size:clamp(1.25rem, 4vw, 2.5rem);margin:0 0 0.5rem;line-height:1.2;">This Heading Scales Fluidly</h3>
+  <p style="font-size:clamp(0.8rem, 1.5vw, 1.1rem);opacity:0.8;margin:0 0 0.75rem;line-height:1.6;">This paragraph text also scales smoothly between 0.8rem and 1.1rem based on the viewport width. Try resizing your browser to see the text size change continuously without any breakpoint jumps.</p>
+  <p style="font-size:clamp(0.7rem, 1.2vw, 0.9rem);opacity:0.5;margin:0;">font-size: clamp(0.8rem, 1.5vw, 1.1rem)</p>
+</div>
+</div>
+
+<div class="callout tip"><div class="callout-title">clamp() Formula Cheat Sheet</div><p>A useful formula: <code>clamp(min, preferred, max)</code> where preferred = <code>min + (max - min) * ((100vw - min-viewport) / (max-viewport - min-viewport))</code>. For practical use, try: <code>clamp(1rem, 0.5rem + 2vw, 2rem)</code>. The <code>0.5rem + 2vw</code> creates a more controlled scaling curve than <code>vw</code> alone.</p></div>
+</section>
+
+<!-- ============================================ -->
+<!-- RESPONSIVE IMAGES -->
+<!-- ============================================ -->
+<section id="responsive-images" class="section">
+<h2>Responsive Images</h2>
+<p>Images that adapt to their container and look great on all screen sizes.</p>
+
+<div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="cmt">/* The essential responsive image rule */</span>
+<span class="sel">img</span> {
+  <span class="prop">max-width</span>: <span class="num">100%</span>;     <span class="cmt">/* never overflow container */</span>
+  <span class="prop">height</span>: <span class="val">auto</span>;          <span class="cmt">/* maintain aspect ratio */</span>
+  <span class="prop">display</span>: <span class="val">block</span>;        <span class="cmt">/* remove inline spacing */</span>
+}
+
+<span class="cmt">/* object-fit: control how images fill their box */</span>
+<span class="sel">.card-image</span> {
+  <span class="prop">width</span>: <span class="num">100%</span>;
+  <span class="prop">height</span>: <span class="num">200px</span>;
+  <span class="prop">object-fit</span>: <span class="val">cover</span>;     <span class="cmt">/* fill box, crop excess */</span>
+  <span class="prop">object-fit</span>: <span class="val">contain</span>;   <span class="cmt">/* fit inside box, may letterbox */</span>
+  <span class="prop">object-fit</span>: <span class="val">fill</span>;      <span class="cmt">/* stretch to fill (distorts) */</span>
+  <span class="prop">object-fit</span>: <span class="val">none</span>;      <span class="cmt">/* natural size, may crop */</span>
+  <span class="prop">object-position</span>: <span class="val">center top</span>;  <span class="cmt">/* position within the box */</span>
+}
+
+<span class="cmt">/* aspect-ratio: maintain proportions */</span>
+<span class="sel">.video-container</span> {
+  <span class="prop">width</span>: <span class="num">100%</span>;
+  <span class="prop">aspect-ratio</span>: <span class="num">16</span> / <span class="num">9</span>;  <span class="cmt">/* always 16:9 */</span>
+}
+
+<span class="sel">.avatar</span> {
+  <span class="prop">width</span>: <span class="num">80px</span>;
+  <span class="prop">aspect-ratio</span>: <span class="num">1</span>;       <span class="cmt">/* perfect square */</span>
+  <span class="prop">border-radius</span>: <span class="num">50%</span>;     <span class="cmt">/* circle */</span>
+  <span class="prop">object-fit</span>: <span class="val">cover</span>;
+}
+</pre></div>
+
+<div class="live-example"><div class="live-example-label">Live Example — object-fit Comparison</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:1rem;">
+  <div>
+    <p style="font-size:0.75rem;font-weight:600;text-align:center;margin-bottom:0.4rem;">object-fit: cover</p>
+    <div style="width:100%;aspect-ratio:1;background:linear-gradient(135deg,#6366f1 30%,#a78bfa 50%,#c4b5fd 70%);border-radius:6px;object-fit:cover;display:flex;align-items:center;justify-content:center;">
+      <span style="color:#fff;font-size:0.7rem;text-shadow:0 1px 3px rgba(0,0,0,0.3);">Fills &amp; crops</span>
+    </div>
+  </div>
+  <div>
+    <p style="font-size:0.75rem;font-weight:600;text-align:center;margin-bottom:0.4rem;">object-fit: contain</p>
+    <div style="width:100%;aspect-ratio:1;background:var(--code-bg);border-radius:6px;display:flex;align-items:center;justify-content:center;border:1px solid var(--border);">
+      <div style="width:60%;height:80%;background:linear-gradient(135deg,#6366f1,#a78bfa);border-radius:4px;display:flex;align-items:center;justify-content:center;">
+        <span style="color:#fff;font-size:0.65rem;">Fits inside</span>
+      </div>
+    </div>
+  </div>
+  <div>
+    <p style="font-size:0.75rem;font-weight:600;text-align:center;margin-bottom:0.4rem;">aspect-ratio: 16/9</p>
+    <div style="width:100%;aspect-ratio:16/9;background:linear-gradient(135deg,#8b5cf6,#c4b5fd);border-radius:6px;display:flex;align-items:center;justify-content:center;">
+      <span style="color:#fff;font-size:0.7rem;">16:9</span>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="callout tip"><div class="callout-title">Always Set aspect-ratio on Images</div><p>Set <code>aspect-ratio</code> on images to prevent layout shift while they load. The browser reserves the correct space before the image downloads, resulting in a much smoother loading experience (better CLS score).</p></div>
+</section>
+
+<!-- ============================================ -->
+<!-- RESPONSIVE GRID -->
+<!-- ============================================ -->
+<section id="responsive-grid" class="section">
+<h2>Responsive Grid Pattern</h2>
+<p>The most powerful responsive pattern: a CSS Grid that auto-adjusts columns without any media queries.</p>
+
+<div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="cmt">/* The auto-responsive grid — no media queries! */</span>
+<span class="sel">.auto-grid</span> {
+  <span class="prop">display</span>: <span class="val">grid</span>;
+  <span class="prop">grid-template-columns</span>: <span class="fn">repeat</span>(
+    <span class="val">auto-fit</span>,
+    <span class="fn">minmax</span>(<span class="fn">min</span>(<span class="num">100%</span>, <span class="num">300px</span>), <span class="num">1fr</span>)
+  );
+  <span class="prop">gap</span>: <span class="num">1.5rem</span>;
+}
+
+<span class="cmt">/*
+  How it works:
+  - auto-fit: create as many columns as fit
+  - min(100%, 300px): prevents overflow on small screens
+  - 1fr: columns grow to fill available space
+
+  Result:
+  - Wide screen: 4+ columns
+  - Medium screen: 2-3 columns
+  - Small screen: 1 column
+  - ALL with zero media queries!
+*/</span>
+</pre></div>
+
+<div class="live-example"><div class="live-example-label">Live Example — Auto-Responsive Grid (Resize Browser!)</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr));gap:1rem;">
+  <div style="background:var(--code-bg);border:1px solid var(--border);border-radius:8px;padding:1.25rem;text-align:center;">
+    <div style="width:40px;height:40px;border-radius:8px;background:linear-gradient(135deg,#6366f1,#8b5cf6);margin:0 auto 0.75rem;"></div>
+    <div style="font-weight:600;font-size:0.85rem;margin-bottom:0.25rem;">Design</div>
+    <p style="font-size:0.75rem;opacity:0.6;margin:0;">Adaptive layouts</p>
+  </div>
+  <div style="background:var(--code-bg);border:1px solid var(--border);border-radius:8px;padding:1.25rem;text-align:center;">
+    <div style="width:40px;height:40px;border-radius:8px;background:linear-gradient(135deg,#8b5cf6,#a78bfa);margin:0 auto 0.75rem;"></div>
+    <div style="font-weight:600;font-size:0.85rem;margin-bottom:0.25rem;">Develop</div>
+    <p style="font-size:0.75rem;opacity:0.6;margin:0;">Clean code</p>
+  </div>
+  <div style="background:var(--code-bg);border:1px solid var(--border);border-radius:8px;padding:1.25rem;text-align:center;">
+    <div style="width:40px;height:40px;border-radius:8px;background:linear-gradient(135deg,#a78bfa,#c4b5fd);margin:0 auto 0.75rem;"></div>
+    <div style="font-weight:600;font-size:0.85rem;margin-bottom:0.25rem;">Deploy</div>
+    <p style="font-size:0.75rem;opacity:0.6;margin:0;">Ship fast</p>
+  </div>
+  <div style="background:var(--code-bg);border:1px solid var(--border);border-radius:8px;padding:1.25rem;text-align:center;">
+    <div style="width:40px;height:40px;border-radius:8px;background:linear-gradient(135deg,#c4b5fd,#ddd6fe);margin:0 auto 0.75rem;"></div>
+    <div style="font-weight:600;font-size:0.85rem;margin-bottom:0.25rem;">Iterate</div>
+    <p style="font-size:0.75rem;opacity:0.6;margin:0;">Improve always</p>
+  </div>
+</div>
+</div>
+
+<div class="callout info"><div class="callout-title">min() Inside minmax()</div><p>Using <code>minmax(min(100%, 300px), 1fr)</code> instead of just <code>minmax(300px, 1fr)</code> prevents horizontal overflow on screens smaller than 300px. The <code>min()</code> function picks whichever is smaller: 100% of the container or 300px.</p></div>
+</section>
+
+<!-- ============================================ -->
+<!-- CONTAINER QUERIES -->
+<!-- ============================================ -->
+<section id="container-queries" class="section">
+<h2>Container Queries</h2>
+<p>The biggest addition to responsive CSS since media queries. Style elements based on their <strong>container's</strong> size, not the viewport. Perfect for reusable components.</p>
+
+<div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="cmt">/* Step 1: Define a containment context */</span>
+<span class="sel">.card-wrapper</span> {
+  <span class="prop">container-type</span>: <span class="val">inline-size</span>;  <span class="cmt">/* enable container queries */</span>
+  <span class="prop">container-name</span>: <span class="val">card</span>;          <span class="cmt">/* optional: give it a name */</span>
+}
+
+<span class="cmt">/* Shorthand */</span>
+<span class="sel">.card-wrapper</span> {
+  <span class="prop">container</span>: <span class="val">card</span> / <span class="val">inline-size</span>;
+}
+
+<span class="cmt">/* Step 2: Write container queries */</span>
+<span class="at">@container</span> card (<span class="prop">min-width</span>: <span class="num">400px</span>) {
+  <span class="sel">.card</span> {
+    <span class="prop">display</span>: <span class="val">flex</span>;
+    <span class="prop">gap</span>: <span class="num">1rem</span>;
+  }
+}
+
+<span class="at">@container</span> card (<span class="prop">min-width</span>: <span class="num">600px</span>) {
+  <span class="sel">.card</span> {
+    <span class="prop">font-size</span>: <span class="num">1.25rem</span>;
+  }
+}
+
+<span class="cmt">/* Without name: queries nearest container ancestor */</span>
+<span class="at">@container</span> (<span class="prop">min-width</span>: <span class="num">300px</span>) {
+  <span class="sel">.card-title</span> { <span class="prop">font-size</span>: <span class="num">1.5rem</span>; }
+}
+</pre></div>
+
+<div class="live-example"><div class="live-example-label">Live Example — Container Queries Concept</div>
+<div style="display:grid;grid-template-columns:1fr 2fr;gap:1rem;">
+  <div style="background:var(--code-bg);border:1px solid var(--border);border-radius:8px;padding:1rem;">
+    <div style="font-size:0.7rem;opacity:0.5;margin-bottom:0.5rem;">Narrow container</div>
+    <div style="background:var(--accent);color:#fff;padding:0.75rem;border-radius:6px;text-align:center;">
+      <div style="font-weight:600;font-size:0.85rem;">Card Title</div>
+      <div style="font-size:0.7rem;opacity:0.8;margin-top:0.3rem;">Stacked layout</div>
+    </div>
+  </div>
+  <div style="background:var(--code-bg);border:1px solid var(--border);border-radius:8px;padding:1rem;">
+    <div style="font-size:0.7rem;opacity:0.5;margin-bottom:0.5rem;">Wide container</div>
+    <div style="background:var(--accent);color:#fff;padding:0.75rem;border-radius:6px;display:flex;align-items:center;gap:1rem;">
+      <div style="width:50px;height:50px;border-radius:8px;background:rgba(255,255,255,0.2);flex-shrink:0;"></div>
+      <div>
+        <div style="font-weight:600;font-size:0.95rem;">Card Title</div>
+        <div style="font-size:0.75rem;opacity:0.8;">Horizontal layout in wider container</div>
+      </div>
+    </div>
+  </div>
+</div>
+<p style="font-size:0.75rem;opacity:0.6;margin-top:0.5rem;">Same component, different layout based on container width (not viewport).</p>
+</div>
+
+<div class="callout tip"><div class="callout-title">Container Query Units</div><p>Container queries come with new units: <code>cqw</code> (1% of container width), <code>cqh</code> (1% of container height), <code>cqi</code> (1% of inline size), <code>cqb</code> (1% of block size). Use them for truly component-relative sizing: <code>font-size: 5cqi</code>.</p></div>
+</section>
+
+<!-- ============================================ -->
+<!-- RESPONSIVE NAVIGATION -->
+<!-- ============================================ -->
+<section id="responsive-navigation" class="section">
+<h2>Responsive Navigation Pattern</h2>
+<p>The classic responsive nav: horizontal links on desktop, hamburger menu on mobile.</p>
+
+<div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="cmt">/* Mobile-first navigation */</span>
+<span class="sel">.nav</span> {
+  <span class="prop">display</span>: <span class="val">flex</span>;
+  <span class="prop">flex-wrap</span>: <span class="val">wrap</span>;
+  <span class="prop">justify-content</span>: <span class="val">space-between</span>;
+  <span class="prop">align-items</span>: <span class="val">center</span>;
+  <span class="prop">padding</span>: <span class="num">1rem</span>;
+}
+
+<span class="sel">.nav-logo</span> {
+  <span class="prop">font-weight</span>: <span class="num">700</span>;
+  <span class="prop">font-size</span>: <span class="num">1.25rem</span>;
+}
+
+<span class="sel">.nav-toggle</span> {
+  <span class="prop">display</span>: <span class="val">block</span>;           <span class="cmt">/* visible on mobile */</span>
+  <span class="prop">background</span>: <span class="val">none</span>;
+  <span class="prop">border</span>: <span class="val">none</span>;
+  <span class="prop">font-size</span>: <span class="num">1.5rem</span>;
+  <span class="prop">cursor</span>: <span class="val">pointer</span>;
+}
+
+<span class="sel">.nav-links</span> {
+  <span class="prop">display</span>: <span class="val">none</span>;             <span class="cmt">/* hidden on mobile */</span>
+  <span class="prop">width</span>: <span class="num">100%</span>;
+  <span class="prop">flex-direction</span>: <span class="val">column</span>;
+  <span class="prop">gap</span>: <span class="num">0.5rem</span>;
+  <span class="prop">padding-top</span>: <span class="num">1rem</span>;
+}
+
+<span class="sel">.nav-links.open</span> {
+  <span class="prop">display</span>: <span class="val">flex</span>;             <span class="cmt">/* show when toggled */</span>
+}
+
+<span class="at">@media</span> (<span class="prop">min-width</span>: <span class="num">768px</span>) {
+  <span class="sel">.nav-toggle</span> {
+    <span class="prop">display</span>: <span class="val">none</span>;           <span class="cmt">/* hide hamburger on desktop */</span>
+  }
+
+  <span class="sel">.nav-links</span> {
+    <span class="prop">display</span>: <span class="val">flex</span>;           <span class="cmt">/* always visible on desktop */</span>
+    <span class="prop">width</span>: <span class="val">auto</span>;
+    <span class="prop">flex-direction</span>: <span class="val">row</span>;
+    <span class="prop">gap</span>: <span class="num">1.5rem</span>;
+    <span class="prop">padding-top</span>: <span class="num">0</span>;
+  }
+}
+</pre></div>
+
+<div class="live-example"><div class="live-example-label">Live Example — Desktop Navigation</div>
+<div style="display:flex;justify-content:space-between;align-items:center;background:var(--code-bg);padding:0.75rem 1.5rem;border-radius:8px;">
+  <div style="font-weight:700;font-size:1.1rem;color:var(--accent);">Brand</div>
+  <div style="display:flex;gap:1.5rem;align-items:center;">
+    <span style="font-size:0.9rem;opacity:0.8;">Home</span>
+    <span style="font-size:0.9rem;opacity:0.8;">Products</span>
+    <span style="font-size:0.9rem;opacity:0.8;">About</span>
+    <span style="font-size:0.9rem;opacity:0.8;">Blog</span>
+    <span style="background:var(--accent);color:#fff;padding:0.4rem 1rem;border-radius:6px;font-size:0.85rem;font-weight:500;">Contact</span>
+  </div>
+</div>
+</div>
+
+<div class="live-example"><div class="live-example-label">Live Example — Mobile Navigation (Expanded)</div>
+<div style="background:var(--code-bg);border-radius:8px;overflow:hidden;max-width:360px;">
+  <div style="display:flex;justify-content:space-between;align-items:center;padding:0.75rem 1rem;">
+    <div style="font-weight:700;font-size:1rem;color:var(--accent);">Brand</div>
+    <div style="font-size:1.3rem;cursor:pointer;opacity:0.7;">&#9776;</div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:0.25rem;padding:0.5rem 1rem 1rem;border-top:1px solid var(--border);">
+    <span style="padding:0.5rem 0;font-size:0.9rem;opacity:0.8;border-bottom:1px solid var(--border);">Home</span>
+    <span style="padding:0.5rem 0;font-size:0.9rem;opacity:0.8;border-bottom:1px solid var(--border);">Products</span>
+    <span style="padding:0.5rem 0;font-size:0.9rem;opacity:0.8;border-bottom:1px solid var(--border);">About</span>
+    <span style="padding:0.5rem 0;font-size:0.9rem;opacity:0.8;border-bottom:1px solid var(--border);">Blog</span>
+    <span style="background:var(--accent);color:#fff;padding:0.5rem;border-radius:6px;font-size:0.85rem;text-align:center;margin-top:0.5rem;font-weight:500;">Contact</span>
+  </div>
+</div>
+</div>
+</section>
+
+<!-- ============================================ -->
+<!-- GOTCHAS -->
+<!-- ============================================ -->
+<section id="gotchas" class="section">
+<h2>Gotchas</h2>
+
+<div class="callout gotcha"><div class="callout-title">Forgetting the Viewport Meta Tag</div><p>Without <code>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</code>, no amount of media queries will make your site responsive on mobile. This is the number one cause of "my media queries don't work on phones."</p></div>
+
+<div class="callout gotcha"><div class="callout-title">Using px in Media Queries</div><p>Media queries with <code>px</code> don't respond to user zoom settings. Consider using <code>em</code> for breakpoints: <code>@media (min-width: 48em)</code> instead of <code>768px</code>. This respects the user's browser font-size setting.</p></div>
+
+<div class="callout gotcha"><div class="callout-title">Horizontal Scroll on Mobile</div><p>Common causes: elements with fixed widths wider than the viewport, 100vw including scrollbar width, absolute positioning going off-screen. Debug with <code>* { outline: 1px solid red; }</code> to find the overflow culprit. Quick fix: <code>body { overflow-x: hidden; }</code> (but fix the root cause).</p></div>
+
+<div class="callout gotcha"><div class="callout-title">100vw Includes the Scrollbar</div><p><code>100vw</code> includes the width of the vertical scrollbar, which can cause horizontal overflow. Use <code>width: 100%</code> instead of <code>width: 100vw</code> for full-width elements, or use the newer <code>100dvw</code> unit.</p></div>
+
+<div class="callout gotcha"><div class="callout-title">Touch Targets Too Small</div><p>Apple and Google both recommend minimum 44x44px touch targets. Small buttons and links are a major mobile usability issue. Always test with <code>@media (pointer: coarse)</code> to increase target sizes on touch devices.</p></div>
+
+<div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="cmt">/* Ensure accessible touch targets */</span>
+<span class="at">@media</span> (<span class="prop">pointer</span>: <span class="val">coarse</span>) {
+  <span class="sel">button</span>,
+  <span class="sel">a</span>,
+  <span class="sel">input</span>,
+  <span class="sel">select</span> {
+    <span class="prop">min-height</span>: <span class="num">44px</span>;
+    <span class="prop">min-width</span>: <span class="num">44px</span>;
+  }
+}
+</pre></div>
+</section>
+
+<!-- ============================================ -->
+<!-- PRO TIPS -->
+<!-- ============================================ -->
+<section id="pro-tips" class="section">
+<h2>Pro Tips</h2>
+
+<div class="callout tip"><div class="callout-title">The "Intrinsic Design" Approach</div><p>Modern responsive design is moving beyond breakpoints. Combine <code>clamp()</code>, <code>min()</code>, <code>max()</code>, CSS Grid with <code>auto-fit</code>/<code>minmax()</code>, and container queries to create layouts that are intrinsically responsive — they adapt without a single media query.</p></div>
+
+<div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="cmt">/* A fully responsive layout with ZERO media queries */</span>
+<span class="sel">.page</span> {
+  <span class="prop">max-width</span>: <span class="fn">min</span>(<span class="num">90%</span>, <span class="num">1200px</span>);
+  <span class="prop">margin</span>: <span class="num">0</span> <span class="val">auto</span>;
+  <span class="prop">padding</span>: <span class="fn">clamp</span>(<span class="num">1rem</span>, <span class="num">5vw</span>, <span class="num">3rem</span>);
+}
+
+<span class="sel">.page h1</span> {
+  <span class="prop">font-size</span>: <span class="fn">clamp</span>(<span class="num">1.5rem</span>, <span class="num">4vw</span>, <span class="num">3rem</span>);
+}
+
+<span class="sel">.card-grid</span> {
+  <span class="prop">display</span>: <span class="val">grid</span>;
+  <span class="prop">grid-template-columns</span>: <span class="fn">repeat</span>(
+    <span class="val">auto-fit</span>,
+    <span class="fn">minmax</span>(<span class="fn">min</span>(<span class="num">100%</span>, <span class="num">300px</span>), <span class="num">1fr</span>)
+  );
+  <span class="prop">gap</span>: <span class="fn">clamp</span>(<span class="num">0.75rem</span>, <span class="num">2vw</span>, <span class="num">1.5rem</span>);
+}
+</pre></div>
+
+<div class="callout tip"><div class="callout-title">Test on Real Devices</div><p>Browser DevTools device emulation is useful but imperfect. Real devices have different rendering engines, touch behaviors, and viewport quirks (especially iOS Safari). Use services like BrowserStack for comprehensive testing, and always test on at least one real phone.</p></div>
+
+<div class="callout tip"><div class="callout-title">Use Logical Properties for Internationalization</div><p>Instead of <code>margin-left</code>, use <code>margin-inline-start</code>. Instead of <code>width</code>, use <code>inline-size</code>. Logical properties automatically adapt to different writing modes (RTL languages, vertical text), making your responsive design truly global.</p></div>
+
+<div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="cmt">/* Physical (breaks in RTL) */</span>
+<span class="sel">.sidebar</span> {
+  <span class="prop">margin-left</span>: <span class="num">2rem</span>;
+  <span class="prop">padding-right</span>: <span class="num">1rem</span>;
+  <span class="prop">border-left</span>: <span class="num">3px</span> <span class="val">solid</span> <span class="val">blue</span>;
+}
+
+<span class="cmt">/* Logical (works in all directions) */</span>
+<span class="sel">.sidebar</span> {
+  <span class="prop">margin-inline-start</span>: <span class="num">2rem</span>;
+  <span class="prop">padding-inline-end</span>: <span class="num">1rem</span>;
+  <span class="prop">border-inline-start</span>: <span class="num">3px</span> <span class="val">solid</span> <span class="val">blue</span>;
+}
+</pre></div>
+
+<div class="callout tip"><div class="callout-title">Performance Budget</div><p>Responsive images are the biggest performance opportunity. Use the HTML <code>&lt;picture&gt;</code> element or <code>srcset</code> attribute to serve appropriately sized images. A 2000px hero image on a 375px phone wastes enormous bandwidth. Use <code>loading="lazy"</code> for below-the-fold images.</p></div>
+
+<div class="code-block"><div class="code-header"><span>HTML</span><button class="copy-btn">Copy</button></div><pre>
+<span class="cmt">&lt;!-- Responsive images with srcset --&gt;</span>
+&lt;<span class="kw">img</span>
+  <span class="prop">src</span>=<span class="str">"image-800.jpg"</span>
+  <span class="prop">srcset</span>=<span class="str">"image-400.jpg 400w,
+         image-800.jpg 800w,
+         image-1200.jpg 1200w"</span>
+  <span class="prop">sizes</span>=<span class="str">"(max-width: 600px) 100vw,
+        (max-width: 1200px) 50vw,
+        33vw"</span>
+  <span class="prop">alt</span>=<span class="str">"Description"</span>
+  <span class="prop">loading</span>=<span class="str">"lazy"</span>
+&gt;
+</pre></div>
+</section>
+
+<div class="topic-nav"><a href="07-css-grid.html"><span class="label">Previous</span><span class="title">CSS Grid</span></a><a href="09-pseudo-classes-elements.html" class="next"><span class="label">Next</span><span class="title">Pseudo-Classes &amp; Elements</span></a></div></main>
+<script src="script.js"></script></body></html>

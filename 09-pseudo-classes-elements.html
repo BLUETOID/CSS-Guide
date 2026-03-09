@@ -1,0 +1,933 @@
+<!DOCTYPE html><html lang="en" data-theme="dark"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Pseudo-Classes &amp; Pseudo-Elements — CSS Reference Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet"><link rel="stylesheet" href="styles.css">
+</head><body>
+<div id="progress"></div>
+<header class="header"><button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">&#9776;</button><h1><span>CSS</span> Reference Guide</h1><div class="header-nav"><a href="index.html">All Topics</a></div><button class="theme-toggle" onclick="toggleTheme()">&#9790; Dark</button></header>
+
+<nav class="sidebar" id="sidebar">
+  <a href="index.html" class="nav-back">&#8592; All Topics</a>
+  <div class="nav-group">
+    <div class="nav-group-title">On This Page</div>
+    <a href="#user-action">User-Action Pseudo-Classes</a>
+    <a href="#structural">Structural Pseudo-Classes</a>
+    <a href="#nth-child">The an+b Formula</a>
+    <a href="#functional">Functional Pseudo-Classes</a>
+    <a href="#has">The :has() Selector</a>
+    <a href="#form-states">Form Pseudo-Classes</a>
+    <a href="#pseudo-elements">Pseudo-Elements</a>
+    <a href="#before-after">::before &amp; ::after</a>
+    <a href="#text-pseudo-elements">Text Pseudo-Elements</a>
+    <a href="#other-pseudo-elements">Other Pseudo-Elements</a>
+    <a href="#gotchas">Gotchas</a>
+    <a href="#pro-tips">Pro Tips</a>
+  </div>
+</nav>
+
+<main class="main">
+  <div class="page-hero">
+    <h1>Pseudo-Classes &amp; Pseudo-Elements</h1>
+    <p>Select elements based on state, position, and structure — then style parts of elements that don't exist in the DOM. Pseudo-classes and pseudo-elements unlock powerful styling without extra markup.</p>
+    <div class="tags"><span>Selectors</span><span>Pseudo-Classes</span><span>Pseudo-Elements</span><span>Interactive</span><span>Structural</span></div>
+  </div>
+
+  <!-- ============================================================
+       SECTION 1: USER-ACTION PSEUDO-CLASSES
+       ============================================================ -->
+  <div class="section" id="user-action">
+    <h2>User-Action Pseudo-Classes</h2>
+    <p>These pseudo-classes respond to how the user interacts with elements. They are the foundation of interactive CSS — enabling hover effects, active states, focus rings, and visited link styling.</p>
+
+    <h3>:hover</h3>
+    <p>Applies when the user's pointer is over the element. The most commonly used interactive pseudo-class.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="sel">a</span><span class="sel">:hover</span> {
+  <span class="prop">color</span>: <span class="val">coral</span>;
+  <span class="prop">text-decoration</span>: <span class="val">underline</span>;
+}
+
+<span class="sel">.card</span><span class="sel">:hover</span> {
+  <span class="prop">transform</span>: <span class="fn">translateY</span>(<span class="num">-4px</span>);
+  <span class="prop">box-shadow</span>: <span class="num">0</span> <span class="num">8px</span> <span class="num">24px</span> <span class="fn">rgba</span>(<span class="num">0</span>, <span class="num">0</span>, <span class="num">0</span>, <span class="num">0.15</span>);
+}</pre></div>
+
+    <div class="live-example">
+      <div class="live-example-label">Live Example — :hover Effect</div>
+      <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+        <button style="padding: 0.75rem 1.5rem; border: 2px solid #6c63ff; background: transparent; color: #6c63ff; border-radius: 8px; font-size: 1rem; cursor: pointer; transition: all 0.3s ease; font-family: inherit;" onmouseover="this.style.background='#6c63ff'; this.style.color='#fff'; this.style.transform='translateY(-2px)'" onmouseout="this.style.background='transparent'; this.style.color='#6c63ff'; this.style.transform='translateY(0)'">Hover Me</button>
+        <button style="padding: 0.75rem 1.5rem; border: 2px solid #00c9a7; background: transparent; color: #00c9a7; border-radius: 8px; font-size: 1rem; cursor: pointer; transition: all 0.3s ease; font-family: inherit;" onmouseover="this.style.background='#00c9a7'; this.style.color='#fff'; this.style.boxShadow='0 6px 20px rgba(0,201,167,0.4)'" onmouseout="this.style.background='transparent'; this.style.color='#00c9a7'; this.style.boxShadow='none'">Hover for Glow</button>
+        <div style="width: 80px; height: 80px; background: #6c63ff; border-radius: 8px; transition: all 0.4s ease; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 0.8rem;" onmouseover="this.style.borderRadius='50%'; this.style.background='#00c9a7'" onmouseout="this.style.borderRadius='8px'; this.style.background='#6c63ff'">Hover!</div>
+      </div>
+    </div>
+
+    <h3>:active</h3>
+    <p>Applies while an element is being activated — typically while a mouse button is pressed down on it.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="sel">.btn</span><span class="sel">:active</span> {
+  <span class="prop">transform</span>: <span class="fn">scale</span>(<span class="num">0.95</span>);
+  <span class="prop">box-shadow</span>: <span class="val">inset</span> <span class="num">0</span> <span class="num">2px</span> <span class="num">4px</span> <span class="fn">rgba</span>(<span class="num">0</span>, <span class="num">0</span>, <span class="num">0</span>, <span class="num">0.2</span>);
+}</pre></div>
+
+    <div class="live-example">
+      <div class="live-example-label">Live Example — :active Press Effect</div>
+      <button style="padding: 0.75rem 2rem; background: #6c63ff; color: #fff; border: none; border-radius: 8px; font-size: 1rem; cursor: pointer; transition: all 0.1s ease; font-family: inherit; box-shadow: 0 4px 0 #4a42d4;" onmousedown="this.style.transform='translateY(4px)'; this.style.boxShadow='0 0px 0 #4a42d4'" onmouseup="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 0 #4a42d4'" onmouseleave="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 0 #4a42d4'">Press Me Down!</button>
+    </div>
+
+    <h3>:link &amp; :visited</h3>
+    <p><code>:link</code> selects unvisited links. <code>:visited</code> selects links that have been visited. Together they let you style links based on browsing history.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="sel">a</span><span class="sel">:link</span> {
+  <span class="prop">color</span>: <span class="val">#6c63ff</span>;
+}
+
+<span class="sel">a</span><span class="sel">:visited</span> {
+  <span class="prop">color</span>: <span class="val">#9b59b6</span>;
+}
+
+<span class="cmt">/* LVHA order: :link, :visited, :hover, :active */</span></pre></div>
+
+    <div class="callout info">
+      <div class="callout-title">LVHA Order</div>
+      <p>Always declare link pseudo-classes in <strong>L-V-H-A</strong> order: <code>:link</code>, <code>:visited</code>, <code>:hover</code>, <code>:active</code>. Because of CSS specificity rules, changing this order can cause unexpected overrides. A helpful mnemonic: <em>"Love Hate"</em> (LoVe HAte).</p>
+    </div>
+
+    <h3>:focus</h3>
+    <p>Applies when an element has received focus — by clicking, tapping, or tabbing to it. Essential for keyboard accessibility.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="sel">input</span><span class="sel">:focus</span> {
+  <span class="prop">outline</span>: <span class="num">2px</span> <span class="val">solid</span> <span class="val">#6c63ff</span>;
+  <span class="prop">outline-offset</span>: <span class="num">2px</span>;
+  <span class="prop">border-color</span>: <span class="val">#6c63ff</span>;
+}</pre></div>
+
+    <div class="live-example">
+      <div class="live-example-label">Live Example — :focus Styling</div>
+      <div style="display: flex; flex-direction: column; gap: 0.75rem; max-width: 320px;">
+        <input type="text" placeholder="Click or tab here..." style="padding: 0.6rem 1rem; border: 2px solid #444; background: transparent; color: inherit; border-radius: 6px; font-size: 0.95rem; outline: none; transition: all 0.2s; font-family: inherit;" onfocus="this.style.borderColor='#6c63ff'; this.style.boxShadow='0 0 0 3px rgba(108,99,255,0.3)'" onblur="this.style.borderColor='#444'; this.style.boxShadow='none'">
+        <input type="text" placeholder="Tab to me next..." style="padding: 0.6rem 1rem; border: 2px solid #444; background: transparent; color: inherit; border-radius: 6px; font-size: 0.95rem; outline: none; transition: all 0.2s; font-family: inherit;" onfocus="this.style.borderColor='#00c9a7'; this.style.boxShadow='0 0 0 3px rgba(0,201,167,0.3)'" onblur="this.style.borderColor='#444'; this.style.boxShadow='none'">
+      </div>
+    </div>
+
+    <h3>:focus-visible</h3>
+    <p>Like <code>:focus</code>, but only applies when focus should be <em>visually</em> indicated — typically for keyboard navigation, not mouse clicks. This is the modern best practice for focus rings.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="cmt">/* Remove default focus ring for mouse users */</span>
+<span class="sel">.btn</span><span class="sel">:focus</span> {
+  <span class="prop">outline</span>: <span class="val">none</span>;
+}
+
+<span class="cmt">/* Show focus ring only for keyboard users */</span>
+<span class="sel">.btn</span><span class="sel">:focus-visible</span> {
+  <span class="prop">outline</span>: <span class="num">2px</span> <span class="val">solid</span> <span class="val">#6c63ff</span>;
+  <span class="prop">outline-offset</span>: <span class="num">3px</span>;
+}</pre></div>
+
+    <div class="callout tip">
+      <div class="callout-title">Modern Focus Best Practice</div>
+      <p>Use <code>:focus-visible</code> instead of <code>:focus</code> for focus ring styling. This way, mouse users won't see the focus ring, but keyboard users will still get clear visual feedback. It's the best of both worlds for accessibility and aesthetics.</p>
+    </div>
+
+    <div class="live-example">
+      <div class="live-example-label">Live Example — :focus-visible (try tabbing vs clicking)</div>
+      <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+        <style>
+          .demo-focus-btn { padding: 0.75rem 1.5rem; background: #6c63ff; color: #fff; border: none; border-radius: 8px; font-size: 1rem; cursor: pointer; font-family: inherit; }
+          .demo-focus-btn:focus { outline: none; }
+          .demo-focus-btn:focus-visible { outline: 3px solid #00c9a7; outline-offset: 3px; }
+        </style>
+        <button class="demo-focus-btn">Click me (no ring)</button>
+        <button class="demo-focus-btn">Tab to me (ring!)</button>
+        <button class="demo-focus-btn">Try both!</button>
+      </div>
+      <p style="margin-top: 0.75rem; font-size: 0.85rem; opacity: 0.7;">Click a button — no outline. Now use <kbd>Tab</kbd> — you'll see the green focus ring appear.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       SECTION 2: STRUCTURAL PSEUDO-CLASSES
+       ============================================================ -->
+  <div class="section" id="structural">
+    <h2>Structural Pseudo-Classes</h2>
+    <p>Structural pseudo-classes select elements based on their position in the DOM tree — their relationship to parents, siblings, and the document itself.</p>
+
+    <h3>:first-child &amp; :last-child</h3>
+    <p>Select the first or last child element within a parent container.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="sel">li</span><span class="sel">:first-child</span> {
+  <span class="prop">font-weight</span>: <span class="val">bold</span>;
+  <span class="prop">color</span>: <span class="val">#6c63ff</span>;
+}
+
+<span class="sel">li</span><span class="sel">:last-child</span> {
+  <span class="prop">border-bottom</span>: <span class="val">none</span>;
+}</pre></div>
+
+    <div class="live-example">
+      <div class="live-example-label">Live Example — :first-child &amp; :last-child</div>
+      <ul style="list-style: none; padding: 0; max-width: 300px;">
+        <li style="padding: 0.6rem 1rem; border-bottom: 1px solid #333; font-weight: bold; color: #6c63ff;">First Item (styled)</li>
+        <li style="padding: 0.6rem 1rem; border-bottom: 1px solid #333;">Second Item</li>
+        <li style="padding: 0.6rem 1rem; border-bottom: 1px solid #333;">Third Item</li>
+        <li style="padding: 0.6rem 1rem; border-bottom: 1px solid #333;">Fourth Item</li>
+        <li style="padding: 0.6rem 1rem; font-weight: bold; color: #00c9a7;">Last Item (styled)</li>
+      </ul>
+    </div>
+
+    <h3>:only-child</h3>
+    <p>Matches an element that is the sole child of its parent — no siblings at all.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="sel">p</span><span class="sel">:only-child</span> {
+  <span class="prop">font-size</span>: <span class="num">1.25rem</span>;
+  <span class="prop">text-align</span>: <span class="val">center</span>;
+}</pre></div>
+  </div>
+
+  <!-- ============================================================
+       SECTION 3: NTH-CHILD FORMULA
+       ============================================================ -->
+  <div class="section" id="nth-child">
+    <h2>The :nth-child() an+b Formula</h2>
+    <p><code>:nth-child()</code> is one of the most powerful structural selectors. It accepts a formula of the form <strong>an+b</strong> where <em>a</em> is the cycle size and <em>b</em> is the offset.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="cmt">/* Every odd element */</span>
+<span class="sel">tr</span><span class="sel">:nth-child</span>(<span class="val">odd</span>) {
+  <span class="prop">background</span>: <span class="fn">rgba</span>(<span class="num">108</span>, <span class="num">99</span>, <span class="num">255</span>, <span class="num">0.08</span>);
+}
+
+<span class="cmt">/* Every even element */</span>
+<span class="sel">tr</span><span class="sel">:nth-child</span>(<span class="val">even</span>) {
+  <span class="prop">background</span>: <span class="fn">rgba</span>(<span class="num">108</span>, <span class="num">99</span>, <span class="num">255</span>, <span class="num">0.04</span>);
+}
+
+<span class="cmt">/* Every 3rd element */</span>
+<span class="sel">li</span><span class="sel">:nth-child</span>(<span class="num">3n</span>) {
+  <span class="prop">color</span>: <span class="val">#00c9a7</span>;
+}
+
+<span class="cmt">/* Every 3rd, starting at 1st (1, 4, 7, 10...) */</span>
+<span class="sel">li</span><span class="sel">:nth-child</span>(<span class="num">3n+1</span>) {
+  <span class="prop">color</span>: <span class="val">#6c63ff</span>;
+}
+
+<span class="cmt">/* First 3 items only */</span>
+<span class="sel">li</span><span class="sel">:nth-child</span>(<span class="num">-n+3</span>) {
+  <span class="prop">font-weight</span>: <span class="val">bold</span>;
+}</pre></div>
+
+    <h3>Understanding the Formula</h3>
+    <table style="width: 100%; border-collapse: collapse; margin: 1rem 0;">
+      <thead>
+        <tr>
+          <th style="text-align: left; padding: 0.75rem; border-bottom: 2px solid #444; color: #6c63ff;">Formula</th>
+          <th style="text-align: left; padding: 0.75rem; border-bottom: 2px solid #444; color: #6c63ff;">Matches</th>
+          <th style="text-align: left; padding: 0.75rem; border-bottom: 2px solid #444; color: #6c63ff;">Example Items</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td style="padding: 0.6rem 0.75rem; border-bottom: 1px solid #333;"><code>2n</code> or <code>even</code></td><td style="padding: 0.6rem 0.75rem; border-bottom: 1px solid #333;">Every even child</td><td style="padding: 0.6rem 0.75rem; border-bottom: 1px solid #333;">2, 4, 6, 8...</td></tr>
+        <tr><td style="padding: 0.6rem 0.75rem; border-bottom: 1px solid #333;"><code>2n+1</code> or <code>odd</code></td><td style="padding: 0.6rem 0.75rem; border-bottom: 1px solid #333;">Every odd child</td><td style="padding: 0.6rem 0.75rem; border-bottom: 1px solid #333;">1, 3, 5, 7...</td></tr>
+        <tr><td style="padding: 0.6rem 0.75rem; border-bottom: 1px solid #333;"><code>3n</code></td><td style="padding: 0.6rem 0.75rem; border-bottom: 1px solid #333;">Every 3rd</td><td style="padding: 0.6rem 0.75rem; border-bottom: 1px solid #333;">3, 6, 9, 12...</td></tr>
+        <tr><td style="padding: 0.6rem 0.75rem; border-bottom: 1px solid #333;"><code>3n+1</code></td><td style="padding: 0.6rem 0.75rem; border-bottom: 1px solid #333;">Every 3rd from 1st</td><td style="padding: 0.6rem 0.75rem; border-bottom: 1px solid #333;">1, 4, 7, 10...</td></tr>
+        <tr><td style="padding: 0.6rem 0.75rem; border-bottom: 1px solid #333;"><code>n+4</code></td><td style="padding: 0.6rem 0.75rem; border-bottom: 1px solid #333;">4th and onward</td><td style="padding: 0.6rem 0.75rem; border-bottom: 1px solid #333;">4, 5, 6, 7...</td></tr>
+        <tr><td style="padding: 0.6rem 0.75rem; border-bottom: 1px solid #333;"><code>-n+3</code></td><td style="padding: 0.6rem 0.75rem; border-bottom: 1px solid #333;">First 3 only</td><td style="padding: 0.6rem 0.75rem; border-bottom: 1px solid #333;">1, 2, 3</td></tr>
+        <tr><td style="padding: 0.6rem 0.75rem;"><code>5</code></td><td style="padding: 0.6rem 0.75rem;">Only the 5th</td><td style="padding: 0.6rem 0.75rem;">5</td></tr>
+      </tbody>
+    </table>
+
+    <div class="live-example">
+      <div class="live-example-label">Live Example — :nth-child() with Different Formulas</div>
+      <p style="margin-bottom: 0.5rem; font-size: 0.85rem; opacity: 0.8;"><strong>:nth-child(3n+1)</strong> — highlighted in purple (items 1, 4, 7, 10):</p>
+      <div style="display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 1rem;">
+        <span style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 6px; font-size: 0.85rem; font-weight: 600; background: #6c63ff; color: #fff;">1</span>
+        <span style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 6px; font-size: 0.85rem; background: rgba(255,255,255,0.08); color: inherit;">2</span>
+        <span style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 6px; font-size: 0.85rem; background: rgba(255,255,255,0.08); color: inherit;">3</span>
+        <span style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 6px; font-size: 0.85rem; font-weight: 600; background: #6c63ff; color: #fff;">4</span>
+        <span style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 6px; font-size: 0.85rem; background: rgba(255,255,255,0.08); color: inherit;">5</span>
+        <span style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 6px; font-size: 0.85rem; background: rgba(255,255,255,0.08); color: inherit;">6</span>
+        <span style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 6px; font-size: 0.85rem; font-weight: 600; background: #6c63ff; color: #fff;">7</span>
+        <span style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 6px; font-size: 0.85rem; background: rgba(255,255,255,0.08); color: inherit;">8</span>
+        <span style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 6px; font-size: 0.85rem; background: rgba(255,255,255,0.08); color: inherit;">9</span>
+        <span style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 6px; font-size: 0.85rem; font-weight: 600; background: #6c63ff; color: #fff;">10</span>
+      </div>
+      <p style="margin-bottom: 0.5rem; font-size: 0.85rem; opacity: 0.8;"><strong>:nth-child(even)</strong> — highlighted in teal (items 2, 4, 6, 8, 10):</p>
+      <div style="display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 1rem;">
+        <span style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 6px; font-size: 0.85rem; background: rgba(255,255,255,0.08); color: inherit;">1</span>
+        <span style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 6px; font-size: 0.85rem; font-weight: 600; background: #00c9a7; color: #fff;">2</span>
+        <span style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 6px; font-size: 0.85rem; background: rgba(255,255,255,0.08); color: inherit;">3</span>
+        <span style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 6px; font-size: 0.85rem; font-weight: 600; background: #00c9a7; color: #fff;">4</span>
+        <span style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 6px; font-size: 0.85rem; background: rgba(255,255,255,0.08); color: inherit;">5</span>
+        <span style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 6px; font-size: 0.85rem; font-weight: 600; background: #00c9a7; color: #fff;">6</span>
+        <span style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 6px; font-size: 0.85rem; background: rgba(255,255,255,0.08); color: inherit;">7</span>
+        <span style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 6px; font-size: 0.85rem; font-weight: 600; background: #00c9a7; color: #fff;">8</span>
+        <span style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 6px; font-size: 0.85rem; background: rgba(255,255,255,0.08); color: inherit;">9</span>
+        <span style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 6px; font-size: 0.85rem; font-weight: 600; background: #00c9a7; color: #fff;">10</span>
+      </div>
+      <p style="margin-bottom: 0.5rem; font-size: 0.85rem; opacity: 0.8;"><strong>:nth-child(-n+3)</strong> — first 3 items only:</p>
+      <div style="display: flex; gap: 0.4rem; flex-wrap: wrap;">
+        <span style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 6px; font-size: 0.85rem; font-weight: 600; background: #ff6b6b; color: #fff;">1</span>
+        <span style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 6px; font-size: 0.85rem; font-weight: 600; background: #ff6b6b; color: #fff;">2</span>
+        <span style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 6px; font-size: 0.85rem; font-weight: 600; background: #ff6b6b; color: #fff;">3</span>
+        <span style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 6px; font-size: 0.85rem; background: rgba(255,255,255,0.08); color: inherit;">4</span>
+        <span style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 6px; font-size: 0.85rem; background: rgba(255,255,255,0.08); color: inherit;">5</span>
+        <span style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 6px; font-size: 0.85rem; background: rgba(255,255,255,0.08); color: inherit;">6</span>
+      </div>
+    </div>
+
+    <h3>:nth-of-type()</h3>
+    <p>Like <code>:nth-child()</code> but only counts elements of the <em>same type</em>. Very useful when you have mixed element types inside a container.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="cmt">/* Every odd paragraph, ignoring headings/divs */</span>
+<span class="sel">p</span><span class="sel">:nth-of-type</span>(<span class="val">odd</span>) {
+  <span class="prop">background</span>: <span class="fn">rgba</span>(<span class="num">108</span>, <span class="num">99</span>, <span class="num">255</span>, <span class="num">0.1</span>);
+}
+
+<span class="cmt">/* First heading of its type */</span>
+<span class="sel">h3</span><span class="sel">:first-of-type</span> {
+  <span class="prop">margin-top</span>: <span class="num">0</span>;
+}</pre></div>
+
+    <div class="live-example">
+      <div class="live-example-label">Live Example — :nth-child vs :nth-of-type</div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+        <div>
+          <p style="font-weight: 600; margin-bottom: 0.5rem; color: #6c63ff; font-size: 0.85rem;">:nth-child(2) — 2nd child regardless of type</p>
+          <div style="border: 1px solid #333; border-radius: 8px; padding: 0.75rem;">
+            <p style="padding: 0.3rem 0.6rem; margin: 0.2rem 0; border-radius: 4px;">h2 (1st child)</p>
+            <p style="padding: 0.3rem 0.6rem; margin: 0.2rem 0; border-radius: 4px; background: #6c63ff; color: #fff;">p (2nd child - MATCH)</p>
+            <p style="padding: 0.3rem 0.6rem; margin: 0.2rem 0; border-radius: 4px;">p (3rd child)</p>
+          </div>
+        </div>
+        <div>
+          <p style="font-weight: 600; margin-bottom: 0.5rem; color: #00c9a7; font-size: 0.85rem;">p:nth-of-type(2) — 2nd &lt;p&gt; element</p>
+          <div style="border: 1px solid #333; border-radius: 8px; padding: 0.75rem;">
+            <p style="padding: 0.3rem 0.6rem; margin: 0.2rem 0; border-radius: 4px;">h2 (skipped, not a p)</p>
+            <p style="padding: 0.3rem 0.6rem; margin: 0.2rem 0; border-radius: 4px;">p (1st of type)</p>
+            <p style="padding: 0.3rem 0.6rem; margin: 0.2rem 0; border-radius: 4px; background: #00c9a7; color: #fff;">p (2nd of type - MATCH)</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h3>:nth-last-child() &amp; :nth-last-of-type()</h3>
+    <p>Same as their counterparts but count <em>from the end</em> instead of the beginning.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="cmt">/* Last 2 items */</span>
+<span class="sel">li</span><span class="sel">:nth-last-child</span>(<span class="num">-n+2</span>) {
+  <span class="prop">opacity</span>: <span class="num">0.6</span>;
+}
+
+<span class="cmt">/* Second to last paragraph */</span>
+<span class="sel">p</span><span class="sel">:nth-last-of-type</span>(<span class="num">2</span>) {
+  <span class="prop">margin-bottom</span>: <span class="num">2rem</span>;
+}</pre></div>
+  </div>
+
+  <!-- ============================================================
+       SECTION 4: FUNCTIONAL PSEUDO-CLASSES
+       ============================================================ -->
+  <div class="section" id="functional">
+    <h2>Functional Pseudo-Classes: :not(), :is(), :where()</h2>
+
+    <h3>:not() — Negation</h3>
+    <p>Excludes elements that match the given selector. Extremely useful for applying styles to "everything except..."</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="cmt">/* All inputs except submit buttons */</span>
+<span class="sel">input</span><span class="sel">:not</span>(<span class="sel">[type="submit"]</span>) {
+  <span class="prop">border</span>: <span class="num">1px</span> <span class="val">solid</span> <span class="val">#ccc</span>;
+  <span class="prop">padding</span>: <span class="num">0.5rem</span>;
+}
+
+<span class="cmt">/* All list items except the last */</span>
+<span class="sel">li</span><span class="sel">:not</span>(<span class="sel">:last-child</span>) {
+  <span class="prop">border-bottom</span>: <span class="num">1px</span> <span class="val">solid</span> <span class="val">#eee</span>;
+}
+
+<span class="cmt">/* Modern :not() accepts multiple selectors */</span>
+<span class="sel">a</span><span class="sel">:not</span>(<span class="sel">.nav-link</span>, <span class="sel">.logo</span>) {
+  <span class="prop">text-decoration</span>: <span class="val">underline</span>;
+}</pre></div>
+
+    <div class="live-example">
+      <div class="live-example-label">Live Example — :not(:last-child) Borders</div>
+      <ul style="list-style: none; padding: 0; max-width: 280px;">
+        <li style="padding: 0.6rem 1rem; border-bottom: 1px solid #333;">Apple</li>
+        <li style="padding: 0.6rem 1rem; border-bottom: 1px solid #333;">Banana</li>
+        <li style="padding: 0.6rem 1rem; border-bottom: 1px solid #333;">Cherry</li>
+        <li style="padding: 0.6rem 1rem;">Date (no bottom border)</li>
+      </ul>
+    </div>
+
+    <h3>:is() — Matches-Any</h3>
+    <p>Groups selectors together. It takes the <strong>highest specificity</strong> of its arguments. Dramatically reduces repetition in complex selectors.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="cmt">/* Without :is() — repetitive */</span>
+<span class="sel">header a</span><span class="sel">:hover</span>,
+<span class="sel">nav a</span><span class="sel">:hover</span>,
+<span class="sel">footer a</span><span class="sel">:hover</span> {
+  <span class="prop">color</span>: <span class="val">#6c63ff</span>;
+}
+
+<span class="cmt">/* With :is() — clean and concise */</span>
+<span class="sel">:is</span>(<span class="sel">header</span>, <span class="sel">nav</span>, <span class="sel">footer</span>) <span class="sel">a</span><span class="sel">:hover</span> {
+  <span class="prop">color</span>: <span class="val">#6c63ff</span>;
+}
+
+<span class="cmt">/* Nested grouping */</span>
+<span class="sel">:is</span>(<span class="sel">h1</span>, <span class="sel">h2</span>, <span class="sel">h3</span>)<span class="sel">:is</span>(<span class="sel">:hover</span>, <span class="sel">:focus</span>) {
+  <span class="prop">color</span>: <span class="val">#00c9a7</span>;
+}</pre></div>
+
+    <h3>:where() — Zero-Specificity Grouping</h3>
+    <p>Identical to <code>:is()</code> in function, but its specificity is always <strong>zero</strong>. Perfect for defaults that are easy to override.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="cmt">/* These styles are easy to override because :where() = 0 specificity */</span>
+<span class="sel">:where</span>(<span class="sel">header</span>, <span class="sel">footer</span>) <span class="sel">a</span> {
+  <span class="prop">color</span>: <span class="val">inherit</span>;
+  <span class="prop">text-decoration</span>: <span class="val">none</span>;
+}
+
+<span class="cmt">/* This will easily override the above */</span>
+<span class="sel">a</span> {
+  <span class="prop">color</span>: <span class="val">#6c63ff</span>; <span class="cmt">/* wins, because a &gt; :where(...) a */</span>
+}</pre></div>
+
+    <div class="callout info">
+      <div class="callout-title">:is() vs :where() — Specificity Difference</div>
+      <p><code>:is(.card, #hero) p</code> has the specificity of <code>#hero p</code> (1-0-1) because <code>:is()</code> takes the highest specificity argument. <code>:where(.card, #hero) p</code> has specificity of just <code>p</code> (0-0-1) because <code>:where()</code> always contributes zero. Use <code>:is()</code> for normal styling, <code>:where()</code> for easily-overridable defaults and utility layers.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       SECTION 5: :has()
+       ============================================================ -->
+  <div class="section" id="has">
+    <h2>The :has() Selector — The "Parent Selector"</h2>
+    <p><code>:has()</code> is the long-awaited "parent selector" of CSS. It selects an element based on what it <em>contains</em>. This was previously impossible in CSS.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="cmt">/* Card that contains an image */</span>
+<span class="sel">.card</span><span class="sel">:has</span>(<span class="sel">img</span>) {
+  <span class="prop">padding-top</span>: <span class="num">0</span>;
+}
+
+<span class="cmt">/* Form with invalid inputs — highlight border */</span>
+<span class="sel">form</span><span class="sel">:has</span>(<span class="sel">input:invalid</span>) {
+  <span class="prop">border-color</span>: <span class="val">#ff6b6b</span>;
+}
+
+<span class="cmt">/* Figure that has a figcaption */</span>
+<span class="sel">figure</span><span class="sel">:has</span>(<span class="sel">figcaption</span>) {
+  <span class="prop">border</span>: <span class="num">1px</span> <span class="val">solid</span> <span class="val">#ddd</span>;
+  <span class="prop">padding</span>: <span class="num">1rem</span>;
+}
+
+<span class="cmt">/* Previous-sibling selector (h2 followed by p) */</span>
+<span class="sel">h2</span><span class="sel">:has</span>(<span class="sel">+ p</span>) {
+  <span class="prop">margin-bottom</span>: <span class="num">0.5rem</span>;
+}
+
+<span class="cmt">/* Highlight label when its input is focused */</span>
+<span class="sel">label</span><span class="sel">:has</span>(<span class="sel">+ input:focus</span>) {
+  <span class="prop">color</span>: <span class="val">#6c63ff</span>;
+}</pre></div>
+
+    <div class="live-example">
+      <div class="live-example-label">Live Example — :has() Parent Selector</div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; max-width: 500px;">
+        <style>
+          .has-card { padding: 1rem; border: 2px solid #333; border-radius: 8px; transition: all 0.3s; }
+          .has-card:has(img) { border-color: #6c63ff; background: rgba(108,99,255,0.05); }
+          .has-card:has(.badge) { border-color: #00c9a7; }
+        </style>
+        <div class="has-card">
+          <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='60' fill='%236c63ff'%3E%3Crect width='100' height='60' rx='4'/%3E%3Ctext x='50' y='35' text-anchor='middle' fill='white' font-size='12'%3Eimage%3C/text%3E%3C/svg%3E" alt="placeholder" style="width: 100%; border-radius: 4px;">
+          <p style="margin: 0.5rem 0 0; font-size: 0.85rem;">Card with image (purple border via :has)</p>
+        </div>
+        <div class="has-card">
+          <p style="margin: 0 0 0.5rem; font-size: 0.85rem;">Card without image (default border)</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout tip">
+      <div class="callout-title">:has() is Revolutionary</div>
+      <p><code>:has()</code> can replace many JavaScript patterns. Need to style a parent based on child state? Need to select a previous sibling? Need conditional layouts? <code>:has()</code> does it all purely in CSS. It's supported in all modern browsers as of late 2023.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       SECTION 6: FORM PSEUDO-CLASSES
+       ============================================================ -->
+  <div class="section" id="form-states">
+    <h2>Form Pseudo-Classes</h2>
+    <p>These pseudo-classes target form elements based on their current state — checked, disabled, valid, invalid, required, and more.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="cmt">/* Checked checkbox/radio */</span>
+<span class="sel">input</span><span class="sel">:checked</span> {
+  <span class="prop">accent-color</span>: <span class="val">#6c63ff</span>;
+}
+
+<span class="cmt">/* Disabled inputs */</span>
+<span class="sel">input</span><span class="sel">:disabled</span> {
+  <span class="prop">opacity</span>: <span class="num">0.5</span>;
+  <span class="prop">cursor</span>: <span class="val">not-allowed</span>;
+}
+
+<span class="cmt">/* Valid input (passes constraints) */</span>
+<span class="sel">input</span><span class="sel">:valid</span> {
+  <span class="prop">border-color</span>: <span class="val">#00c9a7</span>;
+}
+
+<span class="cmt">/* Invalid input (fails constraints) */</span>
+<span class="sel">input</span><span class="sel">:invalid</span> {
+  <span class="prop">border-color</span>: <span class="val">#ff6b6b</span>;
+}
+
+<span class="cmt">/* Required field */</span>
+<span class="sel">input</span><span class="sel">:required</span> {
+  <span class="prop">border-left</span>: <span class="num">3px</span> <span class="val">solid</span> <span class="val">#6c63ff</span>;
+}
+
+<span class="cmt">/* Placeholder currently shown */</span>
+<span class="sel">input</span><span class="sel">:placeholder-shown</span> {
+  <span class="prop">border-style</span>: <span class="val">dashed</span>;
+}</pre></div>
+
+    <div class="live-example">
+      <div class="live-example-label">Live Example — Interactive Form States</div>
+      <style>
+        .form-demo { max-width: 380px; }
+        .form-demo label { display: block; margin-bottom: 0.3rem; font-size: 0.85rem; font-weight: 500; }
+        .form-demo .field { margin-bottom: 1rem; }
+        .form-demo input[type="text"],
+        .form-demo input[type="email"] {
+          width: 100%; padding: 0.6rem 0.75rem; border: 2px solid #444; background: transparent;
+          color: inherit; border-radius: 6px; font-size: 0.9rem; outline: none; transition: all 0.2s;
+          box-sizing: border-box; font-family: inherit;
+        }
+        .form-demo input:focus { border-color: #6c63ff; box-shadow: 0 0 0 3px rgba(108,99,255,0.2); }
+        .form-demo input:valid:not(:placeholder-shown) { border-color: #00c9a7; }
+        .form-demo input:invalid:not(:placeholder-shown) { border-color: #ff6b6b; }
+        .form-demo input:disabled { opacity: 0.4; cursor: not-allowed; background: rgba(255,255,255,0.05); }
+        .form-demo input:required { border-left: 4px solid #6c63ff; }
+        .form-demo input[type="checkbox"] { accent-color: #6c63ff; width: 18px; height: 18px; vertical-align: middle; cursor: pointer; }
+        .form-demo .hint { font-size: 0.78rem; opacity: 0.6; margin-top: 0.2rem; }
+      </style>
+      <form class="form-demo" onsubmit="return false;">
+        <div class="field">
+          <label>Email (required, validated) *</label>
+          <input type="email" required placeholder="user@example.com">
+          <div class="hint">Type an invalid email to see :invalid (red). Valid email turns :valid (green).</div>
+        </div>
+        <div class="field">
+          <label>Name (required)</label>
+          <input type="text" required placeholder="Your name" minlength="2">
+          <div class="hint">This field has a left purple border (:required).</div>
+        </div>
+        <div class="field">
+          <label>Disabled Input</label>
+          <input type="text" disabled value="Cannot edit this">
+        </div>
+        <div class="field" style="display: flex; align-items: center; gap: 0.5rem;">
+          <input type="checkbox" id="demo-check">
+          <label for="demo-check" style="margin-bottom: 0; cursor: pointer;">Check me (:checked turns purple)</label>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       SECTION 7: PSEUDO-ELEMENTS
+       ============================================================ -->
+  <div class="section" id="pseudo-elements">
+    <h2>Pseudo-Elements</h2>
+    <p>Pseudo-elements let you style <em>specific parts</em> of an element, or insert content that doesn't exist in the HTML. They use <strong>double colons</strong> (<code>::</code>) to distinguish them from pseudo-classes (<code>:</code>).</p>
+
+    <div class="callout info">
+      <div class="callout-title">Double Colon (::) vs Single Colon (:)</div>
+      <p>The CSS3 spec uses <code>::</code> for pseudo-elements and <code>:</code> for pseudo-classes. Older pseudo-elements like <code>::before</code>, <code>::after</code>, <code>::first-line</code>, and <code>::first-letter</code> also accept single-colon syntax for backward compatibility, but always prefer the double-colon form in modern code.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       SECTION 8: ::before & ::after
+       ============================================================ -->
+  <div class="section" id="before-after">
+    <h2>::before &amp; ::after</h2>
+    <p>These insert a pseudo-element as the <strong>first child</strong> (<code>::before</code>) or <strong>last child</strong> (<code>::after</code>) of the selected element. The <code>content</code> property is <strong>required</strong> — without it, the pseudo-element won't render.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="cmt">/* Decorative quote marks */</span>
+<span class="sel">blockquote</span><span class="sel">::before</span> {
+  <span class="prop">content</span>: <span class="str">"\201C"</span>; <span class="cmt">/* left double quote */</span>
+  <span class="prop">font-size</span>: <span class="num">3rem</span>;
+  <span class="prop">color</span>: <span class="val">#6c63ff</span>;
+  <span class="prop">line-height</span>: <span class="num">0</span>;
+  <span class="prop">vertical-align</span>: <span class="val">-0.4em</span>;
+}
+
+<span class="cmt">/* Required field asterisk */</span>
+<span class="sel">.required</span><span class="sel">::after</span> {
+  <span class="prop">content</span>: <span class="str">" *"</span>;
+  <span class="prop">color</span>: <span class="val">#ff6b6b</span>;
+}
+
+<span class="cmt">/* External link icon */</span>
+<span class="sel">a[href^="http"]</span><span class="sel">::after</span> {
+  <span class="prop">content</span>: <span class="str">" \2197"</span>; <span class="cmt">/* north-east arrow */</span>
+  <span class="prop">font-size</span>: <span class="num">0.8em</span>;
+}
+
+<span class="cmt">/* Decorative underline */</span>
+<span class="sel">.fancy-title</span><span class="sel">::after</span> {
+  <span class="prop">content</span>: <span class="str">""</span>;
+  <span class="prop">display</span>: <span class="val">block</span>;
+  <span class="prop">width</span>: <span class="num">60px</span>;
+  <span class="prop">height</span>: <span class="num">3px</span>;
+  <span class="prop">background</span>: <span class="val">#6c63ff</span>;
+  <span class="prop">margin-top</span>: <span class="num">0.5rem</span>;
+}</pre></div>
+
+    <div class="callout gotcha">
+      <div class="callout-title">content is Required!</div>
+      <p>Both <code>::before</code> and <code>::after</code> require the <code>content</code> property. Even if you want an empty pseudo-element for purely decorative purposes (a shape, a line, a background), you must set <code>content: ""</code>. Without it, the pseudo-element simply won't render.</p>
+    </div>
+
+    <div class="live-example">
+      <div class="live-example-label">Live Example — ::before &amp; ::after in Action</div>
+      <style>
+        .demo-quote { position: relative; padding: 1rem 1.5rem; margin: 0; border-left: 3px solid #6c63ff; font-style: italic; font-size: 1.05rem; }
+        .demo-quote::before { content: "\201C"; font-size: 3rem; color: #6c63ff; line-height: 0; vertical-align: -0.5em; margin-right: 0.1em; }
+        .demo-quote::after { content: "\201D"; font-size: 3rem; color: #6c63ff; line-height: 0; vertical-align: -0.5em; margin-left: 0.1em; }
+        .demo-fancy-heading { font-size: 1.3rem; font-weight: 700; margin-bottom: 1rem; position: relative; display: inline-block; }
+        .demo-fancy-heading::after { content: ""; display: block; width: 100%; height: 3px; background: linear-gradient(90deg, #6c63ff, #00c9a7); margin-top: 0.4rem; border-radius: 2px; }
+        .demo-required-label { font-size: 0.95rem; font-weight: 500; }
+        .demo-required-label::after { content: " *"; color: #ff6b6b; font-weight: 700; }
+        .demo-tooltip { display: inline-block; position: relative; cursor: help; border-bottom: 1px dashed #6c63ff; color: #6c63ff; }
+        .demo-tooltip::after { content: attr(data-tip); position: absolute; bottom: 130%; left: 50%; transform: translateX(-50%); background: #333; color: #fff; padding: 0.4rem 0.8rem; border-radius: 6px; font-size: 0.8rem; white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity 0.2s; }
+        .demo-tooltip:hover::after { opacity: 1; }
+      </style>
+      <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+        <div>
+          <p style="font-size: 0.85rem; opacity: 0.7; margin-bottom: 0.3rem;">Decorative quotes with ::before and ::after:</p>
+          <blockquote class="demo-quote">CSS pseudo-elements are like invisible helpers in your markup.</blockquote>
+        </div>
+        <div>
+          <p style="font-size: 0.85rem; opacity: 0.7; margin-bottom: 0.3rem;">Gradient underline with ::after:</p>
+          <div class="demo-fancy-heading">Section Title</div>
+        </div>
+        <div>
+          <p style="font-size: 0.85rem; opacity: 0.7; margin-bottom: 0.3rem;">Required asterisk with ::after:</p>
+          <span class="demo-required-label">Email Address</span>
+        </div>
+        <div>
+          <p style="font-size: 0.85rem; opacity: 0.7; margin-bottom: 0.3rem;">Tooltip with ::after + attr():</p>
+          <span class="demo-tooltip" data-tip="This is a pure CSS tooltip!">Hover over me for a tooltip</span>
+        </div>
+      </div>
+    </div>
+
+    <h3>The content Property Values</h3>
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="cmt">/* String text */</span>
+<span class="prop">content</span>: <span class="str">"Hello"</span>;
+
+<span class="cmt">/* HTML attribute value */</span>
+<span class="prop">content</span>: <span class="fn">attr</span>(<span class="val">data-label</span>);
+
+<span class="cmt">/* Unicode character */</span>
+<span class="prop">content</span>: <span class="str">"\2605"</span>; <span class="cmt">/* star */</span>
+
+<span class="cmt">/* Image */</span>
+<span class="prop">content</span>: <span class="fn">url</span>(<span class="str">"icon.svg"</span>);
+
+<span class="cmt">/* Counter */</span>
+<span class="prop">content</span>: <span class="fn">counter</span>(<span class="val">section</span>);
+
+<span class="cmt">/* Combined */</span>
+<span class="prop">content</span>: <span class="str">"Chapter "</span> <span class="fn">counter</span>(<span class="val">chapter</span>) <span class="str">": "</span>;
+
+<span class="cmt">/* Empty (for decorative pseudo-elements) */</span>
+<span class="prop">content</span>: <span class="str">""</span>;</pre></div>
+  </div>
+
+  <!-- ============================================================
+       SECTION 9: TEXT PSEUDO-ELEMENTS
+       ============================================================ -->
+  <div class="section" id="text-pseudo-elements">
+    <h2>Text Pseudo-Elements</h2>
+
+    <h3>::first-letter</h3>
+    <p>Selects the first letter of the first line of a block-level element. Commonly used for drop caps in magazine or editorial layouts.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="sel">.article</span><span class="sel">::first-letter</span> {
+  <span class="prop">font-size</span>: <span class="num">3.5em</span>;
+  <span class="prop">font-weight</span>: <span class="val">bold</span>;
+  <span class="prop">float</span>: <span class="val">left</span>;
+  <span class="prop">line-height</span>: <span class="num">0.8</span>;
+  <span class="prop">margin-right</span>: <span class="num">0.1em</span>;
+  <span class="prop">color</span>: <span class="val">#6c63ff</span>;
+}</pre></div>
+
+    <div class="live-example">
+      <div class="live-example-label">Live Example — ::first-letter Drop Cap</div>
+      <style>
+        .demo-dropcap::first-letter {
+          font-size: 3.5em; font-weight: 700; float: left; line-height: 0.8;
+          margin-right: 0.1em; margin-top: 0.05em; color: #6c63ff;
+          font-family: Georgia, serif;
+        }
+      </style>
+      <p class="demo-dropcap" style="max-width: 500px; line-height: 1.6;">Once upon a time, in a world of cascading style sheets, a developer discovered the power of pseudo-elements. They could now style parts of the page that didn't even exist in the HTML source code, creating beautiful drop caps and decorative flourishes.</p>
+    </div>
+
+    <h3>::first-line</h3>
+    <p>Selects the first rendered line of a block element. The selection adjusts dynamically as the viewport resizes.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="sel">p</span><span class="sel">::first-line</span> {
+  <span class="prop">font-weight</span>: <span class="val">600</span>;
+  <span class="prop">font-variant</span>: <span class="val">small-caps</span>;
+  <span class="prop">color</span>: <span class="val">#6c63ff</span>;
+}</pre></div>
+
+    <div class="live-example">
+      <div class="live-example-label">Live Example — ::first-line Styling</div>
+      <style>
+        .demo-firstline::first-line { font-weight: 600; color: #00c9a7; letter-spacing: 0.03em; }
+      </style>
+      <p class="demo-firstline" style="max-width: 500px; line-height: 1.6;">The first line of this paragraph is automatically styled differently. Try resizing your browser window and watch how the styled text reflows — the ::first-line pseudo-element always applies to whatever text is currently on the first rendered line.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       SECTION 10: OTHER PSEUDO-ELEMENTS
+       ============================================================ -->
+  <div class="section" id="other-pseudo-elements">
+    <h2>Other Pseudo-Elements</h2>
+
+    <h3>::placeholder</h3>
+    <p>Styles the placeholder text inside input fields and textareas.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="sel">input</span><span class="sel">::placeholder</span> {
+  <span class="prop">color</span>: <span class="val">#888</span>;
+  <span class="prop">font-style</span>: <span class="val">italic</span>;
+  <span class="prop">opacity</span>: <span class="num">0.7</span>;
+}</pre></div>
+
+    <div class="live-example">
+      <div class="live-example-label">Live Example — ::placeholder</div>
+      <style>
+        .demo-placeholder::placeholder { color: #6c63ff; font-style: italic; opacity: 0.6; }
+      </style>
+      <input class="demo-placeholder" type="text" placeholder="This placeholder is purple and italic..." style="width: 100%; max-width: 350px; padding: 0.6rem 1rem; border: 2px solid #444; background: transparent; color: inherit; border-radius: 6px; font-size: 0.95rem; outline: none; font-family: inherit;">
+    </div>
+
+    <h3>::selection</h3>
+    <p>Styles the portion of text that the user has selected/highlighted with their cursor.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="sel">::selection</span> {
+  <span class="prop">background</span>: <span class="val">#6c63ff</span>;
+  <span class="prop">color</span>: <span class="val">#fff</span>;
+}
+
+<span class="sel">.highlight</span><span class="sel">::selection</span> {
+  <span class="prop">background</span>: <span class="val">#00c9a7</span>;
+  <span class="prop">color</span>: <span class="val">#000</span>;
+}</pre></div>
+
+    <div class="live-example">
+      <div class="live-example-label">Live Example — ::selection</div>
+      <style>
+        .demo-selection-a::selection { background: #6c63ff; color: #fff; }
+        .demo-selection-b::selection { background: #00c9a7; color: #000; }
+        .demo-selection-c::selection { background: #ff6b6b; color: #fff; }
+      </style>
+      <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+        <p class="demo-selection-a" style="margin: 0;">Select this text for a <strong>purple</strong> highlight.</p>
+        <p class="demo-selection-b" style="margin: 0;">Select this text for a <strong>teal</strong> highlight.</p>
+        <p class="demo-selection-c" style="margin: 0;">Select this text for a <strong>red</strong> highlight.</p>
+      </div>
+    </div>
+
+    <h3>::marker</h3>
+    <p>Styles the marker of list items — the bullet point or number. Supported properties include <code>color</code>, <code>font-size</code>, <code>content</code>, and several others.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="sel">li</span><span class="sel">::marker</span> {
+  <span class="prop">color</span>: <span class="val">#6c63ff</span>;
+  <span class="prop">font-weight</span>: <span class="val">bold</span>;
+  <span class="prop">font-size</span>: <span class="num">1.2em</span>;
+}
+
+<span class="sel">ol li</span><span class="sel">::marker</span> {
+  <span class="prop">color</span>: <span class="val">#00c9a7</span>;
+}</pre></div>
+
+    <div class="live-example">
+      <div class="live-example-label">Live Example — ::marker</div>
+      <style>
+        .demo-marker li::marker { color: #6c63ff; font-weight: bold; font-size: 1.2em; }
+        .demo-marker-ol li::marker { color: #00c9a7; font-weight: bold; }
+      </style>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+        <ul class="demo-marker" style="padding-left: 1.5rem;">
+          <li>Purple bullets</li>
+          <li>Custom color</li>
+          <li>Bold and larger</li>
+        </ul>
+        <ol class="demo-marker-ol" style="padding-left: 1.5rem;">
+          <li>Teal numbers</li>
+          <li>Bold weight</li>
+          <li>No extra markup</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       SECTION 11: GOTCHAS
+       ============================================================ -->
+  <div class="section" id="gotchas">
+    <h2>Common Gotchas</h2>
+
+    <div class="callout gotcha">
+      <div class="callout-title">:: vs : Confusion</div>
+      <p>Pseudo-<strong>classes</strong> use a single colon (<code>:hover</code>, <code>:nth-child()</code>). Pseudo-<strong>elements</strong> use a double colon (<code>::before</code>, <code>::after</code>). While browsers accept <code>:before</code> for backward compatibility, always use <code>::before</code> in new code to make the distinction clear.</p>
+    </div>
+
+    <div class="callout gotcha">
+      <div class="callout-title">Forgetting content on ::before / ::after</div>
+      <p>The most common mistake: writing styles for <code>::before</code> or <code>::after</code> but forgetting to set <code>content</code>. Even for purely decorative elements (shapes, lines), you need <code>content: ""</code> (empty string). Without it, the pseudo-element doesn't exist in the render tree.</p>
+    </div>
+
+    <div class="callout gotcha">
+      <div class="callout-title">::before/::after Don't Work on Replaced Elements</div>
+      <p>Elements like <code>&lt;img&gt;</code>, <code>&lt;input&gt;</code>, <code>&lt;br&gt;</code>, and <code>&lt;hr&gt;</code> cannot have <code>::before</code> or <code>::after</code> pseudo-elements because they are <em>replaced elements</em> — their content is replaced by external resources and they don't have internal content trees.</p>
+    </div>
+
+    <div class="callout gotcha">
+      <div class="callout-title">:nth-child() vs :nth-of-type() Confusion</div>
+      <p><code>:nth-child(2)</code> selects the 2nd <em>child</em> of its parent regardless of element type. <code>p:nth-of-type(2)</code> selects the 2nd <code>&lt;p&gt;</code> element. These can behave very differently when a container has mixed element types. When in doubt, use <code>:nth-of-type()</code> — it's usually what you actually want.</p>
+    </div>
+
+    <div class="callout gotcha">
+      <div class="callout-title">Specificity of :is() vs :where()</div>
+      <p><code>:is(.foo, #bar)</code> takes the specificity of its <em>most specific</em> argument (<code>#bar</code> = 1-0-0). This can cause unexpected specificity bumps. If you need zero specificity, use <code>:where()</code> instead.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       SECTION 12: PRO TIPS
+       ============================================================ -->
+  <div class="section" id="pro-tips">
+    <h2>Pro Tips</h2>
+
+    <div class="callout tip">
+      <div class="callout-title">Custom Checkbox with ::before</div>
+      <p>Hide the default checkbox with <code>appearance: none</code>, then use <code>::before</code> on a label or wrapper to create a fully custom checkbox design. You can combine this with <code>:checked</code> to toggle the visual state.</p>
+    </div>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="cmt">/* Custom checkbox pattern */</span>
+<span class="sel">input[type="checkbox"]</span> {
+  <span class="prop">appearance</span>: <span class="val">none</span>;
+  <span class="prop">width</span>: <span class="num">20px</span>;
+  <span class="prop">height</span>: <span class="num">20px</span>;
+  <span class="prop">border</span>: <span class="num">2px</span> <span class="val">solid</span> <span class="val">#555</span>;
+  <span class="prop">border-radius</span>: <span class="num">4px</span>;
+  <span class="prop">position</span>: <span class="val">relative</span>;
+  <span class="prop">cursor</span>: <span class="val">pointer</span>;
+}
+
+<span class="sel">input[type="checkbox"]</span><span class="sel">::before</span> {
+  <span class="prop">content</span>: <span class="str">"\2714"</span>;
+  <span class="prop">position</span>: <span class="val">absolute</span>;
+  <span class="prop">inset</span>: <span class="num">0</span>;
+  <span class="prop">display</span>: <span class="val">flex</span>;
+  <span class="prop">align-items</span>: <span class="val">center</span>;
+  <span class="prop">justify-content</span>: <span class="val">center</span>;
+  <span class="prop">color</span>: <span class="val">#fff</span>;
+  <span class="prop">font-size</span>: <span class="num">14px</span>;
+  <span class="prop">opacity</span>: <span class="num">0</span>;
+  <span class="prop">transition</span>: <span class="val">opacity</span> <span class="num">0.15s</span>;
+}
+
+<span class="sel">input[type="checkbox"]</span><span class="sel">:checked</span> {
+  <span class="prop">background</span>: <span class="val">#6c63ff</span>;
+  <span class="prop">border-color</span>: <span class="val">#6c63ff</span>;
+}
+
+<span class="sel">input[type="checkbox"]</span><span class="sel">:checked</span><span class="sel">::before</span> {
+  <span class="prop">opacity</span>: <span class="num">1</span>;
+}</pre></div>
+
+    <div class="callout tip">
+      <div class="callout-title">Use :is() to DRY Up Stylesheets</div>
+      <p>Whenever you find yourself writing the same styles for multiple selectors, reach for <code>:is()</code>. It can eliminate dozens of lines of repetitive CSS. For example, <code>:is(h1, h2, h3, h4) { margin-top: 1.5em; }</code> replaces four separate rules.</p>
+    </div>
+
+    <div class="callout tip">
+      <div class="callout-title">Combine :has() with Adjacent Sibling</div>
+      <p>Use <code>:has(+ ...)</code> as a "previous sibling" selector. For example, <code>h2:has(+ p)</code> selects any <code>&lt;h2&gt;</code> that is immediately followed by a <code>&lt;p&gt;</code>. This is a pattern that was impossible before <code>:has()</code>.</p>
+    </div>
+
+    <div class="callout tip">
+      <div class="callout-title">CSS Counters with ::before</div>
+      <p>Use CSS counters with <code>::before</code> to automatically number sections, figures, or steps without hardcoding numbers. Combined with <code>counter-reset</code> and <code>counter-increment</code>, you get self-updating numbering.</p>
+    </div>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="cmt">/* Auto-numbered sections */</span>
+<span class="sel">.article</span> {
+  <span class="prop">counter-reset</span>: <span class="val">section</span>;
+}
+
+<span class="sel">.article h2</span><span class="sel">::before</span> {
+  <span class="prop">counter-increment</span>: <span class="val">section</span>;
+  <span class="prop">content</span>: <span class="fn">counter</span>(<span class="val">section</span>) <span class="str">". "</span>;
+  <span class="prop">color</span>: <span class="val">#6c63ff</span>;
+  <span class="prop">font-weight</span>: <span class="val">700</span>;
+}</pre></div>
+
+    <div class="callout tip">
+      <div class="callout-title">Performance of :has()</div>
+      <p>While <code>:has()</code> is incredibly powerful, use it judiciously on very large DOM trees. Browser engines must check child elements to evaluate the parent, which is the reverse of normal selector matching. For most real-world use cases this is perfectly fast, but avoid deeply nested <code>:has()</code> within <code>:has()</code> chains.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       TOPIC NAVIGATION
+       ============================================================ -->
+  <div class="topic-nav">
+    <a href="08-responsive-design.html">
+      <span class="label">Previous</span>
+      <span class="title">Responsive Design</span>
+    </a>
+    <a href="10-css-variables.html" class="next">
+      <span class="label">Next</span>
+      <span class="title">CSS Variables</span>
+    </a>
+  </div>
+</main>
+
+<script src="script.js"></script>
+</body></html>

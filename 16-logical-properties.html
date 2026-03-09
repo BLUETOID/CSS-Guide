@@ -1,0 +1,450 @@
+<!DOCTYPE html><html lang="en" data-theme="dark"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Logical Properties — CSS Reference Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet"><link rel="stylesheet" href="styles.css">
+</head><body>
+<div id="progress"></div>
+<header class="header"><button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">&#9776;</button><h1><span>CSS</span> Reference Guide</h1><div class="header-nav"><a href="index.html">All Topics</a></div><button class="theme-toggle" onclick="toggleTheme()">&#9790; Dark</button></header>
+<nav class="sidebar" id="sidebar"><a href="index.html" class="nav-back">&#8592; All Topics</a><div class="nav-group"><div class="nav-group-title">On This Page</div>
+<a href="#physical-vs-logical">Physical vs Logical</a>
+<a href="#block-inline-axes">Block &amp; Inline Axes</a>
+<a href="#writing-mode">Writing Mode</a>
+<a href="#margin-logical">Margin (Logical)</a>
+<a href="#padding-logical">Padding (Logical)</a>
+<a href="#border-logical">Border (Logical)</a>
+<a href="#sizing-logical">Sizing (Logical)</a>
+<a href="#inset-shorthand">Inset Shorthand</a>
+<a href="#text-align-logical">Text Align (Logical)</a>
+<a href="#mapping-table">Full Mapping Table</a>
+<a href="#rtl-demo">RTL Live Demo</a>
+<a href="#gotchas">Gotchas</a>
+<a href="#pro-tips">Pro Tips</a>
+</div></nav>
+<main class="main"><div class="page-hero"><h1>CSS Logical Properties</h1><p>Write direction-agnostic CSS that automatically adapts to different writing modes and text directions — essential for internationalization and modern layout.</p><div class="tags"><span>Layout</span><span>Internationalization</span><span>Modern CSS</span><span>RTL Support</span></div></div>
+
+<!-- Physical vs Logical -->
+<div class="section" id="physical-vs-logical">
+<h2>Physical vs Logical Properties</h2>
+<p>Traditional CSS properties like <code class="prop">margin-left</code> and <code class="prop">padding-right</code> are <strong>physical</strong> — they always refer to the same side of the screen regardless of text direction. <strong>Logical</strong> properties instead reference the <em>flow-relative</em> direction, automatically adapting when the writing direction changes.</p>
+
+<div class="code-block"><div class="code-header"><span>Physical Properties (direction-dependent)</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><span class="cmt">/* Physical — always the left side, even in RTL */</span>
+<span class="sel">.card</span> {
+  <span class="prop">margin-left</span>: <span class="val">20px</span>;
+  <span class="prop">padding-right</span>: <span class="val">16px</span>;
+  <span class="prop">border-top</span>: <span class="val">2px solid #ccc</span>;
+  <span class="prop">width</span>: <span class="val">300px</span>;
+}</pre></div>
+
+<div class="code-block"><div class="code-header"><span>Logical Properties (direction-agnostic)</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><span class="cmt">/* Logical — adapts to writing direction automatically */</span>
+<span class="sel">.card</span> {
+  <span class="prop">margin-inline-start</span>: <span class="val">20px</span>;
+  <span class="prop">padding-inline-end</span>: <span class="val">16px</span>;
+  <span class="prop">border-block-start</span>: <span class="val">2px solid #ccc</span>;
+  <span class="prop">inline-size</span>: <span class="val">300px</span>;
+}</pre></div>
+
+<div class="callout info">
+<strong>Why Logical?</strong> If your site supports Arabic, Hebrew, or any RTL language, logical properties save you from writing separate rules for <code>dir="rtl"</code>. The layout simply mirrors itself.
+</div>
+</div>
+
+<!-- Block & Inline Axes -->
+<div class="section" id="block-inline-axes">
+<h2>Block &amp; Inline Axes</h2>
+<p>Logical properties revolve around two flow-relative axes:</p>
+<ul>
+<li><strong>Block axis</strong> — the direction blocks stack. In horizontal writing modes (English), this is <em>vertical</em> (top → bottom).</li>
+<li><strong>Inline axis</strong> — the direction text flows. In LTR English, this is <em>horizontal</em> (left → right).</li>
+</ul>
+
+<div class="live-example"><div class="live-example-label">Block &amp; Inline Axes Visualization (LTR Horizontal)</div>
+<div style="position:relative; border:2px dashed rgba(99,102,241,0.5); padding:40px 60px; text-align:center; border-radius:12px; min-height:120px; display:flex; align-items:center; justify-content:center;">
+<span style="position:absolute; left:50%; top:6px; transform:translateX(-50%); font-size:0.75rem; color:#818cf8; font-weight:600;">block-start (top)</span>
+<span style="position:absolute; left:50%; bottom:6px; transform:translateX(-50%); font-size:0.75rem; color:#818cf8; font-weight:600;">block-end (bottom)</span>
+<span style="position:absolute; top:50%; left:6px; transform:translateY(-50%) rotate(-90deg); font-size:0.75rem; color:#f472b6; font-weight:600;">inline-start (left in LTR)</span>
+<span style="position:absolute; top:50%; right:6px; transform:translateY(-50%) rotate(90deg); font-size:0.75rem; color:#f472b6; font-weight:600;">inline-end (right in LTR)</span>
+<span style="font-weight:600; opacity:0.7;">Content Area</span>
+</div>
+</div>
+
+<div class="code-block"><div class="code-header"><span>Axis Keywords</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><span class="cmt">/* Block axis = vertical in horizontal writing modes */</span>
+<span class="prop">margin-block-start</span>: <span class="val">1rem</span>;   <span class="cmt">/* = margin-top    */</span>
+<span class="prop">margin-block-end</span>: <span class="val">1rem</span>;     <span class="cmt">/* = margin-bottom */</span>
+
+<span class="cmt">/* Inline axis = horizontal in LTR */</span>
+<span class="prop">margin-inline-start</span>: <span class="val">1rem</span>;  <span class="cmt">/* = margin-left (LTR) / margin-right (RTL) */</span>
+<span class="prop">margin-inline-end</span>: <span class="val">1rem</span>;    <span class="cmt">/* = margin-right (LTR) / margin-left (RTL) */</span></pre></div>
+</div>
+
+<!-- Writing Mode -->
+<div class="section" id="writing-mode">
+<h2>Writing Mode</h2>
+<p>The <code class="prop">writing-mode</code> property changes which direction is block and which is inline, which redefines how logical properties map to physical ones.</p>
+
+<div class="code-block"><div class="code-header"><span>writing-mode values</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><span class="sel">.horizontal</span> {
+  <span class="prop">writing-mode</span>: <span class="val">horizontal-tb</span>;  <span class="cmt">/* default — text left→right, blocks top→bottom */</span>
+}
+
+<span class="sel">.vertical-rl</span> {
+  <span class="prop">writing-mode</span>: <span class="val">vertical-rl</span>;    <span class="cmt">/* text top→bottom, blocks right→left (Japanese) */</span>
+}
+
+<span class="sel">.vertical-lr</span> {
+  <span class="prop">writing-mode</span>: <span class="val">vertical-lr</span>;    <span class="cmt">/* text top→bottom, blocks left→right (Mongolian) */</span>
+}</pre></div>
+
+<div class="live-example"><div class="live-example-label">Writing Modes Comparison</div>
+<div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px,1fr)); gap:1rem;">
+<div style="border:1px solid rgba(99,102,241,0.3); border-radius:8px; padding:1rem; writing-mode:horizontal-tb;">
+<strong style="color:#818cf8; font-size:0.8rem; display:block; margin-bottom:0.5rem;">horizontal-tb (default)</strong>
+This text flows left to right, lines stack top to bottom.
+</div>
+<div style="border:1px solid rgba(244,114,182,0.3); border-radius:8px; padding:1rem; writing-mode:vertical-rl; height:200px;">
+<strong style="color:#f472b6; font-size:0.8rem;">vertical-rl</strong>
+Text flows top to bottom, lines stack right to left.
+</div>
+<div style="border:1px solid rgba(52,211,153,0.3); border-radius:8px; padding:1rem; writing-mode:vertical-lr; height:200px;">
+<strong style="color:#34d399; font-size:0.8rem;">vertical-lr</strong>
+Text flows top to bottom, lines stack left to right.
+</div>
+</div>
+</div>
+</div>
+
+<!-- Margin Logical -->
+<div class="section" id="margin-logical">
+<h2>Logical Margins</h2>
+<p>Logical margin properties replace <code class="prop">margin-top/right/bottom/left</code> with flow-relative equivalents.</p>
+
+<div class="code-block"><div class="code-header"><span>Logical Margin Properties</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><span class="sel">.element</span> {
+  <span class="cmt">/* Individual sides */</span>
+  <span class="prop">margin-block-start</span>: <span class="val">1rem</span>;   <span class="cmt">/* top in LTR horizontal */</span>
+  <span class="prop">margin-block-end</span>: <span class="val">2rem</span>;     <span class="cmt">/* bottom */</span>
+  <span class="prop">margin-inline-start</span>: <span class="val">1rem</span>;  <span class="cmt">/* left in LTR */</span>
+  <span class="prop">margin-inline-end</span>: <span class="val">2rem</span>;    <span class="cmt">/* right in LTR */</span>
+
+  <span class="cmt">/* Shorthand: two values = start end */</span>
+  <span class="prop">margin-block</span>: <span class="val">1rem 2rem</span>;     <span class="cmt">/* block-start block-end */</span>
+  <span class="prop">margin-inline</span>: <span class="val">1rem 2rem</span>;    <span class="cmt">/* inline-start inline-end */</span>
+
+  <span class="cmt">/* Single value applies to both sides */</span>
+  <span class="prop">margin-block</span>: <span class="val">1rem</span>;           <span class="cmt">/* top & bottom */</span>
+  <span class="prop">margin-inline</span>: <span class="val">auto</span>;          <span class="cmt">/* horizontal centering! */</span>
+}</pre></div>
+
+<div class="live-example"><div class="live-example-label">margin-inline: auto (centering)</div>
+<div style="background:rgba(99,102,241,0.15); border:2px dashed rgba(99,102,241,0.3); border-radius:8px; padding:1rem;">
+<div style="margin-inline:auto; background:linear-gradient(135deg,#6366f1,#8b5cf6); color:white; padding:1rem; border-radius:8px; text-align:center; max-width:300px; font-weight:600;">
+margin-inline: auto
+</div>
+</div>
+</div>
+</div>
+
+<!-- Padding Logical -->
+<div class="section" id="padding-logical">
+<h2>Logical Padding</h2>
+<p>Padding follows the same logical naming pattern as margins.</p>
+
+<div class="code-block"><div class="code-header"><span>Logical Padding Properties</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><span class="sel">.card</span> {
+  <span class="cmt">/* Individual */</span>
+  <span class="prop">padding-block-start</span>: <span class="val">2rem</span>;
+  <span class="prop">padding-block-end</span>: <span class="val">2rem</span>;
+  <span class="prop">padding-inline-start</span>: <span class="val">1.5rem</span>;
+  <span class="prop">padding-inline-end</span>: <span class="val">1.5rem</span>;
+
+  <span class="cmt">/* Shorthand */</span>
+  <span class="prop">padding-block</span>: <span class="val">2rem</span>;        <span class="cmt">/* top & bottom */</span>
+  <span class="prop">padding-inline</span>: <span class="val">1.5rem</span>;     <span class="cmt">/* left & right (LTR) */</span>
+}</pre></div>
+
+<div class="live-example"><div class="live-example-label">Asymmetric Logical Padding</div>
+<div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+<div style="background:rgba(99,102,241,0.1); border:1px solid rgba(99,102,241,0.3); border-radius:8px; padding-block:0.5rem 2rem; padding-inline:1rem 3rem; font-size:0.85rem;">
+<strong style="display:block; color:#818cf8; margin-bottom:0.25rem;">padding-block: 0.5rem 2rem</strong>
+<strong style="display:block; color:#818cf8; margin-bottom:0.5rem;">padding-inline: 1rem 3rem</strong>
+Notice the extra padding at block-end (bottom) and inline-end (right in LTR).
+</div>
+<div dir="rtl" style="background:rgba(244,114,182,0.1); border:1px solid rgba(244,114,182,0.3); border-radius:8px; padding-block:0.5rem 2rem; padding-inline:1rem 3rem; font-size:0.85rem;">
+<strong style="display:block; color:#f472b6; margin-bottom:0.25rem;">Same CSS, but dir="rtl"</strong>
+<strong style="display:block; color:#f472b6; margin-bottom:0.5rem;">padding-inline flips!</strong>
+Extra padding is now at inline-end (left in RTL).
+</div>
+</div>
+</div>
+</div>
+
+<!-- Border Logical -->
+<div class="section" id="border-logical">
+<h2>Logical Borders</h2>
+<p>Borders also have complete logical equivalents including width, style, color, and radius.</p>
+
+<div class="code-block"><div class="code-header"><span>Logical Border Properties</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><span class="sel">.element</span> {
+  <span class="cmt">/* Block axis borders */</span>
+  <span class="prop">border-block-start</span>: <span class="val">2px solid #6366f1</span>;
+  <span class="prop">border-block-end</span>: <span class="val">1px solid #ccc</span>;
+  <span class="prop">border-block</span>: <span class="val">1px solid #ccc</span>;  <span class="cmt">/* both */</span>
+
+  <span class="cmt">/* Inline axis borders */</span>
+  <span class="prop">border-inline-start</span>: <span class="val">4px solid #6366f1</span>;
+  <span class="prop">border-inline-end</span>: <span class="val">none</span>;
+  <span class="prop">border-inline</span>: <span class="val">1px solid #ccc</span>;  <span class="cmt">/* both */</span>
+
+  <span class="cmt">/* Logical border-radius */</span>
+  <span class="prop">border-start-start-radius</span>: <span class="val">8px</span>;  <span class="cmt">/* top-left in LTR */</span>
+  <span class="prop">border-start-end-radius</span>: <span class="val">8px</span>;    <span class="cmt">/* top-right in LTR */</span>
+  <span class="prop">border-end-start-radius</span>: <span class="val">8px</span>;    <span class="cmt">/* bottom-left in LTR */</span>
+  <span class="prop">border-end-end-radius</span>: <span class="val">8px</span>;      <span class="cmt">/* bottom-right in LTR */</span>
+}</pre></div>
+
+<div class="live-example"><div class="live-example-label">border-inline-start accent</div>
+<div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+<div style="border-inline-start:4px solid #6366f1; padding:1rem 1.25rem; background:rgba(99,102,241,0.08); border-radius:0 8px 8px 0; font-size:0.9rem;">
+<strong style="color:#818cf8;">LTR</strong> — border-inline-start is on the <em>left</em>
+</div>
+<div dir="rtl" style="border-inline-start:4px solid #f472b6; padding:1rem 1.25rem; background:rgba(244,114,182,0.08); border-radius:8px 0 0 8px; font-size:0.9rem;">
+<strong style="color:#f472b6;">RTL</strong> — border-inline-start is on the <em>right</em>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Sizing Logical -->
+<div class="section" id="sizing-logical">
+<h2>Logical Sizing</h2>
+<p>Instead of <code class="prop">width</code> and <code class="prop">height</code>, use <code class="prop">inline-size</code> and <code class="prop">block-size</code>.</p>
+
+<div class="code-block"><div class="code-header"><span>Logical Sizing Properties</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><span class="sel">.box</span> {
+  <span class="cmt">/* Instead of width/height */</span>
+  <span class="prop">inline-size</span>: <span class="val">300px</span>;         <span class="cmt">/* = width in horizontal mode */</span>
+  <span class="prop">block-size</span>: <span class="val">200px</span>;          <span class="cmt">/* = height in horizontal mode */</span>
+
+  <span class="cmt">/* Min / Max variants */</span>
+  <span class="prop">min-inline-size</span>: <span class="val">100px</span>;     <span class="cmt">/* = min-width */</span>
+  <span class="prop">max-inline-size</span>: <span class="val">600px</span>;     <span class="cmt">/* = max-width */</span>
+  <span class="prop">min-block-size</span>: <span class="val">50px</span>;       <span class="cmt">/* = min-height */</span>
+  <span class="prop">max-block-size</span>: <span class="val">400px</span>;      <span class="cmt">/* = max-height */</span>
+}
+
+<span class="cmt">/* Common pattern: responsive max-width replacement */</span>
+<span class="sel">.container</span> {
+  <span class="prop">max-inline-size</span>: <span class="val">1200px</span>;
+  <span class="prop">margin-inline</span>: <span class="val">auto</span>;
+}</pre></div>
+</div>
+
+<!-- Inset Shorthand -->
+<div class="section" id="inset-shorthand">
+<h2>Inset Shorthand</h2>
+<p>The <code class="prop">inset</code> property is the logical shorthand for <code class="prop">top</code>, <code class="prop">right</code>, <code class="prop">bottom</code>, <code class="prop">left</code>, and has logical axis variants.</p>
+
+<div class="code-block"><div class="code-header"><span>Inset Properties</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><span class="sel">.overlay</span> {
+  <span class="prop">position</span>: <span class="val">absolute</span>;
+
+  <span class="cmt">/* Physical shorthand — all four sides */</span>
+  <span class="prop">inset</span>: <span class="val">0</span>;                       <span class="cmt">/* top:0 right:0 bottom:0 left:0 */</span>
+  <span class="prop">inset</span>: <span class="val">10px 20px</span>;                <span class="cmt">/* top/bottom:10px right/left:20px */</span>
+  <span class="prop">inset</span>: <span class="val">10px 20px 30px 40px</span>;      <span class="cmt">/* top right bottom left */</span>
+
+  <span class="cmt">/* Logical axis shorthands */</span>
+  <span class="prop">inset-block</span>: <span class="val">0</span>;                  <span class="cmt">/* block-start & block-end */</span>
+  <span class="prop">inset-block-start</span>: <span class="val">10px</span>;         <span class="cmt">/* = top */</span>
+  <span class="prop">inset-block-end</span>: <span class="val">20px</span>;           <span class="cmt">/* = bottom */</span>
+
+  <span class="prop">inset-inline</span>: <span class="val">0</span>;                 <span class="cmt">/* inline-start & inline-end */</span>
+  <span class="prop">inset-inline-start</span>: <span class="val">10px</span>;        <span class="cmt">/* = left (LTR) / right (RTL) */</span>
+  <span class="prop">inset-inline-end</span>: <span class="val">20px</span>;          <span class="cmt">/* = right (LTR) / left (RTL) */</span>
+}</pre></div>
+
+<div class="live-example"><div class="live-example-label">inset: 0 for full-cover overlay</div>
+<div style="position:relative; border-radius:12px; overflow:hidden; height:120px; border:1px solid rgba(99,102,241,0.3);">
+<div style="padding:1rem; font-size:0.9rem; opacity:0.6;">This is background content underneath the overlay.</div>
+<div style="position:absolute; inset:0; background:rgba(99,102,241,0.85); display:flex; align-items:center; justify-content:center; color:white; font-weight:600; font-size:1.1rem; backdrop-filter:blur(4px);">
+position: absolute; inset: 0;
+</div>
+</div>
+</div>
+</div>
+
+<!-- Text Align Logical -->
+<div class="section" id="text-align-logical">
+<h2>Logical Text Alignment</h2>
+<p>Use <code class="val">start</code> and <code class="val">end</code> instead of <code class="val">left</code> and <code class="val">right</code> for direction-aware alignment.</p>
+
+<div class="code-block"><div class="code-header"><span>Logical text-align Values</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><span class="sel">.text-start</span> {
+  <span class="prop">text-align</span>: <span class="val">start</span>;  <span class="cmt">/* left in LTR, right in RTL */</span>
+}
+
+<span class="sel">.text-end</span> {
+  <span class="prop">text-align</span>: <span class="val">end</span>;    <span class="cmt">/* right in LTR, left in RTL */</span>
+}
+
+<span class="cmt">/* Also works in Flexbox */</span>
+<span class="sel">.flex-container</span> {
+  <span class="prop">justify-content</span>: <span class="val">flex-start</span>;  <span class="cmt">/* already logical! */</span>
+}</pre></div>
+
+<div class="live-example"><div class="live-example-label">text-align: start vs end (LTR &amp; RTL)</div>
+<div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+<div style="border:1px solid rgba(99,102,241,0.3); border-radius:8px; padding:1rem;">
+<div style="text-align:start; margin-bottom:0.5rem; color:#818cf8; font-weight:600; font-size:0.8rem;">LTR — text-align: start</div>
+<div style="text-align:start;">Aligns to the left</div>
+<div style="text-align:end; margin-top:0.5rem; color:#818cf8; font-weight:600; font-size:0.8rem;">LTR — text-align: end</div>
+<div style="text-align:end;">Aligns to the right</div>
+</div>
+<div dir="rtl" style="border:1px solid rgba(244,114,182,0.3); border-radius:8px; padding:1rem;">
+<div style="text-align:start; margin-bottom:0.5rem; color:#f472b6; font-weight:600; font-size:0.8rem;">RTL — text-align: start</div>
+<div style="text-align:start;">Aligns to the right</div>
+<div style="text-align:end; margin-top:0.5rem; color:#f472b6; font-weight:600; font-size:0.8rem;">RTL — text-align: end</div>
+<div style="text-align:end;">Aligns to the left</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Full Mapping Table -->
+<div class="section" id="mapping-table">
+<h2>Full Mapping Table: Physical &rarr; Logical</h2>
+<p>A complete reference of physical properties and their logical equivalents (in <code>horizontal-tb</code> + LTR).</p>
+
+<div style="overflow-x:auto;">
+<table style="width:100%; border-collapse:collapse; font-size:0.85rem; border-radius:8px; overflow:hidden;">
+<thead>
+<tr style="background:rgba(99,102,241,0.15);">
+<th style="padding:0.75rem 1rem; text-align:left; border-bottom:2px solid rgba(99,102,241,0.3); font-weight:700;">Physical Property</th>
+<th style="padding:0.75rem 1rem; text-align:left; border-bottom:2px solid rgba(99,102,241,0.3); font-weight:700;">Logical Property</th>
+<th style="padding:0.75rem 1rem; text-align:left; border-bottom:2px solid rgba(99,102,241,0.3); font-weight:700;">Axis</th>
+</tr>
+</thead>
+<tbody>
+<tr style="border-bottom:1px solid rgba(255,255,255,0.06);"><td style="padding:0.5rem 1rem;"><code class="prop">margin-top</code></td><td style="padding:0.5rem 1rem;"><code class="prop">margin-block-start</code></td><td style="padding:0.5rem 1rem;">Block</td></tr>
+<tr style="border-bottom:1px solid rgba(255,255,255,0.06); background:rgba(255,255,255,0.02);"><td style="padding:0.5rem 1rem;"><code class="prop">margin-bottom</code></td><td style="padding:0.5rem 1rem;"><code class="prop">margin-block-end</code></td><td style="padding:0.5rem 1rem;">Block</td></tr>
+<tr style="border-bottom:1px solid rgba(255,255,255,0.06);"><td style="padding:0.5rem 1rem;"><code class="prop">margin-left</code></td><td style="padding:0.5rem 1rem;"><code class="prop">margin-inline-start</code></td><td style="padding:0.5rem 1rem;">Inline</td></tr>
+<tr style="border-bottom:1px solid rgba(255,255,255,0.06); background:rgba(255,255,255,0.02);"><td style="padding:0.5rem 1rem;"><code class="prop">margin-right</code></td><td style="padding:0.5rem 1rem;"><code class="prop">margin-inline-end</code></td><td style="padding:0.5rem 1rem;">Inline</td></tr>
+<tr style="border-bottom:1px solid rgba(255,255,255,0.06);"><td style="padding:0.5rem 1rem;"><code class="prop">padding-top</code></td><td style="padding:0.5rem 1rem;"><code class="prop">padding-block-start</code></td><td style="padding:0.5rem 1rem;">Block</td></tr>
+<tr style="border-bottom:1px solid rgba(255,255,255,0.06); background:rgba(255,255,255,0.02);"><td style="padding:0.5rem 1rem;"><code class="prop">padding-bottom</code></td><td style="padding:0.5rem 1rem;"><code class="prop">padding-block-end</code></td><td style="padding:0.5rem 1rem;">Block</td></tr>
+<tr style="border-bottom:1px solid rgba(255,255,255,0.06);"><td style="padding:0.5rem 1rem;"><code class="prop">padding-left</code></td><td style="padding:0.5rem 1rem;"><code class="prop">padding-inline-start</code></td><td style="padding:0.5rem 1rem;">Inline</td></tr>
+<tr style="border-bottom:1px solid rgba(255,255,255,0.06); background:rgba(255,255,255,0.02);"><td style="padding:0.5rem 1rem;"><code class="prop">padding-right</code></td><td style="padding:0.5rem 1rem;"><code class="prop">padding-inline-end</code></td><td style="padding:0.5rem 1rem;">Inline</td></tr>
+<tr style="border-bottom:1px solid rgba(255,255,255,0.06);"><td style="padding:0.5rem 1rem;"><code class="prop">border-top</code></td><td style="padding:0.5rem 1rem;"><code class="prop">border-block-start</code></td><td style="padding:0.5rem 1rem;">Block</td></tr>
+<tr style="border-bottom:1px solid rgba(255,255,255,0.06); background:rgba(255,255,255,0.02);"><td style="padding:0.5rem 1rem;"><code class="prop">border-bottom</code></td><td style="padding:0.5rem 1rem;"><code class="prop">border-block-end</code></td><td style="padding:0.5rem 1rem;">Block</td></tr>
+<tr style="border-bottom:1px solid rgba(255,255,255,0.06);"><td style="padding:0.5rem 1rem;"><code class="prop">border-left</code></td><td style="padding:0.5rem 1rem;"><code class="prop">border-inline-start</code></td><td style="padding:0.5rem 1rem;">Inline</td></tr>
+<tr style="border-bottom:1px solid rgba(255,255,255,0.06); background:rgba(255,255,255,0.02);"><td style="padding:0.5rem 1rem;"><code class="prop">border-right</code></td><td style="padding:0.5rem 1rem;"><code class="prop">border-inline-end</code></td><td style="padding:0.5rem 1rem;">Inline</td></tr>
+<tr style="border-bottom:1px solid rgba(255,255,255,0.06);"><td style="padding:0.5rem 1rem;"><code class="prop">width</code></td><td style="padding:0.5rem 1rem;"><code class="prop">inline-size</code></td><td style="padding:0.5rem 1rem;">Inline</td></tr>
+<tr style="border-bottom:1px solid rgba(255,255,255,0.06); background:rgba(255,255,255,0.02);"><td style="padding:0.5rem 1rem;"><code class="prop">height</code></td><td style="padding:0.5rem 1rem;"><code class="prop">block-size</code></td><td style="padding:0.5rem 1rem;">Block</td></tr>
+<tr style="border-bottom:1px solid rgba(255,255,255,0.06);"><td style="padding:0.5rem 1rem;"><code class="prop">min-width</code></td><td style="padding:0.5rem 1rem;"><code class="prop">min-inline-size</code></td><td style="padding:0.5rem 1rem;">Inline</td></tr>
+<tr style="border-bottom:1px solid rgba(255,255,255,0.06); background:rgba(255,255,255,0.02);"><td style="padding:0.5rem 1rem;"><code class="prop">max-width</code></td><td style="padding:0.5rem 1rem;"><code class="prop">max-inline-size</code></td><td style="padding:0.5rem 1rem;">Inline</td></tr>
+<tr style="border-bottom:1px solid rgba(255,255,255,0.06);"><td style="padding:0.5rem 1rem;"><code class="prop">top</code></td><td style="padding:0.5rem 1rem;"><code class="prop">inset-block-start</code></td><td style="padding:0.5rem 1rem;">Block</td></tr>
+<tr style="border-bottom:1px solid rgba(255,255,255,0.06); background:rgba(255,255,255,0.02);"><td style="padding:0.5rem 1rem;"><code class="prop">bottom</code></td><td style="padding:0.5rem 1rem;"><code class="prop">inset-block-end</code></td><td style="padding:0.5rem 1rem;">Block</td></tr>
+<tr style="border-bottom:1px solid rgba(255,255,255,0.06);"><td style="padding:0.5rem 1rem;"><code class="prop">left</code></td><td style="padding:0.5rem 1rem;"><code class="prop">inset-inline-start</code></td><td style="padding:0.5rem 1rem;">Inline</td></tr>
+<tr style="border-bottom:1px solid rgba(255,255,255,0.06); background:rgba(255,255,255,0.02);"><td style="padding:0.5rem 1rem;"><code class="prop">right</code></td><td style="padding:0.5rem 1rem;"><code class="prop">inset-inline-end</code></td><td style="padding:0.5rem 1rem;">Inline</td></tr>
+<tr style="border-bottom:1px solid rgba(255,255,255,0.06);"><td style="padding:0.5rem 1rem;"><code class="prop">text-align: left</code></td><td style="padding:0.5rem 1rem;"><code class="prop">text-align: start</code></td><td style="padding:0.5rem 1rem;">Inline</td></tr>
+<tr style="background:rgba(255,255,255,0.02);"><td style="padding:0.5rem 1rem;"><code class="prop">text-align: right</code></td><td style="padding:0.5rem 1rem;"><code class="prop">text-align: end</code></td><td style="padding:0.5rem 1rem;">Inline</td></tr>
+<tr style="border-bottom:1px solid rgba(255,255,255,0.06);"><td style="padding:0.5rem 1rem;"><code class="prop">border-top-left-radius</code></td><td style="padding:0.5rem 1rem;"><code class="prop">border-start-start-radius</code></td><td style="padding:0.5rem 1rem;">Both</td></tr>
+<tr style="background:rgba(255,255,255,0.02);"><td style="padding:0.5rem 1rem;"><code class="prop">border-top-right-radius</code></td><td style="padding:0.5rem 1rem;"><code class="prop">border-start-end-radius</code></td><td style="padding:0.5rem 1rem;">Both</td></tr>
+<tr style="border-bottom:1px solid rgba(255,255,255,0.06);"><td style="padding:0.5rem 1rem;"><code class="prop">border-bottom-left-radius</code></td><td style="padding:0.5rem 1rem;"><code class="prop">border-end-start-radius</code></td><td style="padding:0.5rem 1rem;">Both</td></tr>
+<tr><td style="padding:0.5rem 1rem;"><code class="prop">border-bottom-right-radius</code></td><td style="padding:0.5rem 1rem;"><code class="prop">border-end-end-radius</code></td><td style="padding:0.5rem 1rem;">Both</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<!-- RTL Live Demo -->
+<div class="section" id="rtl-demo">
+<h2>RTL Live Demo — Auto-Adaptation</h2>
+<p>This demo uses only logical properties. Toggle the direction to see the entire card layout adapt automatically — no extra CSS needed.</p>
+
+<div class="live-example"><div class="live-example-label">Card with Logical Properties (click to toggle RTL)</div>
+<div id="rtl-demo-container" style="border:1px solid rgba(99,102,241,0.2); border-radius:12px; padding:1.5rem; transition:all 0.3s;">
+<div style="margin-block-end:1rem;">
+<button onclick="const c=document.getElementById('rtl-demo-container'); c.dir = c.dir==='rtl' ? 'ltr' : 'rtl'; this.textContent = c.dir==='rtl' ? 'Switch to LTR' : 'Switch to RTL';" style="padding:0.5rem 1.25rem; background:linear-gradient(135deg,#6366f1,#8b5cf6); color:white; border:none; border-radius:8px; cursor:pointer; font-weight:600; font-family:inherit; font-size:0.85rem;">Switch to RTL</button>
+</div>
+<div style="display:flex; gap:1rem; align-items:flex-start;">
+<div style="inline-size:64px; block-size:64px; min-inline-size:64px; border-radius:50%; background:linear-gradient(135deg,#f472b6,#6366f1); display:flex; align-items:center; justify-content:center; color:white; font-weight:700; font-size:1.2rem;">A</div>
+<div style="flex:1;">
+<h3 style="margin-block:0 0.25rem; font-size:1.1rem;">Ahmed Hassan</h3>
+<p style="margin-block:0 0.75rem; opacity:0.7; font-size:0.85rem;">Senior Frontend Developer</p>
+<div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+<span style="padding-block:0.25rem; padding-inline:0.75rem; background:rgba(99,102,241,0.15); border-radius:999px; font-size:0.75rem; font-weight:500; color:#818cf8;">CSS</span>
+<span style="padding-block:0.25rem; padding-inline:0.75rem; background:rgba(244,114,182,0.15); border-radius:999px; font-size:0.75rem; font-weight:500; color:#f472b6;">React</span>
+<span style="padding-block:0.25rem; padding-inline:0.75rem; background:rgba(52,211,153,0.15); border-radius:999px; font-size:0.75rem; font-weight:500; color:#34d399;">TypeScript</span>
+</div>
+<div style="margin-block-start:1rem; border-inline-start:3px solid #6366f1; padding-inline-start:1rem; font-size:0.85rem; opacity:0.8; font-style:italic;">
+"Logical properties changed how I think about layout. My RTL support went from a nightmare to zero extra effort."
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="callout tip">
+<strong>Try it!</strong> Click "Switch to RTL" above. Notice how the avatar moves to the right, the quote border flips, tag padding adjusts, and text alignment changes — all without a single <code>dir="rtl"</code> override in CSS.
+</div>
+</div>
+
+<!-- Gotchas -->
+<div class="section" id="gotchas">
+<h2>Gotchas</h2>
+
+<div class="callout gotcha">
+<strong>Don't mix physical and logical for the same axis.</strong> Using <code class="prop">margin-left</code> and <code class="prop">margin-inline-start</code> together can cause unexpected behavior. Pick one approach and stick with it.
+</div>
+
+<div class="callout gotcha">
+<strong>The <code>margin</code> shorthand is still physical.</strong> <code>margin: 10px 20px 30px 40px</code> maps to top/right/bottom/left. There is no single logical shorthand that replaces the four-value <code>margin</code>. Use <code class="prop">margin-block</code> and <code class="prop">margin-inline</code> separately.
+</div>
+
+<div class="callout gotcha">
+<strong>Logical border-radius names are confusing.</strong> <code>border-start-start-radius</code> means block-start + inline-start (top-left in LTR). The format is <code>border-{block}-{inline}-radius</code>. Take time to memorize the pattern.
+</div>
+
+<div class="callout gotcha">
+<strong>Transforms and positions are still physical in some cases.</strong> <code>transform: translateX()</code> is always horizontal. There's no logical equivalent for transforms yet.
+</div>
+</div>
+
+<!-- Pro Tips -->
+<div class="section" id="pro-tips">
+<h2>Pro Tips</h2>
+
+<div class="callout tip">
+<strong>Start adopting logical properties today.</strong> Even if you don't support RTL yet, using <code class="prop">margin-inline</code> and <code class="prop">padding-block</code> is more expressive and future-proof. Modern browsers have excellent support.
+</div>
+
+<div class="callout tip">
+<strong>Use <code>margin-inline: auto</code> for centering.</strong> It's the logical equivalent of <code>margin: 0 auto</code> and reads more clearly — you're centering on the inline axis.
+</div>
+
+<div class="callout tip">
+<strong>Combine with <code>:dir()</code> pseudo-class.</strong> For the rare cases where you need direction-specific overrides that logical properties can't solve, use <code class="sel">:dir(rtl)</code> instead of <code>[dir="rtl"]</code> — it checks the computed direction, not just the attribute.
+</div>
+
+<div class="callout tip">
+<strong>Use stylelint-use-logical.</strong> This ESLint plugin automatically flags physical properties and suggests their logical equivalents. Great for gradual migration.
+</div>
+
+<div class="code-block"><div class="code-header"><span>Modern Logical-First Card Component</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><span class="sel">.card</span> {
+  <span class="prop">max-inline-size</span>: <span class="val">400px</span>;
+  <span class="prop">margin-inline</span>: <span class="val">auto</span>;
+  <span class="prop">padding-block</span>: <span class="val">1.5rem</span>;
+  <span class="prop">padding-inline</span>: <span class="val">2rem</span>;
+  <span class="prop">border-block-start</span>: <span class="val">4px solid var(--accent)</span>;
+  <span class="prop">border-start-start-radius</span>: <span class="val">12px</span>;
+  <span class="prop">border-start-end-radius</span>: <span class="val">12px</span>;
+}
+
+<span class="sel">.card__icon</span> {
+  <span class="prop">margin-inline-end</span>: <span class="val">1rem</span>;
+  <span class="prop">inline-size</span>: <span class="val">48px</span>;
+  <span class="prop">block-size</span>: <span class="val">48px</span>;
+}
+
+<span class="sel">.card__meta</span> {
+  <span class="prop">margin-block-start</span>: <span class="val">0.5rem</span>;
+  <span class="prop">padding-inline-start</span>: <span class="val">1rem</span>;
+  <span class="prop">border-inline-start</span>: <span class="val">2px solid var(--muted)</span>;
+  <span class="prop">text-align</span>: <span class="val">start</span>;
+}</pre></div>
+</div>
+
+<div class="topic-nav"><a href="15-selectors-deep-dive.html"><span class="label">Previous</span><span class="title">Selectors Deep Dive</span></a><a href="17-shapes-clip-path.html" class="next"><span class="label">Next</span><span class="title">Shapes &amp; Clip-Path</span></a></div></main>
+<script src="script.js"></script></body></html>

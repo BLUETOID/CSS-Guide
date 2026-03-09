@@ -1,0 +1,436 @@
+<!DOCTYPE html><html lang="en" data-theme="dark"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Scrollbar Styling — CSS Reference Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet"><link rel="stylesheet" href="styles.css">
+</head><body>
+<div id="progress"></div>
+<header class="header"><button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">&#9776;</button><h1><span>CSS</span> Reference Guide</h1><div class="header-nav"><a href="index.html">All Topics</a></div><button class="theme-toggle" onclick="toggleTheme()">&#9790; Dark</button></header>
+<nav class="sidebar" id="sidebar"><a href="index.html" class="nav-back">&#8592; All Topics</a><div class="nav-group"><div class="nav-group-title">On This Page</div>
+<a href="#scrollbar-width">scrollbar-width</a>
+<a href="#scrollbar-color">scrollbar-color</a>
+<a href="#webkit-scrollbar">WebKit Pseudo-Elements</a>
+<a href="#live-demos">Live Scrollbar Demos</a>
+<a href="#scrollbar-gutter">scrollbar-gutter</a>
+<a href="#scroll-behavior">scroll-behavior</a>
+<a href="#scroll-snap">Scroll Snap</a>
+<a href="#overscroll-behavior">overscroll-behavior</a>
+<a href="#gotchas">Gotchas</a>
+<a href="#pro-tips">Pro Tips</a>
+<a href="#browser-support">Browser Support</a>
+</div></nav>
+<main class="main"><div class="page-hero"><h1>CSS Scrollbar Styling</h1><p>Customize scrollbar appearance, control scroll behavior with snap points and smooth scrolling, and manage overscroll effects — all with CSS.</p><div class="tags"><span>Scrolling</span><span>UI Customization</span><span>Scroll Snap</span><span>UX</span></div></div>
+
+<!-- scrollbar-width -->
+<div class="section" id="scrollbar-width">
+<h2>scrollbar-width</h2>
+<p>The standard CSS property to control scrollbar thickness. Supported in Firefox and modern Chromium browsers.</p>
+
+<div class="code-block"><div class="code-header"><span>scrollbar-width values</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><span class="sel">.container</span> {
+  <span class="prop">scrollbar-width</span>: <span class="val">auto</span>;    <span class="cmt">/* default platform scrollbar */</span>
+  <span class="prop">scrollbar-width</span>: <span class="val">thin</span>;    <span class="cmt">/* thinner scrollbar */</span>
+  <span class="prop">scrollbar-width</span>: <span class="val">none</span>;    <span class="cmt">/* hide scrollbar (still scrollable) */</span>
+}</pre></div>
+
+<div class="callout info">
+<strong>Accessibility note:</strong> <code>scrollbar-width: none</code> hides the scrollbar but the content remains scrollable via keyboard, touch, and mouse wheel. However, it removes a visual cue, so use sparingly and provide alternative navigation hints.
+</div>
+</div>
+
+<!-- scrollbar-color -->
+<div class="section" id="scrollbar-color">
+<h2>scrollbar-color</h2>
+<p>Sets the thumb and track colors with a single property. Takes two color values: thumb first, then track.</p>
+
+<div class="code-block"><div class="code-header"><span>scrollbar-color syntax</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><span class="sel">.container</span> {
+  <span class="cmt">/* scrollbar-color: thumb-color track-color */</span>
+  <span class="prop">scrollbar-color</span>: <span class="val">#6366f1 #1e1e2e</span>;
+  <span class="prop">scrollbar-width</span>: <span class="val">thin</span>;
+}
+
+<span class="cmt">/* Auto = use system default colors */</span>
+<span class="sel">.default</span> {
+  <span class="prop">scrollbar-color</span>: <span class="val">auto</span>;
+}
+
+<span class="cmt">/* Using CSS variables for theming */</span>
+<span class="sel">.themed</span> {
+  <span class="prop">scrollbar-color</span>: <span class="fn">var</span>(<span class="val">--scroll-thumb</span>) <span class="fn">var</span>(<span class="val">--scroll-track</span>);
+}</pre></div>
+</div>
+
+<!-- WebKit Pseudo-Elements -->
+<div class="section" id="webkit-scrollbar">
+<h2>WebKit Scrollbar Pseudo-Elements</h2>
+<p>Chrome, Safari, Edge, and other WebKit/Blink browsers support detailed scrollbar styling with pseudo-elements. These offer much more control than the standard properties.</p>
+
+<div class="code-block"><div class="code-header"><span>WebKit Scrollbar Pseudo-Elements</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><span class="cmt">/* The entire scrollbar */</span>
+<span class="sel">.container::-webkit-scrollbar</span> {
+  <span class="prop">width</span>: <span class="val">10px</span>;           <span class="cmt">/* vertical scrollbar width */</span>
+  <span class="prop">height</span>: <span class="val">10px</span>;          <span class="cmt">/* horizontal scrollbar height */</span>
+}
+
+<span class="cmt">/* The scrollbar track (background) */</span>
+<span class="sel">.container::-webkit-scrollbar-track</span> {
+  <span class="prop">background</span>: <span class="val">#1e1e2e</span>;
+  <span class="prop">border-radius</span>: <span class="val">10px</span>;
+}
+
+<span class="cmt">/* The draggable thumb */</span>
+<span class="sel">.container::-webkit-scrollbar-thumb</span> {
+  <span class="prop">background</span>: <span class="val">#6366f1</span>;
+  <span class="prop">border-radius</span>: <span class="val">10px</span>;
+  <span class="prop">border</span>: <span class="val">2px solid #1e1e2e</span>;  <span class="cmt">/* creates visual gap */</span>
+}
+
+<span class="cmt">/* Thumb on hover */</span>
+<span class="sel">.container::-webkit-scrollbar-thumb:hover</span> {
+  <span class="prop">background</span>: <span class="val">#818cf8</span>;
+}
+
+<span class="cmt">/* Corner where both scrollbars meet */</span>
+<span class="sel">.container::-webkit-scrollbar-corner</span> {
+  <span class="prop">background</span>: <span class="val">#1e1e2e</span>;
+}</pre></div>
+
+<div class="code-block"><div class="code-header"><span>Cross-Browser Scrollbar Styling</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><span class="cmt">/* Standard (Firefox, modern Chrome 121+) */</span>
+<span class="sel">.scrollable</span> {
+  <span class="prop">scrollbar-width</span>: <span class="val">thin</span>;
+  <span class="prop">scrollbar-color</span>: <span class="val">#6366f1 transparent</span>;
+}
+
+<span class="cmt">/* WebKit fallback (older Chrome, Safari, Edge) */</span>
+<span class="sel">.scrollable::-webkit-scrollbar</span> {
+  <span class="prop">width</span>: <span class="val">8px</span>;
+}
+<span class="sel">.scrollable::-webkit-scrollbar-track</span> {
+  <span class="prop">background</span>: <span class="val">transparent</span>;
+}
+<span class="sel">.scrollable::-webkit-scrollbar-thumb</span> {
+  <span class="prop">background-color</span>: <span class="val">#6366f1</span>;
+  <span class="prop">border-radius</span>: <span class="val">4px</span>;
+}</pre></div>
+</div>
+
+<!-- Live Scrollbar Demos -->
+<div class="section" id="live-demos">
+<h2>Live Scrollbar Demos</h2>
+<p>Scroll inside each box to see different scrollbar styles in action.</p>
+
+<div class="live-example"><div class="live-example-label">Thin Minimal Scrollbar</div>
+<style>
+.demo-scroll-thin { scrollbar-width:thin; scrollbar-color:rgba(99,102,241,0.5) transparent; }
+.demo-scroll-thin::-webkit-scrollbar { width:6px; }
+.demo-scroll-thin::-webkit-scrollbar-track { background:transparent; }
+.demo-scroll-thin::-webkit-scrollbar-thumb { background:rgba(99,102,241,0.5); border-radius:3px; }
+</style>
+<div class="demo-scroll-thin" style="max-height:180px; overflow-y:auto; padding:1rem; border:1px solid rgba(99,102,241,0.2); border-radius:8px;">
+<p style="margin:0 0 0.75rem;">This container has a thin, minimal scrollbar. The track is transparent and the thumb is a subtle indigo.</p>
+<p style="margin:0 0 0.75rem;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+<p style="margin:0 0 0.75rem;">Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+<p style="margin:0 0 0.75rem;">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+<p style="margin:0 0 0.75rem;">Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+<p style="margin:0 0 0.75rem;">Curabitur pretium tincidunt lacus. Nulla gravida orci a odio. Nullam varius, turpis et commodo pharetra.</p>
+<p style="margin:0;">Integer ante arcu, accumsan a, consectetuer eget, posuere ut, mauris. Praesent adipiscing.</p>
+</div>
+</div>
+
+<div class="live-example"><div class="live-example-label">Colored Scrollbar (Pink/Purple)</div>
+<style>
+.demo-scroll-colored { scrollbar-width:auto; scrollbar-color:#f472b6 rgba(244,114,182,0.1); }
+.demo-scroll-colored::-webkit-scrollbar { width:12px; }
+.demo-scroll-colored::-webkit-scrollbar-track { background:rgba(244,114,182,0.1); border-radius:6px; }
+.demo-scroll-colored::-webkit-scrollbar-thumb { background:linear-gradient(180deg,#f472b6,#e879f9); border-radius:6px; border:2px solid rgba(244,114,182,0.1); }
+.demo-scroll-colored::-webkit-scrollbar-thumb:hover { background:linear-gradient(180deg,#ec4899,#d946ef); }
+</style>
+<div class="demo-scroll-colored" style="max-height:180px; overflow-y:auto; padding:1rem; border:1px solid rgba(244,114,182,0.2); border-radius:8px;">
+<p style="margin:0 0 0.75rem;">This container has a vibrant pink/purple scrollbar with a tinted track background.</p>
+<p style="margin:0 0 0.75rem;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia odio vitae vestibulum vestibulum.</p>
+<p style="margin:0 0 0.75rem;">Cras venenatis euismod malesuada. Nullam ac erat ante. Vivamus vel risus ac nisl sodales fermentum.</p>
+<p style="margin:0 0 0.75rem;">Suspendisse potenti. Fusce lacinia arcu et nulla. Nulla vitae massa quis enim semper malesuada.</p>
+<p style="margin:0 0 0.75rem;">Praesent dapibus, neque id cursus faucibus, tortor neque egestas augue, eu vulputate magna eros eu erat.</p>
+<p style="margin:0 0 0.75rem;">Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus.</p>
+<p style="margin:0;">Phasellus ultrices nulla quis nibh. Quisque a lectus. Donec consectetuer ligula vulputate sem tristique cursus.</p>
+</div>
+</div>
+
+<div class="live-example"><div class="live-example-label">Dark Theme Scrollbar</div>
+<style>
+.demo-scroll-dark { scrollbar-width:thin; scrollbar-color:#444 #1a1a2e; }
+.demo-scroll-dark::-webkit-scrollbar { width:8px; }
+.demo-scroll-dark::-webkit-scrollbar-track { background:#1a1a2e; }
+.demo-scroll-dark::-webkit-scrollbar-thumb { background:#444; border-radius:4px; }
+.demo-scroll-dark::-webkit-scrollbar-thumb:hover { background:#666; }
+</style>
+<div class="demo-scroll-dark" style="max-height:180px; overflow-y:auto; padding:1rem; border:1px solid rgba(255,255,255,0.08); border-radius:8px; background:#1a1a2e; color:rgba(255,255,255,0.8);">
+<p style="margin:0 0 0.75rem;">This container uses a dark theme scrollbar with subtle gray tones that blend into the dark background.</p>
+<p style="margin:0 0 0.75rem;">Perfect for dark mode interfaces where the scrollbar shouldn't draw too much attention.</p>
+<p style="margin:0 0 0.75rem;">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.</p>
+<p style="margin:0 0 0.75rem;">Totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt.</p>
+<p style="margin:0 0 0.75rem;">Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.</p>
+<p style="margin:0 0 0.75rem;">Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.</p>
+<p style="margin:0;">Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam.</p>
+</div>
+</div>
+
+<div class="live-example"><div class="live-example-label">Hidden Scrollbar (Still Scrollable)</div>
+<style>
+.demo-scroll-hidden { scrollbar-width:none; }
+.demo-scroll-hidden::-webkit-scrollbar { display:none; }
+</style>
+<div class="demo-scroll-hidden" style="max-height:150px; overflow-y:auto; padding:1rem; border:1px solid rgba(52,211,153,0.2); border-radius:8px; background:rgba(52,211,153,0.05);">
+<p style="margin:0 0 0.75rem; color:#34d399; font-weight:600;">No visible scrollbar! But you can still scroll with mouse wheel, trackpad, or keyboard.</p>
+<p style="margin:0 0 0.75rem;">This is useful for custom scroll UIs, carousels, or sleek sidebar designs.</p>
+<p style="margin:0 0 0.75rem;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor.</p>
+<p style="margin:0 0 0.75rem;">Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</p>
+<p style="margin:0 0 0.75rem;">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore.</p>
+<p style="margin:0;">Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia.</p>
+</div>
+</div>
+</div>
+
+<!-- scrollbar-gutter -->
+<div class="section" id="scrollbar-gutter">
+<h2>scrollbar-gutter</h2>
+<p>The <code class="prop">scrollbar-gutter</code> property reserves space for the scrollbar even when content doesn't overflow, preventing layout shifts when content grows.</p>
+
+<div class="code-block"><div class="code-header"><span>scrollbar-gutter values</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><span class="sel">.container</span> {
+  <span class="prop">overflow</span>: <span class="val">auto</span>;
+
+  <span class="cmt">/* auto = default, space only when scrollbar appears */</span>
+  <span class="prop">scrollbar-gutter</span>: <span class="val">auto</span>;
+
+  <span class="cmt">/* stable = always reserve space for scrollbar */</span>
+  <span class="prop">scrollbar-gutter</span>: <span class="val">stable</span>;
+
+  <span class="cmt">/* stable both-edges = reserve space on both sides (symmetrical) */</span>
+  <span class="prop">scrollbar-gutter</span>: <span class="val">stable both-edges</span>;
+}</pre></div>
+
+<div class="callout tip">
+<strong>Prevent layout jump:</strong> Use <code>scrollbar-gutter: stable</code> on containers where content might dynamically grow to require scrolling. This prevents the annoying horizontal shift when the scrollbar appears.
+</div>
+</div>
+
+<!-- scroll-behavior -->
+<div class="section" id="scroll-behavior">
+<h2>scroll-behavior: smooth</h2>
+<p>Enables smooth animated scrolling for programmatic scrolls and anchor link navigation.</p>
+
+<div class="code-block"><div class="code-header"><span>scroll-behavior</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><span class="cmt">/* Apply to the scrolling container (usually html) */</span>
+<span class="sel">html</span> {
+  <span class="prop">scroll-behavior</span>: <span class="val">smooth</span>;
+}
+
+<span class="cmt">/* Or on specific containers */</span>
+<span class="sel">.scroll-container</span> {
+  <span class="prop">overflow-y</span>: <span class="val">auto</span>;
+  <span class="prop">scroll-behavior</span>: <span class="val">smooth</span>;
+}
+
+<span class="cmt">/* Respect user preference for reduced motion */</span>
+<span class="at">@media</span> (<span class="val">prefers-reduced-motion: reduce</span>) {
+  <span class="sel">html</span> {
+    <span class="prop">scroll-behavior</span>: <span class="val">auto</span>;
+  }
+}</pre></div>
+</div>
+
+<!-- Scroll Snap -->
+<div class="section" id="scroll-snap">
+<h2>Scroll Snap</h2>
+<p>CSS Scroll Snap provides precise control over scroll positions, making carousels and paginated scrolling trivially easy without JavaScript.</p>
+
+<div class="code-block"><div class="code-header"><span>Scroll Snap Properties</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><span class="cmt">/* On the scroll container */</span>
+<span class="sel">.carousel</span> {
+  <span class="prop">overflow-x</span>: <span class="val">auto</span>;
+  <span class="prop">scroll-snap-type</span>: <span class="val">x mandatory</span>;  <span class="cmt">/* x|y|both  mandatory|proximity */</span>
+  <span class="prop">scroll-padding</span>: <span class="val">0 1rem</span>;        <span class="cmt">/* offset snap position */</span>
+}
+
+<span class="cmt">/* On each child item */</span>
+<span class="sel">.carousel-item</span> {
+  <span class="prop">scroll-snap-align</span>: <span class="val">start</span>;      <span class="cmt">/* start | center | end */</span>
+  <span class="prop">scroll-snap-stop</span>: <span class="val">always</span>;      <span class="cmt">/* normal | always (prevents skipping) */</span>
+}
+
+<span class="cmt">/* scroll-snap-type keywords:
+   mandatory — always snaps to a snap point after scrolling
+   proximity — snaps only when near a snap point */</span></pre></div>
+
+<div class="live-example"><div class="live-example-label">Horizontal Scroll Snap Carousel</div>
+<style>
+.snap-carousel {
+  display:flex; gap:1rem; overflow-x:auto; scroll-snap-type:x mandatory;
+  padding:1rem; scroll-padding:0 1rem;
+  scrollbar-width:thin; scrollbar-color:rgba(99,102,241,0.4) transparent;
+}
+.snap-carousel::-webkit-scrollbar { height:6px; }
+.snap-carousel::-webkit-scrollbar-track { background:transparent; }
+.snap-carousel::-webkit-scrollbar-thumb { background:rgba(99,102,241,0.4); border-radius:3px; }
+.snap-card {
+  flex:0 0 280px; scroll-snap-align:start; border-radius:12px; padding:1.5rem;
+  display:flex; flex-direction:column; justify-content:flex-end; min-height:180px;
+  color:white; font-weight:600; position:relative; overflow:hidden;
+}
+.snap-card::before {
+  content:''; position:absolute; inset:0;
+  background:linear-gradient(to top, rgba(0,0,0,0.6), transparent);
+}
+.snap-card span { position:relative; z-index:1; }
+.snap-card small { position:relative; z-index:1; opacity:0.8; font-weight:400; margin-top:0.25rem; }
+</style>
+<div class="snap-carousel">
+<div class="snap-card" style="background:linear-gradient(135deg,#6366f1,#4f46e5);"><span>Slide 1 — Snap Start</span><small>Scroll to see snap behavior</small></div>
+<div class="snap-card" style="background:linear-gradient(135deg,#f472b6,#ec4899);"><span>Slide 2 — Pink Gradient</span><small>Each card snaps into place</small></div>
+<div class="snap-card" style="background:linear-gradient(135deg,#34d399,#10b981);"><span>Slide 3 — Green Gradient</span><small>No JavaScript required!</small></div>
+<div class="snap-card" style="background:linear-gradient(135deg,#fbbf24,#f59e0b);"><span>Slide 4 — Amber Gradient</span><small>Works on touch and mouse</small></div>
+<div class="snap-card" style="background:linear-gradient(135deg,#e879f9,#a855f7);"><span>Slide 5 — Purple Gradient</span><small>scroll-snap-type: x mandatory</small></div>
+<div class="snap-card" style="background:linear-gradient(135deg,#38bdf8,#0ea5e9);"><span>Slide 6 — Blue Gradient</span><small>Last slide in carousel</small></div>
+</div>
+</div>
+
+<div class="code-block"><div class="code-header"><span>Full-Page Vertical Scroll Snap</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><span class="sel">.fullpage</span> {
+  <span class="prop">height</span>: <span class="val">100vh</span>;
+  <span class="prop">overflow-y</span>: <span class="val">auto</span>;
+  <span class="prop">scroll-snap-type</span>: <span class="val">y mandatory</span>;
+}
+
+<span class="sel">.fullpage-section</span> {
+  <span class="prop">height</span>: <span class="val">100vh</span>;
+  <span class="prop">scroll-snap-align</span>: <span class="val">start</span>;
+  <span class="prop">display</span>: <span class="val">flex</span>;
+  <span class="prop">align-items</span>: <span class="val">center</span>;
+  <span class="prop">justify-content</span>: <span class="val">center</span>;
+}</pre></div>
+</div>
+
+<!-- overscroll-behavior -->
+<div class="section" id="overscroll-behavior">
+<h2>overscroll-behavior</h2>
+<p>Controls what happens when scrolling reaches the boundary of a scroll container. Prevents scroll chaining (the parent scrolling when a child reaches its limit) and the pull-to-refresh gesture.</p>
+
+<div class="code-block"><div class="code-header"><span>overscroll-behavior values</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><span class="sel">.modal-body</span> {
+  <span class="prop">overflow-y</span>: <span class="val">auto</span>;
+
+  <span class="cmt">/* auto = default, scroll chains to parent */</span>
+  <span class="prop">overscroll-behavior</span>: <span class="val">auto</span>;
+
+  <span class="cmt">/* contain = prevent scroll chaining, no bounce */</span>
+  <span class="prop">overscroll-behavior</span>: <span class="val">contain</span>;
+
+  <span class="cmt">/* none = prevent chaining AND rubber-band/bounce effects */</span>
+  <span class="prop">overscroll-behavior</span>: <span class="val">none</span>;
+}
+
+<span class="cmt">/* Axis-specific */</span>
+<span class="sel">.sidebar</span> {
+  <span class="prop">overscroll-behavior-y</span>: <span class="val">contain</span>;  <span class="cmt">/* only prevent vertical chaining */</span>
+  <span class="prop">overscroll-behavior-x</span>: <span class="val">auto</span>;     <span class="cmt">/* allow horizontal chaining */</span>
+}
+
+<span class="cmt">/* Common use: prevent page behind modal from scrolling */</span>
+<span class="sel">.modal-content</span> {
+  <span class="prop">overflow-y</span>: <span class="val">auto</span>;
+  <span class="prop">overscroll-behavior</span>: <span class="val">contain</span>;
+}</pre></div>
+
+<div class="callout info">
+<strong>Use case:</strong> When a user scrolls to the bottom of a modal or sidebar and keeps scrolling, <code>overscroll-behavior: contain</code> prevents the background page from scrolling. This is essential for good modal UX.
+</div>
+</div>
+
+<!-- Gotchas -->
+<div class="section" id="gotchas">
+<h2>Gotchas</h2>
+
+<div class="callout gotcha">
+<strong>WebKit pseudo-elements and standard properties can conflict.</strong> If both are applied, behavior varies by browser. Use the standard properties (<code class="prop">scrollbar-width</code>, <code class="prop">scrollbar-color</code>) as the primary approach and WebKit pseudo-elements as a fallback for older browsers.
+</div>
+
+<div class="callout gotcha">
+<strong>scrollbar-width: none hides but doesn't disable scrolling.</strong> The content is still scrollable via keyboard, touch, and mouse wheel. This can confuse users who rely on visible scrollbars to discover scrollable content.
+</div>
+
+<div class="callout gotcha">
+<strong>scroll-snap-type: mandatory can trap users.</strong> If snap points are far apart, the user may not be able to scroll freely to see content between snap points. Use <code class="val">proximity</code> for a less aggressive snap.
+</div>
+
+<div class="callout gotcha">
+<strong>scroll-behavior: smooth doesn't affect JS scroll methods by default.</strong> <code>element.scrollTo()</code> uses instant scrolling unless you pass <code>{ behavior: 'smooth' }</code>. The CSS property affects anchor links and <code>scrollIntoView()</code>.
+</div>
+
+<div class="callout gotcha">
+<strong>Safari has limited scrollbar customization.</strong> Safari supports <code>::-webkit-scrollbar</code> pseudo-elements but with some restrictions. Test thoroughly on Safari.
+</div>
+</div>
+
+<!-- Pro Tips -->
+<div class="section" id="pro-tips">
+<h2>Pro Tips</h2>
+
+<div class="callout tip">
+<strong>Always pair scroll-behavior: smooth with prefers-reduced-motion.</strong> Some users experience motion sickness with smooth scrolling. Always provide an instant fallback.
+</div>
+
+<div class="callout tip">
+<strong>Use scroll-padding with scroll-snap and sticky headers.</strong> If you have a fixed/sticky header, use <code class="prop">scroll-padding-top</code> to offset the snap position so content doesn't hide behind the header.
+</div>
+
+<div class="code-block"><div class="code-header"><span>scroll-padding with sticky header</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><span class="sel">html</span> {
+  <span class="prop">scroll-behavior</span>: <span class="val">smooth</span>;
+  <span class="prop">scroll-padding-top</span>: <span class="val">80px</span>;  <span class="cmt">/* height of fixed header */</span>
+}
+
+<span class="at">@media</span> (<span class="val">prefers-reduced-motion: reduce</span>) {
+  <span class="sel">html</span> { <span class="prop">scroll-behavior</span>: <span class="val">auto</span>; }
+}</pre></div>
+
+<div class="callout tip">
+<strong>Fade-in scrollbar on hover.</strong> Show scrollbars only when the user hovers over the container for a cleaner UI.
+</div>
+
+<div class="code-block"><div class="code-header"><span>Show scrollbar on hover only</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><span class="sel">.container</span> {
+  <span class="prop">overflow-y</span>: <span class="val">auto</span>;
+  <span class="prop">scrollbar-width</span>: <span class="val">none</span>;
+}
+
+<span class="sel">.container:hover</span> {
+  <span class="prop">scrollbar-width</span>: <span class="val">thin</span>;
+  <span class="prop">scrollbar-color</span>: <span class="val">rgba(99,102,241,0.4) transparent</span>;
+}</pre></div>
+
+<div class="callout tip">
+<strong>Use overscroll-behavior on chat windows and side panels.</strong> Any scrollable UI that sits on top of a scrollable page should use <code>overscroll-behavior: contain</code> to prevent the background from scrolling.
+</div>
+</div>
+
+<!-- Browser Support -->
+<div class="section" id="browser-support">
+<h2>Browser Support</h2>
+
+<div style="overflow-x:auto;">
+<table style="width:100%; border-collapse:collapse; font-size:0.85rem; border-radius:8px; overflow:hidden;">
+<thead>
+<tr style="background:rgba(99,102,241,0.15);">
+<th style="padding:0.75rem 1rem; text-align:left; border-bottom:2px solid rgba(99,102,241,0.3);">Feature</th>
+<th style="padding:0.75rem 1rem; text-align:center; border-bottom:2px solid rgba(99,102,241,0.3);">Chrome</th>
+<th style="padding:0.75rem 1rem; text-align:center; border-bottom:2px solid rgba(99,102,241,0.3);">Firefox</th>
+<th style="padding:0.75rem 1rem; text-align:center; border-bottom:2px solid rgba(99,102,241,0.3);">Safari</th>
+<th style="padding:0.75rem 1rem; text-align:center; border-bottom:2px solid rgba(99,102,241,0.3);">Edge</th>
+</tr>
+</thead>
+<tbody>
+<tr style="border-bottom:1px solid rgba(255,255,255,0.06);"><td style="padding:0.5rem 1rem;">scrollbar-width</td><td style="padding:0.5rem; text-align:center;">121+</td><td style="padding:0.5rem; text-align:center;">64+</td><td style="padding:0.5rem; text-align:center;">--</td><td style="padding:0.5rem; text-align:center;">121+</td></tr>
+<tr style="border-bottom:1px solid rgba(255,255,255,0.06); background:rgba(255,255,255,0.02);"><td style="padding:0.5rem 1rem;">scrollbar-color</td><td style="padding:0.5rem; text-align:center;">121+</td><td style="padding:0.5rem; text-align:center;">64+</td><td style="padding:0.5rem; text-align:center;">--</td><td style="padding:0.5rem; text-align:center;">121+</td></tr>
+<tr style="border-bottom:1px solid rgba(255,255,255,0.06);"><td style="padding:0.5rem 1rem;">::-webkit-scrollbar</td><td style="padding:0.5rem; text-align:center;">All</td><td style="padding:0.5rem; text-align:center;">--</td><td style="padding:0.5rem; text-align:center;">Yes</td><td style="padding:0.5rem; text-align:center;">All</td></tr>
+<tr style="border-bottom:1px solid rgba(255,255,255,0.06); background:rgba(255,255,255,0.02);"><td style="padding:0.5rem 1rem;">scroll-snap-type</td><td style="padding:0.5rem; text-align:center;">69+</td><td style="padding:0.5rem; text-align:center;">68+</td><td style="padding:0.5rem; text-align:center;">11+</td><td style="padding:0.5rem; text-align:center;">79+</td></tr>
+<tr style="border-bottom:1px solid rgba(255,255,255,0.06);"><td style="padding:0.5rem 1rem;">scroll-behavior</td><td style="padding:0.5rem; text-align:center;">61+</td><td style="padding:0.5rem; text-align:center;">36+</td><td style="padding:0.5rem; text-align:center;">15.4+</td><td style="padding:0.5rem; text-align:center;">79+</td></tr>
+<tr style="border-bottom:1px solid rgba(255,255,255,0.06); background:rgba(255,255,255,0.02);"><td style="padding:0.5rem 1rem;">overscroll-behavior</td><td style="padding:0.5rem; text-align:center;">63+</td><td style="padding:0.5rem; text-align:center;">59+</td><td style="padding:0.5rem; text-align:center;">16+</td><td style="padding:0.5rem; text-align:center;">18+</td></tr>
+<tr><td style="padding:0.5rem 1rem;">scrollbar-gutter</td><td style="padding:0.5rem; text-align:center;">94+</td><td style="padding:0.5rem; text-align:center;">97+</td><td style="padding:0.5rem; text-align:center;">--</td><td style="padding:0.5rem; text-align:center;">94+</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div class="topic-nav"><a href="17-shapes-clip-path.html"><span class="label">Previous</span><span class="title">Shapes &amp; Clip-Path</span></a><a href="19-print-styles.html" class="next"><span class="label">Next</span><span class="title">Print Styles</span></a></div></main>
+<script src="script.js"></script></body></html>

@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Display &amp; Positioning — CSS Reference Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet"><link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div id="progress"></div>
+<header class="header">
+  <button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">&#9776;</button>
+  <h1><span>CSS</span> Reference Guide</h1>
+  <div class="header-nav"><a href="index.html">All Topics</a></div>
+  <button class="theme-toggle" onclick="toggleTheme()">&#9790; Dark</button>
+</header>
+<nav class="sidebar" id="sidebar">
+  <a href="index.html" class="nav-back">&#8592; All Topics</a>
+  <div class="nav-group"><div class="nav-group-title">On This Page</div>
+    <a href="#normal-flow">Normal Flow</a>
+    <a href="#display-block">display: block</a>
+    <a href="#display-inline">display: inline</a>
+    <a href="#display-inline-block">display: inline-block</a>
+    <a href="#display-none">display: none vs visibility</a>
+    <a href="#position-static">position: static</a>
+    <a href="#position-relative">position: relative</a>
+    <a href="#position-absolute">position: absolute</a>
+    <a href="#position-fixed">position: fixed</a>
+    <a href="#position-sticky">position: sticky</a>
+    <a href="#offsets-inset">top / right / bottom / left / inset</a>
+    <a href="#z-index">z-index &amp; Stacking Contexts</a>
+    <a href="#overflow">overflow</a>
+    <a href="#centering">Centering Techniques</a>
+    <a href="#gotchas">Gotchas</a>
+    <a href="#pro-tips">Pro Tips</a>
+  </div>
+</nav>
+<main class="main">
+  <div class="page-hero">
+    <h1>Display &amp; Positioning</h1>
+    <p>Understand how CSS determines where elements appear on the page &mdash; from normal document flow through every positioning scheme to z-index stacking contexts and overflow control.</p>
+    <div class="tags"><span>Layout</span><span>Display</span><span>Position</span><span>z-index</span><span>Overflow</span><span>Centering</span></div>
+  </div>
+
+  <!-- ════════════════════════════════════════ Normal Flow ════════════════════════════════════════ -->
+  <section class="section" id="normal-flow">
+    <h2>Normal Flow</h2>
+    <p>Before any positioning is applied, the browser lays out elements according to <strong>normal flow</strong>. There are two key behaviors:</p>
+    <ul>
+      <li><strong>Block-level elements</strong> (<code>div</code>, <code>p</code>, <code>h1</code>-<code>h6</code>, <code>section</code>, etc.) stack vertically, each taking the full width available.</li>
+      <li><strong>Inline elements</strong> (<code>span</code>, <code>a</code>, <code>strong</code>, <code>em</code>, etc.) flow horizontally within a line, wrapping when the line is full.</li>
+    </ul>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre><span class="cmt">/* Block elements (default display: block) */</span>
+<span class="sel">div, p, h1, section, article, header, footer, main, nav, ul, ol</span>
+
+<span class="cmt">/* Inline elements (default display: inline) */</span>
+<span class="sel">span, a, strong, em, code, img, br, input</span></pre></div>
+
+    <div class="live-example"><div class="live-example-label">Live Example &mdash; Normal Flow</div>
+      <div style="border: 2px dashed rgba(100,108,255,.4); padding: 1rem; border-radius: 8px;">
+        <div style="background: rgba(100,108,255,.2); padding: .5rem; margin-bottom: .5rem; border: 1px solid #646cff; border-radius: 4px;">Block element 1 (full width)</div>
+        <div style="background: rgba(100,108,255,.2); padding: .5rem; margin-bottom: .5rem; border: 1px solid #646cff; border-radius: 4px;">Block element 2 (stacks below)</div>
+        <div style="background: rgba(100,108,255,.2); padding: .5rem; border: 1px solid #646cff; border-radius: 4px;">
+          Block 3 with <span style="background: rgba(16,185,129,.3); padding: .1rem .4rem; border: 1px solid #10b981; border-radius: 3px;">inline span</span> and <span style="background: rgba(245,158,11,.3); padding: .1rem .4rem; border: 1px solid #f59e0b; border-radius: 3px;">another inline</span> flowing horizontally inside it.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════ display: block ════════════════════════════════════════ -->
+  <section class="section" id="display-block">
+    <h2>display: block</h2>
+    <p>A block-level element takes up the <strong>full width</strong> of its parent, starts on a <strong>new line</strong>, and respects all box-model properties (width, height, margin, padding).</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre><span class="sel">.block-demo</span> {
+  <span class="prop">display</span>: <span class="val">block</span>;
+  <span class="prop">width</span>: <span class="num">200px</span>;
+  <span class="prop">height</span>: <span class="num">60px</span>;
+  <span class="prop">margin</span>: <span class="num">10px</span> <span class="num">0</span>;
+  <span class="prop">padding</span>: <span class="num">10px</span>;
+  <span class="prop">background</span>: <span class="val">#646cff</span>;
+}</pre></div>
+
+    <div class="live-example"><div class="live-example-label">Live Example &mdash; display: block</div>
+      <div style="border: 2px dashed rgba(100,108,255,.3); padding: 1rem; border-radius: 8px;">
+        <div style="display: block; background: #646cff; color: #fff; padding: .75rem; margin-bottom: .5rem; border-radius: 4px; font-size: .9rem;">Block A &mdash; takes full width, stacks vertically</div>
+        <div style="display: block; background: #10b981; color: #fff; padding: .75rem; margin-bottom: .5rem; border-radius: 4px; font-size: .9rem; width: 60%;">Block B &mdash; width: 60%, still on own line</div>
+        <div style="display: block; background: #f59e0b; color: #333; padding: .75rem; border-radius: 4px; font-size: .9rem; width: 40%;">Block C &mdash; width: 40%</div>
+      </div>
+      <p style="font-size: .85rem; opacity: .7; margin-top: .5rem;">Even with a set width, each block starts on a new line.</p>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════ display: inline ════════════════════════════════════════ -->
+  <section class="section" id="display-inline">
+    <h2>display: inline</h2>
+    <p>Inline elements flow within text. They do <strong>not</strong> start on a new line, and they <strong>ignore</strong> width, height, and vertical margin/padding.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre><span class="sel">.inline-demo</span> {
+  <span class="prop">display</span>: <span class="val">inline</span>;
+  <span class="prop">width</span>: <span class="num">200px</span>;    <span class="cmt">/* IGNORED */</span>
+  <span class="prop">height</span>: <span class="num">60px</span>;   <span class="cmt">/* IGNORED */</span>
+  <span class="prop">margin-top</span>: <span class="num">20px</span>; <span class="cmt">/* IGNORED */</span>
+  <span class="prop">padding</span>: <span class="num">5px</span> <span class="num">10px</span>; <span class="cmt">/* horizontal works, vertical doesn't push */</span>
+}</pre></div>
+
+    <div class="live-example"><div class="live-example-label">Live Example &mdash; display: inline</div>
+      <div style="border: 2px dashed rgba(100,108,255,.3); padding: 1rem; border-radius: 8px; font-size: .95rem;">
+        Text before
+        <span style="display: inline; background: #646cff; color: #fff; padding: .2rem .6rem; border-radius: 3px;">Inline A</span>
+        <span style="display: inline; background: #10b981; color: #fff; padding: .2rem .6rem; border-radius: 3px;">Inline B</span>
+        <span style="display: inline; background: #f59e0b; color: #333; padding: .2rem .6rem; border-radius: 3px;">Inline C</span>
+        text after &mdash; all flow on the same line and wrap with the text.
+      </div>
+      <p style="font-size: .85rem; opacity: .7; margin-top: .5rem;">Width and height are ignored. Vertical margin is ignored. Only horizontal padding/margin works.</p>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════ display: inline-block ════════════════════════════════════════ -->
+  <section class="section" id="display-inline-block">
+    <h2>display: inline-block</h2>
+    <p>The best of both worlds: flows inline like text, but respects width, height, and all box-model properties like a block.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre><span class="sel">.inline-block-demo</span> {
+  <span class="prop">display</span>: <span class="val">inline-block</span>;
+  <span class="prop">width</span>: <span class="num">120px</span>;     <span class="cmt">/* WORKS */</span>
+  <span class="prop">height</span>: <span class="num">60px</span>;     <span class="cmt">/* WORKS */</span>
+  <span class="prop">margin</span>: <span class="num">10px</span>;     <span class="cmt">/* ALL directions WORK */</span>
+  <span class="prop">padding</span>: <span class="num">10px</span>;    <span class="cmt">/* ALL directions WORK */</span>
+  <span class="prop">vertical-align</span>: <span class="val">top</span>;
+}</pre></div>
+
+    <div class="live-example"><div class="live-example-label">Live Example &mdash; block vs inline vs inline-block Comparison</div>
+      <h4 style="color: #646cff; margin-bottom: .5rem;">display: block</h4>
+      <div style="border: 1px solid rgba(100,108,255,.3); padding: .5rem; border-radius: 6px; margin-bottom: 1rem;">
+        <div style="display: block; width: 150px; height: 40px; background: #646cff; margin: .25rem 0; border-radius: 4px; color: #fff; font-size: .75rem; line-height: 40px; text-align: center;">Block A (150px)</div>
+        <div style="display: block; width: 150px; height: 40px; background: #646cff; margin: .25rem 0; border-radius: 4px; color: #fff; font-size: .75rem; line-height: 40px; text-align: center;">Block B (150px)</div>
+      </div>
+
+      <h4 style="color: #10b981; margin-bottom: .5rem;">display: inline (width/height ignored)</h4>
+      <div style="border: 1px solid rgba(16,185,129,.3); padding: .5rem; border-radius: 6px; margin-bottom: 1rem;">
+        <span style="display: inline; width: 150px; height: 40px; background: #10b981; padding: .25rem .5rem; border-radius: 4px; color: #fff; font-size: .75rem;">Inline A</span>
+        <span style="display: inline; width: 150px; height: 40px; background: #10b981; padding: .25rem .5rem; border-radius: 4px; color: #fff; font-size: .75rem;">Inline B</span>
+        <span style="font-size: .8rem; opacity: .7;">&larr; width: 150px set but ignored</span>
+      </div>
+
+      <h4 style="color: #f59e0b; margin-bottom: .5rem;">display: inline-block (best of both)</h4>
+      <div style="border: 1px solid rgba(245,158,11,.3); padding: .5rem; border-radius: 6px;">
+        <div style="display: inline-block; width: 150px; height: 50px; background: #f59e0b; margin: .25rem; border-radius: 4px; color: #333; font-size: .75rem; line-height: 50px; text-align: center; vertical-align: top;">Inline-block A</div>
+        <div style="display: inline-block; width: 150px; height: 50px; background: #f59e0b; margin: .25rem; border-radius: 4px; color: #333; font-size: .75rem; line-height: 50px; text-align: center; vertical-align: top;">Inline-block B</div>
+        <span style="font-size: .8rem; opacity: .7;">&larr; side-by-side WITH width/height</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════ display: none vs visibility ════════════════════════════════════════ -->
+  <section class="section" id="display-none">
+    <h2>display: none vs visibility: hidden</h2>
+    <p>Both hide elements, but they behave very differently in terms of layout impact.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre><span class="cmt">/* Completely removed from layout */</span>
+<span class="sel">.gone</span> {
+  <span class="prop">display</span>: <span class="val">none</span>;
+}
+
+<span class="cmt">/* Hidden but still takes up space */</span>
+<span class="sel">.invisible</span> {
+  <span class="prop">visibility</span>: <span class="val">hidden</span>;
+}</pre></div>
+
+    <div class="live-example"><div class="live-example-label">Live Example &mdash; display: none vs visibility: hidden</div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+        <div style="border: 1px solid rgba(100,108,255,.4); border-radius: 8px; padding: 1rem;">
+          <strong style="color: #646cff;">display: none</strong>
+          <div style="margin-top: .5rem;">
+            <div style="background: #646cff; padding: .5rem; border-radius: 4px; color: #fff; font-size: .8rem; margin-bottom: .25rem;">Box 1</div>
+            <div style="display: none; background: #ef4444; padding: .5rem; border-radius: 4px; color: #fff; font-size: .8rem; margin-bottom: .25rem;">Box 2 (display: none)</div>
+            <div style="background: #10b981; padding: .5rem; border-radius: 4px; color: #fff; font-size: .8rem;">Box 3 &mdash; jumps up! No gap.</div>
+          </div>
+        </div>
+        <div style="border: 1px solid rgba(245,158,11,.4); border-radius: 8px; padding: 1rem;">
+          <strong style="color: #f59e0b;">visibility: hidden</strong>
+          <div style="margin-top: .5rem;">
+            <div style="background: #646cff; padding: .5rem; border-radius: 4px; color: #fff; font-size: .8rem; margin-bottom: .25rem;">Box 1</div>
+            <div style="visibility: hidden; background: #ef4444; padding: .5rem; border-radius: 4px; color: #fff; font-size: .8rem; margin-bottom: .25rem;">Box 2 (visibility: hidden)</div>
+            <div style="background: #10b981; padding: .5rem; border-radius: 4px; color: #fff; font-size: .8rem;">Box 3 &mdash; gap preserved!</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout info"><div class="callout-title">Key Differences</div><p><code>display: none</code> removes the element from the document flow entirely (no space, no events). <code>visibility: hidden</code> hides it visually but it still occupies its space in the layout. Screen readers also skip <code>display: none</code> elements.</p></div>
+  </section>
+
+  <!-- ════════════════════════════════════════ position: static ════════════════════════════════════════ -->
+  <section class="section" id="position-static">
+    <h2>position: static</h2>
+    <p>The default positioning. The element follows normal flow. <code>top</code>, <code>right</code>, <code>bottom</code>, <code>left</code>, and <code>z-index</code> have <strong>no effect</strong>.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre><span class="sel">.static</span> {
+  <span class="prop">position</span>: <span class="val">static</span>; <span class="cmt">/* default, rarely written explicitly */</span>
+  <span class="prop">top</span>: <span class="num">50px</span>;          <span class="cmt">/* IGNORED */</span>
+  <span class="prop">left</span>: <span class="num">100px</span>;        <span class="cmt">/* IGNORED */</span>
+}</pre></div>
+  </section>
+
+  <!-- ════════════════════════════════════════ position: relative ════════════════════════════════════════ -->
+  <section class="section" id="position-relative">
+    <h2>position: relative</h2>
+    <p>The element stays in normal flow (its original space is preserved), but you can <strong>offset</strong> it with <code>top</code>/<code>right</code>/<code>bottom</code>/<code>left</code> relative to its original position. It also establishes a <strong>containing block</strong> for absolutely positioned children.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre><span class="sel">.relative</span> {
+  <span class="prop">position</span>: <span class="val">relative</span>;
+  <span class="prop">top</span>: <span class="num">20px</span>;    <span class="cmt">/* moves DOWN 20px from original spot */</span>
+  <span class="prop">left</span>: <span class="num">30px</span>;   <span class="cmt">/* moves RIGHT 30px from original spot */</span>
+}</pre></div>
+
+    <div class="live-example"><div class="live-example-label">Live Example &mdash; position: relative</div>
+      <div style="border: 2px dashed rgba(100,108,255,.3); padding: 1rem; border-radius: 8px;">
+        <div style="background: rgba(100,108,255,.15); padding: .5rem; border-radius: 4px; margin-bottom: .5rem; font-size: .85rem;">Static box (normal position)</div>
+        <div style="position: relative; top: 15px; left: 40px; background: #646cff; padding: .5rem; border-radius: 4px; margin-bottom: .5rem; color: #fff; font-size: .85rem; width: fit-content;">
+          Relative: top: 15px; left: 40px
+          <div style="position: absolute; top: -2px; left: -2px; width: 100%; height: 100%; border: 2px dashed rgba(255,255,255,.3); border-radius: 4px; pointer-events: none;"></div>
+        </div>
+        <div style="background: rgba(100,108,255,.15); padding: .5rem; border-radius: 4px; font-size: .85rem;">Static box &mdash; notice the gap where the relative box was originally</div>
+      </div>
+      <p style="font-size: .85rem; opacity: .7; margin-top: .5rem;">The original space is preserved (gap remains). The box is shifted visually from its original position.</p>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════ position: absolute ════════════════════════════════════════ -->
+  <section class="section" id="position-absolute">
+    <h2>position: absolute</h2>
+    <p>The element is <strong>removed from normal flow</strong> (takes up no space). It positions itself relative to its <strong>nearest positioned ancestor</strong> (one with <code>position: relative/absolute/fixed/sticky</code>). If none exists, it positions relative to the initial containing block (the viewport).</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre><span class="cmt">/* The classic pattern: absolute inside relative */</span>
+<span class="sel">.parent</span> {
+  <span class="prop">position</span>: <span class="val">relative</span>; <span class="cmt">/* establishes containing block */</span>
+}
+
+<span class="sel">.child</span> {
+  <span class="prop">position</span>: <span class="val">absolute</span>;
+  <span class="prop">top</span>: <span class="num">10px</span>;
+  <span class="prop">right</span>: <span class="num">10px</span>;
+}</pre></div>
+
+    <div class="live-example"><div class="live-example-label">Live Example &mdash; Absolute Inside Relative</div>
+      <div style="position: relative; height: 200px; border: 2px solid #646cff; border-radius: 8px; padding: 1rem; background: rgba(100,108,255,.05);">
+        <span style="font-size: .8rem; opacity: .7;">Parent: position: relative</span>
+        <div style="position: absolute; top: 10px; right: 10px; background: #ef4444; color: #fff; padding: .4rem .8rem; border-radius: 4px; font-size: .8rem;">
+          top: 10px; right: 10px
+        </div>
+        <div style="position: absolute; bottom: 10px; left: 10px; background: #10b981; color: #fff; padding: .4rem .8rem; border-radius: 4px; font-size: .8rem;">
+          bottom: 10px; left: 10px
+        </div>
+        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #f59e0b; color: #333; padding: .4rem .8rem; border-radius: 4px; font-size: .8rem;">
+          Centered (50% + translate)
+        </div>
+        <div style="position: absolute; top: 10px; left: 10px; background: #646cff; color: #fff; padding: .4rem .8rem; border-radius: 4px; font-size: .8rem;">
+          top: 10px; left: 10px
+        </div>
+        <div style="position: absolute; bottom: 10px; right: 10px; background: #a855f7; color: #fff; padding: .4rem .8rem; border-radius: 4px; font-size: .8rem;">
+          bottom: 10px; right: 10px
+        </div>
+      </div>
+    </div>
+
+    <div class="callout gotcha"><div class="callout-title">Forgetting position: relative on the Parent</div><p>If the parent doesn't have <code>position: relative</code> (or another positioning), the absolute child will position itself relative to the viewport or the nearest positioned ancestor further up the tree. Always set <code>position: relative</code> on the intended parent container.</p></div>
+  </section>
+
+  <!-- ════════════════════════════════════════ position: fixed ════════════════════════════════════════ -->
+  <section class="section" id="position-fixed">
+    <h2>position: fixed</h2>
+    <p>The element is removed from normal flow and positioned relative to the <strong>viewport</strong>. It stays in place even when the page is scrolled. Commonly used for sticky headers, floating buttons, and modals.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre><span class="cmt">/* Fixed header */</span>
+<span class="sel">.navbar</span> {
+  <span class="prop">position</span>: <span class="val">fixed</span>;
+  <span class="prop">top</span>: <span class="num">0</span>;
+  <span class="prop">left</span>: <span class="num">0</span>;
+  <span class="prop">right</span>: <span class="num">0</span>;
+  <span class="prop">z-index</span>: <span class="num">1000</span>;
+}
+
+<span class="cmt">/* Floating action button */</span>
+<span class="sel">.fab</span> {
+  <span class="prop">position</span>: <span class="val">fixed</span>;
+  <span class="prop">bottom</span>: <span class="num">20px</span>;
+  <span class="prop">right</span>: <span class="num">20px</span>;
+}</pre></div>
+
+    <div class="live-example"><div class="live-example-label">Live Example &mdash; position: fixed (simulated)</div>
+      <div style="position: relative; height: 180px; border: 2px solid #646cff; border-radius: 8px; overflow: hidden; background: rgba(100,108,255,.05);">
+        <div style="position: absolute; top: 0; left: 0; right: 0; background: rgba(100,108,255,.9); padding: .5rem 1rem; color: #fff; font-size: .85rem; z-index: 1;">
+          Fixed navbar (position: fixed; top: 0)
+        </div>
+        <div style="padding: 3rem 1rem 1rem; font-size: .85rem; opacity: .7;">
+          <p>Content would scroll beneath the fixed navbar.</p>
+          <p>The navbar stays pinned to the top of the viewport regardless of scroll position.</p>
+        </div>
+        <div style="position: absolute; bottom: 12px; right: 12px; width: 44px; height: 44px; background: #10b981; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 1.2rem; font-weight: 700; box-shadow: 0 2px 8px rgba(0,0,0,.3);">+</div>
+      </div>
+      <p style="font-size: .85rem; opacity: .7; margin-top: .5rem;">In a real page, the blue bar and the green button would stay fixed on screen while you scroll.</p>
+    </div>
+
+    <div class="callout gotcha"><div class="callout-title">Fixed + Transform = Broken</div><p>If any ancestor has a <code>transform</code>, <code>perspective</code>, or <code>filter</code> property, it creates a new containing block for fixed elements. The element will no longer be fixed relative to the viewport, but to that ancestor instead.</p></div>
+  </section>
+
+  <!-- ════════════════════════════════════════ position: sticky ════════════════════════════════════════ -->
+  <section class="section" id="position-sticky">
+    <h2>position: sticky</h2>
+    <p>A hybrid of relative and fixed. The element scrolls with the page normally until it hits a specified offset (e.g., <code>top: 0</code>), then "sticks" in place until its parent scrolls out of view.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre><span class="sel">.sticky-header</span> {
+  <span class="prop">position</span>: <span class="val">sticky</span>;
+  <span class="prop">top</span>: <span class="num">0</span>;
+  <span class="prop">background</span>: <span class="val">#0a0a1a</span>;
+  <span class="prop">z-index</span>: <span class="num">10</span>;
+}
+
+<span class="cmt">/* Sticky sidebar */</span>
+<span class="sel">.sidebar</span> {
+  <span class="prop">position</span>: <span class="val">sticky</span>;
+  <span class="prop">top</span>: <span class="num">80px</span>;   <span class="cmt">/* sticks 80px from top */</span>
+  <span class="prop">align-self</span>: <span class="val">start</span>;
+}</pre></div>
+
+    <div class="live-example"><div class="live-example-label">Live Example &mdash; position: sticky</div>
+      <div style="height: 200px; overflow-y: auto; border: 2px solid #646cff; border-radius: 8px; background: rgba(100,108,255,.05);">
+        <div style="padding: 1rem; font-size: .85rem;">
+          <p>Scroll down inside this container to see sticky headers in action.</p>
+        </div>
+        <div style="position: sticky; top: 0; background: #646cff; color: #fff; padding: .5rem 1rem; font-weight: 600; font-size: .9rem; z-index: 1;">Section A (sticky: top: 0)</div>
+        <div style="padding: 1rem; font-size: .85rem;">
+          <p style="margin: .25rem 0;">Item A1 &mdash; Lorem ipsum dolor sit amet</p>
+          <p style="margin: .25rem 0;">Item A2 &mdash; consectetur adipiscing elit</p>
+          <p style="margin: .25rem 0;">Item A3 &mdash; sed do eiusmod tempor</p>
+          <p style="margin: .25rem 0;">Item A4 &mdash; incididunt ut labore</p>
+        </div>
+        <div style="position: sticky; top: 0; background: #10b981; color: #fff; padding: .5rem 1rem; font-weight: 600; font-size: .9rem; z-index: 1;">Section B (sticky: top: 0)</div>
+        <div style="padding: 1rem; font-size: .85rem;">
+          <p style="margin: .25rem 0;">Item B1 &mdash; Ut enim ad minim veniam</p>
+          <p style="margin: .25rem 0;">Item B2 &mdash; quis nostrud exercitation</p>
+          <p style="margin: .25rem 0;">Item B3 &mdash; ullamco laboris nisi</p>
+          <p style="margin: .25rem 0;">Item B4 &mdash; ut aliquip ex ea commodo</p>
+        </div>
+        <div style="position: sticky; top: 0; background: #f59e0b; color: #333; padding: .5rem 1rem; font-weight: 600; font-size: .9rem; z-index: 1;">Section C (sticky: top: 0)</div>
+        <div style="padding: 1rem; font-size: .85rem;">
+          <p style="margin: .25rem 0;">Item C1 &mdash; Duis aute irure dolor</p>
+          <p style="margin: .25rem 0;">Item C2 &mdash; in reprehenderit in voluptate</p>
+          <p style="margin: .25rem 0;">Item C3 &mdash; velit esse cillum dolore</p>
+          <p style="margin: .25rem 0;">Item C4 &mdash; eu fugiat nulla pariatur</p>
+        </div>
+      </div>
+      <p style="font-size: .85rem; opacity: .7; margin-top: .5rem;">Scroll inside the box above. Each section header sticks at the top, then gets pushed away by the next one.</p>
+    </div>
+
+    <div class="callout info"><div class="callout-title">Sticky Requirements</div><p>For sticky to work: (1) you must set at least one offset (<code>top</code>, <code>bottom</code>, etc.), (2) the parent must have enough scrollable content, and (3) no ancestor can have <code>overflow: hidden</code> or <code>overflow: auto</code> (unless it is the scroll container itself).</p></div>
+  </section>
+
+  <!-- ════════════════════════════════════════ top / right / bottom / left / inset ════════════════════════════════════════ -->
+  <section class="section" id="offsets-inset">
+    <h2>top / right / bottom / left / inset</h2>
+    <p>These offset properties only work on <strong>positioned</strong> elements (not <code>static</code>). The <code>inset</code> shorthand sets all four at once.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre><span class="cmt">/* Individual properties */</span>
+<span class="sel">.box</span> {
+  <span class="prop">position</span>: <span class="val">absolute</span>;
+  <span class="prop">top</span>: <span class="num">10px</span>;
+  <span class="prop">right</span>: <span class="num">20px</span>;
+  <span class="prop">bottom</span>: <span class="num">10px</span>;
+  <span class="prop">left</span>: <span class="num">20px</span>;
+}
+
+<span class="cmt">/* inset shorthand (same as above) */</span>
+<span class="sel">.box</span> {
+  <span class="prop">position</span>: <span class="val">absolute</span>;
+  <span class="prop">inset</span>: <span class="num">10px</span> <span class="num">20px</span>;
+}
+
+<span class="cmt">/* Full-bleed overlay */</span>
+<span class="sel">.overlay</span> {
+  <span class="prop">position</span>: <span class="val">absolute</span>;
+  <span class="prop">inset</span>: <span class="num">0</span>;  <span class="cmt">/* shorthand for top:0 right:0 bottom:0 left:0 */</span>
+}</pre></div>
+
+    <div class="live-example"><div class="live-example-label">Live Example &mdash; inset Shorthand</div>
+      <div style="position: relative; height: 150px; border: 2px solid #646cff; border-radius: 8px; background: rgba(100,108,255,.05);">
+        <div style="position: absolute; inset: 15px; background: rgba(100,108,255,.2); border: 2px dashed #646cff; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: .85rem;">
+          inset: 15px (15px from all edges)
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════ z-index ════════════════════════════════════════ -->
+  <section class="section" id="z-index">
+    <h2>z-index &amp; Stacking Contexts</h2>
+    <p><code>z-index</code> controls the stacking order of positioned elements. Higher values appear in front. It only works on elements with a <code>position</code> value other than <code>static</code>.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre><span class="sel">.behind</span>  { <span class="prop">position</span>: <span class="val">relative</span>; <span class="prop">z-index</span>: <span class="num">1</span>; }
+<span class="sel">.middle</span>  { <span class="prop">position</span>: <span class="val">relative</span>; <span class="prop">z-index</span>: <span class="num">10</span>; }
+<span class="sel">.infront</span> { <span class="prop">position</span>: <span class="val">relative</span>; <span class="prop">z-index</span>: <span class="num">100</span>; }
+
+<span class="cmt">/* Things that create a new stacking context: */</span>
+<span class="cmt">/* - position + z-index (not auto) */</span>
+<span class="cmt">/* - opacity &lt; 1 */</span>
+<span class="cmt">/* - transform, filter, perspective */</span>
+<span class="cmt">/* - isolation: isolate */</span></pre></div>
+
+    <div class="live-example"><div class="live-example-label">Live Example &mdash; z-index Stacking</div>
+      <div style="position: relative; height: 200px; border-radius: 8px; background: rgba(100,108,255,.05); border: 1px solid rgba(100,108,255,.2);">
+        <div style="position: absolute; top: 20px; left: 20px; width: 160px; height: 100px; background: #ef4444; border-radius: 8px; z-index: 1; display: flex; align-items: center; justify-content: center; color: #fff; font-size: .85rem; font-weight: 600; box-shadow: 0 4px 12px rgba(0,0,0,.3);">
+          z-index: 1 (back)
+        </div>
+        <div style="position: absolute; top: 45px; left: 70px; width: 160px; height: 100px; background: #f59e0b; border-radius: 8px; z-index: 10; display: flex; align-items: center; justify-content: center; color: #333; font-size: .85rem; font-weight: 600; box-shadow: 0 4px 12px rgba(0,0,0,.3);">
+          z-index: 10 (middle)
+        </div>
+        <div style="position: absolute; top: 70px; left: 120px; width: 160px; height: 100px; background: #646cff; border-radius: 8px; z-index: 100; display: flex; align-items: center; justify-content: center; color: #fff; font-size: .85rem; font-weight: 600; box-shadow: 0 4px 12px rgba(0,0,0,.3);">
+          z-index: 100 (front)
+        </div>
+      </div>
+    </div>
+
+    <h3>Stacking Context</h3>
+    <p>A stacking context is like a self-contained z-index universe. Children's z-index values only compete against siblings within the same stacking context, never against elements in a parent or sibling context.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre><span class="cmt">/* Parent creates a stacking context with z-index: 1 */</span>
+<span class="sel">.parent</span> {
+  <span class="prop">position</span>: <span class="val">relative</span>;
+  <span class="prop">z-index</span>: <span class="num">1</span>;
+}
+
+<span class="cmt">/* This child has z-index: 9999, but it can NEVER
+   appear above a sibling of .parent with z-index: 2
+   because parent's context caps it at 1 */</span>
+<span class="sel">.child</span> {
+  <span class="prop">position</span>: <span class="val">absolute</span>;
+  <span class="prop">z-index</span>: <span class="num">9999</span>;
+}</pre></div>
+
+    <div class="callout gotcha"><div class="callout-title">z-index Only Works on Positioned Elements</div><p>Setting <code>z-index: 999</code> on a <code>position: static</code> element does absolutely nothing. The element must have <code>position: relative</code>, <code>absolute</code>, <code>fixed</code>, or <code>sticky</code> for z-index to take effect.</p></div>
+  </section>
+
+  <!-- ════════════════════════════════════════ overflow ════════════════════════════════════════ -->
+  <section class="section" id="overflow">
+    <h2>overflow</h2>
+    <p>Controls what happens when content is larger than its container.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre><span class="sel">.a</span> { <span class="prop">overflow</span>: <span class="val">visible</span>; }  <span class="cmt">/* default: content spills out */</span>
+<span class="sel">.b</span> { <span class="prop">overflow</span>: <span class="val">hidden</span>; }   <span class="cmt">/* clips content, no scrollbar */</span>
+<span class="sel">.c</span> { <span class="prop">overflow</span>: <span class="val">scroll</span>; }   <span class="cmt">/* always shows scrollbar */</span>
+<span class="sel">.d</span> { <span class="prop">overflow</span>: <span class="val">auto</span>; }     <span class="cmt">/* scrollbar only when needed */</span>
+
+<span class="cmt">/* Per-axis control */</span>
+<span class="sel">.e</span> { <span class="prop">overflow-x</span>: <span class="val">auto</span>; <span class="prop">overflow-y</span>: <span class="val">hidden</span>; }</pre></div>
+
+    <div class="live-example"><div class="live-example-label">Live Example &mdash; overflow Values</div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+        <div>
+          <strong style="color: #646cff; font-size: .9rem;">overflow: visible (default)</strong>
+          <div style="width: 100%; height: 80px; overflow: visible; border: 2px solid #646cff; border-radius: 6px; padding: .5rem; margin-top: .4rem; position: relative; z-index: 0; font-size: .8rem;">
+            This content overflows its container because it's taller than the 80px height. The default behavior is visible, meaning content spills out beyond the border and overlaps anything below it.
+          </div>
+        </div>
+        <div>
+          <strong style="color: #ef4444; font-size: .9rem;">overflow: hidden</strong>
+          <div style="width: 100%; height: 80px; overflow: hidden; border: 2px solid #ef4444; border-radius: 6px; padding: .5rem; margin-top: .4rem; font-size: .8rem;">
+            This content overflows its container because it's taller than the 80px height. With overflow: hidden, the extra content is clipped and invisible. No scrollbar appears.
+          </div>
+        </div>
+        <div>
+          <strong style="color: #10b981; font-size: .9rem;">overflow: scroll</strong>
+          <div style="width: 100%; height: 80px; overflow: scroll; border: 2px solid #10b981; border-radius: 6px; padding: .5rem; margin-top: .4rem; font-size: .8rem;">
+            This content overflows its container because it's taller than the 80px height. With overflow: scroll, a scrollbar always appears even if the content fits.
+          </div>
+        </div>
+        <div>
+          <strong style="color: #f59e0b; font-size: .9rem;">overflow: auto</strong>
+          <div style="width: 100%; height: 80px; overflow: auto; border: 2px solid #f59e0b; border-radius: 6px; padding: .5rem; margin-top: .4rem; font-size: .8rem;">
+            This content overflows its container because it's taller than the 80px height. With overflow: auto, a scrollbar only appears when the content actually overflows.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════ Centering ════════════════════════════════════════ -->
+  <section class="section" id="centering">
+    <h2>Centering Techniques Overview</h2>
+    <p>Centering elements is one of the most common CSS tasks. Here is a summary of the most reliable methods.</p>
+
+    <h3>Horizontal Centering</h3>
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre><span class="cmt">/* Block element with known width */</span>
+<span class="sel">.center-block</span> {
+  <span class="prop">width</span>: <span class="num">300px</span>;
+  <span class="prop">margin</span>: <span class="num">0</span> <span class="val">auto</span>;
+}
+
+<span class="cmt">/* Inline/inline-block content */</span>
+<span class="sel">.center-text</span> {
+  <span class="prop">text-align</span>: <span class="val">center</span>;
+}</pre></div>
+
+    <h3>Vertical + Horizontal Centering</h3>
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre><span class="cmt">/* Method 1: Flexbox (most common) */</span>
+<span class="sel">.flex-center</span> {
+  <span class="prop">display</span>: <span class="val">flex</span>;
+  <span class="prop">justify-content</span>: <span class="val">center</span>;
+  <span class="prop">align-items</span>: <span class="val">center</span>;
+}
+
+<span class="cmt">/* Method 2: Grid (simplest) */</span>
+<span class="sel">.grid-center</span> {
+  <span class="prop">display</span>: <span class="val">grid</span>;
+  <span class="prop">place-items</span>: <span class="val">center</span>;
+}
+
+<span class="cmt">/* Method 3: Absolute + Transform */</span>
+<span class="sel">.abs-center</span> {
+  <span class="prop">position</span>: <span class="val">absolute</span>;
+  <span class="prop">top</span>: <span class="num">50%</span>;
+  <span class="prop">left</span>: <span class="num">50%</span>;
+  <span class="prop">transform</span>: <span class="fn">translate</span>(<span class="num">-50%</span>, <span class="num">-50%</span>);
+}
+
+<span class="cmt">/* Method 4: Absolute + inset + margin */</span>
+<span class="sel">.inset-center</span> {
+  <span class="prop">position</span>: <span class="val">absolute</span>;
+  <span class="prop">inset</span>: <span class="num">0</span>;
+  <span class="prop">margin</span>: <span class="val">auto</span>;
+  <span class="prop">width</span>: <span class="val">fit-content</span>;
+  <span class="prop">height</span>: <span class="val">fit-content</span>;
+}</pre></div>
+
+    <div class="live-example"><div class="live-example-label">Live Example &mdash; Four Centering Methods</div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+        <div style="height: 120px; border: 1px solid rgba(100,108,255,.4); border-radius: 8px; display: flex; justify-content: center; align-items: center;">
+          <div style="background: #646cff; color: #fff; padding: .4rem .8rem; border-radius: 4px; font-size: .8rem;">Flexbox center</div>
+        </div>
+        <div style="height: 120px; border: 1px solid rgba(16,185,129,.4); border-radius: 8px; display: grid; place-items: center;">
+          <div style="background: #10b981; color: #fff; padding: .4rem .8rem; border-radius: 4px; font-size: .8rem;">Grid place-items</div>
+        </div>
+        <div style="height: 120px; border: 1px solid rgba(245,158,11,.4); border-radius: 8px; position: relative;">
+          <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #f59e0b; color: #333; padding: .4rem .8rem; border-radius: 4px; font-size: .8rem;">Absolute + transform</div>
+        </div>
+        <div style="height: 120px; border: 1px solid rgba(239,68,68,.4); border-radius: 8px; position: relative;">
+          <div style="position: absolute; inset: 0; margin: auto; width: fit-content; height: fit-content; background: #ef4444; color: #fff; padding: .4rem .8rem; border-radius: 4px; font-size: .8rem;">Absolute + inset + margin</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout tip"><div class="callout-title">Preferred Centering Method</div><p>In modern CSS, <code>display: grid; place-items: center;</code> is the simplest way to center anything both horizontally and vertically. It works with any content size and requires just two lines of CSS.</p></div>
+  </section>
+
+  <!-- ════════════════════════════════════════ Gotchas ════════════════════════════════════════ -->
+  <section class="section" id="gotchas">
+    <h2>Common Gotchas</h2>
+
+    <div class="callout gotcha"><div class="callout-title">Absolute Positioning Removes from Flow</div><p>An absolutely positioned element is completely removed from the document flow. Surrounding elements will not know it exists, potentially causing overlaps. Always account for the space the element should have occupied.</p></div>
+
+    <div class="callout gotcha"><div class="callout-title">Sticky Needs a Scrollable Ancestor</div><p><code>position: sticky</code> does nothing if: (1) no offset is set, (2) the parent has <code>overflow: hidden</code>, or (3) the parent doesn't have enough content to scroll. All three conditions must be met for sticky to activate.</p></div>
+
+    <div class="callout gotcha"><div class="callout-title">Inline Elements and Whitespace</div><p><code>inline</code> and <code>inline-block</code> elements respect whitespace in your HTML. Two <code>&lt;div&gt;</code> elements on separate lines will have a small gap between them. Fix with <code>font-size: 0</code> on the parent, or use Flexbox instead.</p></div>
+
+    <div class="callout gotcha"><div class="callout-title">z-index War</div><p>Avoid escalating z-index values (100, 1000, 99999). Instead, use a consistent scale defined in CSS custom properties: <code>--z-dropdown: 100; --z-modal: 200; --z-tooltip: 300;</code>.</p></div>
+
+    <div class="callout gotcha"><div class="callout-title">overflow: hidden Clips Sticky Children</div><p>Setting <code>overflow: hidden</code> on a parent element will break <code>position: sticky</code> on its children. The sticky element needs an overflow-visible ancestor as its scrolling container.</p></div>
+
+    <div class="callout gotcha"><div class="callout-title">Collapsing Parent with Absolute Children</div><p>If all children are <code>position: absolute</code>, the parent collapses to zero height because absolute elements are removed from the flow. Set an explicit height or min-height on the parent.</p></div>
+  </section>
+
+  <!-- ════════════════════════════════════════ Pro Tips ════════════════════════════════════════ -->
+  <section class="section" id="pro-tips">
+    <h2>Pro Tips</h2>
+
+    <div class="callout tip"><div class="callout-title">Use inset: 0 for Full Overlays</div><p>Instead of writing <code>top: 0; right: 0; bottom: 0; left: 0;</code>, use the shorthand <code>inset: 0</code>. It's cleaner and supported in all modern browsers.</p></div>
+
+    <div class="callout tip"><div class="callout-title">Isolation for Stacking Contexts</div><p>Use <code>isolation: isolate</code> on a parent element to create a new stacking context without changing any other visual property. This prevents z-index conflicts from leaking out.</p></div>
+
+    <div class="callout tip"><div class="callout-title">Prefer Flexbox/Grid Over Position for Layout</div><p><code>position: absolute/fixed</code> should be reserved for overlays, tooltips, modals, and decorative elements. For page layout, always use Flexbox or Grid &mdash; they handle responsive behavior and source order much better.</p></div>
+
+    <div class="callout tip"><div class="callout-title">Sticky + Scroll Margin</div><p>When using sticky headers with anchor links, add <code>scroll-margin-top</code> to your section targets so the sticky header doesn't overlap the anchor scroll target: <code>section { scroll-margin-top: 80px; }</code>.</p></div>
+
+    <div class="callout tip"><div class="callout-title">Debugging Stacking Contexts</div><p>Browser DevTools (Firefox in particular) have a stacking context inspector. Use it when z-index seems "broken" &mdash; the issue is almost always a stacking context boundary you didn't expect.</p></div>
+
+    <div class="callout tip"><div class="callout-title">Container Queries vs Position</div><p>In modern CSS, you can use <code>@container</code> queries to make layout decisions based on the parent's size rather than the viewport. This reduces the need for complex positioned layouts in responsive designs.</p></div>
+  </section>
+
+  <div class="topic-nav">
+    <a href="04-colors-backgrounds.html"><span class="label">Previous</span><span class="title">Colors &amp; Backgrounds</span></a>
+    <a href="06-flexbox.html" class="next"><span class="label">Next</span><span class="title">Flexbox</span></a>
+  </div>
+</main>
+<script src="script.js"></script>
+</body>
+</html>

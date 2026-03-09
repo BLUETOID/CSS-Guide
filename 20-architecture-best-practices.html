@@ -1,0 +1,718 @@
+<!DOCTYPE html><html lang="en" data-theme="dark"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Architecture &amp; Best Practices — CSS Reference Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet"><link rel="stylesheet" href="styles.css">
+</head><body>
+<div id="progress"></div>
+<header class="header"><button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">&#9776;</button><h1><span>CSS</span> Reference Guide</h1><div class="header-nav"><a href="index.html">All Topics</a></div><button class="theme-toggle" onclick="toggleTheme()">&#9790; Dark</button></header>
+<nav class="sidebar" id="sidebar"><a href="index.html" class="nav-back">&#8592; All Topics</a><div class="nav-group"><div class="nav-group-title">On This Page</div>
+<a href="#bem">BEM Methodology</a>
+<a href="#smacss">SMACSS</a>
+<a href="#oocss">OOCSS</a>
+<a href="#atomic">Atomic / Utility-First</a>
+<a href="#naming">Naming Conventions</a>
+<a href="#file-organization">File Organization</a>
+<a href="#reset-normalize">Reset vs Normalize</a>
+<a href="#modern-reset">Modern Minimal Reset</a>
+<a href="#specificity">Specificity Management</a>
+<a href="#design-tokens">Design Tokens</a>
+<a href="#preprocessors">Preprocessors</a>
+<a href="#performance">Performance</a>
+<a href="#accessibility">Accessibility</a>
+<a href="#anti-patterns">Anti-Patterns</a>
+<a href="#gotchas">Gotchas</a>
+<a href="#pro-tips">Pro Tips</a>
+</div></nav>
+<main class="main"><div class="page-hero"><h1>CSS Architecture &amp; Best Practices</h1><p>Organize, scale, and maintain CSS codebases with proven methodologies, naming conventions, performance techniques, and accessibility patterns.</p><div class="tags"><span>Architecture</span><span>BEM</span><span>Performance</span><span>Accessibility</span><span>Maintainability</span></div></div>
+
+<!-- BEM -->
+<div class="section" id="bem">
+<h2>BEM Methodology</h2>
+<p>BEM (Block Element Modifier) is the most widely used CSS naming convention. It creates clear, predictable class names that show the relationship between components.</p>
+
+<div class="code-block"><div class="code-header"><span>BEM Naming Pattern</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><span class="cmt">/* Block: standalone component */</span>
+<span class="sel">.card</span> { }
+
+<span class="cmt">/* Element: part of a block (double underscore) */</span>
+<span class="sel">.card__title</span> { }
+<span class="sel">.card__image</span> { }
+<span class="sel">.card__body</span> { }
+<span class="sel">.card__footer</span> { }
+
+<span class="cmt">/* Modifier: variation of a block or element (double hyphen) */</span>
+<span class="sel">.card--featured</span> { }
+<span class="sel">.card--compact</span> { }
+<span class="sel">.card__title--large</span> { }
+<span class="sel">.card__image--rounded</span> { }</pre></div>
+
+<div class="code-block"><div class="code-header"><span>BEM Card Example — CSS</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><span class="cmt">/* Block */</span>
+<span class="sel">.card</span> {
+  <span class="prop">border-radius</span>: <span class="val">12px</span>;
+  <span class="prop">overflow</span>: <span class="val">hidden</span>;
+  <span class="prop">border</span>: <span class="val">1px solid rgba(255,255,255,0.1)</span>;
+  <span class="prop">background</span>: <span class="val">rgba(255,255,255,0.05)</span>;
+}
+
+<span class="cmt">/* Elements */</span>
+<span class="sel">.card__image</span> {
+  <span class="prop">width</span>: <span class="val">100%</span>;
+  <span class="prop">height</span>: <span class="val">200px</span>;
+  <span class="prop">object-fit</span>: <span class="val">cover</span>;
+}
+
+<span class="sel">.card__body</span> {
+  <span class="prop">padding</span>: <span class="val">1.25rem</span>;
+}
+
+<span class="sel">.card__title</span> {
+  <span class="prop">font-size</span>: <span class="val">1.25rem</span>;
+  <span class="prop">font-weight</span>: <span class="val">600</span>;
+  <span class="prop">margin-bottom</span>: <span class="val">0.5rem</span>;
+}
+
+<span class="sel">.card__text</span> {
+  <span class="prop">opacity</span>: <span class="val">0.7</span>;
+  <span class="prop">line-height</span>: <span class="val">1.6</span>;
+}
+
+<span class="sel">.card__footer</span> {
+  <span class="prop">padding</span>: <span class="val">1rem 1.25rem</span>;
+  <span class="prop">border-top</span>: <span class="val">1px solid rgba(255,255,255,0.06)</span>;
+  <span class="prop">display</span>: <span class="val">flex</span>;
+  <span class="prop">justify-content</span>: <span class="val">space-between</span>;
+  <span class="prop">align-items</span>: <span class="val">center</span>;
+}
+
+<span class="cmt">/* Modifiers */</span>
+<span class="sel">.card--featured</span> {
+  <span class="prop">border-color</span>: <span class="val">#6366f1</span>;
+  <span class="prop">box-shadow</span>: <span class="val">0 0 20px rgba(99,102,241,0.15)</span>;
+}
+
+<span class="sel">.card--compact .card__body</span> {
+  <span class="prop">padding</span>: <span class="val">0.75rem</span>;
+}</pre></div>
+
+<div class="live-example"><div class="live-example-label">BEM Card Component (Live)</div>
+<div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(260px,1fr)); gap:1.5rem;">
+<!-- Regular Card -->
+<div style="border-radius:12px; overflow:hidden; border:1px solid rgba(255,255,255,0.1); background:rgba(255,255,255,0.05);">
+<div style="height:120px; background:linear-gradient(135deg,#6366f1,#8b5cf6);"></div>
+<div style="padding:1.25rem;">
+<h3 style="font-size:1.1rem; font-weight:600; margin:0 0 0.5rem;">.card</h3>
+<p style="opacity:0.7; font-size:0.85rem; margin:0; line-height:1.5;">A standard card block with __image, __body, __title, and __footer elements.</p>
+</div>
+<div style="padding:0.75rem 1.25rem; border-top:1px solid rgba(255,255,255,0.06); display:flex; justify-content:space-between; align-items:center; font-size:0.8rem;">
+<span style="opacity:0.5;">.card__footer</span>
+<span style="color:#818cf8;">Read more</span>
+</div>
+</div>
+<!-- Featured Card -->
+<div style="border-radius:12px; overflow:hidden; border:1px solid #6366f1; background:rgba(255,255,255,0.05); box-shadow:0 0 20px rgba(99,102,241,0.15);">
+<div style="height:120px; background:linear-gradient(135deg,#f472b6,#ec4899);"></div>
+<div style="padding:1.25rem;">
+<h3 style="font-size:1.1rem; font-weight:600; margin:0 0 0.5rem;">.card.card--featured</h3>
+<p style="opacity:0.7; font-size:0.85rem; margin:0; line-height:1.5;">The --featured modifier adds a colored border and glow shadow.</p>
+</div>
+<div style="padding:0.75rem 1.25rem; border-top:1px solid rgba(255,255,255,0.06); display:flex; justify-content:space-between; align-items:center; font-size:0.8rem;">
+<span style="opacity:0.5;">.card__footer</span>
+<span style="color:#f472b6;">Featured</span>
+</div>
+</div>
+</div>
+</div>
+
+<div class="callout info">
+<strong>BEM rules:</strong> Never nest BEM elements more than one level deep. Write <code class="sel">.card__title</code>, not <code class="sel">.card__body__title</code>. If you need deeper nesting, it's time to create a new Block.
+</div>
+</div>
+
+<!-- SMACSS -->
+<div class="section" id="smacss">
+<h2>SMACSS Overview</h2>
+<p>SMACSS (Scalable and Modular Architecture for CSS) organizes styles into five categories.</p>
+
+<div class="code-block"><div class="code-header"><span>SMACSS Categories</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><span class="cmt">/* 1. Base — element defaults (no classes) */</span>
+<span class="sel">html</span> { <span class="prop">font-size</span>: <span class="val">16px</span>; }
+<span class="sel">a</span> { <span class="prop">color</span>: <span class="val">#6366f1</span>; }
+
+<span class="cmt">/* 2. Layout — major page sections (prefix: l-) */</span>
+<span class="sel">.l-header</span> { <span class="prop">position</span>: <span class="val">sticky</span>; <span class="prop">top</span>: <span class="val">0</span>; }
+<span class="sel">.l-sidebar</span> { <span class="prop">width</span>: <span class="val">280px</span>; }
+<span class="sel">.l-main</span> { <span class="prop">flex</span>: <span class="val">1</span>; }
+
+<span class="cmt">/* 3. Module — reusable components */</span>
+<span class="sel">.card</span> { }
+<span class="sel">.btn</span> { }
+<span class="sel">.modal</span> { }
+
+<span class="cmt">/* 4. State — dynamic states (prefix: is-) */</span>
+<span class="sel">.is-active</span> { }
+<span class="sel">.is-hidden</span> { <span class="prop">display</span>: <span class="val">none</span>; }
+<span class="sel">.is-loading</span> { <span class="prop">opacity</span>: <span class="val">0.5</span>; }
+
+<span class="cmt">/* 5. Theme — visual overrides */</span>
+<span class="sel">.theme-dark</span> { <span class="prop">--bg</span>: <span class="val">#0a0a0f</span>; }
+<span class="sel">.theme-light</span> { <span class="prop">--bg</span>: <span class="val">#ffffff</span>; }</pre></div>
+</div>
+
+<!-- OOCSS -->
+<div class="section" id="oocss">
+<h2>OOCSS</h2>
+<p>Object-Oriented CSS separates <strong>structure</strong> from <strong>skin</strong> and <strong>container</strong> from <strong>content</strong>.</p>
+
+<div class="code-block"><div class="code-header"><span>OOCSS Principles</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><span class="cmt">/* Separate STRUCTURE from SKIN */</span>
+
+<span class="cmt">/* Structure (shared layout) */</span>
+<span class="sel">.media</span> {
+  <span class="prop">display</span>: <span class="val">flex</span>;
+  <span class="prop">gap</span>: <span class="val">1rem</span>;
+  <span class="prop">align-items</span>: <span class="val">flex-start</span>;
+}
+
+<span class="cmt">/* Skin (visual variation) */</span>
+<span class="sel">.media--bordered</span> {
+  <span class="prop">border</span>: <span class="val">1px solid #ccc</span>;
+  <span class="prop">padding</span>: <span class="val">1rem</span>;
+  <span class="prop">border-radius</span>: <span class="val">8px</span>;
+}
+
+<span class="cmt">/* Separate CONTAINER from CONTENT */</span>
+<span class="cmt">/* Bad: */</span>  <span class="sel">.sidebar h3</span> { <span class="prop">font-size</span>: <span class="val">14px</span>; }
+<span class="cmt">/* Good: */</span> <span class="sel">.section-title</span> { <span class="prop">font-size</span>: <span class="val">14px</span>; }</pre></div>
+</div>
+
+<!-- Atomic / Utility-First -->
+<div class="section" id="atomic">
+<h2>Atomic / Utility-First CSS</h2>
+<p>Utility-first CSS (popularized by Tailwind CSS) uses single-purpose classes composed directly in HTML. Great for rapid development, controversial for maintainability.</p>
+
+<div class="code-block"><div class="code-header"><span>Utility Classes</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><span class="cmt">/* Spacing utilities */</span>
+<span class="sel">.m-0</span>  { <span class="prop">margin</span>: <span class="val">0</span>; }
+<span class="sel">.mt-4</span> { <span class="prop">margin-top</span>: <span class="val">1rem</span>; }
+<span class="sel">.p-4</span>  { <span class="prop">padding</span>: <span class="val">1rem</span>; }
+<span class="sel">.px-6</span> { <span class="prop">padding-inline</span>: <span class="val">1.5rem</span>; }
+
+<span class="cmt">/* Display */</span>
+<span class="sel">.flex</span>     { <span class="prop">display</span>: <span class="val">flex</span>; }
+<span class="sel">.grid</span>     { <span class="prop">display</span>: <span class="val">grid</span>; }
+<span class="sel">.hidden</span>   { <span class="prop">display</span>: <span class="val">none</span>; }
+<span class="sel">.block</span>    { <span class="prop">display</span>: <span class="val">block</span>; }
+
+<span class="cmt">/* Typography */</span>
+<span class="sel">.text-center</span> { <span class="prop">text-align</span>: <span class="val">center</span>; }
+<span class="sel">.font-bold</span>   { <span class="prop">font-weight</span>: <span class="val">700</span>; }
+<span class="sel">.text-sm</span>     { <span class="prop">font-size</span>: <span class="val">0.875rem</span>; }
+
+<span class="cmt">/* Colors */</span>
+<span class="sel">.text-primary</span> { <span class="prop">color</span>: <span class="val">var(--color-primary)</span>; }
+<span class="sel">.bg-surface</span>   { <span class="prop">background</span>: <span class="val">var(--color-surface)</span>; }
+
+<span class="cmt">/* HTML usage: */</span>
+<span class="cmt">&lt;div class="flex gap-4 p-6 bg-surface rounded-lg"&gt;
+  &lt;h2 class="text-lg font-bold text-primary"&gt;Title&lt;/h2&gt;
+  &lt;p class="text-sm mt-2"&gt;Description&lt;/p&gt;
+&lt;/div&gt;</span></pre></div>
+
+<div class="callout info">
+<strong>Hybrid approach:</strong> Many teams combine BEM for components with utility classes for one-off spacing and typography adjustments. This gives you the best of both worlds.
+</div>
+</div>
+
+<!-- Naming Conventions -->
+<div class="section" id="naming">
+<h2>Naming Conventions</h2>
+
+<div class="code-block"><div class="code-header"><span>Common Naming Patterns</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><span class="cmt">/* BEM: block__element--modifier */</span>
+<span class="sel">.search-form__input--focused</span> { }
+
+<span class="cmt">/* camelCase (CSS Modules) */</span>
+<span class="sel">.searchFormInput</span> { }
+
+<span class="cmt">/* kebab-case (most common) */</span>
+<span class="sel">.search-form-input</span> { }
+
+<span class="cmt">/* Namespace prefixes */</span>
+<span class="sel">.c-card</span>    { }  <span class="cmt">/* c- = component */</span>
+<span class="sel">.l-grid</span>    { }  <span class="cmt">/* l- = layout */</span>
+<span class="sel">.u-hidden</span>  { }  <span class="cmt">/* u- = utility */</span>
+<span class="sel">.is-active</span> { }  <span class="cmt">/* is- = state */</span>
+<span class="sel">.js-toggle</span> { }  <span class="cmt">/* js- = JavaScript hook (never style these) */</span>
+<span class="sel">.t-dark</span>    { }  <span class="cmt">/* t- = theme */</span></pre></div>
+</div>
+
+<!-- File Organization -->
+<div class="section" id="file-organization">
+<h2>File Organization</h2>
+
+<div class="code-block"><div class="code-header"><span>Recommended Folder Structure</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><span class="cmt">styles/
+  ├── base/
+  │   ├── _reset.css          /* CSS reset or normalize */
+  │   ├── _typography.css     /* font-face, base font rules */
+  │   └── _base.css           /* html, body, global element styles */
+  │
+  ├── abstracts/
+  │   ├── _variables.css      /* custom properties / design tokens */
+  │   └── _mixins.scss        /* Sass mixins (if using preprocessor) */
+  │
+  ├── layout/
+  │   ├── _header.css
+  │   ├── _footer.css
+  │   ├── _sidebar.css
+  │   └── _grid.css
+  │
+  ├── components/
+  │   ├── _button.css
+  │   ├── _card.css
+  │   ├── _modal.css
+  │   ├── _form.css
+  │   └── _nav.css
+  │
+  ├── utilities/
+  │   ├── _spacing.css
+  │   ├── _display.css
+  │   └── _text.css
+  │
+  ├── pages/               /* page-specific overrides */
+  │   ├── _home.css
+  │   └── _about.css
+  │
+  ├── vendors/              /* third-party CSS */
+  │   └── _normalize.css
+  │
+  └── main.css              /* imports everything */</span></pre></div>
+
+<div class="code-block"><div class="code-header"><span>main.css — Import Order</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><span class="cmt">/* Import order matters! From generic to specific. */</span>
+<span class="at">@import</span> <span class="str">'vendors/normalize.css'</span>;
+<span class="at">@import</span> <span class="str">'abstracts/variables.css'</span>;
+<span class="at">@import</span> <span class="str">'base/reset.css'</span>;
+<span class="at">@import</span> <span class="str">'base/typography.css'</span>;
+<span class="at">@import</span> <span class="str">'base/base.css'</span>;
+<span class="at">@import</span> <span class="str">'layout/header.css'</span>;
+<span class="at">@import</span> <span class="str">'layout/sidebar.css'</span>;
+<span class="at">@import</span> <span class="str">'layout/footer.css'</span>;
+<span class="at">@import</span> <span class="str">'components/button.css'</span>;
+<span class="at">@import</span> <span class="str">'components/card.css'</span>;
+<span class="at">@import</span> <span class="str">'components/modal.css'</span>;
+<span class="at">@import</span> <span class="str">'utilities/spacing.css'</span>;
+<span class="at">@import</span> <span class="str">'utilities/display.css'</span>;</pre></div>
+</div>
+
+<!-- Reset vs Normalize -->
+<div class="section" id="reset-normalize">
+<h2>CSS Reset vs Normalize</h2>
+<p>Resets strip all default browser styles. Normalize preserves useful defaults while fixing inconsistencies. Modern resets take a balanced approach.</p>
+
+<div class="code-block"><div class="code-header"><span>Classic CSS Reset (Eric Meyer style)</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><span class="cmt">/* Nuclear option: remove ALL defaults */</span>
+<span class="sel">*</span>, <span class="sel">*::before</span>, <span class="sel">*::after</span> {
+  <span class="prop">margin</span>: <span class="val">0</span>;
+  <span class="prop">padding</span>: <span class="val">0</span>;
+  <span class="prop">box-sizing</span>: <span class="val">border-box</span>;
+}
+
+<span class="sel">ul, ol</span> { <span class="prop">list-style</span>: <span class="val">none</span>; }
+<span class="sel">a</span> { <span class="prop">text-decoration</span>: <span class="val">none</span>; <span class="prop">color</span>: <span class="val">inherit</span>; }
+<span class="sel">img</span> { <span class="prop">max-width</span>: <span class="val">100%</span>; <span class="prop">display</span>: <span class="val">block</span>; }
+<span class="sel">button, input, select, textarea</span> { <span class="prop">font</span>: <span class="val">inherit</span>; }</pre></div>
+
+<div class="code-block"><div class="code-header"><span>Normalize.css Approach (abbreviated)</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><span class="cmt">/* Normalize: fix inconsistencies, keep useful defaults */</span>
+<span class="sel">html</span> {
+  <span class="prop">line-height</span>: <span class="val">1.15</span>;
+  <span class="prop">-webkit-text-size-adjust</span>: <span class="val">100%</span>;
+}
+
+<span class="sel">main</span> { <span class="prop">display</span>: <span class="val">block</span>; }   <span class="cmt">/* IE fix */</span>
+
+<span class="sel">h1</span> {
+  <span class="prop">font-size</span>: <span class="val">2em</span>;
+  <span class="prop">margin</span>: <span class="val">0.67em 0</span>;          <span class="cmt">/* consistent across browsers */</span>
+}
+
+<span class="sel">b, strong</span> { <span class="prop">font-weight</span>: <span class="val">bolder</span>; }
+<span class="sel">small</span> { <span class="prop">font-size</span>: <span class="val">80%</span>; }</pre></div>
+</div>
+
+<!-- Modern Minimal Reset -->
+<div class="section" id="modern-reset">
+<h2>Modern Minimal Reset</h2>
+<p>A pragmatic, modern reset inspired by Josh Comeau and Andy Bell.</p>
+
+<div class="code-block"><div class="code-header"><span>Modern CSS Reset (recommended)</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><span class="cmt">/* Modern Minimal CSS Reset */</span>
+
+<span class="cmt">/* 1. Use border-box everywhere */</span>
+<span class="sel">*, *::before, *::after</span> {
+  <span class="prop">box-sizing</span>: <span class="val">border-box</span>;
+}
+
+<span class="cmt">/* 2. Remove default margins */</span>
+<span class="sel">*</span> {
+  <span class="prop">margin</span>: <span class="val">0</span>;
+}
+
+<span class="cmt">/* 3. Sensible body defaults */</span>
+<span class="sel">body</span> {
+  <span class="prop">line-height</span>: <span class="val">1.5</span>;
+  <span class="prop">-webkit-font-smoothing</span>: <span class="val">antialiased</span>;
+}
+
+<span class="cmt">/* 4. Improve media defaults */</span>
+<span class="sel">img, picture, video, canvas, svg</span> {
+  <span class="prop">display</span>: <span class="val">block</span>;
+  <span class="prop">max-width</span>: <span class="val">100%</span>;
+}
+
+<span class="cmt">/* 5. Inherit fonts for form controls */</span>
+<span class="sel">input, button, textarea, select</span> {
+  <span class="prop">font</span>: <span class="val">inherit</span>;
+}
+
+<span class="cmt">/* 6. Avoid text overflow */</span>
+<span class="sel">p, h1, h2, h3, h4, h5, h6</span> {
+  <span class="prop">overflow-wrap</span>: <span class="val">break-word</span>;
+}
+
+<span class="cmt">/* 7. Root stacking context */</span>
+<span class="sel">#root, #__next</span> {
+  <span class="prop">isolation</span>: <span class="val">isolate</span>;
+}
+
+<span class="cmt">/* 8. Smooth scroll with motion preference */</span>
+<span class="at">@media</span> (<span class="val">prefers-reduced-motion: no-preference</span>) {
+  <span class="sel">html</span> {
+    <span class="prop">scroll-behavior</span>: <span class="val">smooth</span>;
+  }
+}</pre></div>
+</div>
+
+<!-- Specificity Management -->
+<div class="section" id="specificity">
+<h2>Specificity Management</h2>
+
+<div class="code-block"><div class="code-header"><span>Specificity Rules</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><span class="cmt">/* Specificity: (inline, IDs, Classes, Elements) */</span>
+
+<span class="sel">p</span>                    <span class="cmt">/* (0, 0, 0, 1) */</span>
+<span class="sel">.card</span>                <span class="cmt">/* (0, 0, 1, 0) */</span>
+<span class="sel">.card .card__title</span>   <span class="cmt">/* (0, 0, 2, 0) — avoid this! */</span>
+<span class="sel">#header</span>              <span class="cmt">/* (0, 1, 0, 0) — avoid IDs for styling */</span>
+<span class="sel">style="..."</span>          <span class="cmt">/* (1, 0, 0, 0) — inline, very hard to override */</span>
+
+<span class="cmt">/* RULES FOR MANAGEABLE SPECIFICITY: */</span>
+
+<span class="cmt">/* 1. Never use IDs for styling */</span>
+<span class="sel">#header</span> { }          <span class="cmt">/* Bad */</span>
+<span class="sel">.header</span> { }          <span class="cmt">/* Good */</span>
+
+<span class="cmt">/* 2. Avoid nesting selectors more than 2 levels */</span>
+<span class="sel">.nav .list .item a</span>  { }  <span class="cmt">/* Bad: (0,0,3,1) */</span>
+<span class="sel">.nav__link</span>           { }  <span class="cmt">/* Good: (0,0,1,0) */</span>
+
+<span class="cmt">/* 3. Use :where() to remove specificity when needed */</span>
+<span class="sel">:where(.card, .panel) .title</span> { }  <span class="cmt">/* (0,0,1,0) — :where() adds zero */</span>
+
+<span class="cmt">/* 4. Use @layer for specificity control (modern) */</span>
+<span class="at">@layer</span> base, components, utilities;</pre></div>
+</div>
+
+<!-- Design Tokens -->
+<div class="section" id="design-tokens">
+<h2>Design Tokens with CSS Variables</h2>
+<p>Design tokens are the single source of truth for your design system. Use CSS custom properties for colors, spacing, typography, and more.</p>
+
+<div class="code-block"><div class="code-header"><span>Design Token System</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><span class="sel">:root</span> {
+  <span class="cmt">/* --- Colors --- */</span>
+  <span class="prop">--color-primary</span>: <span class="val">#6366f1</span>;
+  <span class="prop">--color-primary-light</span>: <span class="val">#818cf8</span>;
+  <span class="prop">--color-primary-dark</span>: <span class="val">#4f46e5</span>;
+  <span class="prop">--color-secondary</span>: <span class="val">#f472b6</span>;
+  <span class="prop">--color-success</span>: <span class="val">#34d399</span>;
+  <span class="prop">--color-warning</span>: <span class="val">#fbbf24</span>;
+  <span class="prop">--color-error</span>: <span class="val">#ef4444</span>;
+
+  <span class="cmt">/* --- Surfaces --- */</span>
+  <span class="prop">--bg-primary</span>: <span class="val">#0a0a0f</span>;
+  <span class="prop">--bg-surface</span>: <span class="val">#12121a</span>;
+  <span class="prop">--bg-elevated</span>: <span class="val">#1e1e2e</span>;
+  <span class="prop">--text-primary</span>: <span class="val">#e2e8f0</span>;
+  <span class="prop">--text-secondary</span>: <span class="val">#94a3b8</span>;
+
+  <span class="cmt">/* --- Typography --- */</span>
+  <span class="prop">--font-sans</span>: <span class="val">'Inter', system-ui, sans-serif</span>;
+  <span class="prop">--font-mono</span>: <span class="val">'Fira Code', monospace</span>;
+  <span class="prop">--font-size-xs</span>: <span class="val">0.75rem</span>;
+  <span class="prop">--font-size-sm</span>: <span class="val">0.875rem</span>;
+  <span class="prop">--font-size-base</span>: <span class="val">1rem</span>;
+  <span class="prop">--font-size-lg</span>: <span class="val">1.125rem</span>;
+  <span class="prop">--font-size-xl</span>: <span class="val">1.25rem</span>;
+
+  <span class="cmt">/* --- Spacing Scale --- */</span>
+  <span class="prop">--space-1</span>: <span class="val">0.25rem</span>;   <span class="cmt">/* 4px */</span>
+  <span class="prop">--space-2</span>: <span class="val">0.5rem</span>;    <span class="cmt">/* 8px */</span>
+  <span class="prop">--space-3</span>: <span class="val">0.75rem</span>;   <span class="cmt">/* 12px */</span>
+  <span class="prop">--space-4</span>: <span class="val">1rem</span>;      <span class="cmt">/* 16px */</span>
+  <span class="prop">--space-6</span>: <span class="val">1.5rem</span>;    <span class="cmt">/* 24px */</span>
+  <span class="prop">--space-8</span>: <span class="val">2rem</span>;      <span class="cmt">/* 32px */</span>
+
+  <span class="cmt">/* --- Border Radius --- */</span>
+  <span class="prop">--radius-sm</span>: <span class="val">4px</span>;
+  <span class="prop">--radius-md</span>: <span class="val">8px</span>;
+  <span class="prop">--radius-lg</span>: <span class="val">12px</span>;
+  <span class="prop">--radius-full</span>: <span class="val">9999px</span>;
+
+  <span class="cmt">/* --- Shadows --- */</span>
+  <span class="prop">--shadow-sm</span>: <span class="val">0 1px 2px rgba(0,0,0,0.2)</span>;
+  <span class="prop">--shadow-md</span>: <span class="val">0 4px 12px rgba(0,0,0,0.3)</span>;
+  <span class="prop">--shadow-lg</span>: <span class="val">0 8px 24px rgba(0,0,0,0.4)</span>;
+
+  <span class="cmt">/* --- Transitions --- */</span>
+  <span class="prop">--transition-fast</span>: <span class="val">150ms ease</span>;
+  <span class="prop">--transition-base</span>: <span class="val">250ms ease</span>;
+  <span class="prop">--transition-slow</span>: <span class="val">400ms ease</span>;
+}</pre></div>
+</div>
+
+<!-- Preprocessors -->
+<div class="section" id="preprocessors">
+<h2>Preprocessors Overview</h2>
+<p>Sass and Less add features like nesting, variables, mixins, and functions to CSS. With modern CSS catching up (native nesting, custom properties), preprocessors are less critical but still useful.</p>
+
+<div class="code-block"><div class="code-header"><span>Sass (SCSS syntax) Features</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><span class="cmt">// Variables</span>
+<span class="val">$primary</span>: <span class="val">#6366f1</span>;
+<span class="val">$spacing</span>: <span class="val">1rem</span>;
+
+<span class="cmt">// Nesting</span>
+<span class="sel">.card</span> {
+  <span class="prop">padding</span>: <span class="val">$spacing</span>;
+
+  <span class="sel">&__title</span> {
+    <span class="prop">font-weight</span>: <span class="val">600</span>;
+  }
+
+  <span class="sel">&--featured</span> {
+    <span class="prop">border-color</span>: <span class="val">$primary</span>;
+  }
+
+  <span class="sel">&:hover</span> {
+    <span class="prop">transform</span>: <span class="fn">translateY</span>(<span class="val">-2px</span>);
+  }
+}
+
+<span class="cmt">// Mixins</span>
+<span class="at">@mixin</span> <span class="fn">respond-to</span>(<span class="val">$bp</span>) {
+  <span class="at">@media</span> (<span class="prop">min-width</span>: <span class="val">$bp</span>) { <span class="at">@content</span>; }
+}
+
+<span class="sel">.grid</span> {
+  <span class="prop">grid-template-columns</span>: <span class="val">1fr</span>;
+
+  <span class="at">@include</span> <span class="fn">respond-to</span>(<span class="val">768px</span>) {
+    <span class="prop">grid-template-columns</span>: <span class="val">repeat(2, 1fr)</span>;
+  }
+}
+
+<span class="cmt">// Functions & loops</span>
+<span class="at">@for</span> <span class="val">$i</span> <span class="kw">from</span> <span class="num">1</span> <span class="kw">through</span> <span class="num">5</span> {
+  <span class="sel">.mt-#{$i}</span> {
+    <span class="prop">margin-top</span>: <span class="val">$i * 0.25rem</span>;
+  }
+}</pre></div>
+
+<div class="callout info">
+<strong>Do you still need a preprocessor?</strong> With native CSS nesting, custom properties, <code class="fn">color-mix()</code>, and <code class="at">@layer</code>, the gap is closing fast. Consider native CSS for new projects — it's simpler, has no build step, and is debuggable in DevTools.
+</div>
+</div>
+
+<!-- Performance -->
+<div class="section" id="performance">
+<h2>CSS Performance</h2>
+
+<div class="code-block"><div class="code-header"><span>Performance Best Practices</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><span class="cmt">/* 1. REMOVE UNUSED CSS */</span>
+<span class="cmt">/* Tools: PurgeCSS, UnCSS, Chrome Coverage tab */</span>
+<span class="cmt">/* Average site ships 80%+ unused CSS! */</span>
+
+<span class="cmt">/* 2. USE EFFICIENT SELECTORS */</span>
+
+<span class="cmt">/* Slow: universal and deeply nested */</span>
+<span class="sel">div > ul > li > a > span</span> { }     <span class="cmt">/* Bad */</span>
+<span class="sel">[class*="icon-"]</span> { }              <span class="cmt">/* Bad: substring match */</span>
+
+<span class="cmt">/* Fast: class-based, shallow */</span>
+<span class="sel">.nav__link</span> { }                    <span class="cmt">/* Good */</span>
+<span class="sel">.icon-home</span> { }                    <span class="cmt">/* Good */</span>
+
+<span class="cmt">/* 3. CRITICAL CSS — inline above-the-fold styles */</span>
+<span class="cmt">&lt;head&gt;
+  &lt;style&gt;
+    /* Critical: hero, nav, first section */
+    .hero { ... }
+    .nav { ... }
+  &lt;/style&gt;
+  &lt;link rel="stylesheet" href="styles.css" media="print"
+        onload="this.media='all'"&gt;
+&lt;/head&gt;</span>
+
+<span class="cmt">/* 4. MINIMIZE LAYOUT THRASHING */</span>
+<span class="cmt">/* Avoid properties that trigger layout: */</span>
+<span class="cmt">/* width, height, top, left, margin, padding, font-size */</span>
+<span class="cmt">/* Prefer transform & opacity for animations */</span>
+
+<span class="sel">.animate</span> {
+  <span class="prop">will-change</span>: <span class="val">transform</span>;         <span class="cmt">/* hint to browser */</span>
+  <span class="prop">transition</span>: <span class="val">transform 0.3s</span>;
+}
+
+<span class="cmt">/* 5. USE content-visibility FOR OFFSCREEN CONTENT */</span>
+<span class="sel">.offscreen-section</span> {
+  <span class="prop">content-visibility</span>: <span class="val">auto</span>;       <span class="cmt">/* skip rendering until visible */</span>
+  <span class="prop">contain-intrinsic-size</span>: <span class="val">auto 500px</span>;
+}</pre></div>
+</div>
+
+<!-- Accessibility -->
+<div class="section" id="accessibility">
+<h2>CSS Accessibility</h2>
+<p>CSS plays a crucial role in accessibility: focus indicators, color contrast, screen reader utilities, and motion preferences.</p>
+
+<div class="code-block"><div class="code-header"><span>Accessible Focus Styles</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><span class="cmt">/* NEVER do this: */</span>
+<span class="sel">*:focus</span> { <span class="prop">outline</span>: <span class="val">none</span>; }  <span class="cmt">/* Removes ALL focus indicators! */</span>
+
+<span class="cmt">/* DO this: custom focus styles */</span>
+<span class="sel">:focus-visible</span> {
+  <span class="prop">outline</span>: <span class="val">2px solid #6366f1</span>;
+  <span class="prop">outline-offset</span>: <span class="val">2px</span>;
+}
+
+<span class="cmt">/* :focus-visible = keyboard focus only, not mouse clicks */</span>
+<span class="sel">button:focus-visible</span> {
+  <span class="prop">outline</span>: <span class="val">2px solid #6366f1</span>;
+  <span class="prop">outline-offset</span>: <span class="val">2px</span>;
+  <span class="prop">box-shadow</span>: <span class="val">0 0 0 4px rgba(99,102,241,0.3)</span>;
+}</pre></div>
+
+<div class="code-block"><div class="code-header"><span>Screen Reader Only (sr-only)</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><span class="cmt">/* Visually hidden but accessible to screen readers */</span>
+<span class="sel">.sr-only</span> {
+  <span class="prop">position</span>: <span class="val">absolute</span>;
+  <span class="prop">width</span>: <span class="val">1px</span>;
+  <span class="prop">height</span>: <span class="val">1px</span>;
+  <span class="prop">padding</span>: <span class="val">0</span>;
+  <span class="prop">margin</span>: <span class="val">-1px</span>;
+  <span class="prop">overflow</span>: <span class="val">hidden</span>;
+  <span class="prop">clip</span>: <span class="fn">rect</span>(<span class="val">0, 0, 0, 0</span>);
+  <span class="prop">white-space</span>: <span class="val">nowrap</span>;
+  <span class="prop">border-width</span>: <span class="val">0</span>;
+}
+
+<span class="cmt">/* HTML: &lt;span class="sr-only"&gt;Open navigation menu&lt;/span&gt; */</span></pre></div>
+
+<div class="code-block"><div class="code-header"><span>Reduced Motion &amp; Color Contrast</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><span class="cmt">/* Respect user motion preferences */</span>
+<span class="at">@media</span> (<span class="val">prefers-reduced-motion: reduce</span>) {
+  <span class="sel">*</span>,
+  <span class="sel">*::before</span>,
+  <span class="sel">*::after</span> {
+    <span class="prop">animation-duration</span>: <span class="val">0.01ms !important</span>;
+    <span class="prop">animation-iteration-count</span>: <span class="val">1 !important</span>;
+    <span class="prop">transition-duration</span>: <span class="val">0.01ms !important</span>;
+    <span class="prop">scroll-behavior</span>: <span class="val">auto !important</span>;
+  }
+}
+
+<span class="cmt">/* High contrast mode */</span>
+<span class="at">@media</span> (<span class="val">prefers-contrast: high</span>) {
+  <span class="sel">:root</span> {
+    <span class="prop">--border-color</span>: <span class="val">#fff</span>;
+    <span class="prop">--text-secondary</span>: <span class="val">#e2e8f0</span>;  <span class="cmt">/* brighter muted text */</span>
+  }
+}
+
+<span class="cmt">/* WCAG Color Contrast Requirements:
+   Normal text:  4.5:1 minimum (AA), 7:1 (AAA)
+   Large text:   3:1 minimum (AA), 4.5:1 (AAA)
+   Large text = 18pt regular or 14pt bold */</span></pre></div>
+</div>
+
+<!-- Anti-Patterns -->
+<div class="section" id="anti-patterns">
+<h2>Anti-Patterns to Avoid</h2>
+
+<div class="code-block"><div class="code-header"><span>CSS Anti-Patterns</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><span class="cmt">/* 1. Overusing !important */</span>
+<span class="sel">.title</span> {
+  <span class="prop">color</span>: <span class="val">red !important</span>;  <span class="cmt">/* Now impossible to override normally */</span>
+}
+
+<span class="cmt">/* 2. Overly specific selectors */</span>
+<span class="sel">div#main .content ul.nav li a.link</span> { }  <span class="cmt">/* Nightmare specificity */</span>
+
+<span class="cmt">/* 3. Magic numbers */</span>
+<span class="sel">.dropdown</span> {
+  <span class="prop">top</span>: <span class="val">37px</span>;     <span class="cmt">/* Why 37? Use a variable or calc() */</span>
+  <span class="prop">left</span>: <span class="val">-9px</span>;    <span class="cmt">/* What is this compensating for? */</span>
+}
+
+<span class="cmt">/* 4. Styling with IDs */</span>
+<span class="sel">#sidebar</span> { }   <span class="cmt">/* Use .sidebar instead */</span>
+
+<span class="cmt">/* 5. Not using shorthand when appropriate */</span>
+<span class="sel">.box</span> {
+  <span class="prop">margin-top</span>: <span class="val">10px</span>;
+  <span class="prop">margin-right</span>: <span class="val">20px</span>;
+  <span class="prop">margin-bottom</span>: <span class="val">10px</span>;
+  <span class="prop">margin-left</span>: <span class="val">20px</span>;
+  <span class="cmt">/* Use: margin: 10px 20px; */</span>
+}
+
+<span class="cmt">/* 6. Using tag names in selectors */</span>
+<span class="sel">div.card</span> { }   <span class="cmt">/* Just use .card — more flexible */</span>
+
+<span class="cmt">/* 7. Undoing styles */</span>
+<span class="sel">.list li</span> { <span class="prop">border-bottom</span>: <span class="val">1px solid</span>; }
+<span class="sel">.list li:last-child</span> { <span class="prop">border-bottom</span>: <span class="val">none</span>; }
+<span class="cmt">/* Better: .list li + li { border-top: 1px solid; } */</span></pre></div>
+</div>
+
+<!-- Gotchas -->
+<div class="section" id="gotchas">
+<h2>Gotchas</h2>
+
+<div class="callout gotcha">
+<strong>BEM class names can get very long.</strong> <code>.search-results__item-thumbnail--loading</code> is hard to read. Keep block names short and consider splitting into separate blocks when names get unwieldy.
+</div>
+
+<div class="callout gotcha">
+<strong>Don't dogmatically follow one methodology.</strong> BEM for components, utility classes for spacing, SMACSS state classes — mixing approaches pragmatically often works better than strict adherence to one system.
+</div>
+
+<div class="callout gotcha">
+<strong>CSS Resets can break third-party components.</strong> An aggressive reset may strip styles from libraries and embeds. Scope your reset carefully or use a more conservative normalize approach.
+</div>
+
+<div class="callout gotcha">
+<strong>Design tokens need governance.</strong> Without rules about when to add new tokens, your token list can grow uncontrollably. Establish a clear palette and spacing scale upfront.
+</div>
+</div>
+
+<!-- Pro Tips -->
+<div class="section" id="pro-tips">
+<h2>Pro Tips</h2>
+
+<div class="callout tip">
+<strong>Use the Inverted Triangle (ITCSS) import order.</strong> From most generic to most specific: Settings > Tools > Generic > Elements > Objects > Components > Utilities. This creates a natural specificity gradient.
+</div>
+
+<div class="callout tip">
+<strong>Use Chrome's Coverage tab to find unused CSS.</strong> Open DevTools > More tools > Coverage > Record. It highlights unused CSS in red. In a typical project, 50-80% of shipped CSS is unused on any given page.
+</div>
+
+<div class="callout tip">
+<strong>Automate with Stylelint.</strong> Enforce naming conventions, property ordering, and best practices automatically. Use <code>stylelint-config-standard</code> as a starting point and customize rules for your team.
+</div>
+
+<div class="callout tip">
+<strong>Never remove :focus styles without replacing them.</strong> Keyboard users rely on focus indicators to navigate. <code>:focus-visible</code> gives you the best of both worlds — visible focus for keyboard, hidden for mouse.
+</div>
+
+<div class="callout tip">
+<strong>Use <code>content-visibility: auto</code> for long pages.</strong> It tells the browser to skip rendering off-screen sections until they're needed, dramatically improving initial load performance on content-heavy pages.
+</div>
+</div>
+
+<div class="topic-nav"><a href="19-print-styles.html"><span class="label">Previous</span><span class="title">Print Styles</span></a><a href="21-modern-css.html" class="next"><span class="label">Next</span><span class="title">Modern CSS</span></a></div></main>
+<script src="script.js"></script></body></html>

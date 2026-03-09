@@ -1,0 +1,527 @@
+<!DOCTYPE html><html lang="en" data-theme="dark"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>CSS Functions &mdash; CSS Reference Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet"><link rel="stylesheet" href="styles.css">
+</head><body>
+<div id="progress"></div>
+
+<header class="header"><button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">&#9776;</button><h1><span>CSS</span> Reference Guide</h1><div class="header-nav"><a href="index.html">All Topics</a></div><button class="theme-toggle" onclick="toggleTheme()">&#9790; Dark</button></header>
+
+<nav class="sidebar" id="sidebar">
+  <a href="index.html" class="nav-back">&#8592; All Topics</a>
+  <div class="nav-group">
+    <div class="nav-group-title">On This Page</div>
+    <a href="#calc">calc()</a>
+    <a href="#min">min()</a>
+    <a href="#max">max()</a>
+    <a href="#clamp">clamp()</a>
+    <a href="#var">var()</a>
+    <a href="#env">env()</a>
+    <a href="#attr">attr()</a>
+    <a href="#url">url()</a>
+    <a href="#color-functions">Color Functions</a>
+    <a href="#counter">counter() &amp; counters()</a>
+    <a href="#nesting-functions">Nesting Functions</a>
+    <a href="#gotchas">Gotchas</a>
+    <a href="#pro-tips">Pro Tips</a>
+  </div>
+</nav>
+
+<main class="main">
+  <div class="page-hero">
+    <h1>CSS Functions</h1>
+    <p>CSS includes powerful built-in functions for calculations, dynamic values, responsive sizing, and more. Master these to write flexible, maintainable stylesheets.</p>
+    <div class="tags"><span>calc()</span><span>clamp()</span><span>var()</span><span>min/max</span><span>Responsive</span><span>Dynamic</span></div>
+  </div>
+
+  <!-- ==================== CALC ==================== -->
+  <div class="section" id="calc">
+    <h2>calc()</h2>
+    <p>Performs math at render time. The killer feature: you can <strong>mix different units</strong> in a single expression. Supports <code>+</code>, <code>-</code>, <code>*</code>, and <code>/</code>.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="cmt">/* Mix percentages with pixels */</span>
+<span class="sel">.sidebar</span> {
+  <span class="prop">width</span>: <span class="fn">calc</span>(<span class="num">100%</span> - <span class="num">300px</span>);
+}
+
+<span class="cmt">/* Use with viewport units */</span>
+<span class="sel">.full-height</span> {
+  <span class="prop">height</span>: <span class="fn">calc</span>(<span class="num">100vh</span> - <span class="num">80px</span>);  <span class="cmt">/* viewport minus header */</span>
+}
+
+<span class="cmt">/* With custom properties */</span>
+<span class="sel">:root</span> {
+  <span class="prop">--header-h</span>: <span class="num">64px</span>;
+  <span class="prop">--gap</span>: <span class="num">1.5rem</span>;
+}
+<span class="sel">.content</span> {
+  <span class="prop">height</span>: <span class="fn">calc</span>(<span class="num">100vh</span> - <span class="fn">var</span>(<span class="val">--header-h</span>));
+  <span class="prop">padding</span>: <span class="fn">calc</span>(<span class="fn">var</span>(<span class="val">--gap</span>) * <span class="num">2</span>);
+}
+
+<span class="cmt">/* Nested calc (valid but often unnecessary) */</span>
+<span class="sel">.nested</span> {
+  <span class="prop">width</span>: <span class="fn">calc</span>(<span class="num">100%</span> - <span class="fn">calc</span>(<span class="num">2</span> * <span class="num">20px</span>));
+  <span class="cmt">/* same as: calc(100% - 40px) */</span>
+}
+</pre></div>
+
+    <div class="live-example">
+      <div class="live-example-label">Live Example &mdash; calc() Mixing Units</div>
+      <style>
+        .calc-demo-outer { border: 2px dashed rgba(255,255,255,0.15); border-radius: 12px; padding: 1.5rem; margin: 1rem 0; }
+        .calc-demo-bar { height: 50px; border-radius: 8px; background: linear-gradient(135deg, #667eea, #764ba2); display: flex; align-items: center; padding: 0 1rem; color: #fff; font-weight: 600; font-size: 0.8rem; font-family: 'Fira Code', monospace; width: calc(100% - 80px); margin-bottom: 1rem; }
+        .calc-demo-bar:last-child { margin-bottom: 0; width: calc(50% + 60px); background: linear-gradient(135deg, #f093fb, #f5576c); }
+      </style>
+      <div class="calc-demo-outer">
+        <div class="calc-demo-bar">width: calc(100% - 80px)</div>
+        <div class="calc-demo-bar">width: calc(50% + 60px)</div>
+      </div>
+      <p style="font-size:0.8rem;opacity:0.6;margin-top:0.5rem;">Resize the browser window to see how calc() mixes percentages with pixels.</p>
+    </div>
+
+    <div class="callout gotcha">
+      <div class="callout-title">Spaces Around + and - Are Required</div>
+      <p><code>calc(100%-20px)</code> will <strong>not</strong> work. You must have spaces around <code>+</code> and <code>-</code> operators: <code>calc(100% - 20px)</code>. The <code>*</code> and <code>/</code> operators do not require spaces but including them is best practice.</p>
+    </div>
+  </div>
+
+  <!-- ==================== MIN ==================== -->
+  <div class="section" id="min">
+    <h2>min()</h2>
+    <p>Returns the <strong>smallest</strong> value from a comma-separated list. Acts as a dynamic upper-bound (the value will never exceed the smallest option).</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="cmt">/* Width grows with viewport but caps at 800px */</span>
+<span class="sel">.container</span> {
+  <span class="prop">width</span>: <span class="fn">min</span>(<span class="num">90vw</span>, <span class="num">800px</span>);
+}
+
+<span class="cmt">/* Responsive padding */</span>
+<span class="sel">.section</span> {
+  <span class="prop">padding</span>: <span class="fn">min</span>(<span class="num">5vw</span>, <span class="num">3rem</span>);
+}
+
+<span class="cmt">/* Can accept more than 2 values */</span>
+<span class="sel">.box</span> {
+  <span class="prop">width</span>: <span class="fn">min</span>(<span class="num">100%</span>, <span class="num">50vw</span>, <span class="num">600px</span>);
+}
+</pre></div>
+
+    <div class="live-example">
+      <div class="live-example-label">Live Example &mdash; min() as a Max Width</div>
+      <style>
+        .min-demo-outer { border: 2px dashed rgba(255,255,255,0.15); border-radius: 12px; padding: 1.5rem; }
+        .min-demo-bar { height: 50px; border-radius: 8px; background: linear-gradient(135deg, #43e97b, #38f9d7); display: flex; align-items: center; padding: 0 1rem; color: #1a1a2e; font-weight: 600; font-size: 0.8rem; font-family: 'Fira Code', monospace; width: min(90%, 500px); }
+      </style>
+      <div class="min-demo-outer">
+        <div class="min-demo-bar">width: min(90%, 500px)</div>
+      </div>
+      <p style="font-size:0.8rem;opacity:0.6;margin-top:0.5rem;">On narrow screens this bar is 90% wide. On wider screens it caps at 500px.</p>
+    </div>
+  </div>
+
+  <!-- ==================== MAX ==================== -->
+  <div class="section" id="max">
+    <h2>max()</h2>
+    <p>Returns the <strong>largest</strong> value from a comma-separated list. Acts as a dynamic lower-bound (the value will never go below the largest option).</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="cmt">/* Font size never below 16px */</span>
+<span class="sel">.text</span> {
+  <span class="prop">font-size</span>: <span class="fn">max</span>(<span class="num">1vw</span>, <span class="num">16px</span>);
+}
+
+<span class="cmt">/* Minimum width of 300px */</span>
+<span class="sel">.card</span> {
+  <span class="prop">width</span>: <span class="fn">max</span>(<span class="num">30%</span>, <span class="num">300px</span>);
+}
+
+<span class="cmt">/* Ensure padding is at least 1rem */</span>
+<span class="sel">.padded</span> {
+  <span class="prop">padding</span>: <span class="fn">max</span>(<span class="num">2vw</span>, <span class="num">1rem</span>);
+}
+</pre></div>
+  </div>
+
+  <!-- ==================== CLAMP ==================== -->
+  <div class="section" id="clamp">
+    <h2>clamp()</h2>
+    <p>The most powerful sizing function. Syntax: <code>clamp(MIN, PREFERRED, MAX)</code>. The value scales with the preferred value but never goes below MIN or above MAX.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="cmt">/* Fluid typography — scales between 1rem and 2.5rem */</span>
+<span class="sel">h1</span> {
+  <span class="prop">font-size</span>: <span class="fn">clamp</span>(<span class="num">1rem</span>, <span class="num">4vw</span>, <span class="num">2.5rem</span>);
+}
+
+<span class="cmt">/* Responsive width — fluid between 300px and 800px */</span>
+<span class="sel">.container</span> {
+  <span class="prop">width</span>: <span class="fn">clamp</span>(<span class="num">300px</span>, <span class="num">80%</span>, <span class="num">800px</span>);
+}
+
+<span class="cmt">/* Fluid spacing */</span>
+<span class="sel">.section</span> {
+  <span class="prop">padding</span>: <span class="fn">clamp</span>(<span class="num">1rem</span>, <span class="num">5vw</span>, <span class="num">4rem</span>);
+  <span class="prop">gap</span>: <span class="fn">clamp</span>(<span class="num">0.5rem</span>, <span class="num">2vw</span>, <span class="num">2rem</span>);
+}
+</pre></div>
+
+    <div class="live-example">
+      <div class="live-example-label">Live Example &mdash; clamp() Fluid Typography</div>
+      <style>
+        .clamp-typo-demo { padding: 2rem 1rem; text-align: center; }
+        .clamp-typo-demo .fluid-heading { font-size: clamp(1.2rem, 4vw, 2.8rem); font-weight: 700; background: linear-gradient(135deg, #667eea, #f5576c); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1.2; margin-bottom: 0.5rem; }
+        .clamp-typo-demo .fluid-body { font-size: clamp(0.85rem, 1.8vw, 1.15rem); opacity: 0.8; max-width: 600px; margin: 0 auto; line-height: 1.6; }
+      </style>
+      <div class="clamp-typo-demo">
+        <div class="fluid-heading">This Heading Scales Fluidly</div>
+        <div class="fluid-body">Resize the browser to see both the heading and this body text scale smoothly between their minimum and maximum sizes using clamp().</div>
+      </div>
+    </div>
+
+    <div class="live-example">
+      <div class="live-example-label">Live Example &mdash; clamp() Fluid Width</div>
+      <style>
+        .clamp-width-demo { border: 2px dashed rgba(255,255,255,0.15); border-radius: 12px; padding: 1.5rem; }
+        .clamp-width-bar { height: 50px; border-radius: 8px; background: linear-gradient(135deg, #fa709a, #fee140); display: flex; align-items: center; padding: 0 1rem; color: #1a1a2e; font-weight: 600; font-size: 0.8rem; font-family: 'Fira Code', monospace; width: clamp(200px, 60%, 500px); }
+      </style>
+      <div class="clamp-width-demo">
+        <div class="clamp-width-bar">clamp(200px, 60%, 500px)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== VAR ==================== -->
+  <div class="section" id="var">
+    <h2>var()</h2>
+    <p>Reads the value of a CSS custom property (variable). Supports fallback values and nesting.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="cmt">/* Define variables */</span>
+<span class="sel">:root</span> {
+  <span class="prop">--primary</span>: <span class="val">#667eea</span>;
+  <span class="prop">--radius</span>: <span class="num">12px</span>;
+  <span class="prop">--gap</span>: <span class="num">1.5rem</span>;
+}
+
+<span class="cmt">/* Use with var() */</span>
+<span class="sel">.card</span> {
+  <span class="prop">background</span>: <span class="fn">var</span>(<span class="val">--primary</span>);
+  <span class="prop">border-radius</span>: <span class="fn">var</span>(<span class="val">--radius</span>);
+  <span class="prop">margin</span>: <span class="fn">var</span>(<span class="val">--gap</span>);
+}
+
+<span class="cmt">/* Fallback value (used if variable is not defined) */</span>
+<span class="sel">.button</span> {
+  <span class="prop">color</span>: <span class="fn">var</span>(<span class="val">--accent</span>, <span class="val">#f5576c</span>);
+  <span class="cmt">/* If --accent is undefined, #f5576c is used */</span>
+}
+
+<span class="cmt">/* Nested fallback */</span>
+<span class="sel">.link</span> {
+  <span class="prop">color</span>: <span class="fn">var</span>(<span class="val">--link-color</span>, <span class="fn">var</span>(<span class="val">--primary</span>, <span class="val">blue</span>));
+  <span class="cmt">/* Tries --link-color, then --primary, then blue */</span>
+}
+
+<span class="cmt">/* Variables in calc() */</span>
+<span class="sel">.spacer</span> {
+  <span class="prop">margin-top</span>: <span class="fn">calc</span>(<span class="fn">var</span>(<span class="val">--gap</span>) * <span class="num">2</span>);
+}
+</pre></div>
+  </div>
+
+  <!-- ==================== ENV ==================== -->
+  <div class="section" id="env">
+    <h2>env()</h2>
+    <p>Access environment variables defined by the user agent. Most commonly used for safe area insets on devices with notches or rounded corners.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="cmt">/* Enable safe area insets */</span>
+<span class="at">@viewport</span> {
+  <span class="prop">viewport-fit</span>: <span class="val">cover</span>;
+}
+
+<span class="cmt">/* Also set in the HTML meta tag: */</span>
+<span class="cmt">/* &lt;meta name="viewport" content="viewport-fit=cover"&gt; */</span>
+
+<span class="sel">.bottom-bar</span> {
+  <span class="prop">padding-bottom</span>: <span class="fn">env</span>(<span class="val">safe-area-inset-bottom</span>, <span class="num">0px</span>);
+}
+
+<span class="sel">.full-bleed</span> {
+  <span class="prop">padding-left</span>: <span class="fn">env</span>(<span class="val">safe-area-inset-left</span>);
+  <span class="prop">padding-right</span>: <span class="fn">env</span>(<span class="val">safe-area-inset-right</span>);
+  <span class="prop">padding-top</span>: <span class="fn">env</span>(<span class="val">safe-area-inset-top</span>);
+  <span class="prop">padding-bottom</span>: <span class="fn">env</span>(<span class="val">safe-area-inset-bottom</span>);
+}
+
+<span class="cmt">/* Combine with calc() */</span>
+<span class="sel">.navbar</span> {
+  <span class="prop">height</span>: <span class="fn">calc</span>(<span class="num">60px</span> + <span class="fn">env</span>(<span class="val">safe-area-inset-top</span>));
+  <span class="prop">padding-top</span>: <span class="fn">env</span>(<span class="val">safe-area-inset-top</span>);
+}
+</pre></div>
+  </div>
+
+  <!-- ==================== ATTR ==================== -->
+  <div class="section" id="attr">
+    <h2>attr()</h2>
+    <p>Returns the value of an HTML attribute as a string. Currently only works reliably in the <code>content</code> property (for <code>::before</code> / <code>::after</code>). A common pattern for pure-CSS tooltips.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="cmt">/* Pure CSS Tooltip using attr() */</span>
+<span class="sel">[data-tooltip]</span> {
+  <span class="prop">position</span>: <span class="val">relative</span>;
+  <span class="prop">cursor</span>: <span class="val">help</span>;
+}
+
+<span class="sel">[data-tooltip]::after</span> {
+  <span class="prop">content</span>: <span class="fn">attr</span>(<span class="val">data-tooltip</span>);
+  <span class="prop">position</span>: <span class="val">absolute</span>;
+  <span class="prop">bottom</span>: <span class="num">125%</span>;
+  <span class="prop">left</span>: <span class="num">50%</span>;
+  <span class="prop">transform</span>: <span class="fn">translateX</span>(<span class="num">-50%</span>);
+  <span class="prop">background</span>: <span class="val">#1a1a2e</span>;
+  <span class="prop">color</span>: <span class="val">#fff</span>;
+  <span class="prop">padding</span>: <span class="num">0.4rem</span> <span class="num">0.8rem</span>;
+  <span class="prop">border-radius</span>: <span class="num">6px</span>;
+  <span class="prop">font-size</span>: <span class="num">0.8rem</span>;
+  <span class="prop">white-space</span>: <span class="val">nowrap</span>;
+  <span class="prop">opacity</span>: <span class="num">0</span>;
+  <span class="prop">pointer-events</span>: <span class="val">none</span>;
+  <span class="prop">transition</span>: <span class="val">opacity</span> <span class="num">0.3s</span>;
+}
+
+<span class="sel">[data-tooltip]:hover::after</span> {
+  <span class="prop">opacity</span>: <span class="num">1</span>;
+}
+</pre></div>
+
+    <div class="live-example">
+      <div class="live-example-label">Live Example &mdash; Pure CSS Tooltip with attr()</div>
+      <style>
+        .tooltip-demo { display: flex; gap: 2rem; flex-wrap: wrap; justify-content: center; padding: 3rem 1rem 2rem; }
+        .tooltip-target { position: relative; cursor: help; padding: 0.8rem 1.5rem; border-radius: 10px; font-weight: 600; font-size: 0.85rem; color: #fff; display: inline-block; }
+        .tooltip-target:nth-child(1) { background: linear-gradient(135deg, #667eea, #764ba2); }
+        .tooltip-target:nth-child(2) { background: linear-gradient(135deg, #f093fb, #f5576c); }
+        .tooltip-target:nth-child(3) { background: linear-gradient(135deg, #43e97b, #38f9d7); color: #1a1a2e; }
+        .tooltip-target::after { content: attr(data-tooltip); position: absolute; bottom: 125%; left: 50%; transform: translateX(-50%); background: #1a1a2e; color: #fff; padding: 0.4rem 0.8rem; border-radius: 6px; font-size: 0.78rem; white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity 0.3s; font-weight: 400; box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
+        .tooltip-target:hover::after { opacity: 1; }
+      </style>
+      <div class="tooltip-demo">
+        <span class="tooltip-target" data-tooltip="I am a CSS-only tooltip!">Hover me</span>
+        <span class="tooltip-target" data-tooltip="No JavaScript needed">attr() magic</span>
+        <span class="tooltip-target" data-tooltip="content: attr(data-tooltip)">How it works</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== URL ==================== -->
+  <div class="section" id="url">
+    <h2>url()</h2>
+    <p>References external resources such as images, fonts, or SVGs. Used in properties like <code>background-image</code>, <code>@font-face src</code>, <code>list-style-image</code>, and <code>cursor</code>.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="sel">.hero</span> {
+  <span class="prop">background-image</span>: <span class="fn">url</span>(<span class="str">'images/hero-bg.jpg'</span>);
+}
+
+<span class="sel">.icon</span> {
+  <span class="prop">background-image</span>: <span class="fn">url</span>(<span class="str">'data:image/svg+xml,...'</span>);  <span class="cmt">/* inline SVG */</span>
+}
+
+<span class="at">@font-face</span> {
+  <span class="prop">font-family</span>: <span class="str">'MyFont'</span>;
+  <span class="prop">src</span>: <span class="fn">url</span>(<span class="str">'fonts/myfont.woff2'</span>) <span class="fn">format</span>(<span class="str">'woff2'</span>);
+}
+
+<span class="sel">.custom-cursor</span> {
+  <span class="prop">cursor</span>: <span class="fn">url</span>(<span class="str">'cursor.png'</span>), <span class="val">auto</span>;
+}
+</pre></div>
+  </div>
+
+  <!-- ==================== COLOR FUNCTIONS ==================== -->
+  <div class="section" id="color-functions">
+    <h2>Color Functions</h2>
+    <p>CSS provides multiple functions for defining colors with different color models.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="cmt">/* RGB — red, green, blue (0-255 or 0%-100%) */</span>
+<span class="sel">.rgb-old</span> { <span class="prop">color</span>: <span class="fn">rgb</span>(<span class="num">102</span>, <span class="num">126</span>, <span class="num">234</span>); }
+<span class="sel">.rgba</span>    { <span class="prop">color</span>: <span class="fn">rgba</span>(<span class="num">102</span>, <span class="num">126</span>, <span class="num">234</span>, <span class="num">0.8</span>); }
+
+<span class="cmt">/* Modern syntax (no commas, / for alpha) */</span>
+<span class="sel">.rgb-new</span> { <span class="prop">color</span>: <span class="fn">rgb</span>(<span class="num">102</span> <span class="num">126</span> <span class="num">234</span> / <span class="num">0.8</span>); }
+
+<span class="cmt">/* HSL — hue (0-360), saturation (%), lightness (%) */</span>
+<span class="sel">.hsl</span>  { <span class="prop">color</span>: <span class="fn">hsl</span>(<span class="num">230</span>, <span class="num">75%</span>, <span class="num">66%</span>); }
+<span class="sel">.hsla</span> { <span class="prop">color</span>: <span class="fn">hsla</span>(<span class="num">230</span>, <span class="num">75%</span>, <span class="num">66%</span>, <span class="num">0.8</span>); }
+
+<span class="cmt">/* Modern syntax */</span>
+<span class="sel">.hsl-new</span> { <span class="prop">color</span>: <span class="fn">hsl</span>(<span class="num">230</span> <span class="num">75%</span> <span class="num">66%</span> / <span class="num">0.8</span>); }
+
+<span class="cmt">/* HSL is great for generating shades */</span>
+<span class="sel">:root</span> {
+  <span class="prop">--hue</span>: <span class="num">230</span>;
+  <span class="prop">--primary-light</span>: <span class="fn">hsl</span>(<span class="fn">var</span>(<span class="val">--hue</span>), <span class="num">75%</span>, <span class="num">80%</span>);
+  <span class="prop">--primary</span>: <span class="fn">hsl</span>(<span class="fn">var</span>(<span class="val">--hue</span>), <span class="num">75%</span>, <span class="num">66%</span>);
+  <span class="prop">--primary-dark</span>: <span class="fn">hsl</span>(<span class="fn">var</span>(<span class="val">--hue</span>), <span class="num">75%</span>, <span class="num">45%</span>);
+}
+</pre></div>
+  </div>
+
+  <!-- ==================== COUNTER ==================== -->
+  <div class="section" id="counter">
+    <h2>counter() &amp; counters()</h2>
+    <p>CSS counters let you auto-number elements without JavaScript. Define with <code>counter-reset</code>, increment with <code>counter-increment</code>, and display with <code>counter()</code>.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="cmt">/* Basic auto-numbering */</span>
+<span class="sel">.steps</span> {
+  <span class="prop">counter-reset</span>: <span class="val">step-counter</span>;
+}
+
+<span class="sel">.steps li</span> {
+  <span class="prop">counter-increment</span>: <span class="val">step-counter</span>;
+}
+
+<span class="sel">.steps li::before</span> {
+  <span class="prop">content</span>: <span class="fn">counter</span>(<span class="val">step-counter</span>) <span class="str">". "</span>;
+  <span class="prop">font-weight</span>: <span class="num">700</span>;
+  <span class="prop">color</span>: <span class="val">#667eea</span>;
+}
+
+<span class="cmt">/* Nested counters (e.g., 1.1, 1.2, 2.1) */</span>
+<span class="sel">ol</span> {
+  <span class="prop">counter-reset</span>: <span class="val">section</span>;
+  <span class="prop">list-style-type</span>: <span class="val">none</span>;
+}
+
+<span class="sel">li::before</span> {
+  <span class="prop">counter-increment</span>: <span class="val">section</span>;
+  <span class="prop">content</span>: <span class="fn">counters</span>(<span class="val">section</span>, <span class="str">"."</span>) <span class="str">" "</span>;
+}
+</pre></div>
+
+    <div class="live-example">
+      <div class="live-example-label">Live Example &mdash; CSS Counter Auto-Numbering</div>
+      <style>
+        .counter-demo { counter-reset: demo-step; padding: 1rem 0; }
+        .counter-demo .step-item { counter-increment: demo-step; padding: 0.8rem 1rem 0.8rem 3.5rem; position: relative; font-size: 0.9rem; border-left: 2px solid rgba(102,126,234,0.3); margin-left: 1rem; }
+        .counter-demo .step-item:last-child { border-left-color: transparent; }
+        .counter-demo .step-item::before { content: counter(demo-step); position: absolute; left: -1rem; top: 0.65rem; width: 2rem; height: 2rem; border-radius: 50%; background: linear-gradient(135deg, #667eea, #764ba2); color: #fff; font-weight: 700; font-size: 0.8rem; display: flex; align-items: center; justify-content: center; }
+      </style>
+      <div class="counter-demo">
+        <div class="step-item">Define variables with <code>:root</code></div>
+        <div class="step-item">Apply styles with <code>var()</code></div>
+        <div class="step-item">Use <code>calc()</code> for dynamic spacing</div>
+        <div class="step-item">Add responsive sizing with <code>clamp()</code></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== NESTING FUNCTIONS ==================== -->
+  <div class="section" id="nesting-functions">
+    <h2>Nesting Functions</h2>
+    <p>CSS functions can be nested inside each other, creating powerful expressions.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="cmt">/* calc() inside clamp() */</span>
+<span class="sel">.fluid-container</span> {
+  <span class="prop">width</span>: <span class="fn">clamp</span>(<span class="num">300px</span>, <span class="fn">calc</span>(<span class="num">100%</span> - <span class="num">4rem</span>), <span class="num">1200px</span>);
+}
+
+<span class="cmt">/* var() inside calc() */</span>
+<span class="sel">.dynamic-padding</span> {
+  <span class="prop">padding</span>: <span class="fn">calc</span>(<span class="fn">var</span>(<span class="val">--base-spacing</span>) * <span class="num">3</span>);
+}
+
+<span class="cmt">/* var() inside clamp() */</span>
+<span class="sel">.responsive-text</span> {
+  <span class="prop">font-size</span>: <span class="fn">clamp</span>(
+    <span class="fn">var</span>(<span class="val">--min-font</span>, <span class="num">1rem</span>),
+    <span class="fn">calc</span>(<span class="num">0.5rem</span> + <span class="num">2vw</span>),
+    <span class="fn">var</span>(<span class="val">--max-font</span>, <span class="num">2.5rem</span>)
+  );
+}
+
+<span class="cmt">/* min()/max() inside calc() */</span>
+<span class="sel">.safe-width</span> {
+  <span class="prop">width</span>: <span class="fn">calc</span>(<span class="fn">min</span>(<span class="num">100vw</span>, <span class="num">1400px</span>) - <span class="num">4rem</span>);
+}
+</pre></div>
+  </div>
+
+  <!-- ==================== GOTCHAS ==================== -->
+  <div class="section" id="gotchas">
+    <h2>Gotchas</h2>
+
+    <div class="callout gotcha">
+      <div class="callout-title">Spaces in calc() Are Mandatory</div>
+      <p>The <code>+</code> and <code>-</code> operators in <code>calc()</code> <strong>require</strong> spaces on both sides. <code>calc(100%-20px)</code> fails silently. Write <code>calc(100% - 20px)</code>.</p>
+    </div>
+
+    <div class="callout gotcha">
+      <div class="callout-title">min() and max() Naming Confusion</div>
+      <p><code>min()</code> acts like a <strong>max-width</strong> (caps the upper bound). <code>max()</code> acts like a <strong>min-width</strong> (sets a floor). The names can feel counterintuitive until you think about what value gets <em>selected</em>.</p>
+    </div>
+
+    <div class="callout gotcha">
+      <div class="callout-title">attr() is Limited to content</div>
+      <p>Currently, <code>attr()</code> only works reliably inside the <code>content</code> property. The CSS spec defines future support for using <code>attr()</code> in other properties with type-casting (<code>attr(data-width length)</code>), but browser support is not yet available.</p>
+    </div>
+
+    <div class="callout gotcha">
+      <div class="callout-title">Unitless 0 in calc()</div>
+      <p>While <code>margin: 0;</code> works fine, inside <code>calc()</code> you should be explicit: <code>calc(100% - 0px)</code> is clearer, though <code>calc(100% - 0)</code> also works. The issue arises when doing multiplication &mdash; one value must be unitless.</p>
+    </div>
+  </div>
+
+  <!-- ==================== PRO TIPS ==================== -->
+  <div class="section" id="pro-tips">
+    <h2>Pro Tips</h2>
+
+    <div class="callout tip">
+      <div class="callout-title">clamp() Replaces Media Queries for Typography</div>
+      <p>Instead of writing multiple breakpoints for font sizes, a single <code>font-size: clamp(1rem, 2.5vw, 2rem)</code> scales smoothly across all viewport widths with zero media queries.</p>
+    </div>
+
+    <div class="callout tip">
+      <div class="callout-title">Build a Fluid Type Scale</div>
+      <p>Define your entire type scale with custom properties and clamp: <code>--h1: clamp(2rem, 5vw, 3.5rem)</code>, <code>--h2: clamp(1.5rem, 3.5vw, 2.5rem)</code>, etc. This gives you a fully responsive typography system in just a few lines.</p>
+    </div>
+
+    <div class="callout tip">
+      <div class="callout-title">Use min() as a Simpler max-width</div>
+      <p><code>width: min(90%, 800px)</code> is equivalent to <code>width: 90%; max-width: 800px;</code> but in a single property. Cleaner and works everywhere widths are accepted.</p>
+    </div>
+
+    <div class="callout tip">
+      <div class="callout-title">Counter Styles Beyond Numbers</div>
+      <p>You can format counters with <code>counter(name, style)</code> where style is any <code>list-style-type</code> value: <code>counter(step, upper-alpha)</code> produces A, B, C. Use <code>counter(step, upper-roman)</code> for I, II, III.</p>
+    </div>
+
+    <div class="callout tip">
+      <div class="callout-title">Debugging calc() Failures</div>
+      <p>If a <code>calc()</code> expression fails, the entire property is ignored silently. Use browser DevTools &mdash; an invalid calc will show the property as crossed out or missing. Check for missing spaces around <code>+</code> and <code>-</code>.</p>
+    </div>
+  </div>
+
+  <!-- ==================== NAV ==================== -->
+  <div class="topic-nav">
+    <a href="13-filters-effects.html">
+      <span class="label">Previous</span>
+      <span class="title">Filters &amp; Effects</span>
+    </a>
+    <a href="15-selectors-deep-dive.html" class="next">
+      <span class="label">Next</span>
+      <span class="title">Selectors Deep Dive</span>
+    </a>
+  </div>
+</main>
+
+<script src="script.js"></script>
+</body></html>

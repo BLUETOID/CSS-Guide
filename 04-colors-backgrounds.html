@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Colors &amp; Backgrounds — CSS Reference Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet"><link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div id="progress"></div>
+<header class="header">
+  <button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">&#9776;</button>
+  <h1><span>CSS</span> Reference Guide</h1>
+  <div class="header-nav"><a href="index.html">All Topics</a></div>
+  <button class="theme-toggle" onclick="toggleTheme()">&#9790; Dark</button>
+</header>
+<nav class="sidebar" id="sidebar">
+  <a href="index.html" class="nav-back">&#8592; All Topics</a>
+  <div class="nav-group"><div class="nav-group-title">On This Page</div>
+    <a href="#named-colors">Named Colors</a>
+    <a href="#hex-colors">Hex Colors</a>
+    <a href="#rgb-rgba">rgb() / rgba()</a>
+    <a href="#hsl-hsla">hsl() / hsla()</a>
+    <a href="#currentcolor">currentColor</a>
+    <a href="#opacity-vs-alpha">opacity vs Alpha</a>
+    <a href="#background-color">background-color</a>
+    <a href="#background-image">background-image</a>
+    <a href="#background-size">background-size</a>
+    <a href="#background-position">background-position</a>
+    <a href="#background-repeat">background-repeat</a>
+    <a href="#background-attachment">background-attachment</a>
+    <a href="#background-clip">background-clip</a>
+    <a href="#linear-gradient">linear-gradient</a>
+    <a href="#radial-gradient">radial-gradient</a>
+    <a href="#conic-gradient">conic-gradient</a>
+    <a href="#repeating-gradients">Repeating Gradients</a>
+    <a href="#gradient-patterns">Gradient Patterns</a>
+    <a href="#mix-blend-mode">mix-blend-mode</a>
+    <a href="#multiple-backgrounds">Multiple Backgrounds</a>
+    <a href="#gotchas">Gotchas</a>
+    <a href="#pro-tips">Pro Tips</a>
+  </div>
+</nav>
+<main class="main">
+  <div class="page-hero">
+    <h1>Colors &amp; Backgrounds</h1>
+    <p>Every way to define color in CSS and the full background toolkit &mdash; from simple hex codes to advanced gradients, blend modes, and multi-layer compositions.</p>
+    <div class="tags"><span>Colors</span><span>Gradients</span><span>Backgrounds</span><span>Blend Modes</span><span>Patterns</span></div>
+  </div>
+
+  <!-- ════════════════════════════════════════ Named Colors ════════════════════════════════════════ -->
+  <section class="section" id="named-colors">
+    <h2>Named Colors</h2>
+    <p>CSS provides <strong>148 named colors</strong> (plus <code>transparent</code> and <code>currentColor</code>). They are easy to remember but offer limited palette control.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre><span class="sel">.box</span> { <span class="prop">color</span>: <span class="val">tomato</span>; }
+<span class="sel">.bg</span>  { <span class="prop">background-color</span>: <span class="val">cornflowerblue</span>; }
+<span class="sel">.bdr</span> { <span class="prop">border-color</span>: <span class="val">mediumseagreen</span>; }
+<span class="sel">.hid</span> { <span class="prop">color</span>: <span class="val">transparent</span>; }</pre></div>
+
+    <div class="live-example"><div class="live-example-label">Live Example &mdash; Named Color Swatches</div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: .5rem;">
+        <div style="background: tomato; padding: .75rem .5rem; border-radius: 8px; text-align: center; font-weight: 600; color: #fff; font-size: .8rem;">tomato</div>
+        <div style="background: cornflowerblue; padding: .75rem .5rem; border-radius: 8px; text-align: center; font-weight: 600; color: #fff; font-size: .8rem;">cornflowerblue</div>
+        <div style="background: mediumseagreen; padding: .75rem .5rem; border-radius: 8px; text-align: center; font-weight: 600; color: #fff; font-size: .8rem;">mediumseagreen</div>
+        <div style="background: gold; padding: .75rem .5rem; border-radius: 8px; text-align: center; font-weight: 600; color: #333; font-size: .8rem;">gold</div>
+        <div style="background: hotpink; padding: .75rem .5rem; border-radius: 8px; text-align: center; font-weight: 600; color: #fff; font-size: .8rem;">hotpink</div>
+        <div style="background: slateblue; padding: .75rem .5rem; border-radius: 8px; text-align: center; font-weight: 600; color: #fff; font-size: .8rem;">slateblue</div>
+        <div style="background: coral; padding: .75rem .5rem; border-radius: 8px; text-align: center; font-weight: 600; color: #fff; font-size: .8rem;">coral</div>
+        <div style="background: teal; padding: .75rem .5rem; border-radius: 8px; text-align: center; font-weight: 600; color: #fff; font-size: .8rem;">teal</div>
+        <div style="background: orchid; padding: .75rem .5rem; border-radius: 8px; text-align: center; font-weight: 600; color: #fff; font-size: .8rem;">orchid</div>
+        <div style="background: salmon; padding: .75rem .5rem; border-radius: 8px; text-align: center; font-weight: 600; color: #fff; font-size: .8rem;">salmon</div>
+        <div style="background: steelblue; padding: .75rem .5rem; border-radius: 8px; text-align: center; font-weight: 600; color: #fff; font-size: .8rem;">steelblue</div>
+        <div style="background: rebeccapurple; padding: .75rem .5rem; border-radius: 8px; text-align: center; font-weight: 600; color: #fff; font-size: .8rem;">rebeccapurple</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════ Hex Colors ════════════════════════════════════════ -->
+  <section class="section" id="hex-colors">
+    <h2>Hex Colors</h2>
+    <p>Hexadecimal notation expresses colors as <code>#RRGGBB</code>. A shorthand 3-digit form exists, and an 8-digit form adds alpha transparency.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre><span class="cmt">/* 6-digit hex */</span>
+<span class="sel">.red</span>   { <span class="prop">color</span>: <span class="val">#ff0000</span>; }
+<span class="sel">.brand</span> { <span class="prop">color</span>: <span class="val">#646cff</span>; }
+
+<span class="cmt">/* 3-digit shorthand (#RGB expands to #RRGGBB) */</span>
+<span class="sel">.white</span> { <span class="prop">color</span>: <span class="val">#fff</span>; }  <span class="cmt">/* same as #ffffff */</span>
+<span class="sel">.cyan</span>  { <span class="prop">color</span>: <span class="val">#0ff</span>; }  <span class="cmt">/* same as #00ffff */</span>
+
+<span class="cmt">/* 8-digit with alpha (#RRGGBBAA) */</span>
+<span class="sel">.semi</span>  { <span class="prop">color</span>: <span class="val">#646cff80</span>; } <span class="cmt">/* 50% opacity */</span>
+<span class="sel">.light</span> { <span class="prop">color</span>: <span class="val">#646cff33</span>; } <span class="cmt">/* 20% opacity */</span></pre></div>
+
+    <div class="live-example"><div class="live-example-label">Live Example &mdash; Hex Formats</div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: .5rem;">
+        <div style="background: #646cff; padding: .75rem; border-radius: 8px; text-align: center; color: #fff; font-size: .85rem; font-weight: 500;">#646cff (6-digit)</div>
+        <div style="background: #f00; padding: .75rem; border-radius: 8px; text-align: center; color: #fff; font-size: .85rem; font-weight: 500;">#f00 (3-digit)</div>
+        <div style="background: #646cffcc; padding: .75rem; border-radius: 8px; text-align: center; color: #fff; font-size: .85rem; font-weight: 500;">#646cffcc (80% alpha)</div>
+        <div style="background: #646cff66; padding: .75rem; border-radius: 8px; text-align: center; color: #fff; font-size: .85rem; font-weight: 500;">#646cff66 (40% alpha)</div>
+        <div style="background: #646cff33; padding: .75rem; border-radius: 8px; text-align: center; color: #fff; font-size: .85rem; font-weight: 500;">#646cff33 (20% alpha)</div>
+      </div>
+    </div>
+
+    <div class="callout info"><div class="callout-title">Hex Alpha Scale</div><p><code>00</code> = fully transparent, <code>ff</code> = fully opaque. Common values: <code>80</code> = 50%, <code>cc</code> = 80%, <code>33</code> = 20%, <code>66</code> = 40%.</p></div>
+  </section>
+
+  <!-- ════════════════════════════════════════ rgb / rgba ════════════════════════════════════════ -->
+  <section class="section" id="rgb-rgba">
+    <h2>rgb() / rgba()</h2>
+    <p>Specify colors with Red, Green, Blue channels (0&ndash;255 or 0%&ndash;100%), plus an optional alpha channel (0&ndash;1).</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre><span class="cmt">/* Modern syntax (no commas needed) */</span>
+<span class="sel">.a</span> { <span class="prop">color</span>: <span class="fn">rgb</span>(<span class="num">100 108 255</span>); }
+<span class="sel">.b</span> { <span class="prop">color</span>: <span class="fn">rgb</span>(<span class="num">100 108 255</span> / <span class="num">0.5</span>); }
+
+<span class="cmt">/* Legacy syntax (commas) */</span>
+<span class="sel">.c</span> { <span class="prop">color</span>: <span class="fn">rgb</span>(<span class="num">100</span>, <span class="num">108</span>, <span class="num">255</span>); }
+<span class="sel">.d</span> { <span class="prop">color</span>: <span class="fn">rgba</span>(<span class="num">100</span>, <span class="num">108</span>, <span class="num">255</span>, <span class="num">0.5</span>); }
+
+<span class="cmt">/* Percentage values */</span>
+<span class="sel">.e</span> { <span class="prop">color</span>: <span class="fn">rgb</span>(<span class="num">39%</span> <span class="num">42%</span> <span class="num">100%</span>); }</pre></div>
+
+    <div class="live-example"><div class="live-example-label">Live Example &mdash; RGB Color Mixer</div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: .5rem;">
+        <div style="background: rgb(255, 0, 0); padding: 1rem; border-radius: 8px; text-align: center; color: #fff; font-size: .85rem;">
+          <strong>R: 255</strong><br>G: 0, B: 0
+        </div>
+        <div style="background: rgb(0, 180, 0); padding: 1rem; border-radius: 8px; text-align: center; color: #fff; font-size: .85rem;">
+          R: 0<br><strong>G: 180</strong>, B: 0
+        </div>
+        <div style="background: rgb(0, 0, 255); padding: 1rem; border-radius: 8px; text-align: center; color: #fff; font-size: .85rem;">
+          R: 0, G: 0<br><strong>B: 255</strong>
+        </div>
+      </div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: .5rem; margin-top: .5rem;">
+        <div style="background: rgb(255, 255, 0); padding: 1rem; border-radius: 8px; text-align: center; color: #333; font-size: .85rem;">
+          R: 255, G: 255<br>B: 0 = Yellow
+        </div>
+        <div style="background: rgb(0, 255, 255); padding: 1rem; border-radius: 8px; text-align: center; color: #333; font-size: .85rem;">
+          R: 0, G: 255<br>B: 255 = Cyan
+        </div>
+        <div style="background: rgb(255, 0, 255); padding: 1rem; border-radius: 8px; text-align: center; color: #fff; font-size: .85rem;">
+          R: 255, G: 0<br>B: 255 = Magenta
+        </div>
+      </div>
+      <h4 style="margin-top: 1rem; margin-bottom: .5rem;">Alpha Transparency</h4>
+      <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: .5rem;">
+        <div style="background: rgba(100,108,255,1.0); padding: .75rem .5rem; border-radius: 8px; text-align: center; color: #fff; font-size: .75rem;">alpha: 1.0</div>
+        <div style="background: rgba(100,108,255,0.75); padding: .75rem .5rem; border-radius: 8px; text-align: center; color: #fff; font-size: .75rem;">alpha: 0.75</div>
+        <div style="background: rgba(100,108,255,0.5); padding: .75rem .5rem; border-radius: 8px; text-align: center; color: #fff; font-size: .75rem;">alpha: 0.5</div>
+        <div style="background: rgba(100,108,255,0.25); padding: .75rem .5rem; border-radius: 8px; text-align: center; color: #fff; font-size: .75rem;">alpha: 0.25</div>
+        <div style="background: rgba(100,108,255,0.1); padding: .75rem .5rem; border-radius: 8px; text-align: center; font-size: .75rem;">alpha: 0.1</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════ hsl / hsla ════════════════════════════════════════ -->
+  <section class="section" id="hsl-hsla">
+    <h2>hsl() / hsla()</h2>
+    <p>Hue-Saturation-Lightness is more intuitive for humans. <strong>Hue</strong> is a degree on the color wheel (0&ndash;360), <strong>Saturation</strong> is the intensity (0%&ndash;100%), and <strong>Lightness</strong> is brightness (0%&ndash;100%).</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre><span class="cmt">/* Modern syntax */</span>
+<span class="sel">.a</span> { <span class="prop">color</span>: <span class="fn">hsl</span>(<span class="num">235</span> <span class="num">100%</span> <span class="num">70%</span>); }
+<span class="sel">.b</span> { <span class="prop">color</span>: <span class="fn">hsl</span>(<span class="num">235</span> <span class="num">100%</span> <span class="num">70%</span> / <span class="num">0.5</span>); }
+
+<span class="cmt">/* Legacy syntax */</span>
+<span class="sel">.c</span> { <span class="prop">color</span>: <span class="fn">hsl</span>(<span class="num">235</span>, <span class="num">100%</span>, <span class="num">70%</span>); }
+<span class="sel">.d</span> { <span class="prop">color</span>: <span class="fn">hsla</span>(<span class="num">235</span>, <span class="num">100%</span>, <span class="num">70%</span>, <span class="num">0.5</span>); }
+
+<span class="cmt">/* Hue values: 0=red, 120=green, 240=blue */</span></pre></div>
+
+    <div class="live-example"><div class="live-example-label">Live Example &mdash; HSL Color Wheel</div>
+      <p style="font-size: .9rem; margin-bottom: .75rem;">Hue rotates around the color wheel at full saturation (100%) and medium lightness (50%):</p>
+      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); gap: .5rem;">
+        <div style="background: hsl(0,100%,50%); padding: .6rem .4rem; border-radius: 8px; text-align: center; color: #fff; font-size: .75rem; font-weight: 600;">0 Red</div>
+        <div style="background: hsl(30,100%,50%); padding: .6rem .4rem; border-radius: 8px; text-align: center; color: #fff; font-size: .75rem; font-weight: 600;">30 Orange</div>
+        <div style="background: hsl(60,100%,50%); padding: .6rem .4rem; border-radius: 8px; text-align: center; color: #333; font-size: .75rem; font-weight: 600;">60 Yellow</div>
+        <div style="background: hsl(120,100%,35%); padding: .6rem .4rem; border-radius: 8px; text-align: center; color: #fff; font-size: .75rem; font-weight: 600;">120 Green</div>
+        <div style="background: hsl(180,100%,35%); padding: .6rem .4rem; border-radius: 8px; text-align: center; color: #fff; font-size: .75rem; font-weight: 600;">180 Cyan</div>
+        <div style="background: hsl(240,100%,50%); padding: .6rem .4rem; border-radius: 8px; text-align: center; color: #fff; font-size: .75rem; font-weight: 600;">240 Blue</div>
+        <div style="background: hsl(270,100%,50%); padding: .6rem .4rem; border-radius: 8px; text-align: center; color: #fff; font-size: .75rem; font-weight: 600;">270 Purple</div>
+        <div style="background: hsl(330,100%,50%); padding: .6rem .4rem; border-radius: 8px; text-align: center; color: #fff; font-size: .75rem; font-weight: 600;">330 Pink</div>
+      </div>
+      <h4 style="margin-top: 1rem; margin-bottom: .5rem;">Saturation Scale (Hue: 235, Lightness: 50%)</h4>
+      <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: .5rem;">
+        <div style="background: hsl(235,100%,50%); padding: .6rem; border-radius: 8px; text-align: center; color: #fff; font-size: .75rem;">100%</div>
+        <div style="background: hsl(235,75%,50%); padding: .6rem; border-radius: 8px; text-align: center; color: #fff; font-size: .75rem;">75%</div>
+        <div style="background: hsl(235,50%,50%); padding: .6rem; border-radius: 8px; text-align: center; color: #fff; font-size: .75rem;">50%</div>
+        <div style="background: hsl(235,25%,50%); padding: .6rem; border-radius: 8px; text-align: center; color: #fff; font-size: .75rem;">25%</div>
+        <div style="background: hsl(235,0%,50%); padding: .6rem; border-radius: 8px; text-align: center; color: #fff; font-size: .75rem;">0% (gray)</div>
+      </div>
+      <h4 style="margin-top: 1rem; margin-bottom: .5rem;">Lightness Scale (Hue: 235, Saturation: 100%)</h4>
+      <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: .5rem;">
+        <div style="background: hsl(235,100%,10%); padding: .6rem; border-radius: 8px; text-align: center; color: #fff; font-size: .75rem;">10%</div>
+        <div style="background: hsl(235,100%,30%); padding: .6rem; border-radius: 8px; text-align: center; color: #fff; font-size: .75rem;">30%</div>
+        <div style="background: hsl(235,100%,50%); padding: .6rem; border-radius: 8px; text-align: center; color: #fff; font-size: .75rem;">50%</div>
+        <div style="background: hsl(235,100%,70%); padding: .6rem; border-radius: 8px; text-align: center; color: #333; font-size: .75rem;">70%</div>
+        <div style="background: hsl(235,100%,90%); padding: .6rem; border-radius: 8px; text-align: center; color: #333; font-size: .75rem;">90%</div>
+      </div>
+    </div>
+
+    <div class="callout tip"><div class="callout-title">Why HSL is Great for Theming</div><p>With HSL, creating color variants is trivial: keep the hue, adjust saturation and lightness. Dark variant? Lower lightness. Muted? Lower saturation. This makes building consistent color palettes much easier than with hex or RGB.</p></div>
+  </section>
+
+  <!-- ════════════════════════════════════════ currentColor ════════════════════════════════════════ -->
+  <section class="section" id="currentcolor">
+    <h2>currentColor</h2>
+    <p>The <code>currentColor</code> keyword refers to the element's computed <code>color</code> value. It lets borders, shadows, and backgrounds automatically match the text color.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre><span class="sel">.btn</span> {
+  <span class="prop">color</span>: <span class="val">#646cff</span>;
+  <span class="prop">border</span>: <span class="num">2px</span> <span class="val">solid</span> <span class="val">currentColor</span>;
+  <span class="prop">box-shadow</span>: <span class="num">0</span> <span class="num">2px</span> <span class="num">8px</span> <span class="val">currentColor</span>;
+}
+
+<span class="cmt">/* Change color once, everything updates */</span>
+<span class="sel">.btn:hover</span> {
+  <span class="prop">color</span>: <span class="val">#10b981</span>;
+}</pre></div>
+
+    <div class="live-example"><div class="live-example-label">Live Example &mdash; currentColor</div>
+      <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+        <div style="color: #646cff; border: 2px solid currentColor; padding: .75rem 1.25rem; border-radius: 8px; font-weight: 600;">
+          color: #646cff &mdash; border matches!
+        </div>
+        <div style="color: #ef4444; border: 2px solid currentColor; padding: .75rem 1.25rem; border-radius: 8px; font-weight: 600;">
+          color: #ef4444 &mdash; border matches!
+        </div>
+        <div style="color: #10b981; border: 2px solid currentColor; padding: .75rem 1.25rem; border-radius: 8px; font-weight: 600;">
+          color: #10b981 &mdash; border matches!
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════ opacity vs alpha ════════════════════════════════════════ -->
+  <section class="section" id="opacity-vs-alpha">
+    <h2>opacity vs Alpha Channel</h2>
+    <p>Both control transparency, but they behave differently.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre><span class="cmt">/* opacity affects the ENTIRE element and its children */</span>
+<span class="sel">.card</span> { <span class="prop">opacity</span>: <span class="num">0.5</span>; }
+
+<span class="cmt">/* Alpha only affects that specific color */</span>
+<span class="sel">.card</span> { <span class="prop">background</span>: <span class="fn">rgba</span>(<span class="num">100</span>, <span class="num">108</span>, <span class="num">255</span>, <span class="num">0.5</span>); }</pre></div>
+
+    <div class="live-example"><div class="live-example-label">Live Example &mdash; opacity vs Alpha</div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+        <div style="opacity: 0.4; background: #646cff; padding: 1.25rem; border-radius: 8px; text-align: center;">
+          <strong style="color: #fff; font-size: 1rem;">opacity: 0.4</strong>
+          <p style="color: #fff; font-size: .85rem; margin-top: .25rem;">Text is ALSO faded! Everything becomes transparent.</p>
+        </div>
+        <div style="background: rgba(100,108,255,0.4); padding: 1.25rem; border-radius: 8px; text-align: center;">
+          <strong style="color: #fff; font-size: 1rem;">rgba alpha: 0.4</strong>
+          <p style="color: #fff; font-size: .85rem; margin-top: .25rem;">Text stays crisp! Only the background is translucent.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout gotcha"><div class="callout-title">opacity Affects Children</div><p><code>opacity</code> makes the entire element and all its children transparent. You cannot make a child "more opaque" than its parent. Use alpha channels (rgba/hsla) on individual properties instead when you only want to fade the background.</p></div>
+  </section>
+
+  <!-- ════════════════════════════════════════ background-color ════════════════════════════════════════ -->
+  <section class="section" id="background-color">
+    <h2>background-color</h2>
+    <p>Sets a solid color behind the element's content. Accepts any color value.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre><span class="sel">.solid</span> { <span class="prop">background-color</span>: <span class="val">#646cff</span>; }
+<span class="sel">.trans</span> { <span class="prop">background-color</span>: <span class="fn">rgba</span>(<span class="num">100</span>, <span class="num">108</span>, <span class="num">255</span>, <span class="num">0.2</span>); }
+<span class="sel">.named</span> { <span class="prop">background-color</span>: <span class="val">cornflowerblue</span>; }
+<span class="sel">.hsl</span>   { <span class="prop">background-color</span>: <span class="fn">hsl</span>(<span class="num">235</span>, <span class="num">100%</span>, <span class="num">70%</span>); }</pre></div>
+  </section>
+
+  <!-- ════════════════════════════════════════ background-image ════════════════════════════════════════ -->
+  <section class="section" id="background-image">
+    <h2>background-image</h2>
+    <p>Sets one or more images (or gradients) as the background. Images layer on top of <code>background-color</code>.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre><span class="sel">.photo</span> {
+  <span class="prop">background-image</span>: <span class="fn">url</span>(<span class="str">"hero.jpg"</span>);
+}
+
+<span class="sel">.gradient</span> {
+  <span class="prop">background-image</span>: <span class="fn">linear-gradient</span>(<span class="num">135deg</span>, <span class="val">#646cff</span>, <span class="val">#10b981</span>);
+}
+
+<span class="cmt">/* Multiple backgrounds (first listed is on top) */</span>
+<span class="sel">.layered</span> {
+  <span class="prop">background-image</span>:
+    <span class="fn">linear-gradient</span>(<span class="fn">rgba</span>(<span class="num">0</span>,<span class="num">0</span>,<span class="num">0</span>,<span class="num">.5</span>), <span class="fn">rgba</span>(<span class="num">0</span>,<span class="num">0</span>,<span class="num">0</span>,<span class="num">.5</span>)),
+    <span class="fn">url</span>(<span class="str">"hero.jpg"</span>);
+}</pre></div>
+  </section>
+
+  <!-- ════════════════════════════════════════ background-size ════════════════════════════════════════ -->
+  <section class="section" id="background-size">
+    <h2>background-size</h2>
+    <p>Controls how a background image is scaled inside its container.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre><span class="sel">.cover</span>   { <span class="prop">background-size</span>: <span class="val">cover</span>; }   <span class="cmt">/* fill container, may crop */</span>
+<span class="sel">.contain</span> { <span class="prop">background-size</span>: <span class="val">contain</span>; } <span class="cmt">/* fit inside, may leave gaps */</span>
+<span class="sel">.exact</span>   { <span class="prop">background-size</span>: <span class="num">200px</span> <span class="num">100px</span>; }
+<span class="sel">.pct</span>     { <span class="prop">background-size</span>: <span class="num">50%</span> <span class="val">auto</span>; }</pre></div>
+
+    <div class="live-example"><div class="live-example-label">Live Example &mdash; cover vs contain</div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+        <div>
+          <strong style="color: #646cff;">background-size: cover</strong>
+          <div style="width: 100%; height: 160px; margin-top: .5rem; border-radius: 8px; background: linear-gradient(135deg, #646cff 0%, #10b981 50%, #f59e0b 100%); background-size: cover; display: flex; align-items: center; justify-content: center;">
+            <span style="background: rgba(0,0,0,.6); padding: .4rem .8rem; border-radius: 4px; color: #fff; font-size: .8rem;">Fills entire box (may crop)</span>
+          </div>
+        </div>
+        <div>
+          <strong style="color: #10b981;">background-size: contain</strong>
+          <div style="width: 100%; height: 160px; margin-top: .5rem; border-radius: 8px; background: linear-gradient(135deg, #646cff 0%, #10b981 50%, #f59e0b 100%); background-size: 60% 80%; background-repeat: no-repeat; background-position: center; border: 2px dashed rgba(255,255,255,.2); display: flex; align-items: center; justify-content: center;">
+            <span style="background: rgba(0,0,0,.6); padding: .4rem .8rem; border-radius: 4px; color: #fff; font-size: .8rem;">Fits inside (may leave gaps)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════ background-position ════════════════════════════════════════ -->
+  <section class="section" id="background-position">
+    <h2>background-position</h2>
+    <p>Sets where the background image is placed within the element.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre><span class="sel">.a</span> { <span class="prop">background-position</span>: <span class="val">center</span>; }
+<span class="sel">.b</span> { <span class="prop">background-position</span>: <span class="val">top right</span>; }
+<span class="sel">.c</span> { <span class="prop">background-position</span>: <span class="num">50%</span> <span class="num">25%</span>; }
+<span class="sel">.d</span> { <span class="prop">background-position</span>: <span class="num">20px</span> <span class="num">40px</span>; }
+<span class="sel">.e</span> { <span class="prop">background-position</span>: <span class="val">bottom</span> <span class="num">10px</span> <span class="val">right</span> <span class="num">20px</span>; }</pre></div>
+
+    <div class="live-example"><div class="live-example-label">Live Example &mdash; background-position</div>
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: .75rem;">
+        <div style="height: 100px; border-radius: 8px; border: 1px solid rgba(255,255,255,.15); background: radial-gradient(circle 20px, #646cff 100%, transparent 100%); background-repeat: no-repeat; background-position: top left;">
+          <span style="font-size: .7rem; padding: .3rem; opacity: .7;">top left</span>
+        </div>
+        <div style="height: 100px; border-radius: 8px; border: 1px solid rgba(255,255,255,.15); background: radial-gradient(circle 20px, #10b981 100%, transparent 100%); background-repeat: no-repeat; background-position: center;">
+          <span style="font-size: .7rem; padding: .3rem; opacity: .7;">center</span>
+        </div>
+        <div style="height: 100px; border-radius: 8px; border: 1px solid rgba(255,255,255,.15); background: radial-gradient(circle 20px, #f59e0b 100%, transparent 100%); background-repeat: no-repeat; background-position: bottom right;">
+          <span style="font-size: .7rem; padding: .3rem; opacity: .7;">bottom right</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════ background-repeat ════════════════════════════════════════ -->
+  <section class="section" id="background-repeat">
+    <h2>background-repeat</h2>
+    <p>Controls whether and how a background image tiles.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre><span class="sel">.a</span> { <span class="prop">background-repeat</span>: <span class="val">repeat</span>; }      <span class="cmt">/* default: tile both axes */</span>
+<span class="sel">.b</span> { <span class="prop">background-repeat</span>: <span class="val">no-repeat</span>; }   <span class="cmt">/* show once */</span>
+<span class="sel">.c</span> { <span class="prop">background-repeat</span>: <span class="val">repeat-x</span>; }   <span class="cmt">/* horizontal only */</span>
+<span class="sel">.d</span> { <span class="prop">background-repeat</span>: <span class="val">repeat-y</span>; }   <span class="cmt">/* vertical only */</span>
+<span class="sel">.e</span> { <span class="prop">background-repeat</span>: <span class="val">space</span>; }      <span class="cmt">/* even spacing, no clipping */</span>
+<span class="sel">.f</span> { <span class="prop">background-repeat</span>: <span class="val">round</span>; }      <span class="cmt">/* stretch to fill evenly */</span></pre></div>
+  </section>
+
+  <!-- ════════════════════════════════════════ background-attachment ════════════════════════════════════════ -->
+  <section class="section" id="background-attachment">
+    <h2>background-attachment</h2>
+    <p>Controls whether the background scrolls with the content or stays fixed in the viewport.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre><span class="sel">.scroll</span> { <span class="prop">background-attachment</span>: <span class="val">scroll</span>; } <span class="cmt">/* default */</span>
+<span class="sel">.fixed</span>  { <span class="prop">background-attachment</span>: <span class="val">fixed</span>; }  <span class="cmt">/* parallax effect */</span>
+<span class="sel">.local</span>  { <span class="prop">background-attachment</span>: <span class="val">local</span>; }  <span class="cmt">/* scrolls with content */</span></pre></div>
+
+    <div class="callout info"><div class="callout-title">Parallax with background-attachment: fixed</div><p>Setting <code>background-attachment: fixed</code> creates a simple parallax scrolling effect. The background stays in place while the content scrolls over it. Note: this is disabled on most mobile browsers for performance reasons.</p></div>
+  </section>
+
+  <!-- ════════════════════════════════════════ background-clip ════════════════════════════════════════ -->
+  <section class="section" id="background-clip">
+    <h2>background-clip</h2>
+    <p>Defines how far the background extends within the element. The <code>text</code> value creates gradient text effects.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre><span class="sel">.a</span> { <span class="prop">background-clip</span>: <span class="val">border-box</span>; }  <span class="cmt">/* default */</span>
+<span class="sel">.b</span> { <span class="prop">background-clip</span>: <span class="val">padding-box</span>; }
+<span class="sel">.c</span> { <span class="prop">background-clip</span>: <span class="val">content-box</span>; }
+
+<span class="cmt">/* Gradient text */</span>
+<span class="sel">.gradient-text</span> {
+  <span class="prop">background</span>: <span class="fn">linear-gradient</span>(<span class="num">135deg</span>, <span class="val">#646cff</span>, <span class="val">#10b981</span>);
+  <span class="prop">-webkit-background-clip</span>: <span class="val">text</span>;
+  <span class="prop">background-clip</span>: <span class="val">text</span>;
+  <span class="prop">-webkit-text-fill-color</span>: <span class="val">transparent</span>;
+  <span class="prop">color</span>: <span class="val">transparent</span>;
+}</pre></div>
+
+    <div class="live-example"><div class="live-example-label">Live Example &mdash; background-clip: text</div>
+      <p style="font-size: 2.5rem; font-weight: 700; background: linear-gradient(135deg, #646cff, #10b981, #f59e0b); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent; margin: 0; line-height: 1.2;">
+        Gradient Text Effect
+      </p>
+      <p style="font-size: 1.5rem; font-weight: 700; background: linear-gradient(90deg, #ef4444, #f59e0b, #10b981, #646cff, #a855f7); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent; margin: .5rem 0 0 0; line-height: 1.2;">
+        Rainbow gradient clipped to text
+      </p>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════ linear-gradient ════════════════════════════════════════ -->
+  <section class="section" id="linear-gradient">
+    <h2>linear-gradient()</h2>
+    <p>Creates a smooth color transition along a straight line. You can control the angle and add multiple color stops.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre><span class="cmt">/* Direction keywords */</span>
+<span class="sel">.a</span> { <span class="prop">background</span>: <span class="fn">linear-gradient</span>(<span class="val">to right</span>, <span class="val">#646cff</span>, <span class="val">#10b981</span>); }
+<span class="sel">.b</span> { <span class="prop">background</span>: <span class="fn">linear-gradient</span>(<span class="val">to bottom right</span>, <span class="val">#646cff</span>, <span class="val">#10b981</span>); }
+
+<span class="cmt">/* Angle (0deg = to top, 90deg = to right) */</span>
+<span class="sel">.c</span> { <span class="prop">background</span>: <span class="fn">linear-gradient</span>(<span class="num">135deg</span>, <span class="val">#646cff</span>, <span class="val">#10b981</span>); }
+
+<span class="cmt">/* Multiple stops with positions */</span>
+<span class="sel">.d</span> { <span class="prop">background</span>: <span class="fn">linear-gradient</span>(
+    <span class="num">90deg</span>,
+    <span class="val">#ef4444</span> <span class="num">0%</span>,
+    <span class="val">#f59e0b</span> <span class="num">25%</span>,
+    <span class="val">#10b981</span> <span class="num">50%</span>,
+    <span class="val">#646cff</span> <span class="num">75%</span>,
+    <span class="val">#a855f7</span> <span class="num">100%</span>
+  ); }
+
+<span class="cmt">/* Hard stop (no transition) */</span>
+<span class="sel">.e</span> { <span class="prop">background</span>: <span class="fn">linear-gradient</span>(
+    <span class="num">90deg</span>,
+    <span class="val">#646cff</span> <span class="num">50%</span>,
+    <span class="val">#10b981</span> <span class="num">50%</span>
+  ); }</pre></div>
+
+    <div class="live-example"><div class="live-example-label">Live Example &mdash; linear-gradient Angles</div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: .75rem;">
+        <div style="height: 80px; border-radius: 8px; background: linear-gradient(to right, #646cff, #10b981); display: flex; align-items: center; justify-content: center;">
+          <span style="background: rgba(0,0,0,.5); padding: .3rem .6rem; border-radius: 4px; color: #fff; font-size: .75rem;">to right</span>
+        </div>
+        <div style="height: 80px; border-radius: 8px; background: linear-gradient(to bottom, #646cff, #10b981); display: flex; align-items: center; justify-content: center;">
+          <span style="background: rgba(0,0,0,.5); padding: .3rem .6rem; border-radius: 4px; color: #fff; font-size: .75rem;">to bottom</span>
+        </div>
+        <div style="height: 80px; border-radius: 8px; background: linear-gradient(45deg, #646cff, #10b981); display: flex; align-items: center; justify-content: center;">
+          <span style="background: rgba(0,0,0,.5); padding: .3rem .6rem; border-radius: 4px; color: #fff; font-size: .75rem;">45deg</span>
+        </div>
+        <div style="height: 80px; border-radius: 8px; background: linear-gradient(135deg, #646cff, #10b981); display: flex; align-items: center; justify-content: center;">
+          <span style="background: rgba(0,0,0,.5); padding: .3rem .6rem; border-radius: 4px; color: #fff; font-size: .75rem;">135deg</span>
+        </div>
+        <div style="height: 80px; border-radius: 8px; background: linear-gradient(270deg, #646cff, #10b981); display: flex; align-items: center; justify-content: center;">
+          <span style="background: rgba(0,0,0,.5); padding: .3rem .6rem; border-radius: 4px; color: #fff; font-size: .75rem;">270deg</span>
+        </div>
+      </div>
+      <h4 style="margin-top: 1rem; margin-bottom: .5rem;">Multi-stop &amp; Hard Stops</h4>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: .75rem;">
+        <div style="height: 60px; border-radius: 8px; background: linear-gradient(90deg, #ef4444, #f59e0b, #10b981, #646cff, #a855f7); display: flex; align-items: center; justify-content: center;">
+          <span style="background: rgba(0,0,0,.5); padding: .3rem .6rem; border-radius: 4px; color: #fff; font-size: .75rem;">5-color smooth</span>
+        </div>
+        <div style="height: 60px; border-radius: 8px; background: linear-gradient(90deg, #ef4444 33%, #f59e0b 33% 66%, #10b981 66%); display: flex; align-items: center; justify-content: center;">
+          <span style="background: rgba(0,0,0,.5); padding: .3rem .6rem; border-radius: 4px; color: #fff; font-size: .75rem;">Hard stops (no fade)</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════ radial-gradient ════════════════════════════════════════ -->
+  <section class="section" id="radial-gradient">
+    <h2>radial-gradient()</h2>
+    <p>Creates a circular or elliptical gradient radiating outward from a center point.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre><span class="cmt">/* Basic circle */</span>
+<span class="sel">.a</span> { <span class="prop">background</span>: <span class="fn">radial-gradient</span>(<span class="val">circle</span>, <span class="val">#646cff</span>, <span class="val">#0a0a1a</span>); }
+
+<span class="cmt">/* Ellipse (default) */</span>
+<span class="sel">.b</span> { <span class="prop">background</span>: <span class="fn">radial-gradient</span>(<span class="val">ellipse</span>, <span class="val">#646cff</span>, <span class="val">#0a0a1a</span>); }
+
+<span class="cmt">/* Positioned */</span>
+<span class="sel">.c</span> { <span class="prop">background</span>: <span class="fn">radial-gradient</span>(<span class="val">circle at top left</span>, <span class="val">#646cff</span>, <span class="val">#0a0a1a</span>); }
+
+<span class="cmt">/* Sized */</span>
+<span class="sel">.d</span> { <span class="prop">background</span>: <span class="fn">radial-gradient</span>(<span class="val">circle</span> <span class="num">100px</span>, <span class="val">#646cff</span>, <span class="val">#0a0a1a</span>); }</pre></div>
+
+    <div class="live-example"><div class="live-example-label">Live Example &mdash; radial-gradient</div>
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: .75rem;">
+        <div style="height: 120px; border-radius: 8px; background: radial-gradient(circle, #646cff, #0a0a2e); display: flex; align-items: center; justify-content: center;">
+          <span style="background: rgba(0,0,0,.5); padding: .3rem .6rem; border-radius: 4px; color: #fff; font-size: .75rem;">circle (center)</span>
+        </div>
+        <div style="height: 120px; border-radius: 8px; background: radial-gradient(circle at top left, #10b981, #0a0a2e); display: flex; align-items: center; justify-content: center;">
+          <span style="background: rgba(0,0,0,.5); padding: .3rem .6rem; border-radius: 4px; color: #fff; font-size: .75rem;">circle at top left</span>
+        </div>
+        <div style="height: 120px; border-radius: 8px; background: radial-gradient(ellipse, #f59e0b, #ef4444, #0a0a2e); display: flex; align-items: center; justify-content: center;">
+          <span style="background: rgba(0,0,0,.5); padding: .3rem .6rem; border-radius: 4px; color: #fff; font-size: .75rem;">ellipse, 3 stops</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════ conic-gradient ════════════════════════════════════════ -->
+  <section class="section" id="conic-gradient">
+    <h2>conic-gradient()</h2>
+    <p>Creates a gradient that rotates around a center point, like a color wheel or pie chart.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre><span class="cmt">/* Color wheel */</span>
+<span class="sel">.wheel</span> {
+  <span class="prop">background</span>: <span class="fn">conic-gradient</span>(
+    <span class="val">red</span>, <span class="val">yellow</span>, <span class="val">lime</span>, <span class="val">aqua</span>,
+    <span class="val">blue</span>, <span class="val">magenta</span>, <span class="val">red</span>
+  );
+  <span class="prop">border-radius</span>: <span class="num">50%</span>;
+}
+
+<span class="cmt">/* Pie chart */</span>
+<span class="sel">.pie</span> {
+  <span class="prop">background</span>: <span class="fn">conic-gradient</span>(
+    <span class="val">#646cff</span> <span class="num">0%</span> <span class="num">40%</span>,
+    <span class="val">#10b981</span> <span class="num">40%</span> <span class="num">70%</span>,
+    <span class="val">#f59e0b</span> <span class="num">70%</span> <span class="num">100%</span>
+  );
+  <span class="prop">border-radius</span>: <span class="num">50%</span>;
+}</pre></div>
+
+    <div class="live-example"><div class="live-example-label">Live Example &mdash; conic-gradient</div>
+      <div style="display: flex; gap: 1.5rem; flex-wrap: wrap; justify-content: center;">
+        <div style="text-align: center;">
+          <div style="width: 120px; height: 120px; border-radius: 50%; background: conic-gradient(red, yellow, lime, aqua, blue, magenta, red); margin: 0 auto;"></div>
+          <p style="font-size: .8rem; margin-top: .5rem;">Color Wheel</p>
+        </div>
+        <div style="text-align: center;">
+          <div style="width: 120px; height: 120px; border-radius: 50%; background: conic-gradient(#646cff 0% 40%, #10b981 40% 70%, #f59e0b 70% 100%); margin: 0 auto;"></div>
+          <p style="font-size: .8rem; margin-top: .5rem;">Pie Chart (40/30/30)</p>
+        </div>
+        <div style="text-align: center;">
+          <div style="width: 120px; height: 120px; border-radius: 50%; background: conic-gradient(from 90deg, #646cff, #a855f7, #646cff); margin: 0 auto;"></div>
+          <p style="font-size: .8rem; margin-top: .5rem;">from 90deg</p>
+        </div>
+        <div style="text-align: center;">
+          <div style="width: 120px; height: 120px; background: conic-gradient(#646cff 25%, #10b981 25% 50%, #f59e0b 50% 75%, #ef4444 75%); margin: 0 auto;"></div>
+          <p style="font-size: .8rem; margin-top: .5rem;">Square Quadrants</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════ Repeating Gradients ════════════════════════════════════════ -->
+  <section class="section" id="repeating-gradients">
+    <h2>Repeating Gradients</h2>
+    <p>The <code>repeating-</code> variants of each gradient type tile automatically.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre><span class="sel">.stripes</span> {
+  <span class="prop">background</span>: <span class="fn">repeating-linear-gradient</span>(
+    <span class="num">45deg</span>,
+    <span class="val">#646cff</span>,
+    <span class="val">#646cff</span> <span class="num">10px</span>,
+    <span class="val">transparent</span> <span class="num">10px</span>,
+    <span class="val">transparent</span> <span class="num">20px</span>
+  );
+}
+
+<span class="sel">.rings</span> {
+  <span class="prop">background</span>: <span class="fn">repeating-radial-gradient</span>(
+    <span class="val">circle</span>,
+    <span class="val">#646cff</span>,
+    <span class="val">#646cff</span> <span class="num">5px</span>,
+    <span class="val">transparent</span> <span class="num">5px</span>,
+    <span class="val">transparent</span> <span class="num">15px</span>
+  );
+}
+
+<span class="sel">.starburst</span> {
+  <span class="prop">background</span>: <span class="fn">repeating-conic-gradient</span>(
+    <span class="val">#646cff</span> <span class="num">0deg</span> <span class="num">15deg</span>,
+    <span class="val">transparent</span> <span class="num">15deg</span> <span class="num">30deg</span>
+  );
+}</pre></div>
+
+    <div class="live-example"><div class="live-example-label">Live Example &mdash; Repeating Gradients</div>
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: .75rem;">
+        <div style="height: 120px; border-radius: 8px; background: repeating-linear-gradient(45deg, #646cff, #646cff 10px, transparent 10px, transparent 20px); display: flex; align-items: center; justify-content: center;">
+          <span style="background: rgba(0,0,0,.6); padding: .3rem .6rem; border-radius: 4px; color: #fff; font-size: .75rem;">repeating-linear</span>
+        </div>
+        <div style="height: 120px; border-radius: 8px; background: repeating-radial-gradient(circle, #646cff, #646cff 5px, transparent 5px, transparent 15px); display: flex; align-items: center; justify-content: center;">
+          <span style="background: rgba(0,0,0,.6); padding: .3rem .6rem; border-radius: 4px; color: #fff; font-size: .75rem;">repeating-radial</span>
+        </div>
+        <div style="height: 120px; border-radius: 8px; background: repeating-conic-gradient(#646cff 0deg 15deg, transparent 15deg 30deg); display: flex; align-items: center; justify-content: center;">
+          <span style="background: rgba(0,0,0,.6); padding: .3rem .6rem; border-radius: 4px; color: #fff; font-size: .75rem;">repeating-conic</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════ Gradient Patterns ════════════════════════════════════════ -->
+  <section class="section" id="gradient-patterns">
+    <h2>Gradient Patterns (Stripes)</h2>
+    <p>By combining hard color stops and repeating gradients, you can create pure-CSS patterns with zero images.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre><span class="cmt">/* Horizontal stripes */</span>
+<span class="sel">.h-stripes</span> {
+  <span class="prop">background</span>: <span class="fn">repeating-linear-gradient</span>(
+    <span class="num">0deg</span>,
+    <span class="val">#646cff</span> <span class="num">0px</span>,
+    <span class="val">#646cff</span> <span class="num">10px</span>,
+    <span class="val">transparent</span> <span class="num">10px</span>,
+    <span class="val">transparent</span> <span class="num">20px</span>
+  );
+}
+
+<span class="cmt">/* Checkerboard */</span>
+<span class="sel">.check</span> {
+  <span class="prop">background-color</span>: <span class="val">#1a1a2e</span>;
+  <span class="prop">background-image</span>:
+    <span class="fn">linear-gradient</span>(<span class="num">45deg</span>, <span class="val">#646cff33</span> <span class="num">25%</span>, <span class="val">transparent</span> <span class="num">25%</span>),
+    <span class="fn">linear-gradient</span>(<span class="num">-45deg</span>, <span class="val">#646cff33</span> <span class="num">25%</span>, <span class="val">transparent</span> <span class="num">25%</span>),
+    <span class="fn">linear-gradient</span>(<span class="num">45deg</span>, <span class="val">transparent</span> <span class="num">75%</span>, <span class="val">#646cff33</span> <span class="num">75%</span>),
+    <span class="fn">linear-gradient</span>(<span class="num">-45deg</span>, <span class="val">transparent</span> <span class="num">75%</span>, <span class="val">#646cff33</span> <span class="num">75%</span>);
+  <span class="prop">background-size</span>: <span class="num">20px</span> <span class="num">20px</span>;
+  <span class="prop">background-position</span>: <span class="num">0</span> <span class="num">0</span>, <span class="num">0</span> <span class="num">10px</span>, <span class="num">10px</span> <span class="num">-10px</span>, <span class="num">-10px</span> <span class="num">0px</span>;
+}</pre></div>
+
+    <div class="live-example"><div class="live-example-label">Live Example &mdash; CSS Gradient Patterns</div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: .75rem;">
+        <div style="text-align: center;">
+          <div style="height: 100px; border-radius: 8px; background: repeating-linear-gradient(0deg, #646cff 0px, #646cff 8px, transparent 8px, transparent 16px);"></div>
+          <p style="font-size: .8rem; margin-top: .4rem;">Horizontal Stripes</p>
+        </div>
+        <div style="text-align: center;">
+          <div style="height: 100px; border-radius: 8px; background: repeating-linear-gradient(90deg, #10b981 0px, #10b981 8px, transparent 8px, transparent 16px);"></div>
+          <p style="font-size: .8rem; margin-top: .4rem;">Vertical Stripes</p>
+        </div>
+        <div style="text-align: center;">
+          <div style="height: 100px; border-radius: 8px; background: repeating-linear-gradient(45deg, #f59e0b 0px, #f59e0b 8px, transparent 8px, transparent 16px);"></div>
+          <p style="font-size: .8rem; margin-top: .4rem;">Diagonal Stripes</p>
+        </div>
+        <div style="text-align: center;">
+          <div style="height: 100px; border-radius: 8px; background-color: #1a1a2e; background-image: linear-gradient(45deg, #646cff33 25%, transparent 25%), linear-gradient(-45deg, #646cff33 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #646cff33 75%), linear-gradient(-45deg, transparent 75%, #646cff33 75%); background-size: 20px 20px; background-position: 0 0, 0 10px, 10px -10px, -10px 0px;"></div>
+          <p style="font-size: .8rem; margin-top: .4rem;">Checkerboard</p>
+        </div>
+        <div style="text-align: center;">
+          <div style="height: 100px; border-radius: 8px; background: repeating-linear-gradient(0deg, transparent, transparent 19px, rgba(100,108,255,.3) 19px, rgba(100,108,255,.3) 20px), repeating-linear-gradient(90deg, transparent, transparent 19px, rgba(100,108,255,.3) 19px, rgba(100,108,255,.3) 20px); background-color: #0a0a1a;"></div>
+          <p style="font-size: .8rem; margin-top: .4rem;">Grid Lines</p>
+        </div>
+        <div style="text-align: center;">
+          <div style="height: 100px; border-radius: 8px; background: repeating-linear-gradient(45deg, #ef4444 0px, #ef4444 10px, #f59e0b 10px, #f59e0b 20px);"></div>
+          <p style="font-size: .8rem; margin-top: .4rem;">Warning Stripes</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════ mix-blend-mode ════════════════════════════════════════ -->
+  <section class="section" id="mix-blend-mode">
+    <h2>mix-blend-mode</h2>
+    <p>Controls how an element's colors blend with the content behind it, similar to Photoshop blending modes.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre><span class="sel">.overlay-text</span> {
+  <span class="prop">mix-blend-mode</span>: <span class="val">multiply</span>;
+}
+
+<span class="cmt">/* Common values */</span>
+<span class="sel">.a</span> { <span class="prop">mix-blend-mode</span>: <span class="val">normal</span>; }
+<span class="sel">.b</span> { <span class="prop">mix-blend-mode</span>: <span class="val">multiply</span>; }   <span class="cmt">/* darken */</span>
+<span class="sel">.c</span> { <span class="prop">mix-blend-mode</span>: <span class="val">screen</span>; }     <span class="cmt">/* lighten */</span>
+<span class="sel">.d</span> { <span class="prop">mix-blend-mode</span>: <span class="val">overlay</span>; }    <span class="cmt">/* contrast */</span>
+<span class="sel">.e</span> { <span class="prop">mix-blend-mode</span>: <span class="val">difference</span>; } <span class="cmt">/* invert */</span>
+<span class="sel">.f</span> { <span class="prop">mix-blend-mode</span>: <span class="val">color-dodge</span>; }</pre></div>
+
+    <div class="live-example"><div class="live-example-label">Live Example &mdash; mix-blend-mode</div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 1rem;">
+        <div style="position: relative; height: 120px; border-radius: 8px; background: linear-gradient(135deg, #ef4444, #f59e0b); overflow: hidden;">
+          <div style="position: absolute; inset: 0; background: linear-gradient(225deg, #646cff, #10b981); mix-blend-mode: multiply;"></div>
+          <span style="position: relative; z-index: 1; display: flex; height: 100%; align-items: center; justify-content: center; color: #fff; font-size: .85rem; font-weight: 600;">multiply</span>
+        </div>
+        <div style="position: relative; height: 120px; border-radius: 8px; background: linear-gradient(135deg, #ef4444, #f59e0b); overflow: hidden;">
+          <div style="position: absolute; inset: 0; background: linear-gradient(225deg, #646cff, #10b981); mix-blend-mode: screen;"></div>
+          <span style="position: relative; z-index: 1; display: flex; height: 100%; align-items: center; justify-content: center; color: #fff; font-size: .85rem; font-weight: 600;">screen</span>
+        </div>
+        <div style="position: relative; height: 120px; border-radius: 8px; background: linear-gradient(135deg, #ef4444, #f59e0b); overflow: hidden;">
+          <div style="position: absolute; inset: 0; background: linear-gradient(225deg, #646cff, #10b981); mix-blend-mode: overlay;"></div>
+          <span style="position: relative; z-index: 1; display: flex; height: 100%; align-items: center; justify-content: center; color: #fff; font-size: .85rem; font-weight: 600;">overlay</span>
+        </div>
+        <div style="position: relative; height: 120px; border-radius: 8px; background: linear-gradient(135deg, #ef4444, #f59e0b); overflow: hidden;">
+          <div style="position: absolute; inset: 0; background: linear-gradient(225deg, #646cff, #10b981); mix-blend-mode: difference;"></div>
+          <span style="position: relative; z-index: 1; display: flex; height: 100%; align-items: center; justify-content: center; color: #fff; font-size: .85rem; font-weight: 600;">difference</span>
+        </div>
+      </div>
+
+      <h4 style="margin-top: 1rem; margin-bottom: .5rem;">Overlapping Circles</h4>
+      <div style="position: relative; height: 160px; display: flex; align-items: center; justify-content: center;">
+        <div style="position: absolute; width: 100px; height: 100px; border-radius: 50%; background: #ef4444; mix-blend-mode: screen; transform: translateX(-30px);"></div>
+        <div style="position: absolute; width: 100px; height: 100px; border-radius: 50%; background: #10b981; mix-blend-mode: screen; transform: translateX(30px);"></div>
+        <div style="position: absolute; width: 100px; height: 100px; border-radius: 50%; background: #646cff; mix-blend-mode: screen; transform: translateY(-30px);"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════ Multiple Backgrounds ════════════════════════════════════════ -->
+  <section class="section" id="multiple-backgrounds">
+    <h2>Multiple Backgrounds</h2>
+    <p>CSS lets you stack multiple backgrounds on a single element. Each layer can have its own image, position, size, and repeat. The first listed layer renders on top.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre><span class="sel">.layered</span> {
+  <span class="prop">background</span>:
+    <span class="cmt">/* Layer 1 (top): semi-transparent overlay */</span>
+    <span class="fn">linear-gradient</span>(<span class="fn">rgba</span>(<span class="num">0</span>,<span class="num">0</span>,<span class="num">0</span>,<span class="num">.3</span>), <span class="fn">rgba</span>(<span class="num">0</span>,<span class="num">0</span>,<span class="num">0</span>,<span class="num">.7</span>)),
+    <span class="cmt">/* Layer 2: decorative gradient */</span>
+    <span class="fn">radial-gradient</span>(<span class="val">circle at</span> <span class="num">30%</span> <span class="num">70%</span>, <span class="val">#646cff44</span>, <span class="val">transparent</span> <span class="num">50%</span>),
+    <span class="cmt">/* Layer 3 (bottom): base color */</span>
+    <span class="fn">linear-gradient</span>(<span class="num">135deg</span>, <span class="val">#0a0a1a</span>, <span class="val">#1a1a3e</span>);
+}</pre></div>
+
+    <div class="live-example"><div class="live-example-label">Live Example &mdash; Stacked Backgrounds</div>
+      <div style="height: 160px; border-radius: 8px; background: radial-gradient(circle at 20% 50%, rgba(100,108,255,.4), transparent 50%), radial-gradient(circle at 80% 50%, rgba(16,185,129,.4), transparent 50%), radial-gradient(circle at 50% 80%, rgba(245,158,11,.4), transparent 50%), linear-gradient(135deg, #0a0a1a, #1a1a3e); display: flex; align-items: center; justify-content: center;">
+        <span style="background: rgba(0,0,0,.5); padding: .5rem 1rem; border-radius: 6px; color: #fff; font-size: .9rem;">3 radial gradients + 1 linear base</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════ Gotchas ════════════════════════════════════════ -->
+  <section class="section" id="gotchas">
+    <h2>Common Gotchas</h2>
+
+    <div class="callout gotcha"><div class="callout-title">background Shorthand Resets Other Properties</div><p>The <code>background</code> shorthand resets <code>background-color</code>, <code>background-image</code>, <code>background-position</code>, <code>background-size</code>, and others to their defaults. If you set <code>background-color</code> first, then use <code>background: url(...)</code>, the color is wiped. Set <code>background-color</code> after the shorthand, or include it in the shorthand.</p></div>
+
+    <div class="callout gotcha"><div class="callout-title">Hex Alpha Notation Support</div><p>8-digit hex colors (<code>#646cff80</code>) are supported in all modern browsers, but not in IE11. If you need IE support, use <code>rgba()</code> instead.</p></div>
+
+    <div class="callout gotcha"><div class="callout-title">Gradient Banding</div><p>Subtle gradients across large areas can show visible color bands. Mitigate this by adding a faint noise texture overlay or slightly increasing the color range of your gradient.</p></div>
+
+    <div class="callout gotcha"><div class="callout-title">background-attachment: fixed on Mobile</div><p>Most mobile browsers disable <code>background-attachment: fixed</code> for performance. The background will behave as <code>scroll</code> instead. Use JavaScript-based parallax for mobile if needed.</p></div>
+
+    <div class="callout gotcha"><div class="callout-title">opacity Creates a Stacking Context</div><p>Setting <code>opacity</code> to anything less than 1 creates a new stacking context. This can affect z-index ordering of child elements and cause unexpected layering issues.</p></div>
+  </section>
+
+  <!-- ════════════════════════════════════════ Pro Tips ════════════════════════════════════════ -->
+  <section class="section" id="pro-tips">
+    <h2>Pro Tips</h2>
+
+    <div class="callout tip"><div class="callout-title">CSS Custom Properties for Color Palettes</div><p>Define your palette with HSL in custom properties: <code>--hue: 235; --primary: hsl(var(--hue), 100%, 70%);</code>. Changing <code>--hue</code> shifts your entire color scheme at once. This is the foundation of modern CSS theming.</p></div>
+
+    <div class="callout tip"><div class="callout-title">Use HSL for Hover States</div><p>Instead of hard-coding a separate hover color, adjust lightness: <code>background: hsl(235, 100%, 60%)</code> to <code>background: hsl(235, 100%, 50%)</code>. Same hue, deeper shade.</p></div>
+
+    <div class="callout tip"><div class="callout-title">Gradient Borders</div><p>You cannot directly apply a gradient to <code>border-color</code>. Instead, use <code>border-image: linear-gradient(...) 1</code> or the <code>background-clip</code> padding-box trick with a pseudo-element.</p></div>
+
+    <div class="callout tip"><div class="callout-title">Performance of Gradients</div><p>CSS gradients are generated by the browser and are resolution-independent. They are cheaper than image files and look sharp on Retina displays. Prefer gradients over raster images whenever possible.</p></div>
+
+    <div class="callout tip"><div class="callout-title">color-mix() (Modern CSS)</div><p>The new <code>color-mix()</code> function lets you blend two colors: <code>color-mix(in srgb, #646cff, white 30%)</code> mixes 30% white into your blue. Great for programmatic tints and shades without manually computing hex values.</p></div>
+
+    <div class="callout tip"><div class="callout-title">Accessible Color Contrast</div><p>Always ensure a contrast ratio of at least <strong>4.5:1</strong> for normal text and <strong>3:1</strong> for large text (WCAG AA). Use browser DevTools or online checkers to verify your color combinations.</p></div>
+  </section>
+
+  <div class="topic-nav">
+    <a href="03-typography.html"><span class="label">Previous</span><span class="title">Typography</span></a>
+    <a href="05-display-positioning.html" class="next"><span class="label">Next</span><span class="title">Display &amp; Positioning</span></a>
+  </div>
+</main>
+<script src="script.js"></script>
+</body>
+</html>

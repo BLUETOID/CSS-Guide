@@ -1,0 +1,551 @@
+<!DOCTYPE html><html lang="en" data-theme="dark"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Filters &amp; Effects &mdash; CSS Reference Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet"><link rel="stylesheet" href="styles.css">
+</head><body>
+<div id="progress"></div>
+
+<header class="header"><button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">&#9776;</button><h1><span>CSS</span> Reference Guide</h1><div class="header-nav"><a href="index.html">All Topics</a></div><button class="theme-toggle" onclick="toggleTheme()">&#9790; Dark</button></header>
+
+<nav class="sidebar" id="sidebar">
+  <a href="index.html" class="nav-back">&#8592; All Topics</a>
+  <div class="nav-group">
+    <div class="nav-group-title">On This Page</div>
+    <a href="#filter-functions">Filter Functions</a>
+    <a href="#blur">blur()</a>
+    <a href="#brightness-contrast">brightness() &amp; contrast()</a>
+    <a href="#grayscale-sepia">grayscale() &amp; sepia()</a>
+    <a href="#saturate-hue-rotate">saturate() &amp; hue-rotate()</a>
+    <a href="#invert-opacity">invert() &amp; opacity()</a>
+    <a href="#drop-shadow">drop-shadow()</a>
+    <a href="#filter-grid">Filter Demo Grid</a>
+    <a href="#combining-filters">Combining Filters</a>
+    <a href="#backdrop-filter">backdrop-filter</a>
+    <a href="#glassmorphism">Glassmorphism</a>
+    <a href="#box-shadow">box-shadow</a>
+    <a href="#text-shadow">text-shadow</a>
+    <a href="#mix-blend-mode">mix-blend-mode</a>
+    <a href="#neumorphism">Neumorphism</a>
+    <a href="#gotchas">Gotchas</a>
+    <a href="#pro-tips">Pro Tips</a>
+  </div>
+</nav>
+
+<main class="main">
+  <div class="page-hero">
+    <h1>CSS Filters &amp; Effects</h1>
+    <p>Apply visual effects like blur, brightness, shadows, and blend modes directly in CSS. From subtle image adjustments to full glassmorphism UIs.</p>
+    <div class="tags"><span>Visual</span><span>Filters</span><span>Shadows</span><span>Blend Modes</span><span>Effects</span></div>
+  </div>
+
+  <!-- ==================== FILTER FUNCTIONS ==================== -->
+  <div class="section" id="filter-functions">
+    <h2>Filter Functions Overview</h2>
+    <p>The <code>filter</code> property applies graphical effects to an element. You can chain multiple filter functions together in a single declaration.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="sel">.element</span> {
+  <span class="prop">filter</span>: <span class="fn">blur</span>(<span class="num">5px</span>);                       <span class="cmt">/* Gaussian blur */</span>
+  <span class="prop">filter</span>: <span class="fn">brightness</span>(<span class="num">1.5</span>);                  <span class="cmt">/* brighten 150% */</span>
+  <span class="prop">filter</span>: <span class="fn">contrast</span>(<span class="num">200%</span>);                   <span class="cmt">/* double contrast */</span>
+  <span class="prop">filter</span>: <span class="fn">grayscale</span>(<span class="num">100%</span>);                  <span class="cmt">/* full grayscale */</span>
+  <span class="prop">filter</span>: <span class="fn">saturate</span>(<span class="num">2</span>);                      <span class="cmt">/* double saturation */</span>
+  <span class="prop">filter</span>: <span class="fn">sepia</span>(<span class="num">80%</span>);                       <span class="cmt">/* warm vintage tone */</span>
+  <span class="prop">filter</span>: <span class="fn">hue-rotate</span>(<span class="num">90deg</span>);                <span class="cmt">/* shift hue */</span>
+  <span class="prop">filter</span>: <span class="fn">invert</span>(<span class="num">100%</span>);                     <span class="cmt">/* negative */</span>
+  <span class="prop">filter</span>: <span class="fn">opacity</span>(<span class="num">50%</span>);                     <span class="cmt">/* transparency */</span>
+  <span class="prop">filter</span>: <span class="fn">drop-shadow</span>(<span class="num">4px</span> <span class="num">4px</span> <span class="num">8px</span> <span class="val">#000</span>);  <span class="cmt">/* shadow following shape */</span>
+}
+</pre></div>
+  </div>
+
+  <!-- ==================== BLUR ==================== -->
+  <div class="section" id="blur">
+    <h2>blur()</h2>
+    <p>Applies a Gaussian blur to the element. The parameter is the blur radius &mdash; larger values create more blur.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="sel">.subtle</span>  { <span class="prop">filter</span>: <span class="fn">blur</span>(<span class="num">2px</span>); }
+<span class="sel">.medium</span>  { <span class="prop">filter</span>: <span class="fn">blur</span>(<span class="num">5px</span>); }
+<span class="sel">.heavy</span>   { <span class="prop">filter</span>: <span class="fn">blur</span>(<span class="num">15px</span>); }
+
+<span class="cmt">/* Common: blur background image */</span>
+<span class="sel">.hero-bg</span> {
+  <span class="prop">filter</span>: <span class="fn">blur</span>(<span class="num">8px</span>);
+  <span class="prop">transform</span>: <span class="fn">scale</span>(<span class="num">1.1</span>); <span class="cmt">/* prevent blur edge artifacts */</span>
+}
+</pre></div>
+  </div>
+
+  <!-- ==================== BRIGHTNESS & CONTRAST ==================== -->
+  <div class="section" id="brightness-contrast">
+    <h2>brightness() &amp; contrast()</h2>
+    <p><code>brightness()</code> adjusts the overall lightness. <code>1</code> / <code>100%</code> is normal. <code>contrast()</code> adjusts the difference between darks and lights.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="sel">.darker</span>      { <span class="prop">filter</span>: <span class="fn">brightness</span>(<span class="num">0.6</span>); }    <span class="cmt">/* 60% brightness */</span>
+<span class="sel">.brighter</span>    { <span class="prop">filter</span>: <span class="fn">brightness</span>(<span class="num">1.4</span>); }    <span class="cmt">/* 140% brightness */</span>
+<span class="sel">.low-contrast</span>  { <span class="prop">filter</span>: <span class="fn">contrast</span>(<span class="num">0.5</span>); }
+<span class="sel">.high-contrast</span> { <span class="prop">filter</span>: <span class="fn">contrast</span>(<span class="num">2</span>); }
+</pre></div>
+  </div>
+
+  <!-- ==================== GRAYSCALE & SEPIA ==================== -->
+  <div class="section" id="grayscale-sepia">
+    <h2>grayscale() &amp; sepia()</h2>
+    <p><code>grayscale()</code> removes color. <code>sepia()</code> applies a warm, brown-toned vintage look.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="sel">.bw</span>       { <span class="prop">filter</span>: <span class="fn">grayscale</span>(<span class="num">100%</span>); }   <span class="cmt">/* fully desaturated */</span>
+<span class="sel">.partial</span>  { <span class="prop">filter</span>: <span class="fn">grayscale</span>(<span class="num">50%</span>); }    <span class="cmt">/* half desaturated */</span>
+<span class="sel">.vintage</span>  { <span class="prop">filter</span>: <span class="fn">sepia</span>(<span class="num">80%</span>); }
+
+<span class="cmt">/* Classic: grayscale on hover reveal */</span>
+<span class="sel">.team-photo</span> {
+  <span class="prop">filter</span>: <span class="fn">grayscale</span>(<span class="num">100%</span>);
+  <span class="prop">transition</span>: <span class="val">filter</span> <span class="num">0.4s</span>;
+}
+<span class="sel">.team-photo:hover</span> {
+  <span class="prop">filter</span>: <span class="fn">grayscale</span>(<span class="num">0%</span>);
+}
+</pre></div>
+  </div>
+
+  <!-- ==================== SATURATE & HUE-ROTATE ==================== -->
+  <div class="section" id="saturate-hue-rotate">
+    <h2>saturate() &amp; hue-rotate()</h2>
+    <p><code>saturate()</code> increases or decreases color intensity. <code>hue-rotate()</code> shifts all colors around the color wheel.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="sel">.vivid</span>   { <span class="prop">filter</span>: <span class="fn">saturate</span>(<span class="num">2.5</span>); }        <span class="cmt">/* super saturated */</span>
+<span class="sel">.muted</span>   { <span class="prop">filter</span>: <span class="fn">saturate</span>(<span class="num">0.3</span>); }        <span class="cmt">/* desaturated */</span>
+<span class="sel">.shifted</span> { <span class="prop">filter</span>: <span class="fn">hue-rotate</span>(<span class="num">90deg</span>); }    <span class="cmt">/* shift hue 90 degrees */</span>
+<span class="sel">.rainbow</span> { <span class="prop">filter</span>: <span class="fn">hue-rotate</span>(<span class="num">180deg</span>); }   <span class="cmt">/* complementary colors */</span>
+</pre></div>
+  </div>
+
+  <!-- ==================== INVERT & OPACITY ==================== -->
+  <div class="section" id="invert-opacity">
+    <h2>invert() &amp; opacity()</h2>
+    <p><code>invert()</code> creates a negative image. <code>opacity()</code> in filters is functionally similar to the <code>opacity</code> property but is applied as part of the filter pipeline.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="sel">.negative</span>    { <span class="prop">filter</span>: <span class="fn">invert</span>(<span class="num">100%</span>); }
+<span class="sel">.half-invert</span> { <span class="prop">filter</span>: <span class="fn">invert</span>(<span class="num">50%</span>); }
+<span class="sel">.faded</span>       { <span class="prop">filter</span>: <span class="fn">opacity</span>(<span class="num">40%</span>); }
+
+<span class="cmt">/* Quick dark mode for images */</span>
+<span class="sel">.dark-mode-icon</span> {
+  <span class="prop">filter</span>: <span class="fn">invert</span>(<span class="num">1</span>) <span class="fn">hue-rotate</span>(<span class="num">180deg</span>);
+}
+</pre></div>
+  </div>
+
+  <!-- ==================== DROP-SHADOW ==================== -->
+  <div class="section" id="drop-shadow">
+    <h2>drop-shadow()</h2>
+    <p>Unlike <code>box-shadow</code>, <code>drop-shadow()</code> follows the actual shape of the element (including transparent PNG outlines and clip-paths).</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="sel">.shape-shadow</span> {
+  <span class="prop">filter</span>: <span class="fn">drop-shadow</span>(<span class="num">4px</span> <span class="num">4px</span> <span class="num">6px</span> <span class="fn">rgba</span>(<span class="num">0</span>,<span class="num">0</span>,<span class="num">0</span>,<span class="num">0.4</span>));
+  <span class="cmt">/* offset-x | offset-y | blur-radius | color */</span>
+}
+
+<span class="cmt">/* Works with clip-path shapes! */</span>
+<span class="sel">.triangle</span> {
+  <span class="prop">clip-path</span>: <span class="fn">polygon</span>(<span class="num">50%</span> <span class="num">0%</span>, <span class="num">0%</span> <span class="num">100%</span>, <span class="num">100%</span> <span class="num">100%</span>);
+  <span class="prop">filter</span>: <span class="fn">drop-shadow</span>(<span class="num">0</span> <span class="num">4px</span> <span class="num">8px</span> <span class="fn">rgba</span>(<span class="num">0</span>,<span class="num">0</span>,<span class="num">0</span>,<span class="num">0.3</span>));
+}
+</pre></div>
+
+    <div class="callout info">
+      <div class="callout-title">drop-shadow vs box-shadow</div>
+      <p><code>box-shadow</code> always creates a rectangular shadow matching the element's box. <code>drop-shadow()</code> traces the actual visual shape, including transparency. However, <code>drop-shadow</code> does not support <code>inset</code> or <code>spread</code> values.</p>
+    </div>
+  </div>
+
+  <!-- ==================== FILTER DEMO GRID ==================== -->
+  <div class="section" id="filter-grid">
+    <h2>Filter Functions Demo Grid</h2>
+    <p>Each box below has a colorful gradient with a different filter applied. Hover to remove the filter and see the original.</p>
+
+    <div class="live-example">
+      <div class="live-example-label">Live Example &mdash; All Filter Functions</div>
+      <style>
+        .filter-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 1.2rem; padding: 1.5rem 0; }
+        .filter-card { height: 110px; border-radius: 12px; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 0.8rem; font-weight: 600; font-size: 0.72rem; color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,0.5); cursor: pointer; transition: filter 0.4s ease; }
+        .filter-card.fc-blur       { background: linear-gradient(135deg, #667eea, #764ba2); filter: blur(3px); }
+        .filter-card.fc-brightness { background: linear-gradient(135deg, #f093fb, #f5576c); filter: brightness(0.5); }
+        .filter-card.fc-contrast   { background: linear-gradient(135deg, #43e97b, #38f9d7); filter: contrast(2); color: #1a1a2e; text-shadow: none; }
+        .filter-card.fc-grayscale  { background: linear-gradient(135deg, #fa709a, #fee140); filter: grayscale(100%); }
+        .filter-card.fc-saturate   { background: linear-gradient(135deg, #a18cd1, #fbc2eb); filter: saturate(3); }
+        .filter-card.fc-sepia      { background: linear-gradient(135deg, #4facfe, #00f2fe); filter: sepia(100%); }
+        .filter-card.fc-hue        { background: linear-gradient(135deg, #f093fb, #f5576c); filter: hue-rotate(120deg); }
+        .filter-card.fc-invert     { background: linear-gradient(135deg, #667eea, #764ba2); filter: invert(100%); }
+        .filter-card.fc-opacity    { background: linear-gradient(135deg, #43e97b, #38f9d7); filter: opacity(35%); color: #1a1a2e; text-shadow: none; }
+        .filter-card.fc-drop       { background: linear-gradient(135deg, #ffecd2, #fcb69f); filter: drop-shadow(4px 6px 8px rgba(0,0,0,0.5)); color: #333; text-shadow: none; }
+        .filter-card:hover { filter: none; }
+      </style>
+      <div class="filter-grid">
+        <div class="filter-card fc-blur">blur(3px)</div>
+        <div class="filter-card fc-brightness">brightness(0.5)</div>
+        <div class="filter-card fc-contrast">contrast(2)</div>
+        <div class="filter-card fc-grayscale">grayscale(100%)</div>
+        <div class="filter-card fc-saturate">saturate(3)</div>
+        <div class="filter-card fc-sepia">sepia(100%)</div>
+        <div class="filter-card fc-hue">hue-rotate(120deg)</div>
+        <div class="filter-card fc-invert">invert(100%)</div>
+        <div class="filter-card fc-opacity">opacity(35%)</div>
+        <div class="filter-card fc-drop">drop-shadow()</div>
+      </div>
+      <p style="text-align:center;opacity:0.6;font-size:0.8rem;margin-top:0.5rem;">Hover any card to remove its filter and see the original gradient.</p>
+    </div>
+  </div>
+
+  <!-- ==================== COMBINING FILTERS ==================== -->
+  <div class="section" id="combining-filters">
+    <h2>Combining Filters</h2>
+    <p>Chain multiple filters in a single declaration, separated by spaces. They are applied in order from left to right.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="cmt">/* Vintage photo effect */</span>
+<span class="sel">.vintage-photo</span> {
+  <span class="prop">filter</span>: <span class="fn">sepia</span>(<span class="num">60%</span>) <span class="fn">contrast</span>(<span class="num">1.1</span>) <span class="fn">brightness</span>(<span class="num">0.9</span>) <span class="fn">saturate</span>(<span class="num">0.8</span>);
+}
+
+<span class="cmt">/* Frosted / washed-out */</span>
+<span class="sel">.washed</span> {
+  <span class="prop">filter</span>: <span class="fn">brightness</span>(<span class="num">1.2</span>) <span class="fn">contrast</span>(<span class="num">0.85</span>) <span class="fn">saturate</span>(<span class="num">0.7</span>);
+}
+
+<span class="cmt">/* Dramatic dark */</span>
+<span class="sel">.moody</span> {
+  <span class="prop">filter</span>: <span class="fn">contrast</span>(<span class="num">1.3</span>) <span class="fn">brightness</span>(<span class="num">0.7</span>) <span class="fn">saturate</span>(<span class="num">1.2</span>);
+}
+</pre></div>
+  </div>
+
+  <!-- ==================== BACKDROP-FILTER ==================== -->
+  <div class="section" id="backdrop-filter">
+    <h2>backdrop-filter</h2>
+    <p><code>backdrop-filter</code> applies filter effects to the area <strong>behind</strong> the element, not the element itself. The element must be semi-transparent for the effect to be visible.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="sel">.frosted</span> {
+  <span class="prop">background</span>: <span class="fn">rgba</span>(<span class="num">255</span>, <span class="num">255</span>, <span class="num">255</span>, <span class="num">0.15</span>);
+  <span class="prop">backdrop-filter</span>: <span class="fn">blur</span>(<span class="num">12px</span>);
+  <span class="prop">-webkit-backdrop-filter</span>: <span class="fn">blur</span>(<span class="num">12px</span>);  <span class="cmt">/* Safari */</span>
+}
+
+<span class="cmt">/* Supports the same functions as filter */</span>
+<span class="sel">.bg-bright</span> {
+  <span class="prop">backdrop-filter</span>: <span class="fn">blur</span>(<span class="num">10px</span>) <span class="fn">brightness</span>(<span class="num">1.2</span>);
+}
+</pre></div>
+  </div>
+
+  <!-- ==================== GLASSMORPHISM ==================== -->
+  <div class="section" id="glassmorphism">
+    <h2>Glassmorphism</h2>
+    <p>A popular design trend creating frosted glass UI elements using <code>backdrop-filter</code>, semi-transparent backgrounds, subtle borders, and shadows.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="sel">.glass-card</span> {
+  <span class="prop">background</span>: <span class="fn">rgba</span>(<span class="num">255</span>, <span class="num">255</span>, <span class="num">255</span>, <span class="num">0.1</span>);
+  <span class="prop">backdrop-filter</span>: <span class="fn">blur</span>(<span class="num">16px</span>) <span class="fn">saturate</span>(<span class="num">180%</span>);
+  <span class="prop">-webkit-backdrop-filter</span>: <span class="fn">blur</span>(<span class="num">16px</span>) <span class="fn">saturate</span>(<span class="num">180%</span>);
+  <span class="prop">border</span>: <span class="num">1px</span> <span class="val">solid</span> <span class="fn">rgba</span>(<span class="num">255</span>, <span class="num">255</span>, <span class="num">255</span>, <span class="num">0.2</span>);
+  <span class="prop">border-radius</span>: <span class="num">16px</span>;
+  <span class="prop">box-shadow</span>: <span class="num">0</span> <span class="num">8px</span> <span class="num">32px</span> <span class="fn">rgba</span>(<span class="num">0</span>, <span class="num">0</span>, <span class="num">0</span>, <span class="num">0.2</span>);
+  <span class="prop">padding</span>: <span class="num">2rem</span>;
+}
+</pre></div>
+
+    <div class="live-example">
+      <div class="live-example-label">Live Example &mdash; Frosted Glass Card</div>
+      <style>
+        .glass-demo-bg { position: relative; border-radius: 16px; padding: 3rem 1.5rem; min-height: 260px; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 30%, #f093fb 60%, #f5576c 100%); overflow: hidden; }
+        .glass-demo-bg::before { content: ''; position: absolute; width: 150px; height: 150px; background: rgba(255,255,255,0.2); border-radius: 50%; top: 20px; left: 30px; }
+        .glass-demo-bg::after { content: ''; position: absolute; width: 100px; height: 100px; background: rgba(255,255,255,0.15); border-radius: 50%; bottom: 20px; right: 40px; }
+        .glass-card-demo { background: rgba(255, 255, 255, 0.12); backdrop-filter: blur(16px) saturate(180%); -webkit-backdrop-filter: blur(16px) saturate(180%); border: 1px solid rgba(255, 255, 255, 0.25); border-radius: 16px; padding: 2rem 2.5rem; color: #fff; text-align: center; position: relative; z-index: 1; max-width: 320px; }
+        .glass-card-demo h3 { margin: 0 0 0.5rem; font-size: 1.3rem; }
+        .glass-card-demo p { margin: 0; font-size: 0.9rem; opacity: 0.9; line-height: 1.5; }
+      </style>
+      <div class="glass-demo-bg">
+        <div class="glass-card-demo">
+          <h3>Frosted Glass</h3>
+          <p>This card uses backdrop-filter: blur() with a semi-transparent background to create the glass effect.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== BOX-SHADOW ==================== -->
+  <div class="section" id="box-shadow">
+    <h2>box-shadow</h2>
+    <p>Adds one or more shadow effects to an element's box. Syntax: <code>offset-x offset-y blur spread color</code>. Supports multiple comma-separated shadows and the <code>inset</code> keyword.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="cmt">/* Basic shadow */</span>
+<span class="sel">.shadow</span> {
+  <span class="prop">box-shadow</span>: <span class="num">4px</span> <span class="num">6px</span> <span class="num">12px</span> <span class="fn">rgba</span>(<span class="num">0</span>,<span class="num">0</span>,<span class="num">0</span>,<span class="num">0.2</span>);
+  <span class="cmt">/*          x    y    blur   color */</span>
+}
+
+<span class="cmt">/* With spread */</span>
+<span class="sel">.spread</span> {
+  <span class="prop">box-shadow</span>: <span class="num">0</span> <span class="num">4px</span> <span class="num">12px</span> <span class="num">4px</span> <span class="fn">rgba</span>(<span class="num">0</span>,<span class="num">0</span>,<span class="num">0</span>,<span class="num">0.15</span>);
+  <span class="cmt">/*          x  y    blur  spread  color */</span>
+}
+
+<span class="cmt">/* Multiple shadows (layered) */</span>
+<span class="sel">.layered</span> {
+  <span class="prop">box-shadow</span>:
+    <span class="num">0</span> <span class="num">2px</span>  <span class="num">4px</span>  <span class="fn">rgba</span>(<span class="num">0</span>,<span class="num">0</span>,<span class="num">0</span>,<span class="num">0.1</span>),
+    <span class="num">0</span> <span class="num">8px</span>  <span class="num">16px</span> <span class="fn">rgba</span>(<span class="num">0</span>,<span class="num">0</span>,<span class="num">0</span>,<span class="num">0.1</span>),
+    <span class="num">0</span> <span class="num">16px</span> <span class="num">32px</span> <span class="fn">rgba</span>(<span class="num">0</span>,<span class="num">0</span>,<span class="num">0</span>,<span class="num">0.1</span>);
+}
+
+<span class="cmt">/* Inset shadow (inner shadow) */</span>
+<span class="sel">.inset</span> {
+  <span class="prop">box-shadow</span>: <span class="kw">inset</span> <span class="num">0</span> <span class="num">2px</span> <span class="num">8px</span> <span class="fn">rgba</span>(<span class="num">0</span>,<span class="num">0</span>,<span class="num">0</span>,<span class="num">0.3</span>);
+}
+</pre></div>
+
+    <div class="live-example">
+      <div class="live-example-label">Live Example &mdash; Box Shadow Varieties</div>
+      <style>
+        .shadow-grid { display: flex; gap: 2rem; flex-wrap: wrap; justify-content: center; padding: 2.5rem 1rem; }
+        .shadow-card { width: 140px; height: 100px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.72rem; text-align: center; color: #ccc; background: var(--card-bg, #1e1e2e); }
+        .shadow-card.s-basic    { box-shadow: 4px 6px 12px rgba(0,0,0,0.4); }
+        .shadow-card.s-spread   { box-shadow: 0 4px 12px 6px rgba(102,126,234,0.3); }
+        .shadow-card.s-layered  { box-shadow: 0 2px 4px rgba(0,0,0,0.15), 0 8px 16px rgba(0,0,0,0.15), 0 16px 32px rgba(0,0,0,0.15); }
+        .shadow-card.s-inset    { box-shadow: inset 0 3px 10px rgba(0,0,0,0.5); }
+        .shadow-card.s-multi    { box-shadow: 4px 4px 0 #667eea, 8px 8px 0 #764ba2; }
+      </style>
+      <div class="shadow-grid">
+        <div class="shadow-card s-basic">Basic</div>
+        <div class="shadow-card s-spread">With Spread</div>
+        <div class="shadow-card s-layered">Layered</div>
+        <div class="shadow-card s-inset">Inset</div>
+        <div class="shadow-card s-multi">Stacked</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== TEXT-SHADOW ==================== -->
+  <div class="section" id="text-shadow">
+    <h2>text-shadow</h2>
+    <p>Adds shadow effects to text. Same syntax as <code>box-shadow</code> but without <code>spread</code> or <code>inset</code>.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="cmt">/* Basic text shadow */</span>
+<span class="sel">.drop</span> {
+  <span class="prop">text-shadow</span>: <span class="num">2px</span> <span class="num">2px</span> <span class="num">4px</span> <span class="fn">rgba</span>(<span class="num">0</span>,<span class="num">0</span>,<span class="num">0</span>,<span class="num">0.5</span>);
+}
+
+<span class="cmt">/* Neon glow effect */</span>
+<span class="sel">.neon</span> {
+  <span class="prop">color</span>: <span class="val">#fff</span>;
+  <span class="prop">text-shadow</span>:
+    <span class="num">0</span> <span class="num">0</span> <span class="num">7px</span>  <span class="val">#fff</span>,
+    <span class="num">0</span> <span class="num">0</span> <span class="num">10px</span> <span class="val">#fff</span>,
+    <span class="num">0</span> <span class="num">0</span> <span class="num">21px</span> <span class="val">#fff</span>,
+    <span class="num">0</span> <span class="num">0</span> <span class="num">42px</span> <span class="val">#0fa</span>,
+    <span class="num">0</span> <span class="num">0</span> <span class="num">82px</span> <span class="val">#0fa</span>;
+}
+
+<span class="cmt">/* Emboss / letterpress */</span>
+<span class="sel">.emboss</span> {
+  <span class="prop">color</span>: <span class="val">#333</span>;
+  <span class="prop">text-shadow</span>: <span class="num">0</span> <span class="num">1px</span> <span class="num">0</span> <span class="fn">rgba</span>(<span class="num">255</span>,<span class="num">255</span>,<span class="num">255</span>,<span class="num">0.6</span>);
+}
+</pre></div>
+
+    <div class="live-example">
+      <div class="live-example-label">Live Example &mdash; Text Shadow Effects</div>
+      <style>
+        .text-shadow-demos { display: flex; flex-direction: column; gap: 2rem; padding: 2rem 0; align-items: center; }
+        .ts-demo-neon { font-size: 2.5rem; font-weight: 700; color: #fff; text-shadow: 0 0 7px #fff, 0 0 10px #fff, 0 0 21px #fff, 0 0 42px #0fa, 0 0 82px #0fa, 0 0 92px #0fa; letter-spacing: 0.05em; }
+        .ts-demo-emboss { font-size: 2.2rem; font-weight: 700; color: #555; text-shadow: 0 1px 0 rgba(255,255,255,0.5), 0 -1px 0 rgba(0,0,0,0.3); }
+        .ts-demo-retro { font-size: 2.2rem; font-weight: 700; color: #f5576c; text-shadow: 3px 3px 0 #764ba2, 6px 6px 0 rgba(118,75,162,0.4); }
+      </style>
+      <div class="text-shadow-demos">
+        <div class="ts-demo-neon">NEON GLOW</div>
+        <div class="ts-demo-emboss">EMBOSSED</div>
+        <div class="ts-demo-retro">RETRO 3D</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MIX-BLEND-MODE ==================== -->
+  <div class="section" id="mix-blend-mode">
+    <h2>mix-blend-mode</h2>
+    <p>Controls how an element's content blends with the content behind it. Works like Photoshop layer blend modes.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="sel">.blend-multiply</span> { <span class="prop">mix-blend-mode</span>: <span class="val">multiply</span>; }    <span class="cmt">/* darken */</span>
+<span class="sel">.blend-screen</span>   { <span class="prop">mix-blend-mode</span>: <span class="val">screen</span>; }      <span class="cmt">/* lighten */</span>
+<span class="sel">.blend-overlay</span>  { <span class="prop">mix-blend-mode</span>: <span class="val">overlay</span>; }     <span class="cmt">/* contrast boost */</span>
+<span class="sel">.blend-darken</span>   { <span class="prop">mix-blend-mode</span>: <span class="val">darken</span>; }
+<span class="sel">.blend-lighten</span>  { <span class="prop">mix-blend-mode</span>: <span class="val">lighten</span>; }
+<span class="sel">.blend-diff</span>     { <span class="prop">mix-blend-mode</span>: <span class="val">difference</span>; }   <span class="cmt">/* invert overlap */</span>
+
+<span class="cmt">/* background-blend-mode blends background layers */</span>
+<span class="sel">.bg-blend</span> {
+  <span class="prop">background</span>: <span class="fn">url</span>(<span class="str">'photo.jpg'</span>), <span class="val">linear-gradient</span>(<span class="val">#667eea</span>, <span class="val">#764ba2</span>);
+  <span class="prop">background-blend-mode</span>: <span class="val">overlay</span>;
+}
+</pre></div>
+
+    <div class="live-example">
+      <div class="live-example-label">Live Example &mdash; Blend Mode Comparisons</div>
+      <style>
+        .blend-demo { display: flex; flex-wrap: wrap; gap: 1.5rem; justify-content: center; padding: 2rem 0; }
+        .blend-item { width: 150px; text-align: center; }
+        .blend-item p { font-size: 0.75rem; margin-top: 0.5rem; opacity: 0.7; font-family: 'Fira Code', monospace; }
+        .blend-box { position: relative; width: 150px; height: 110px; border-radius: 12px; overflow: hidden; background: linear-gradient(135deg, #667eea, #764ba2); }
+        .blend-circle { position: absolute; width: 90px; height: 90px; border-radius: 50%; top: 10px; left: 30px; background: linear-gradient(135deg, #f5576c, #fee140); }
+        .blend-circle.bm-multiply  { mix-blend-mode: multiply; }
+        .blend-circle.bm-screen    { mix-blend-mode: screen; }
+        .blend-circle.bm-overlay   { mix-blend-mode: overlay; }
+        .blend-circle.bm-difference { mix-blend-mode: difference; }
+      </style>
+      <div class="blend-demo">
+        <div class="blend-item">
+          <div class="blend-box"><div class="blend-circle" style="mix-blend-mode:normal"></div></div>
+          <p>normal</p>
+        </div>
+        <div class="blend-item">
+          <div class="blend-box"><div class="blend-circle bm-multiply"></div></div>
+          <p>multiply</p>
+        </div>
+        <div class="blend-item">
+          <div class="blend-box"><div class="blend-circle bm-screen"></div></div>
+          <p>screen</p>
+        </div>
+        <div class="blend-item">
+          <div class="blend-box"><div class="blend-circle bm-overlay"></div></div>
+          <p>overlay</p>
+        </div>
+        <div class="blend-item">
+          <div class="blend-box"><div class="blend-circle bm-difference"></div></div>
+          <p>difference</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== NEUMORPHISM ==================== -->
+  <div class="section" id="neumorphism">
+    <h2>Neumorphism Pattern</h2>
+    <p>A soft, extruded design style using subtle opposing box-shadows (one light, one dark) on a background that matches the page color.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="sel">.neumorph</span> {
+  <span class="prop">background</span>: <span class="val">#e0e5ec</span>;
+  <span class="prop">border-radius</span>: <span class="num">16px</span>;
+  <span class="prop">box-shadow</span>:
+    <span class="num">8px</span>  <span class="num">8px</span>  <span class="num">16px</span> <span class="val">#b8bec7</span>,   <span class="cmt">/* darker shadow */</span>
+    <span class="num">-8px</span> <span class="num">-8px</span> <span class="num">16px</span> <span class="val">#ffffff</span>;   <span class="cmt">/* lighter shadow */</span>
+}
+
+<span class="cmt">/* Pressed / inset state */</span>
+<span class="sel">.neumorph-pressed</span> {
+  <span class="prop">background</span>: <span class="val">#e0e5ec</span>;
+  <span class="prop">box-shadow</span>:
+    <span class="kw">inset</span> <span class="num">4px</span>  <span class="num">4px</span>  <span class="num">8px</span> <span class="val">#b8bec7</span>,
+    <span class="kw">inset</span> <span class="num">-4px</span> <span class="num">-4px</span> <span class="num">8px</span> <span class="val">#ffffff</span>;
+}
+</pre></div>
+
+    <div class="live-example">
+      <div class="live-example-label">Live Example &mdash; Neumorphism</div>
+      <style>
+        .neu-demo { display: flex; gap: 2.5rem; flex-wrap: wrap; justify-content: center; padding: 3rem; background: #e0e5ec; border-radius: 16px; }
+        .neu-card { width: 140px; height: 110px; border-radius: 16px; background: #e0e5ec; box-shadow: 8px 8px 16px #b8bec7, -8px -8px 16px #ffffff; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.8rem; color: #555; }
+        .neu-card.pressed { box-shadow: inset 4px 4px 8px #b8bec7, inset -4px -4px 8px #ffffff; }
+      </style>
+      <div class="neu-demo">
+        <div class="neu-card">Raised</div>
+        <div class="neu-card pressed">Pressed</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== GOTCHAS ==================== -->
+  <div class="section" id="gotchas">
+    <h2>Gotchas</h2>
+
+    <div class="callout gotcha">
+      <div class="callout-title">Filters Create a Stacking Context</div>
+      <p>Like transforms, any element with a <code>filter</code> or <code>backdrop-filter</code> creates a new stacking context. This can affect <code>z-index</code> behavior and cause <code>position: fixed</code> children to break.</p>
+    </div>
+
+    <div class="callout gotcha">
+      <div class="callout-title">backdrop-filter Needs Transparency</div>
+      <p>If the element's background is fully opaque, you will not see any <code>backdrop-filter</code> effect. The element must have a semi-transparent (or transparent) background.</p>
+    </div>
+
+    <div class="callout gotcha">
+      <div class="callout-title">Safari Requires -webkit- Prefix</div>
+      <p><code>backdrop-filter</code> still requires <code>-webkit-backdrop-filter</code> in Safari. Always include both properties for cross-browser support.</p>
+    </div>
+
+    <div class="callout gotcha">
+      <div class="callout-title">filter: none vs Removing the Property</div>
+      <p>Setting <code>filter: none</code> is not the same as removing the property. <code>filter: none</code> still creates a stacking context in some browsers. If you want to truly remove the filter, use <code>filter: unset</code> or remove the property entirely.</p>
+    </div>
+
+    <div class="callout gotcha">
+      <div class="callout-title">Performance: blur() is Expensive</div>
+      <p>Large blur radii (especially <code>backdrop-filter: blur()</code>) are GPU-intensive. On low-end devices, heavy blur can cause frame drops. Consider reducing blur radius on mobile.</p>
+    </div>
+  </div>
+
+  <!-- ==================== PRO TIPS ==================== -->
+  <div class="section" id="pro-tips">
+    <h2>Pro Tips</h2>
+
+    <div class="callout tip">
+      <div class="callout-title">Transition Filters for Hover Effects</div>
+      <p>Smoothly transition filters with <code>transition: filter 0.3s ease;</code>. Great for image hover effects like colorize-on-hover or blur-to-clear reveals.</p>
+    </div>
+
+    <div class="callout tip">
+      <div class="callout-title">Use CSS Variables in Shadows</div>
+      <p>Store shadow values in custom properties for easy theming: <code>box-shadow: var(--shadow-elevation-medium);</code>. Create light/dark shadow tokens for theme switching.</p>
+    </div>
+
+    <div class="callout tip">
+      <div class="callout-title">Layered Shadows for Realism</div>
+      <p>Instead of one shadow, use multiple layers with increasing blur and offset. This mimics natural light behavior. Google's Material Design uses this approach for elevation levels.</p>
+    </div>
+
+    <div class="callout tip">
+      <div class="callout-title">drop-shadow for Irregular Shapes</div>
+      <p>If you are using <code>clip-path</code>, transparent PNGs, or SVGs and want a shadow that follows the visible shape rather than the bounding box, use <code>filter: drop-shadow()</code> instead of <code>box-shadow</code>.</p>
+    </div>
+
+    <div class="callout tip">
+      <div class="callout-title">Glassmorphism Accessibility</div>
+      <p>Frosted glass effects can reduce text readability. Always ensure sufficient contrast between text and the blurred background. Add a darker semi-transparent overlay if needed.</p>
+    </div>
+  </div>
+
+  <!-- ==================== NAV ==================== -->
+  <div class="topic-nav">
+    <a href="12-transforms.html">
+      <span class="label">Previous</span>
+      <span class="title">Transforms</span>
+    </a>
+    <a href="14-css-functions.html" class="next">
+      <span class="label">Next</span>
+      <span class="title">CSS Functions</span>
+    </a>
+  </div>
+</main>
+
+<script src="script.js"></script>
+</body></html>

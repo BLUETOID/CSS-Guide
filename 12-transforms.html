@@ -1,0 +1,670 @@
+<!DOCTYPE html><html lang="en" data-theme="dark"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Transforms &mdash; CSS Reference Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet"><link rel="stylesheet" href="styles.css">
+</head><body>
+<div id="progress"></div>
+
+<header class="header"><button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">&#9776;</button><h1><span>CSS</span> Reference Guide</h1><div class="header-nav"><a href="index.html">All Topics</a></div><button class="theme-toggle" onclick="toggleTheme()">&#9790; Dark</button></header>
+
+<nav class="sidebar" id="sidebar">
+  <a href="index.html" class="nav-back">&#8592; All Topics</a>
+  <div class="nav-group">
+    <div class="nav-group-title">On This Page</div>
+    <a href="#2d-transforms">2D Transforms</a>
+    <a href="#translate">translate()</a>
+    <a href="#rotate">rotate()</a>
+    <a href="#scale">scale()</a>
+    <a href="#skew">skew()</a>
+    <a href="#combining-transforms">Combining Transforms</a>
+    <a href="#transform-origin">transform-origin</a>
+    <a href="#3d-transforms">3D Transforms</a>
+    <a href="#perspective">perspective</a>
+    <a href="#rotate-3d">3D Rotations</a>
+    <a href="#translate-z">translateZ &amp; 3D Space</a>
+    <a href="#preserve-3d">preserve-3d</a>
+    <a href="#backface-visibility">backface-visibility</a>
+    <a href="#card-flip">3D Card Flip</a>
+    <a href="#centering-trick">Centering with translate</a>
+    <a href="#hover-lift">Hover Lift Effect</a>
+    <a href="#gotchas">Gotchas</a>
+    <a href="#pro-tips">Pro Tips</a>
+  </div>
+</nav>
+
+<main class="main">
+  <div class="page-hero">
+    <h1>CSS Transforms</h1>
+    <p>Move, rotate, scale, and skew elements in 2D and 3D space without affecting document flow. Transforms are GPU-accelerated and perfect for animations.</p>
+    <div class="tags"><span>2D</span><span>3D</span><span>Visual</span><span>Animation</span><span>Performance</span></div>
+  </div>
+
+  <!-- ==================== 2D TRANSFORMS ==================== -->
+  <div class="section" id="2d-transforms">
+    <h2>2D Transforms</h2>
+    <p>2D transforms modify an element's coordinate space on the flat plane. They do <strong>not</strong> affect the layout of surrounding elements &mdash; the element keeps its original space in the document flow while visually moving.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="sel">.element</span> {
+  <span class="prop">transform</span>: <span class="fn">translate</span>(<span class="num">50px</span>, <span class="num">20px</span>);   <span class="cmt">/* move right 50px, down 20px */</span>
+  <span class="prop">transform</span>: <span class="fn">rotate</span>(<span class="num">45deg</span>);           <span class="cmt">/* rotate 45 degrees clockwise */</span>
+  <span class="prop">transform</span>: <span class="fn">scale</span>(<span class="num">1.5</span>);              <span class="cmt">/* scale up 150% */</span>
+  <span class="prop">transform</span>: <span class="fn">skew</span>(<span class="num">10deg</span>, <span class="num">5deg</span>);      <span class="cmt">/* skew along X and Y */</span>
+}
+</pre></div>
+  </div>
+
+  <!-- ==================== TRANSLATE ==================== -->
+  <div class="section" id="translate">
+    <h2>translate(), translateX(), translateY()</h2>
+    <p>Moves an element from its current position. Accepts length values (<code>px</code>, <code>rem</code>, <code>%</code>). Percentages refer to the element's own size, not its parent.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="cmt">/* translate(x, y) — shorthand for both axes */</span>
+<span class="sel">.move-both</span>   { <span class="prop">transform</span>: <span class="fn">translate</span>(<span class="num">100px</span>, <span class="num">50px</span>); }
+
+<span class="cmt">/* Individual axis functions */</span>
+<span class="sel">.move-right</span>  { <span class="prop">transform</span>: <span class="fn">translateX</span>(<span class="num">80px</span>); }
+<span class="sel">.move-down</span>   { <span class="prop">transform</span>: <span class="fn">translateY</span>(<span class="num">40px</span>); }
+
+<span class="cmt">/* Negative values move in opposite direction */</span>
+<span class="sel">.move-left</span>   { <span class="prop">transform</span>: <span class="fn">translateX</span>(<span class="num">-60px</span>); }
+<span class="sel">.move-up</span>     { <span class="prop">transform</span>: <span class="fn">translateY</span>(<span class="num">-30px</span>); }
+
+<span class="cmt">/* Percentage is relative to the element itself */</span>
+<span class="sel">.move-half</span>   { <span class="prop">transform</span>: <span class="fn">translate</span>(<span class="num">50%</span>, <span class="num">50%</span>); }
+</pre></div>
+
+    <div class="live-example">
+      <div class="live-example-label">Live Example &mdash; Hover to Translate</div>
+      <style>
+        .translate-demo-grid { display: flex; gap: 2rem; flex-wrap: wrap; justify-content: center; padding: 2rem 1rem; }
+        .translate-box { width: 100px; height: 100px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.75rem; text-align: center; transition: transform 0.4s ease; cursor: pointer; color: #fff; }
+        .translate-box.tx  { background: linear-gradient(135deg, #667eea, #764ba2); }
+        .translate-box.ty  { background: linear-gradient(135deg, #f093fb, #f5576c); }
+        .translate-box.txy { background: linear-gradient(135deg, #4facfe, #00f2fe); }
+        .translate-box.tx:hover  { transform: translateX(40px); }
+        .translate-box.ty:hover  { transform: translateY(-30px); }
+        .translate-box.txy:hover { transform: translate(30px, -20px); }
+      </style>
+      <div class="translate-demo-grid">
+        <div class="translate-box tx">translateX<br>(40px)</div>
+        <div class="translate-box ty">translateY<br>(-30px)</div>
+        <div class="translate-box txy">translate<br>(30px, -20px)</div>
+      </div>
+    </div>
+
+    <div class="callout info">
+      <div class="callout-title">Percentage Translate</div>
+      <p>When you use <code>translate(50%, 50%)</code>, the 50% refers to 50% of the <strong>element's own width/height</strong>, not the parent. This is what makes the <code>translate(-50%, -50%)</code> centering trick work.</p>
+    </div>
+  </div>
+
+  <!-- ==================== ROTATE ==================== -->
+  <div class="section" id="rotate">
+    <h2>rotate()</h2>
+    <p>Rotates an element clockwise around its center point (by default). Use negative values for counter-clockwise rotation. Accepts <code>deg</code>, <code>rad</code>, <code>turn</code>, and <code>grad</code>.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="sel">.rotate-45</span>   { <span class="prop">transform</span>: <span class="fn">rotate</span>(<span class="num">45deg</span>); }
+<span class="sel">.rotate-neg</span>  { <span class="prop">transform</span>: <span class="fn">rotate</span>(<span class="num">-90deg</span>); }
+<span class="sel">.rotate-half</span> { <span class="prop">transform</span>: <span class="fn">rotate</span>(<span class="num">0.5turn</span>); }  <span class="cmt">/* 180 degrees */</span>
+<span class="sel">.rotate-full</span> { <span class="prop">transform</span>: <span class="fn">rotate</span>(<span class="num">1turn</span>); }    <span class="cmt">/* 360 degrees */</span>
+</pre></div>
+
+    <div class="live-example">
+      <div class="live-example-label">Live Example &mdash; Hover to Rotate</div>
+      <style>
+        .rotate-demo-grid { display: flex; gap: 2.5rem; flex-wrap: wrap; justify-content: center; padding: 2.5rem 1rem; }
+        .rotate-box { width: 100px; height: 100px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.8rem; text-align: center; transition: transform 0.5s ease; cursor: pointer; color: #fff; }
+        .rotate-box.r45 { background: linear-gradient(135deg, #fa709a, #fee140); }
+        .rotate-box.r90 { background: linear-gradient(135deg, #a18cd1, #fbc2eb); }
+        .rotate-box.r180 { background: linear-gradient(135deg, #ffecd2, #fcb69f); color: #333; }
+        .rotate-box.r45:hover  { transform: rotate(45deg); }
+        .rotate-box.r90:hover  { transform: rotate(90deg); }
+        .rotate-box.r180:hover { transform: rotate(180deg); }
+      </style>
+      <div class="rotate-demo-grid">
+        <div class="rotate-box r45">45deg</div>
+        <div class="rotate-box r90">90deg</div>
+        <div class="rotate-box r180">180deg</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== SCALE ==================== -->
+  <div class="section" id="scale">
+    <h2>scale()</h2>
+    <p>Resizes an element. A value of <code>1</code> is normal size, <code>2</code> is double, <code>0.5</code> is half. You can scale each axis independently with <code>scaleX()</code> and <code>scaleY()</code>.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="sel">.grow</span>      { <span class="prop">transform</span>: <span class="fn">scale</span>(<span class="num">1.5</span>); }         <span class="cmt">/* 150% both axes */</span>
+<span class="sel">.shrink</span>    { <span class="prop">transform</span>: <span class="fn">scale</span>(<span class="num">0.75</span>); }        <span class="cmt">/* 75% both axes */</span>
+<span class="sel">.stretch-x</span> { <span class="prop">transform</span>: <span class="fn">scaleX</span>(<span class="num">2</span>); }          <span class="cmt">/* double width only */</span>
+<span class="sel">.stretch-y</span> { <span class="prop">transform</span>: <span class="fn">scaleY</span>(<span class="num">1.5</span>); }        <span class="cmt">/* 150% height only */</span>
+<span class="sel">.flip-h</span>    { <span class="prop">transform</span>: <span class="fn">scaleX</span>(<span class="num">-1</span>); }         <span class="cmt">/* mirror horizontally */</span>
+<span class="sel">.flip-v</span>    { <span class="prop">transform</span>: <span class="fn">scaleY</span>(<span class="num">-1</span>); }         <span class="cmt">/* mirror vertically */</span>
+</pre></div>
+
+    <div class="live-example">
+      <div class="live-example-label">Live Example &mdash; Hover to Scale</div>
+      <style>
+        .scale-demo-grid { display: flex; gap: 3rem; flex-wrap: wrap; justify-content: center; padding: 3rem 1rem; }
+        .scale-box { width: 90px; height: 90px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.75rem; text-align: center; transition: transform 0.4s ease; cursor: pointer; color: #fff; }
+        .scale-box.sup  { background: linear-gradient(135deg, #43e97b, #38f9d7); color: #1a1a2e; }
+        .scale-box.sdn  { background: linear-gradient(135deg, #fa709a, #fee140); color: #1a1a2e; }
+        .scale-box.sx   { background: linear-gradient(135deg, #a18cd1, #fbc2eb); }
+        .scale-box.flip { background: linear-gradient(135deg, #667eea, #764ba2); }
+        .scale-box.sup:hover  { transform: scale(1.4); }
+        .scale-box.sdn:hover  { transform: scale(0.6); }
+        .scale-box.sx:hover   { transform: scaleX(1.6); }
+        .scale-box.flip:hover { transform: scaleX(-1); }
+      </style>
+      <div class="scale-demo-grid">
+        <div class="scale-box sup">scale(1.4)</div>
+        <div class="scale-box sdn">scale(0.6)</div>
+        <div class="scale-box sx">scaleX(1.6)</div>
+        <div class="scale-box flip">scaleX(-1)<br>Flip!</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== SKEW ==================== -->
+  <div class="section" id="skew">
+    <h2>skew()</h2>
+    <p>Tilts an element along the X and/or Y axis. Useful for creating parallelogram shapes and stylistic effects.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="sel">.skew-x</span>    { <span class="prop">transform</span>: <span class="fn">skewX</span>(<span class="num">15deg</span>); }
+<span class="sel">.skew-y</span>    { <span class="prop">transform</span>: <span class="fn">skewY</span>(<span class="num">10deg</span>); }
+<span class="sel">.skew-both</span> { <span class="prop">transform</span>: <span class="fn">skew</span>(<span class="num">15deg</span>, <span class="num">5deg</span>); }
+
+<span class="cmt">/* Parallelogram button trick */</span>
+<span class="sel">.parallelogram</span> {
+  <span class="prop">transform</span>: <span class="fn">skewX</span>(<span class="num">-15deg</span>);
+}
+<span class="sel">.parallelogram span</span> {
+  <span class="prop">display</span>: <span class="val">inline-block</span>;
+  <span class="prop">transform</span>: <span class="fn">skewX</span>(<span class="num">15deg</span>);  <span class="cmt">/* un-skew the text */</span>
+}
+</pre></div>
+
+    <div class="live-example">
+      <div class="live-example-label">Live Example &mdash; Hover to Skew</div>
+      <style>
+        .skew-demo-grid { display: flex; gap: 3rem; flex-wrap: wrap; justify-content: center; padding: 2.5rem 1rem; }
+        .skew-box { width: 100px; height: 90px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.75rem; text-align: center; transition: transform 0.4s ease; cursor: pointer; color: #fff; }
+        .skew-box.skx { background: linear-gradient(135deg, #f093fb, #f5576c); }
+        .skew-box.sky { background: linear-gradient(135deg, #4facfe, #00f2fe); }
+        .skew-box.skb { background: linear-gradient(135deg, #43e97b, #38f9d7); color: #1a1a2e; }
+        .skew-box.skx:hover { transform: skewX(20deg); }
+        .skew-box.sky:hover { transform: skewY(15deg); }
+        .skew-box.skb:hover { transform: skew(15deg, 10deg); }
+      </style>
+      <div class="skew-demo-grid">
+        <div class="skew-box skx">skewX(20deg)</div>
+        <div class="skew-box sky">skewY(15deg)</div>
+        <div class="skew-box skb">skew(15, 10)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== COMBINING TRANSFORMS ==================== -->
+  <div class="section" id="combining-transforms">
+    <h2>Combining Transforms &mdash; Order Matters!</h2>
+    <p>You can chain multiple transforms in a single <code>transform</code> property. They apply <strong>right to left</strong> (the last function is applied first). This means the order of transforms produces different results!</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="cmt">/* These produce DIFFERENT results! */</span>
+<span class="sel">.order-a</span> {
+  <span class="prop">transform</span>: <span class="fn">translate</span>(<span class="num">100px</span>, <span class="num">0</span>) <span class="fn">rotate</span>(<span class="num">45deg</span>);
+  <span class="cmt">/* Rotate first, then translate in the rotated coordinate system */</span>
+}
+
+<span class="sel">.order-b</span> {
+  <span class="prop">transform</span>: <span class="fn">rotate</span>(<span class="num">45deg</span>) <span class="fn">translate</span>(<span class="num">100px</span>, <span class="num">0</span>);
+  <span class="cmt">/* Translate first, then rotate around original center */</span>
+}
+
+<span class="cmt">/* Common combo: scale + translate + rotate */</span>
+<span class="sel">.fancy-hover</span>:<span class="sel">hover</span> {
+  <span class="prop">transform</span>: <span class="fn">translateY</span>(<span class="num">-10px</span>) <span class="fn">scale</span>(<span class="num">1.05</span>) <span class="fn">rotate</span>(<span class="num">2deg</span>);
+}
+</pre></div>
+
+    <div class="live-example">
+      <div class="live-example-label">Live Example &mdash; Transform Order Comparison (Hover)</div>
+      <style>
+        .order-demo { display: flex; gap: 3rem; flex-wrap: wrap; justify-content: center; padding: 3rem 1rem; min-height: 200px; align-items: center; }
+        .order-demo-item { text-align: center; }
+        .order-demo-item p { margin-top: 1rem; font-size: 0.8rem; opacity: 0.7; font-family: 'Fira Code', monospace; }
+        .order-box { width: 80px; height: 80px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.7rem; text-align: center; transition: transform 0.5s ease; cursor: pointer; color: #fff; }
+        .order-box.oa { background: linear-gradient(135deg, #667eea, #764ba2); }
+        .order-box.ob { background: linear-gradient(135deg, #f093fb, #f5576c); }
+        .order-box.oa:hover { transform: translate(60px, 0) rotate(45deg); }
+        .order-box.ob:hover { transform: rotate(45deg) translate(60px, 0); }
+      </style>
+      <div class="order-demo">
+        <div class="order-demo-item">
+          <div class="order-box oa">A</div>
+          <p>translate then rotate</p>
+        </div>
+        <div class="order-demo-item">
+          <div class="order-box ob">B</div>
+          <p>rotate then translate</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout gotcha">
+      <div class="callout-title">Each transform Overwrites</div>
+      <p>Setting <code>transform</code> twice on the same element replaces the first value. To combine transforms, put them all in one declaration: <code>transform: translateX(10px) rotate(45deg) scale(1.2);</code></p>
+    </div>
+  </div>
+
+  <!-- ==================== TRANSFORM-ORIGIN ==================== -->
+  <div class="section" id="transform-origin">
+    <h2>transform-origin</h2>
+    <p>By default, transforms happen around the element's center (<code>50% 50%</code>). Change the pivot point with <code>transform-origin</code>.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="sel">.from-corner</span>    { <span class="prop">transform-origin</span>: <span class="val">top left</span>; }
+<span class="sel">.from-bottom</span>    { <span class="prop">transform-origin</span>: <span class="val">center bottom</span>; }
+<span class="sel">.from-right</span>     { <span class="prop">transform-origin</span>: <span class="val">right center</span>; }
+<span class="sel">.custom</span>         { <span class="prop">transform-origin</span>: <span class="num">20%</span> <span class="num">80%</span>; }
+<span class="sel">.pixel-precise</span>  { <span class="prop">transform-origin</span>: <span class="num">0</span> <span class="num">0</span>; }
+</pre></div>
+
+    <div class="live-example">
+      <div class="live-example-label">Live Example &mdash; Different Origins on Rotate (Hover)</div>
+      <style>
+        .origin-demo { display: flex; gap: 3rem; flex-wrap: wrap; justify-content: center; padding: 3rem 1rem; }
+        .origin-item { text-align: center; }
+        .origin-item p { margin-top: 1rem; font-size: 0.75rem; opacity: 0.7; font-family: 'Fira Code', monospace; }
+        .origin-box { width: 80px; height: 80px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.7rem; transition: transform 0.5s ease; cursor: pointer; color: #fff; position: relative; }
+        .origin-box::after { content: ''; position: absolute; width: 8px; height: 8px; background: #fff; border-radius: 50%; }
+        .origin-box.oc { background: #667eea; transform-origin: center; }
+        .origin-box.oc::after { top: 50%; left: 50%; transform: translate(-50%,-50%); }
+        .origin-box.otl { background: #f5576c; transform-origin: top left; }
+        .origin-box.otl::after { top: 0; left: 0; }
+        .origin-box.obr { background: #43e97b; color: #1a1a2e; transform-origin: bottom right; }
+        .origin-box.obr::after { bottom: 0; right: 0; background: #1a1a2e; }
+        .origin-box:hover { transform: rotate(45deg); }
+      </style>
+      <div class="origin-demo">
+        <div class="origin-item">
+          <div class="origin-box oc">center</div>
+          <p>center center</p>
+        </div>
+        <div class="origin-item">
+          <div class="origin-box otl">top left</div>
+          <p>top left</p>
+        </div>
+        <div class="origin-item">
+          <div class="origin-box obr">btm right</div>
+          <p>bottom right</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 3D TRANSFORMS ==================== -->
+  <div class="section" id="3d-transforms">
+    <h2>3D Transforms</h2>
+    <p>CSS can transform elements in three dimensions. 3D transforms add a Z-axis (depth) and require <code>perspective</code> on the parent (or the element itself) to create the illusion of depth.</p>
+  </div>
+
+  <!-- ==================== PERSPECTIVE ==================== -->
+  <div class="section" id="perspective">
+    <h2>perspective</h2>
+    <p>The <code>perspective</code> property defines how far the viewer is from the Z=0 plane. Smaller values create more dramatic 3D effects. It goes on the <strong>parent</strong> element.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="cmt">/* On the parent container */</span>
+<span class="sel">.scene</span> {
+  <span class="prop">perspective</span>: <span class="num">800px</span>;              <span class="cmt">/* viewer distance */</span>
+  <span class="prop">perspective-origin</span>: <span class="val">center</span>;      <span class="cmt">/* vanishing point */</span>
+}
+
+<span class="cmt">/* OR as a transform function on the element itself */</span>
+<span class="sel">.element</span> {
+  <span class="prop">transform</span>: <span class="fn">perspective</span>(<span class="num">800px</span>) <span class="fn">rotateY</span>(<span class="num">45deg</span>);
+}
+
+<span class="cmt">/* Lower perspective = more dramatic 3D */</span>
+<span class="sel">.dramatic</span> { <span class="prop">perspective</span>: <span class="num">200px</span>; }
+<span class="sel">.subtle</span>   { <span class="prop">perspective</span>: <span class="num">1500px</span>; }
+</pre></div>
+
+    <div class="callout info">
+      <div class="callout-title">perspective Property vs Function</div>
+      <p>The <code>perspective</code> CSS property on a parent affects all children from a single viewpoint. The <code>perspective()</code> function in <code>transform</code> gives each element its own vanishing point. For most use cases, put <code>perspective</code> on the parent.</p>
+    </div>
+  </div>
+
+  <!-- ==================== ROTATE 3D ==================== -->
+  <div class="section" id="rotate-3d">
+    <h2>rotateX(), rotateY(), rotateZ()</h2>
+    <p>Rotate around individual 3D axes. <code>rotateX</code> tilts forward/back, <code>rotateY</code> turns left/right, <code>rotateZ</code> is the same as 2D <code>rotate()</code>.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="sel">.tilt-forward</span> { <span class="prop">transform</span>: <span class="fn">rotateX</span>(<span class="num">45deg</span>); }   <span class="cmt">/* tilts toward viewer */</span>
+<span class="sel">.turn-right</span>   { <span class="prop">transform</span>: <span class="fn">rotateY</span>(<span class="num">45deg</span>); }   <span class="cmt">/* turns like a door */</span>
+<span class="sel">.spin-flat</span>    { <span class="prop">transform</span>: <span class="fn">rotateZ</span>(<span class="num">45deg</span>); }   <span class="cmt">/* same as rotate(45deg) */</span>
+</pre></div>
+
+    <div class="live-example">
+      <div class="live-example-label">Live Example &mdash; Hover for 3D Rotations</div>
+      <style>
+        .rotate3d-demo { display: flex; gap: 3rem; flex-wrap: wrap; justify-content: center; padding: 3rem 1rem; perspective: 600px; }
+        .rotate3d-item { text-align: center; }
+        .rotate3d-item p { margin-top: 1rem; font-size: 0.75rem; opacity: 0.7; font-family: 'Fira Code', monospace; }
+        .rotate3d-box { width: 100px; height: 100px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.8rem; transition: transform 0.6s ease; cursor: pointer; color: #fff; }
+        .rotate3d-box.rx { background: linear-gradient(135deg, #667eea, #764ba2); }
+        .rotate3d-box.ry { background: linear-gradient(135deg, #f093fb, #f5576c); }
+        .rotate3d-box.rz { background: linear-gradient(135deg, #4facfe, #00f2fe); }
+        .rotate3d-box.rx:hover { transform: rotateX(55deg); }
+        .rotate3d-box.ry:hover { transform: rotateY(55deg); }
+        .rotate3d-box.rz:hover { transform: rotateZ(55deg); }
+      </style>
+      <div class="rotate3d-demo">
+        <div class="rotate3d-item">
+          <div class="rotate3d-box rx">rotateX</div>
+          <p>rotateX(55deg)</p>
+        </div>
+        <div class="rotate3d-item">
+          <div class="rotate3d-box ry">rotateY</div>
+          <p>rotateY(55deg)</p>
+        </div>
+        <div class="rotate3d-item">
+          <div class="rotate3d-box rz">rotateZ</div>
+          <p>rotateZ(55deg)</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== TRANSLATEZ ==================== -->
+  <div class="section" id="translate-z">
+    <h2>translateZ() &amp; 3D Space</h2>
+    <p><code>translateZ()</code> moves an element along the depth axis (toward or away from the viewer). Requires <code>perspective</code> on the parent to be visible.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="sel">.scene</span> {
+  <span class="prop">perspective</span>: <span class="num">600px</span>;
+}
+
+<span class="sel">.closer</span>  { <span class="prop">transform</span>: <span class="fn">translateZ</span>(<span class="num">100px</span>); }   <span class="cmt">/* appears larger/closer */</span>
+<span class="sel">.farther</span> { <span class="prop">transform</span>: <span class="fn">translateZ</span>(<span class="num">-100px</span>); }  <span class="cmt">/* appears smaller/farther */</span>
+
+<span class="cmt">/* 3D shorthand */</span>
+<span class="sel">.move-3d</span> { <span class="prop">transform</span>: <span class="fn">translate3d</span>(<span class="num">50px</span>, <span class="num">20px</span>, <span class="num">80px</span>); }
+</pre></div>
+  </div>
+
+  <!-- ==================== PRESERVE-3D ==================== -->
+  <div class="section" id="preserve-3d">
+    <h2>transform-style: preserve-3d</h2>
+    <p>By default, child elements are flattened into the parent's plane. Use <code>preserve-3d</code> to let children exist in true 3D space relative to their parent.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="sel">.card-container</span> {
+  <span class="prop">perspective</span>: <span class="num">1000px</span>;
+}
+
+<span class="sel">.card</span> {
+  <span class="prop">transform-style</span>: <span class="val">preserve-3d</span>;   <span class="cmt">/* children keep their 3D position */</span>
+  <span class="prop">transition</span>: <span class="val">transform</span> <span class="num">0.6s</span>;
+}
+
+<span class="sel">.card:hover</span> {
+  <span class="prop">transform</span>: <span class="fn">rotateY</span>(<span class="num">180deg</span>);
+}
+
+<span class="sel">.card-front</span>,
+<span class="sel">.card-back</span> {
+  <span class="prop">position</span>: <span class="val">absolute</span>;
+  <span class="prop">backface-visibility</span>: <span class="val">hidden</span>;
+}
+
+<span class="sel">.card-back</span> {
+  <span class="prop">transform</span>: <span class="fn">rotateY</span>(<span class="num">180deg</span>);     <span class="cmt">/* pre-flip the back face */</span>
+}
+</pre></div>
+  </div>
+
+  <!-- ==================== BACKFACE-VISIBILITY ==================== -->
+  <div class="section" id="backface-visibility">
+    <h2>backface-visibility</h2>
+    <p>Controls whether an element's back face is visible when facing away from the viewer. Essential for card-flip effects.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="sel">.card-face</span> {
+  <span class="prop">backface-visibility</span>: <span class="val">hidden</span>;   <span class="cmt">/* hide when rotated past 90deg */</span>
+}
+
+<span class="cmt">/* Default is visible */</span>
+<span class="sel">.always-show</span> {
+  <span class="prop">backface-visibility</span>: <span class="val">visible</span>;
+}
+</pre></div>
+  </div>
+
+  <!-- ==================== 3D CARD FLIP ==================== -->
+  <div class="section" id="card-flip">
+    <h2>3D Card Flip</h2>
+    <p>The classic card-flip effect combines <code>perspective</code>, <code>preserve-3d</code>, <code>backface-visibility</code>, and <code>rotateY</code>.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="sel">.flip-container</span> {
+  <span class="prop">perspective</span>: <span class="num">1000px</span>;
+  <span class="prop">width</span>: <span class="num">250px</span>;
+  <span class="prop">height</span>: <span class="num">300px</span>;
+}
+
+<span class="sel">.flip-card</span> {
+  <span class="prop">width</span>: <span class="num">100%</span>;
+  <span class="prop">height</span>: <span class="num">100%</span>;
+  <span class="prop">position</span>: <span class="val">relative</span>;
+  <span class="prop">transform-style</span>: <span class="val">preserve-3d</span>;
+  <span class="prop">transition</span>: <span class="val">transform</span> <span class="num">0.7s</span> <span class="val">ease</span>;
+}
+
+<span class="sel">.flip-container:hover .flip-card</span> {
+  <span class="prop">transform</span>: <span class="fn">rotateY</span>(<span class="num">180deg</span>);
+}
+
+<span class="sel">.flip-front</span>,
+<span class="sel">.flip-back</span> {
+  <span class="prop">position</span>: <span class="val">absolute</span>;
+  <span class="prop">width</span>: <span class="num">100%</span>;
+  <span class="prop">height</span>: <span class="num">100%</span>;
+  <span class="prop">backface-visibility</span>: <span class="val">hidden</span>;
+  <span class="prop">border-radius</span>: <span class="num">16px</span>;
+  <span class="prop">display</span>: <span class="val">flex</span>;
+  <span class="prop">align-items</span>: <span class="val">center</span>;
+  <span class="prop">justify-content</span>: <span class="val">center</span>;
+}
+
+<span class="sel">.flip-back</span> {
+  <span class="prop">transform</span>: <span class="fn">rotateY</span>(<span class="num">180deg</span>);
+}
+</pre></div>
+
+    <div class="live-example">
+      <div class="live-example-label">Live Example &mdash; Hover to Flip the Card</div>
+      <style>
+        .flip-demo-wrap { display: flex; justify-content: center; padding: 2rem; }
+        .demo-flip-container { perspective: 1000px; width: 220px; height: 280px; cursor: pointer; }
+        .demo-flip-card { width: 100%; height: 100%; position: relative; transform-style: preserve-3d; transition: transform 0.7s ease; }
+        .demo-flip-container:hover .demo-flip-card { transform: rotateY(180deg); }
+        .demo-flip-front, .demo-flip-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-weight: 700; font-size: 1.1rem; color: #fff; padding: 1.5rem; text-align: center; }
+        .demo-flip-front { background: linear-gradient(135deg, #667eea, #764ba2); }
+        .demo-flip-back { background: linear-gradient(135deg, #f093fb, #f5576c); transform: rotateY(180deg); }
+        .demo-flip-front small, .demo-flip-back small { font-weight: 400; font-size: 0.8rem; margin-top: 0.5rem; opacity: 0.85; }
+      </style>
+      <div class="flip-demo-wrap">
+        <div class="demo-flip-container">
+          <div class="demo-flip-card">
+            <div class="demo-flip-front">
+              FRONT<br>
+              <small>Hover me to flip!</small>
+            </div>
+            <div class="demo-flip-back">
+              BACK<br>
+              <small>rotateY(180deg) applied</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== CENTERING TRICK ==================== -->
+  <div class="section" id="centering-trick">
+    <h2>Centering with translate(-50%, -50%)</h2>
+    <p>A classic technique to center an element both vertically and horizontally, regardless of its dimensions.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="sel">.centered</span> {
+  <span class="prop">position</span>: <span class="val">absolute</span>;
+  <span class="prop">top</span>: <span class="num">50%</span>;
+  <span class="prop">left</span>: <span class="num">50%</span>;
+  <span class="prop">transform</span>: <span class="fn">translate</span>(<span class="num">-50%</span>, <span class="num">-50%</span>);
+  <span class="cmt">/* -50% of the element's OWN width and height */</span>
+}
+</pre></div>
+
+    <div class="live-example">
+      <div class="live-example-label">Live Example &mdash; Translate Centering</div>
+      <style>
+        .center-demo-parent { position: relative; height: 180px; border: 2px dashed rgba(255,255,255,0.15); border-radius: 12px; margin: 1rem 0; }
+        .center-demo-child { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: linear-gradient(135deg, #667eea, #764ba2); color: #fff; padding: 1rem 1.5rem; border-radius: 10px; font-weight: 600; font-size: 0.85rem; white-space: nowrap; }
+      </style>
+      <div class="center-demo-parent">
+        <div class="center-demo-child">Perfectly Centered</div>
+      </div>
+    </div>
+
+    <div class="callout tip">
+      <div class="callout-title">Modern Alternative</div>
+      <p>For new projects, prefer <code>display: grid; place-items: center;</code> or Flexbox centering. The translate trick remains useful when you need absolute positioning (modals, tooltips, overlays).</p>
+    </div>
+  </div>
+
+  <!-- ==================== HOVER LIFT ==================== -->
+  <div class="section" id="hover-lift">
+    <h2>Hover Lift Effect</h2>
+    <p>One of the most popular UI micro-interactions: a card that lifts up and gains a shadow on hover, using <code>translateY</code> and <code>box-shadow</code>.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="sel">.lift-card</span> {
+  <span class="prop">transition</span>: <span class="val">transform</span> <span class="num">0.3s</span> <span class="val">ease</span>, <span class="val">box-shadow</span> <span class="num">0.3s</span> <span class="val">ease</span>;
+  <span class="prop">border-radius</span>: <span class="num">12px</span>;
+  <span class="prop">box-shadow</span>: <span class="num">0</span> <span class="num">2px</span> <span class="num">8px</span> <span class="fn">rgba</span>(<span class="num">0</span>,<span class="num">0</span>,<span class="num">0</span>,<span class="num">0.1</span>);
+}
+
+<span class="sel">.lift-card:hover</span> {
+  <span class="prop">transform</span>: <span class="fn">translateY</span>(<span class="num">-8px</span>);
+  <span class="prop">box-shadow</span>: <span class="num">0</span> <span class="num">12px</span> <span class="num">24px</span> <span class="fn">rgba</span>(<span class="num">0</span>,<span class="num">0</span>,<span class="num">0</span>,<span class="num">0.2</span>);
+}
+</pre></div>
+
+    <div class="live-example">
+      <div class="live-example-label">Live Example &mdash; Hover Lift Cards</div>
+      <style>
+        .lift-demo { display: flex; gap: 1.5rem; flex-wrap: wrap; justify-content: center; padding: 2rem 1rem; }
+        .demo-lift-card { width: 160px; height: 120px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.85rem; color: #fff; cursor: pointer; transition: transform 0.3s ease, box-shadow 0.3s ease; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
+        .demo-lift-card:nth-child(1) { background: linear-gradient(135deg, #667eea, #764ba2); }
+        .demo-lift-card:nth-child(2) { background: linear-gradient(135deg, #f093fb, #f5576c); }
+        .demo-lift-card:nth-child(3) { background: linear-gradient(135deg, #43e97b, #38f9d7); color: #1a1a2e; }
+        .demo-lift-card:hover { transform: translateY(-8px); box-shadow: 0 14px 28px rgba(0,0,0,0.25); }
+      </style>
+      <div class="lift-demo">
+        <div class="demo-lift-card">Card One</div>
+        <div class="demo-lift-card">Card Two</div>
+        <div class="demo-lift-card">Card Three</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== GOTCHAS ==================== -->
+  <div class="section" id="gotchas">
+    <h2>Gotchas</h2>
+
+    <div class="callout gotcha">
+      <div class="callout-title">Transforms Create a Stacking Context</div>
+      <p>Any element with a <code>transform</code> (even <code>translateZ(0)</code>) creates a new stacking context. This means <code>z-index</code> values are scoped to that context and <code>position: fixed</code> children will behave like <code>position: absolute</code> relative to the transformed element, not the viewport.</p>
+    </div>
+
+    <div class="callout gotcha">
+      <div class="callout-title">Transforms Don't Work on Inline Elements</div>
+      <p>You cannot transform <code>display: inline</code> elements (like <code>&lt;span&gt;</code> or <code>&lt;a&gt;</code>). Change them to <code>display: inline-block</code> or <code>display: block</code> first.</p>
+    </div>
+
+    <div class="callout gotcha">
+      <div class="callout-title">Percentage translate is Relative to Self</div>
+      <p>Unlike margins and paddings, <code>translate(50%, 50%)</code> uses the element's own width and height for the percentage calculation, not the parent's dimensions.</p>
+    </div>
+
+    <div class="callout gotcha">
+      <div class="callout-title">Transform Order Matters</div>
+      <p><code>rotate(45deg) translateX(100px)</code> and <code>translateX(100px) rotate(45deg)</code> produce very different results. Transforms are applied from right to left (last listed is first applied).</p>
+    </div>
+  </div>
+
+  <!-- ==================== PRO TIPS ==================== -->
+  <div class="section" id="pro-tips">
+    <h2>Pro Tips</h2>
+
+    <div class="callout tip">
+      <div class="callout-title">GPU Acceleration with translateZ(0)</div>
+      <p>Adding <code>transform: translateZ(0)</code> or <code>will-change: transform</code> can promote an element to its own compositor layer, improving animation performance. But use sparingly &mdash; too many layers waste GPU memory.</p>
+    </div>
+
+    <div class="callout tip">
+      <div class="callout-title">Prefer transform for Animations</div>
+      <p>Animating <code>transform</code> and <code>opacity</code> is far cheaper than animating <code>top</code>, <code>left</code>, <code>width</code>, or <code>height</code>. The former only triggers composite, while the latter triggers layout recalculation.</p>
+    </div>
+
+    <div class="callout tip">
+      <div class="callout-title">Individual Transform Properties (Modern CSS)</div>
+      <p>Modern browsers support <code>translate</code>, <code>rotate</code>, and <code>scale</code> as individual CSS properties, making it easier to animate them independently without overwriting each other:</p>
+    </div>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="cmt">/* Modern individual transform properties */</span>
+<span class="sel">.modern</span> {
+  <span class="prop">translate</span>: <span class="num">50px</span> <span class="num">20px</span>;
+  <span class="prop">rotate</span>: <span class="num">45deg</span>;
+  <span class="prop">scale</span>: <span class="num">1.2</span>;
+  <span class="cmt">/* These can be transitioned independently! */</span>
+}
+
+<span class="sel">.modern:hover</span> {
+  <span class="prop">rotate</span>: <span class="num">90deg</span>;          <span class="cmt">/* only rotation changes */</span>
+  <span class="cmt">/* translate and scale remain unaffected */</span>
+}
+</pre></div>
+
+    <div class="callout tip">
+      <div class="callout-title">Debugging 3D Transforms</div>
+      <p>If your 3D transform is not working, check: (1) Does the parent have <code>perspective</code>? (2) Is <code>transform-style: preserve-3d</code> set on the right element? (3) Is <code>overflow: hidden</code> on a parent clipping the 3D space? Overflow hidden can break <code>preserve-3d</code>.</p>
+    </div>
+  </div>
+
+  <!-- ==================== NAV ==================== -->
+  <div class="topic-nav">
+    <a href="11-transitions-animations.html">
+      <span class="label">Previous</span>
+      <span class="title">Transitions &amp; Animations</span>
+    </a>
+    <a href="13-filters-effects.html" class="next">
+      <span class="label">Next</span>
+      <span class="title">Filters &amp; Effects</span>
+    </a>
+  </div>
+</main>
+
+<script src="script.js"></script>
+</body></html>

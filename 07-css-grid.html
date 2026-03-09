@@ -1,0 +1,721 @@
+<!DOCTYPE html><html lang="en" data-theme="dark"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>CSS Grid — CSS Reference Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet"><link rel="stylesheet" href="styles.css">
+</head><body>
+<div id="progress"></div>
+<header class="header"><button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">&#9776;</button><h1><span>CSS</span> Reference Guide</h1><div class="header-nav"><a href="index.html">All Topics</a></div><button class="theme-toggle" onclick="toggleTheme()">&#9790; Dark</button></header>
+<nav class="sidebar" id="sidebar"><a href="index.html" class="nav-back">&#8592; All Topics</a><div class="nav-group"><div class="nav-group-title">On This Page</div>
+<a href="#display-grid">Display Grid</a>
+<a href="#grid-template-columns">Grid Template Columns</a>
+<a href="#grid-template-rows">Grid Template Rows</a>
+<a href="#fr-unit">The fr Unit</a>
+<a href="#repeat-function">repeat() Function</a>
+<a href="#minmax">minmax()</a>
+<a href="#auto-fit-vs-auto-fill">auto-fit vs auto-fill</a>
+<a href="#gap">Gap</a>
+<a href="#grid-template-areas">Grid Template Areas</a>
+<a href="#grid-placement">Grid Placement</a>
+<a href="#named-lines">Named Lines</a>
+<a href="#implicit-grid">Implicit Grid</a>
+<a href="#alignment">Alignment</a>
+<a href="#real-world-layouts">Real-World Layouts</a>
+<a href="#grid-vs-flexbox">Grid vs Flexbox</a>
+<a href="#gotchas">Gotchas</a>
+<a href="#pro-tips">Pro Tips</a>
+</div></nav>
+<main class="main"><div class="page-hero"><h1>CSS Grid</h1><p>CSS Grid Layout is a two-dimensional layout system that handles both columns and rows simultaneously. It is the most powerful layout system in CSS.</p><div class="tags"><span class="tag">Layout</span><span class="tag">Two-Dimensional</span><span class="tag">Essential</span><span class="tag">Modern</span></div></div>
+
+<!-- ============================================ -->
+<!-- DISPLAY GRID -->
+<!-- ============================================ -->
+<section id="display-grid" class="section">
+<h2>Display Grid</h2>
+<p>Setting <code>display: grid</code> on a container creates a <strong>grid container</strong>. Its direct children become <strong>grid items</strong> that can be placed into rows and columns.</p>
+
+<div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="sel">.container</span> {
+  <span class="prop">display</span>: <span class="val">grid</span>;          <span class="cmt">/* block-level grid container */</span>
+}
+
+<span class="sel">.container-inline</span> {
+  <span class="prop">display</span>: <span class="val">inline-grid</span>;   <span class="cmt">/* inline-level grid container */</span>
+}
+</pre></div>
+
+<div class="callout info"><div class="callout-title">Grid Terminology</div><p><strong>Grid Line</strong>: the dividing lines that make up the structure. <strong>Grid Track</strong>: the space between two adjacent lines (a column or row). <strong>Grid Cell</strong>: a single unit of the grid. <strong>Grid Area</strong>: a rectangular area spanning one or more cells.</p></div>
+</section>
+
+<!-- ============================================ -->
+<!-- GRID TEMPLATE COLUMNS -->
+<!-- ============================================ -->
+<section id="grid-template-columns" class="section">
+<h2>Grid Template Columns</h2>
+<p>Defines the number and size of columns in your grid. You can use fixed units, fractions, percentages, or any combination.</p>
+
+<div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="sel">.grid</span> {
+  <span class="prop">display</span>: <span class="val">grid</span>;
+
+  <span class="cmt">/* Fixed pixel columns */</span>
+  <span class="prop">grid-template-columns</span>: <span class="num">200px</span> <span class="num">200px</span> <span class="num">200px</span>;
+
+  <span class="cmt">/* Fractional units — equal columns */</span>
+  <span class="prop">grid-template-columns</span>: <span class="num">1fr</span> <span class="num">1fr</span> <span class="num">1fr</span>;
+
+  <span class="cmt">/* Mixed units */</span>
+  <span class="prop">grid-template-columns</span>: <span class="num">250px</span> <span class="num">1fr</span> <span class="num">2fr</span>;
+
+  <span class="cmt">/* Using repeat() */</span>
+  <span class="prop">grid-template-columns</span>: <span class="fn">repeat</span>(<span class="num">3</span>, <span class="num">1fr</span>);
+
+  <span class="cmt">/* Percentage-based */</span>
+  <span class="prop">grid-template-columns</span>: <span class="num">25%</span> <span class="num">50%</span> <span class="num">25%</span>;
+}
+</pre></div>
+
+<div class="live-example"><div class="live-example-label">Live Example — Fixed Pixel Columns: 100px 200px 100px</div>
+<div style="display:grid;grid-template-columns:100px 200px 100px;gap:0.5rem;background:var(--code-bg);padding:0.75rem;border-radius:6px;margin-bottom:1rem;">
+  <div style="background:#6366f1;color:#fff;padding:0.5rem;border-radius:4px;text-align:center;font-size:0.8rem;">100px</div>
+  <div style="background:#8b5cf6;color:#fff;padding:0.5rem;border-radius:4px;text-align:center;font-size:0.8rem;">200px</div>
+  <div style="background:#6366f1;color:#fff;padding:0.5rem;border-radius:4px;text-align:center;font-size:0.8rem;">100px</div>
+</div>
+
+<p style="font-weight:600;font-size:0.85rem;margin-bottom:0.4rem;">Fractional Columns: 1fr 2fr 1fr</p>
+<div style="display:grid;grid-template-columns:1fr 2fr 1fr;gap:0.5rem;background:var(--code-bg);padding:0.75rem;border-radius:6px;margin-bottom:1rem;">
+  <div style="background:#a78bfa;color:#fff;padding:0.5rem;border-radius:4px;text-align:center;font-size:0.8rem;">1fr</div>
+  <div style="background:#7c3aed;color:#fff;padding:0.5rem;border-radius:4px;text-align:center;font-size:0.8rem;">2fr</div>
+  <div style="background:#a78bfa;color:#fff;padding:0.5rem;border-radius:4px;text-align:center;font-size:0.8rem;">1fr</div>
+</div>
+
+<p style="font-weight:600;font-size:0.85rem;margin-bottom:0.4rem;">Mixed: 200px 1fr 1fr</p>
+<div style="display:grid;grid-template-columns:200px 1fr 1fr;gap:0.5rem;background:var(--code-bg);padding:0.75rem;border-radius:6px;">
+  <div style="background:#c4b5fd;color:#1a1a2e;padding:0.5rem;border-radius:4px;text-align:center;font-size:0.8rem;">200px (fixed)</div>
+  <div style="background:#ddd6fe;color:#1a1a2e;padding:0.5rem;border-radius:4px;text-align:center;font-size:0.8rem;">1fr (flexible)</div>
+  <div style="background:#ddd6fe;color:#1a1a2e;padding:0.5rem;border-radius:4px;text-align:center;font-size:0.8rem;">1fr (flexible)</div>
+</div>
+</div>
+</section>
+
+<!-- ============================================ -->
+<!-- GRID TEMPLATE ROWS -->
+<!-- ============================================ -->
+<section id="grid-template-rows" class="section">
+<h2>Grid Template Rows</h2>
+<p>Defines the size of rows in the grid. Works identically to <code>grid-template-columns</code> but along the vertical axis.</p>
+
+<div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="sel">.grid</span> {
+  <span class="prop">display</span>: <span class="val">grid</span>;
+  <span class="prop">grid-template-columns</span>: <span class="num">1fr</span> <span class="num">1fr</span>;
+  <span class="prop">grid-template-rows</span>: <span class="num">100px</span> <span class="num">200px</span> <span class="num">100px</span>;  <span class="cmt">/* 3 rows */</span>
+}
+
+<span class="cmt">/* Common pattern: header, flexible content, footer */</span>
+<span class="sel">.page-grid</span> {
+  <span class="prop">display</span>: <span class="val">grid</span>;
+  <span class="prop">grid-template-rows</span>: <span class="val">auto</span> <span class="num">1fr</span> <span class="val">auto</span>;
+  <span class="prop">min-height</span>: <span class="num">100vh</span>;
+}
+</pre></div>
+
+<div class="live-example"><div class="live-example-label">Live Example — Explicit Row Sizes</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;grid-template-rows:60px 100px 60px;gap:0.5rem;background:var(--code-bg);padding:0.75rem;border-radius:6px;">
+  <div style="background:#6366f1;color:#fff;padding:0.4rem;border-radius:4px;text-align:center;font-size:0.75rem;display:flex;align-items:center;justify-content:center;">60px row</div>
+  <div style="background:#6366f1;color:#fff;padding:0.4rem;border-radius:4px;text-align:center;font-size:0.75rem;display:flex;align-items:center;justify-content:center;">60px row</div>
+  <div style="background:#8b5cf6;color:#fff;padding:0.4rem;border-radius:4px;text-align:center;font-size:0.75rem;display:flex;align-items:center;justify-content:center;">100px row</div>
+  <div style="background:#8b5cf6;color:#fff;padding:0.4rem;border-radius:4px;text-align:center;font-size:0.75rem;display:flex;align-items:center;justify-content:center;">100px row</div>
+  <div style="background:#6366f1;color:#fff;padding:0.4rem;border-radius:4px;text-align:center;font-size:0.75rem;display:flex;align-items:center;justify-content:center;">60px row</div>
+  <div style="background:#6366f1;color:#fff;padding:0.4rem;border-radius:4px;text-align:center;font-size:0.75rem;display:flex;align-items:center;justify-content:center;">60px row</div>
+</div>
+</div>
+</section>
+
+<!-- ============================================ -->
+<!-- FR UNIT -->
+<!-- ============================================ -->
+<section id="fr-unit" class="section">
+<h2>The fr Unit Deep Dive</h2>
+<p>The <code>fr</code> (fraction) unit represents a fraction of the <strong>available space</strong> in the grid container. It distributes space <em>after</em> fixed-size tracks and gaps are calculated.</p>
+
+<div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="cmt">/* Container is 900px wide, gap is 10px */</span>
+<span class="sel">.grid</span> {
+  <span class="prop">display</span>: <span class="val">grid</span>;
+  <span class="prop">grid-template-columns</span>: <span class="num">200px</span> <span class="num">1fr</span> <span class="num">2fr</span>;
+  <span class="prop">gap</span>: <span class="num">10px</span>;
+  <span class="cmt">/*
+    Available space = 900 - 200 - (10 * 2) = 680px
+    1fr = 680 / 3 = ~227px
+    2fr = 680 * 2/3 = ~453px
+  */</span>
+}
+</pre></div>
+
+<div class="live-example"><div class="live-example-label">Live Example — How fr Distributes Space</div>
+<p style="font-size:0.8rem;opacity:0.7;margin-bottom:0.5rem;">200px is fixed, remaining space split 1:2</p>
+<div style="display:grid;grid-template-columns:200px 1fr 2fr;gap:0.5rem;background:var(--code-bg);padding:0.75rem;border-radius:6px;">
+  <div style="background:#ef4444;color:#fff;padding:0.5rem;border-radius:4px;text-align:center;font-size:0.8rem;">200px (fixed)</div>
+  <div style="background:#6366f1;color:#fff;padding:0.5rem;border-radius:4px;text-align:center;font-size:0.8rem;">1fr</div>
+  <div style="background:#8b5cf6;color:#fff;padding:0.5rem;border-radius:4px;text-align:center;font-size:0.8rem;">2fr</div>
+</div>
+</div>
+
+<div class="callout info"><div class="callout-title">fr vs percentage</div><p><code>fr</code> distributes <strong>available</strong> space (after gaps and fixed tracks), while <code>%</code> is based on <strong>total</strong> container width. With gaps, percentages can overflow; <code>fr</code> never will. Always prefer <code>fr</code> in grid layouts.</p></div>
+</section>
+
+<!-- ============================================ -->
+<!-- REPEAT FUNCTION -->
+<!-- ============================================ -->
+<section id="repeat-function" class="section">
+<h2>repeat() Function</h2>
+<p>The <code>repeat()</code> function provides a shorthand for repeating track patterns. Saves typing and makes intent clearer.</p>
+
+<div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="sel">.grid</span> {
+  <span class="cmt">/* Instead of: 1fr 1fr 1fr 1fr */</span>
+  <span class="prop">grid-template-columns</span>: <span class="fn">repeat</span>(<span class="num">4</span>, <span class="num">1fr</span>);
+
+  <span class="cmt">/* Repeat a pattern */</span>
+  <span class="prop">grid-template-columns</span>: <span class="fn">repeat</span>(<span class="num">3</span>, <span class="num">1fr</span> <span class="num">2fr</span>);
+  <span class="cmt">/* = 1fr 2fr 1fr 2fr 1fr 2fr */</span>
+
+  <span class="cmt">/* Responsive: auto-fit fills available space */</span>
+  <span class="prop">grid-template-columns</span>: <span class="fn">repeat</span>(<span class="val">auto-fit</span>, <span class="fn">minmax</span>(<span class="num">250px</span>, <span class="num">1fr</span>));
+
+  <span class="cmt">/* Responsive: auto-fill preserves empty tracks */</span>
+  <span class="prop">grid-template-columns</span>: <span class="fn">repeat</span>(<span class="val">auto-fill</span>, <span class="fn">minmax</span>(<span class="num">250px</span>, <span class="num">1fr</span>));
+}
+</pre></div>
+
+<div class="live-example"><div class="live-example-label">Live Example — repeat(4, 1fr)</div>
+<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0.5rem;background:var(--code-bg);padding:0.75rem;border-radius:6px;">
+  <div style="background:#6366f1;color:#fff;padding:0.5rem;border-radius:4px;text-align:center;font-size:0.8rem;">1</div>
+  <div style="background:#6366f1;color:#fff;padding:0.5rem;border-radius:4px;text-align:center;font-size:0.8rem;">2</div>
+  <div style="background:#6366f1;color:#fff;padding:0.5rem;border-radius:4px;text-align:center;font-size:0.8rem;">3</div>
+  <div style="background:#6366f1;color:#fff;padding:0.5rem;border-radius:4px;text-align:center;font-size:0.8rem;">4</div>
+</div>
+</div>
+</section>
+
+<!-- ============================================ -->
+<!-- MINMAX -->
+<!-- ============================================ -->
+<section id="minmax" class="section">
+<h2>minmax()</h2>
+<p>The <code>minmax()</code> function sets a minimum and maximum size for a grid track. Essential for responsive grids.</p>
+
+<div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="sel">.grid</span> {
+  <span class="prop">display</span>: <span class="val">grid</span>;
+
+  <span class="cmt">/* Column: at least 200px, at most 1fr */</span>
+  <span class="prop">grid-template-columns</span>: <span class="fn">minmax</span>(<span class="num">200px</span>, <span class="num">1fr</span>) <span class="num">2fr</span>;
+
+  <span class="cmt">/* Rows: at least 100px, grow with content */</span>
+  <span class="prop">grid-template-rows</span>: <span class="fn">minmax</span>(<span class="num">100px</span>, <span class="val">auto</span>);
+
+  <span class="cmt">/* The responsive grid pattern */</span>
+  <span class="prop">grid-template-columns</span>: <span class="fn">repeat</span>(<span class="val">auto-fit</span>, <span class="fn">minmax</span>(<span class="num">250px</span>, <span class="num">1fr</span>));
+}
+</pre></div>
+
+<div class="live-example"><div class="live-example-label">Live Example — minmax(150px, 1fr) Responsive Cards</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:0.75rem;background:var(--code-bg);padding:0.75rem;border-radius:6px;">
+  <div style="background:#6366f1;color:#fff;padding:1rem;border-radius:6px;text-align:center;font-size:0.8rem;">Card 1<br><span style="opacity:0.7;font-size:0.7rem;">min 150px</span></div>
+  <div style="background:#8b5cf6;color:#fff;padding:1rem;border-radius:6px;text-align:center;font-size:0.8rem;">Card 2<br><span style="opacity:0.7;font-size:0.7rem;">min 150px</span></div>
+  <div style="background:#a78bfa;color:#fff;padding:1rem;border-radius:6px;text-align:center;font-size:0.8rem;">Card 3<br><span style="opacity:0.7;font-size:0.7rem;">min 150px</span></div>
+  <div style="background:#c4b5fd;color:#1a1a2e;padding:1rem;border-radius:6px;text-align:center;font-size:0.8rem;">Card 4<br><span style="opacity:0.7;font-size:0.7rem;">min 150px</span></div>
+</div>
+<p style="font-size:0.75rem;opacity:0.6;margin-top:0.4rem;">Resize the browser to see cards reflow automatically.</p>
+</div>
+</section>
+
+<!-- ============================================ -->
+<!-- AUTO-FIT VS AUTO-FILL -->
+<!-- ============================================ -->
+<section id="auto-fit-vs-auto-fill" class="section">
+<h2>auto-fit vs auto-fill</h2>
+<p>Both create as many tracks as possible, but they differ when there are fewer items than tracks.</p>
+
+<div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="cmt">/* auto-fit: collapses empty tracks, items stretch */</span>
+<span class="sel">.grid-fit</span> {
+  <span class="prop">grid-template-columns</span>: <span class="fn">repeat</span>(<span class="val">auto-fit</span>, <span class="fn">minmax</span>(<span class="num">150px</span>, <span class="num">1fr</span>));
+}
+
+<span class="cmt">/* auto-fill: keeps empty tracks, items don't stretch */</span>
+<span class="sel">.grid-fill</span> {
+  <span class="prop">grid-template-columns</span>: <span class="fn">repeat</span>(<span class="val">auto-fill</span>, <span class="fn">minmax</span>(<span class="num">150px</span>, <span class="num">1fr</span>));
+}
+</pre></div>
+
+<div class="live-example"><div class="live-example-label">Live Example — auto-fit vs auto-fill (Side by Side)</div>
+
+<p style="font-weight:600;font-size:0.85rem;margin-bottom:0.4rem;color:var(--accent);">auto-fit: items stretch to fill the row</p>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:0.5rem;background:var(--code-bg);padding:0.75rem;border-radius:6px;margin-bottom:1rem;">
+  <div style="background:#6366f1;color:#fff;padding:0.5rem;border-radius:4px;text-align:center;font-size:0.8rem;">Item 1</div>
+  <div style="background:#6366f1;color:#fff;padding:0.5rem;border-radius:4px;text-align:center;font-size:0.8rem;">Item 2</div>
+</div>
+
+<p style="font-weight:600;font-size:0.85rem;margin-bottom:0.4rem;color:var(--accent);">auto-fill: empty tracks preserved, items stay at min size</p>
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:0.5rem;background:var(--code-bg);padding:0.75rem;border-radius:6px;">
+  <div style="background:#8b5cf6;color:#fff;padding:0.5rem;border-radius:4px;text-align:center;font-size:0.8rem;">Item 1</div>
+  <div style="background:#8b5cf6;color:#fff;padding:0.5rem;border-radius:4px;text-align:center;font-size:0.8rem;">Item 2</div>
+</div>
+<p style="font-size:0.75rem;opacity:0.6;margin-top:0.5rem;">Notice how auto-fit stretches the 2 items across the full width, while auto-fill leaves space for empty columns.</p>
+</div>
+
+<div class="callout tip"><div class="callout-title">Which one to use?</div><p>Use <strong>auto-fit</strong> for most cases — items stretch to fill the container. Use <strong>auto-fill</strong> when you want items to maintain their minimum size and leave empty space on the right.</p></div>
+</section>
+
+<!-- ============================================ -->
+<!-- GAP -->
+<!-- ============================================ -->
+<section id="gap" class="section">
+<h2>Gap</h2>
+<p>Sets spacing between grid rows and columns. Same property as in flexbox.</p>
+
+<div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="sel">.grid</span> {
+  <span class="prop">gap</span>: <span class="num">1rem</span>;                   <span class="cmt">/* equal row and column gaps */</span>
+  <span class="prop">row-gap</span>: <span class="num">2rem</span>;               <span class="cmt">/* gap between rows */</span>
+  <span class="prop">column-gap</span>: <span class="num">1rem</span>;            <span class="cmt">/* gap between columns */</span>
+  <span class="prop">gap</span>: <span class="num">2rem</span> <span class="num">1rem</span>;               <span class="cmt">/* row-gap column-gap */</span>
+}
+</pre></div>
+
+<div class="live-example"><div class="live-example-label">Live Example — gap: 1.5rem 0.75rem (row column)</div>
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem 0.75rem;background:var(--code-bg);padding:0.75rem;border-radius:6px;">
+  <div style="background:var(--accent);color:#fff;padding:0.6rem;border-radius:4px;text-align:center;font-size:0.8rem;">1</div>
+  <div style="background:var(--accent);color:#fff;padding:0.6rem;border-radius:4px;text-align:center;font-size:0.8rem;">2</div>
+  <div style="background:var(--accent);color:#fff;padding:0.6rem;border-radius:4px;text-align:center;font-size:0.8rem;">3</div>
+  <div style="background:var(--accent);color:#fff;padding:0.6rem;border-radius:4px;text-align:center;font-size:0.8rem;">4</div>
+  <div style="background:var(--accent);color:#fff;padding:0.6rem;border-radius:4px;text-align:center;font-size:0.8rem;">5</div>
+  <div style="background:var(--accent);color:#fff;padding:0.6rem;border-radius:4px;text-align:center;font-size:0.8rem;">6</div>
+</div>
+<p style="font-size:0.75rem;opacity:0.6;margin-top:0.4rem;">Larger row gap (1.5rem) and smaller column gap (0.75rem).</p>
+</div>
+</section>
+
+<!-- ============================================ -->
+<!-- GRID TEMPLATE AREAS -->
+<!-- ============================================ -->
+<section id="grid-template-areas" class="section">
+<h2>Grid Template Areas</h2>
+<p>The most visual way to define a grid layout. Name areas with <code>grid-template-areas</code> and assign items with <code>grid-area</code>.</p>
+
+<div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="sel">.layout</span> {
+  <span class="prop">display</span>: <span class="val">grid</span>;
+  <span class="prop">grid-template-columns</span>: <span class="num">250px</span> <span class="num">1fr</span>;
+  <span class="prop">grid-template-rows</span>: <span class="val">auto</span> <span class="num">1fr</span> <span class="val">auto</span>;
+  <span class="prop">grid-template-areas</span>:
+    <span class="str">"header  header"</span>
+    <span class="str">"sidebar content"</span>
+    <span class="str">"footer  footer"</span>;
+  <span class="prop">min-height</span>: <span class="num">100vh</span>;
+  <span class="prop">gap</span>: <span class="num">1rem</span>;
+}
+
+<span class="sel">.header</span>  { <span class="prop">grid-area</span>: <span class="val">header</span>; }
+<span class="sel">.sidebar</span> { <span class="prop">grid-area</span>: <span class="val">sidebar</span>; }
+<span class="sel">.content</span> { <span class="prop">grid-area</span>: <span class="val">content</span>; }
+<span class="sel">.footer</span>  { <span class="prop">grid-area</span>: <span class="val">footer</span>; }
+</pre></div>
+
+<div class="live-example"><div class="live-example-label">Live Example — Full Page Layout with grid-template-areas</div>
+<div style="display:grid;grid-template-columns:180px 1fr;grid-template-rows:auto 1fr auto;grid-template-areas:'header header' 'sidebar content' 'footer footer';gap:0.5rem;background:var(--code-bg);padding:0.75rem;border-radius:6px;height:300px;">
+  <div style="grid-area:header;background:#6366f1;color:#fff;padding:0.75rem;border-radius:4px;font-weight:600;font-size:0.9rem;display:flex;align-items:center;justify-content:center;">Header</div>
+  <div style="grid-area:sidebar;background:#8b5cf6;color:#fff;padding:0.75rem;border-radius:4px;font-size:0.8rem;display:flex;flex-direction:column;gap:0.5rem;">
+    <div style="font-weight:600;">Sidebar</div>
+    <div style="opacity:0.7;font-size:0.75rem;">Nav Item 1</div>
+    <div style="opacity:0.7;font-size:0.75rem;">Nav Item 2</div>
+    <div style="opacity:0.7;font-size:0.75rem;">Nav Item 3</div>
+  </div>
+  <div style="grid-area:content;background:#a78bfa;color:#fff;padding:0.75rem;border-radius:4px;font-size:0.85rem;">
+    <div style="font-weight:600;margin-bottom:0.5rem;">Main Content</div>
+    <div style="opacity:0.7;font-size:0.75rem;">This area takes all remaining space thanks to the 1fr column and 1fr row.</div>
+  </div>
+  <div style="grid-area:footer;background:#6366f1;color:#fff;padding:0.75rem;border-radius:4px;font-size:0.85rem;display:flex;align-items:center;justify-content:center;">Footer</div>
+</div>
+</div>
+
+<div class="callout tip"><div class="callout-title">Empty Cells</div><p>Use a dot (<code>.</code>) in <code>grid-template-areas</code> to leave a cell empty: <code>"header ."</code> — the second column in that row will be blank.</p></div>
+</section>
+
+<!-- ============================================ -->
+<!-- GRID PLACEMENT -->
+<!-- ============================================ -->
+<section id="grid-placement" class="section">
+<h2>Grid Placement (grid-column / grid-row / span)</h2>
+<p>Place items on specific grid lines or make them span multiple tracks using line numbers.</p>
+
+<div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="sel">.item</span> {
+  <span class="cmt">/* By line numbers */</span>
+  <span class="prop">grid-column</span>: <span class="num">1</span> / <span class="num">3</span>;       <span class="cmt">/* start at line 1, end at line 3 */</span>
+  <span class="prop">grid-row</span>: <span class="num">1</span> / <span class="num">2</span>;          <span class="cmt">/* start at line 1, end at line 2 */</span>
+
+  <span class="cmt">/* Using span */</span>
+  <span class="prop">grid-column</span>: <span class="val">span</span> <span class="num">2</span>;       <span class="cmt">/* span 2 columns from default position */</span>
+  <span class="prop">grid-row</span>: <span class="val">span</span> <span class="num">3</span>;          <span class="cmt">/* span 3 rows */</span>
+
+  <span class="cmt">/* Start at line 2, span 2 columns */</span>
+  <span class="prop">grid-column</span>: <span class="num">2</span> / <span class="val">span</span> <span class="num">2</span>;
+
+  <span class="cmt">/* Full width: start to end */</span>
+  <span class="prop">grid-column</span>: <span class="num">1</span> / <span class="num">-1</span>;      <span class="cmt">/* -1 = last line */</span>
+}
+
+<span class="cmt">/* Shorthand: grid-area: row-start / col-start / row-end / col-end */</span>
+<span class="sel">.item</span> {
+  <span class="prop">grid-area</span>: <span class="num">1</span> / <span class="num">1</span> / <span class="num">3</span> / <span class="num">4</span>;  <span class="cmt">/* rows 1-3, columns 1-4 */</span>
+}
+</pre></div>
+
+<div class="live-example"><div class="live-example-label">Live Example — Spanning Items</div>
+<div style="display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(3,60px);gap:0.5rem;background:var(--code-bg);padding:0.75rem;border-radius:6px;">
+  <div style="grid-column:1/-1;background:#6366f1;color:#fff;padding:0.4rem;border-radius:4px;font-size:0.75rem;display:flex;align-items:center;justify-content:center;">grid-column: 1 / -1 (full width)</div>
+  <div style="grid-column:span 2;background:#8b5cf6;color:#fff;padding:0.4rem;border-radius:4px;font-size:0.75rem;display:flex;align-items:center;justify-content:center;">span 2</div>
+  <div style="background:#a78bfa;color:#fff;padding:0.4rem;border-radius:4px;font-size:0.75rem;display:flex;align-items:center;justify-content:center;">1 col</div>
+  <div style="background:#a78bfa;color:#fff;padding:0.4rem;border-radius:4px;font-size:0.75rem;display:flex;align-items:center;justify-content:center;">1 col</div>
+  <div style="background:#c4b5fd;color:#1a1a2e;padding:0.4rem;border-radius:4px;font-size:0.75rem;display:flex;align-items:center;justify-content:center;">1 col</div>
+  <div style="grid-column:span 3;background:#ddd6fe;color:#1a1a2e;padding:0.4rem;border-radius:4px;font-size:0.75rem;display:flex;align-items:center;justify-content:center;">span 3</div>
+</div>
+</div>
+</section>
+
+<!-- ============================================ -->
+<!-- NAMED LINES -->
+<!-- ============================================ -->
+<section id="named-lines" class="section">
+<h2>Named Lines</h2>
+<p>Give meaningful names to grid lines for more readable placement.</p>
+
+<div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="sel">.grid</span> {
+  <span class="prop">display</span>: <span class="val">grid</span>;
+  <span class="prop">grid-template-columns</span>:
+    [full-start] <span class="num">1fr</span>
+    [content-start] <span class="num">3fr</span>
+    [content-end] <span class="num">1fr</span>
+    [full-end];
+}
+
+<span class="sel">.hero</span> {
+  <span class="prop">grid-column</span>: <span class="val">full-start</span> / <span class="val">full-end</span>;   <span class="cmt">/* spans everything */</span>
+}
+<span class="sel">.article</span> {
+  <span class="prop">grid-column</span>: <span class="val">content-start</span> / <span class="val">content-end</span>;  <span class="cmt">/* centered content */</span>
+}
+</pre></div>
+
+<div class="live-example"><div class="live-example-label">Live Example — Named Grid Lines</div>
+<div style="display:grid;grid-template-columns:1fr 3fr 1fr;gap:0.5rem;background:var(--code-bg);padding:0.75rem;border-radius:6px;">
+  <div style="grid-column:1/-1;background:#6366f1;color:#fff;padding:0.6rem;border-radius:4px;font-size:0.8rem;text-align:center;">Hero (full-start / full-end)</div>
+  <div style="grid-column:2/3;background:#8b5cf6;color:#fff;padding:0.6rem;border-radius:4px;font-size:0.8rem;text-align:center;">Article (content-start / content-end)</div>
+  <div style="grid-column:1/-1;background:#a78bfa;color:#fff;padding:0.6rem;border-radius:4px;font-size:0.8rem;text-align:center;">Banner (full-start / full-end)</div>
+</div>
+</div>
+</section>
+
+<!-- ============================================ -->
+<!-- IMPLICIT GRID -->
+<!-- ============================================ -->
+<section id="implicit-grid" class="section">
+<h2>Implicit Grid</h2>
+<p>When items are placed outside the explicit grid, the browser creates <strong>implicit</strong> tracks. Control their size with <code>grid-auto-rows</code>, <code>grid-auto-columns</code>, and <code>grid-auto-flow</code>.</p>
+
+<div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="sel">.grid</span> {
+  <span class="prop">display</span>: <span class="val">grid</span>;
+  <span class="prop">grid-template-columns</span>: <span class="fn">repeat</span>(<span class="num">3</span>, <span class="num">1fr</span>);
+
+  <span class="cmt">/* Size of auto-created rows */</span>
+  <span class="prop">grid-auto-rows</span>: <span class="num">150px</span>;
+  <span class="prop">grid-auto-rows</span>: <span class="fn">minmax</span>(<span class="num">100px</span>, <span class="val">auto</span>);  <span class="cmt">/* at least 100px, grows with content */</span>
+
+  <span class="cmt">/* Control flow direction */</span>
+  <span class="prop">grid-auto-flow</span>: <span class="val">row</span>;        <span class="cmt">/* default — fill rows first */</span>
+  <span class="prop">grid-auto-flow</span>: <span class="val">column</span>;     <span class="cmt">/* fill columns first */</span>
+  <span class="prop">grid-auto-flow</span>: <span class="val">dense</span>;      <span class="cmt">/* fill holes in the grid */</span>
+  <span class="prop">grid-auto-flow</span>: <span class="val">row dense</span>;  <span class="cmt">/* row order, backfill gaps */</span>
+}
+</pre></div>
+
+<div class="live-example"><div class="live-example-label">Live Example — grid-auto-rows: minmax(60px, auto)</div>
+<div style="display:grid;grid-template-columns:repeat(3,1fr);grid-auto-rows:minmax(60px,auto);gap:0.5rem;background:var(--code-bg);padding:0.75rem;border-radius:6px;">
+  <div style="background:#6366f1;color:#fff;padding:0.5rem;border-radius:4px;font-size:0.8rem;text-align:center;">Short</div>
+  <div style="background:#6366f1;color:#fff;padding:0.5rem;border-radius:4px;font-size:0.8rem;text-align:center;">Also short</div>
+  <div style="background:#6366f1;color:#fff;padding:0.5rem;border-radius:4px;font-size:0.8rem;text-align:center;">Short</div>
+  <div style="background:#8b5cf6;color:#fff;padding:0.5rem;border-radius:4px;font-size:0.8rem;">This cell has more content so the entire row grows taller to accommodate it automatically.</div>
+  <div style="background:#8b5cf6;color:#fff;padding:0.5rem;border-radius:4px;font-size:0.8rem;text-align:center;">Same row</div>
+  <div style="background:#8b5cf6;color:#fff;padding:0.5rem;border-radius:4px;font-size:0.8rem;text-align:center;">Same row</div>
+</div>
+</div>
+
+<div class="callout tip"><div class="callout-title">grid-auto-flow: dense</div><p>The <code>dense</code> packing algorithm backfills empty cells in the grid. Great for masonry-like layouts where you have items of varying sizes. Note that it may reorder items visually.</p></div>
+</section>
+
+<!-- ============================================ -->
+<!-- ALIGNMENT -->
+<!-- ============================================ -->
+<section id="alignment" class="section">
+<h2>Alignment</h2>
+<p>Grid has 6 alignment properties — they control how items are placed within their grid cells and how tracks are distributed within the container.</p>
+
+<div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="cmt">/* Container properties — align ALL items */</span>
+<span class="sel">.grid</span> {
+  <span class="cmt">/* Align items within their cell (inline/row axis) */</span>
+  <span class="prop">justify-items</span>: <span class="val">start</span> | <span class="val">end</span> | <span class="val">center</span> | <span class="val">stretch</span>;
+
+  <span class="cmt">/* Align items within their cell (block/column axis) */</span>
+  <span class="prop">align-items</span>: <span class="val">start</span> | <span class="val">end</span> | <span class="val">center</span> | <span class="val">stretch</span>;
+
+  <span class="cmt">/* Distribute tracks in container (inline axis) */</span>
+  <span class="prop">justify-content</span>: <span class="val">start</span> | <span class="val">end</span> | <span class="val">center</span> | <span class="val">space-between</span> | <span class="val">space-around</span> | <span class="val">space-evenly</span>;
+
+  <span class="cmt">/* Distribute tracks in container (block axis) */</span>
+  <span class="prop">align-content</span>: <span class="val">start</span> | <span class="val">end</span> | <span class="val">center</span> | <span class="val">space-between</span> | <span class="val">space-around</span> | <span class="val">space-evenly</span>;
+
+  <span class="cmt">/* Shorthand: place-items = align-items justify-items */</span>
+  <span class="prop">place-items</span>: <span class="val">center</span>;
+  <span class="cmt">/* Shorthand: place-content = align-content justify-content */</span>
+  <span class="prop">place-content</span>: <span class="val">center</span>;
+}
+
+<span class="cmt">/* Item properties — override alignment for ONE item */</span>
+<span class="sel">.item</span> {
+  <span class="prop">justify-self</span>: <span class="val">start</span> | <span class="val">end</span> | <span class="val">center</span> | <span class="val">stretch</span>;
+  <span class="prop">align-self</span>: <span class="val">start</span> | <span class="val">end</span> | <span class="val">center</span> | <span class="val">stretch</span>;
+  <span class="prop">place-self</span>: <span class="val">center</span>;
+}
+</pre></div>
+
+<div class="live-example"><div class="live-example-label">Live Example — place-items: center (Centers Everything)</div>
+<div style="display:grid;grid-template-columns:repeat(3,1fr);place-items:center;gap:0.5rem;background:var(--code-bg);padding:0.75rem;border-radius:6px;height:150px;">
+  <div style="background:#6366f1;color:#fff;padding:0.4rem 0.8rem;border-radius:4px;font-size:0.8rem;">Centered</div>
+  <div style="background:#8b5cf6;color:#fff;padding:0.4rem 0.8rem;border-radius:4px;font-size:0.8rem;">Centered</div>
+  <div style="background:#a78bfa;color:#fff;padding:0.4rem 0.8rem;border-radius:4px;font-size:0.8rem;">Centered</div>
+</div>
+<p style="font-size:0.75rem;opacity:0.6;margin-top:0.4rem;">Each item is centered within its grid cell.</p>
+</div>
+
+<div class="live-example"><div class="live-example-label">Live Example — Individual Alignment with justify-self / align-self</div>
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.5rem;background:var(--code-bg);padding:0.75rem;border-radius:6px;height:100px;">
+  <div style="justify-self:start;align-self:start;background:#6366f1;color:#fff;padding:0.3rem 0.6rem;border-radius:4px;font-size:0.7rem;">start / start</div>
+  <div style="justify-self:center;align-self:center;background:#8b5cf6;color:#fff;padding:0.3rem 0.6rem;border-radius:4px;font-size:0.7rem;">center / center</div>
+  <div style="justify-self:end;align-self:end;background:#a78bfa;color:#fff;padding:0.3rem 0.6rem;border-radius:4px;font-size:0.7rem;">end / end</div>
+</div>
+</div>
+</section>
+
+<!-- ============================================ -->
+<!-- REAL-WORLD LAYOUTS -->
+<!-- ============================================ -->
+<section id="real-world-layouts" class="section">
+<h2>Real-World Layouts</h2>
+
+<h3>Responsive Card Grid</h3>
+<div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="sel">.card-grid</span> {
+  <span class="prop">display</span>: <span class="val">grid</span>;
+  <span class="prop">grid-template-columns</span>: <span class="fn">repeat</span>(<span class="val">auto-fit</span>, <span class="fn">minmax</span>(<span class="num">280px</span>, <span class="num">1fr</span>));
+  <span class="prop">gap</span>: <span class="num">1.5rem</span>;
+}
+</pre></div>
+
+<div class="live-example"><div class="live-example-label">Live Example — Responsive Card Grid</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;">
+  <div style="background:var(--code-bg);border:1px solid var(--border);border-radius:8px;overflow:hidden;">
+    <div style="background:linear-gradient(135deg,#6366f1,#8b5cf6);height:80px;"></div>
+    <div style="padding:0.75rem;"><div style="font-weight:600;font-size:0.85rem;margin-bottom:0.25rem;">Card Title</div><p style="font-size:0.75rem;opacity:0.7;margin:0;">Auto-responsive without media queries.</p></div>
+  </div>
+  <div style="background:var(--code-bg);border:1px solid var(--border);border-radius:8px;overflow:hidden;">
+    <div style="background:linear-gradient(135deg,#8b5cf6,#a78bfa);height:80px;"></div>
+    <div style="padding:0.75rem;"><div style="font-weight:600;font-size:0.85rem;margin-bottom:0.25rem;">Card Title</div><p style="font-size:0.75rem;opacity:0.7;margin:0;">Uses auto-fit + minmax pattern.</p></div>
+  </div>
+  <div style="background:var(--code-bg);border:1px solid var(--border);border-radius:8px;overflow:hidden;">
+    <div style="background:linear-gradient(135deg,#a78bfa,#c4b5fd);height:80px;"></div>
+    <div style="padding:0.75rem;"><div style="font-weight:600;font-size:0.85rem;margin-bottom:0.25rem;">Card Title</div><p style="font-size:0.75rem;opacity:0.7;margin:0;">Resize the browser to see reflow.</p></div>
+  </div>
+</div>
+</div>
+
+<h3>Dashboard Layout</h3>
+<div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="sel">.dashboard</span> {
+  <span class="prop">display</span>: <span class="val">grid</span>;
+  <span class="prop">grid-template-columns</span>: <span class="fn">repeat</span>(<span class="num">4</span>, <span class="num">1fr</span>);
+  <span class="prop">grid-auto-rows</span>: <span class="fn">minmax</span>(<span class="num">120px</span>, <span class="val">auto</span>);
+  <span class="prop">gap</span>: <span class="num">1rem</span>;
+}
+<span class="sel">.widget-large</span>  { <span class="prop">grid-column</span>: <span class="val">span</span> <span class="num">2</span>; <span class="prop">grid-row</span>: <span class="val">span</span> <span class="num">2</span>; }
+<span class="sel">.widget-wide</span>   { <span class="prop">grid-column</span>: <span class="val">span</span> <span class="num">2</span>; }
+</pre></div>
+
+<div class="live-example"><div class="live-example-label">Live Example — Dashboard Grid</div>
+<div style="display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:minmax(70px,auto);gap:0.5rem;background:var(--code-bg);padding:0.75rem;border-radius:6px;">
+  <div style="grid-column:span 2;grid-row:span 2;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;padding:0.75rem;border-radius:6px;display:flex;flex-direction:column;justify-content:center;align-items:center;">
+    <div style="font-weight:700;font-size:1.5rem;">2,450</div>
+    <div style="font-size:0.75rem;opacity:0.8;">Total Users (span 2x2)</div>
+  </div>
+  <div style="background:#10b981;color:#fff;padding:0.5rem;border-radius:6px;display:flex;flex-direction:column;justify-content:center;align-items:center;">
+    <div style="font-weight:700;font-size:1.1rem;">89%</div>
+    <div style="font-size:0.7rem;opacity:0.8;">Uptime</div>
+  </div>
+  <div style="background:#f59e0b;color:#1a1a2e;padding:0.5rem;border-radius:6px;display:flex;flex-direction:column;justify-content:center;align-items:center;">
+    <div style="font-weight:700;font-size:1.1rem;">340</div>
+    <div style="font-size:0.7rem;opacity:0.8;">Orders</div>
+  </div>
+  <div style="grid-column:span 2;background:#a78bfa;color:#fff;padding:0.5rem;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:0.8rem;">Wide Widget (span 2)</div>
+</div>
+</div>
+
+<h3>Magazine Layout</h3>
+<div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="sel">.magazine</span> {
+  <span class="prop">display</span>: <span class="val">grid</span>;
+  <span class="prop">grid-template-columns</span>: <span class="fn">repeat</span>(<span class="num">3</span>, <span class="num">1fr</span>);
+  <span class="prop">grid-auto-rows</span>: <span class="num">200px</span>;
+  <span class="prop">gap</span>: <span class="num">1rem</span>;
+}
+<span class="sel">.featured</span> {
+  <span class="prop">grid-column</span>: <span class="val">span</span> <span class="num">2</span>;
+  <span class="prop">grid-row</span>: <span class="val">span</span> <span class="num">2</span>;
+}
+</pre></div>
+
+<div class="live-example"><div class="live-example-label">Live Example — Magazine Layout</div>
+<div style="display:grid;grid-template-columns:repeat(3,1fr);grid-auto-rows:80px;gap:0.5rem;background:var(--code-bg);padding:0.75rem;border-radius:6px;">
+  <div style="grid-column:span 2;grid-row:span 2;background:linear-gradient(135deg,#6366f1,#a78bfa);color:#fff;padding:0.75rem;border-radius:6px;display:flex;align-items:flex-end;">
+    <div><div style="font-weight:700;font-size:0.95rem;">Featured Article</div><div style="font-size:0.7rem;opacity:0.8;">The big story takes the spotlight</div></div>
+  </div>
+  <div style="background:#8b5cf6;color:#fff;padding:0.5rem;border-radius:6px;font-size:0.75rem;display:flex;align-items:flex-end;">Article 2</div>
+  <div style="background:#a78bfa;color:#fff;padding:0.5rem;border-radius:6px;font-size:0.75rem;display:flex;align-items:flex-end;">Article 3</div>
+  <div style="background:#c4b5fd;color:#1a1a2e;padding:0.5rem;border-radius:6px;font-size:0.75rem;display:flex;align-items:flex-end;">Article 4</div>
+  <div style="background:#ddd6fe;color:#1a1a2e;padding:0.5rem;border-radius:6px;font-size:0.75rem;display:flex;align-items:flex-end;">Article 5</div>
+  <div style="background:#ede9fe;color:#1a1a2e;padding:0.5rem;border-radius:6px;font-size:0.75rem;display:flex;align-items:flex-end;">Article 6</div>
+</div>
+</div>
+</section>
+
+<!-- ============================================ -->
+<!-- GRID VS FLEXBOX -->
+<!-- ============================================ -->
+<section id="grid-vs-flexbox" class="section">
+<h2>Grid vs Flexbox</h2>
+<p>They are complementary, not competing. Use both together for the best layouts.</p>
+
+<div style="overflow-x:auto;">
+<table style="width:100%;border-collapse:collapse;font-size:0.85rem;margin:1rem 0;">
+<thead>
+<tr style="border-bottom:2px solid var(--border);">
+  <th style="text-align:left;padding:0.75rem;font-weight:600;">Feature</th>
+  <th style="text-align:left;padding:0.75rem;font-weight:600;">Flexbox</th>
+  <th style="text-align:left;padding:0.75rem;font-weight:600;">Grid</th>
+</tr>
+</thead>
+<tbody>
+<tr style="border-bottom:1px solid var(--border);">
+  <td style="padding:0.6rem 0.75rem;font-weight:500;">Dimensions</td>
+  <td style="padding:0.6rem 0.75rem;">One-dimensional (row OR column)</td>
+  <td style="padding:0.6rem 0.75rem;">Two-dimensional (rows AND columns)</td>
+</tr>
+<tr style="border-bottom:1px solid var(--border);">
+  <td style="padding:0.6rem 0.75rem;font-weight:500;">Approach</td>
+  <td style="padding:0.6rem 0.75rem;">Content-first (items determine layout)</td>
+  <td style="padding:0.6rem 0.75rem;">Layout-first (grid defines the structure)</td>
+</tr>
+<tr style="border-bottom:1px solid var(--border);">
+  <td style="padding:0.6rem 0.75rem;font-weight:500;">Best for</td>
+  <td style="padding:0.6rem 0.75rem;">Components (navbars, card internals)</td>
+  <td style="padding:0.6rem 0.75rem;">Page layouts, card grids</td>
+</tr>
+<tr style="border-bottom:1px solid var(--border);">
+  <td style="padding:0.6rem 0.75rem;font-weight:500;">Item placement</td>
+  <td style="padding:0.6rem 0.75rem;">Sequential (source order)</td>
+  <td style="padding:0.6rem 0.75rem;">Anywhere on the grid</td>
+</tr>
+<tr style="border-bottom:1px solid var(--border);">
+  <td style="padding:0.6rem 0.75rem;font-weight:500;">Gap support</td>
+  <td style="padding:0.6rem 0.75rem;">Yes</td>
+  <td style="padding:0.6rem 0.75rem;">Yes</td>
+</tr>
+<tr style="border-bottom:1px solid var(--border);">
+  <td style="padding:0.6rem 0.75rem;font-weight:500;">Overlap items</td>
+  <td style="padding:0.6rem 0.75rem;">No (not natively)</td>
+  <td style="padding:0.6rem 0.75rem;">Yes (items can occupy same cells)</td>
+</tr>
+<tr>
+  <td style="padding:0.6rem 0.75rem;font-weight:500;">Dynamic # of items</td>
+  <td style="padding:0.6rem 0.75rem;">Handles naturally</td>
+  <td style="padding:0.6rem 0.75rem;">Use auto-fit / auto-fill</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<div class="callout tip"><div class="callout-title">The Best Practice</div><p>Use <strong>Grid</strong> for the overall page structure and macro layouts. Use <strong>Flexbox</strong> for component internals and one-dimensional alignment. They nest beautifully — a grid item can be a flex container, and vice versa.</p></div>
+</section>
+
+<!-- ============================================ -->
+<!-- GOTCHAS -->
+<!-- ============================================ -->
+<section id="gotchas" class="section">
+<h2>Gotchas</h2>
+
+<div class="callout gotcha"><div class="callout-title">Grid items stretch by default</div><p>Grid items default to <code>align-items: stretch</code> and <code>justify-items: stretch</code>, meaning they fill their entire cell. If your items look bigger than expected, this is why. Set explicit alignment to override.</p></div>
+
+<div class="callout gotcha"><div class="callout-title">repeat(auto-fit/auto-fill) needs minmax()</div><p>You cannot use <code>repeat(auto-fit, 1fr)</code> — it must be <code>repeat(auto-fit, minmax(200px, 1fr))</code>. The browser needs a minimum size to calculate how many tracks to create.</p></div>
+
+<div class="callout gotcha"><div class="callout-title">Percentage gaps can break layouts</div><p>Avoid using percentage values for <code>gap</code> in grid — browser support is inconsistent and calculations can be unpredictable. Use <code>rem</code>, <code>em</code>, or <code>px</code> instead.</p></div>
+
+<div class="callout gotcha"><div class="callout-title">Grid areas must form rectangles</div><p><code>grid-template-areas</code> only supports rectangular shapes. L-shaped or T-shaped areas are not valid and will break the layout silently.</p></div>
+
+<div class="callout gotcha"><div class="callout-title">min-width: 0 again</div><p>Just like flexbox, grid items have <code>min-width: auto</code> by default. Long text or content can overflow grid cells. Fix with <code>min-width: 0</code> or <code>overflow: hidden</code>.</p></div>
+</section>
+
+<!-- ============================================ -->
+<!-- PRO TIPS -->
+<!-- ============================================ -->
+<section id="pro-tips" class="section">
+<h2>Pro Tips</h2>
+
+<div class="callout tip"><div class="callout-title">The Holy Grail Layout in 5 Lines</div><p>A full page layout with header, footer, sidebar, and main content using grid-template-areas is the cleanest solution CSS has ever had for this classic problem.</p></div>
+
+<div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="sel">body</span> {
+  <span class="prop">display</span>: <span class="val">grid</span>;
+  <span class="prop">grid-template</span>: <span class="str">"header header"</span> <span class="val">auto</span>
+                  <span class="str">"nav    main"</span>   <span class="num">1fr</span>
+                  <span class="str">"footer footer"</span> <span class="val">auto</span>
+                  / <span class="num">250px</span> <span class="num">1fr</span>;
+  <span class="prop">min-height</span>: <span class="num">100vh</span>;
+}
+</pre></div>
+
+<div class="callout tip"><div class="callout-title">Subgrid (Modern Browsers)</div><p><code>subgrid</code> allows a grid item's children to align with the parent grid's tracks. Use <code>grid-template-columns: subgrid</code> or <code>grid-template-rows: subgrid</code> on a grid item that is also a grid container. This solves the card alignment problem beautifully.</p></div>
+
+<div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="sel">.card-grid</span> {
+  <span class="prop">display</span>: <span class="val">grid</span>;
+  <span class="prop">grid-template-columns</span>: <span class="fn">repeat</span>(<span class="num">3</span>, <span class="num">1fr</span>);
+  <span class="prop">gap</span>: <span class="num">1rem</span>;
+}
+<span class="sel">.card</span> {
+  <span class="prop">display</span>: <span class="val">grid</span>;
+  <span class="prop">grid-row</span>: <span class="val">span</span> <span class="num">3</span>;              <span class="cmt">/* card spans 3 parent rows */</span>
+  <span class="prop">grid-template-rows</span>: <span class="val">subgrid</span>;   <span class="cmt">/* aligns to parent row tracks */</span>
+}
+</pre></div>
+
+<div class="callout tip"><div class="callout-title">Debug with Browser DevTools</div><p>Both Chrome and Firefox have excellent Grid inspectors. In DevTools, click the grid badge next to any grid container to see an overlay of grid lines, areas, and track names. This is the fastest way to debug grid layouts.</p></div>
+
+<div class="callout tip"><div class="callout-title">Overlapping Items</div><p>Unlike flexbox, grid items can occupy the same cells and overlap. Combined with <code>z-index</code>, this enables creative layouts without absolute positioning.</p></div>
+</section>
+
+<div class="topic-nav"><a href="06-flexbox.html"><span class="label">Previous</span><span class="title">Flexbox</span></a><a href="08-responsive-design.html" class="next"><span class="label">Next</span><span class="title">Responsive Design</span></a></div></main>
+<script src="script.js"></script></body></html>

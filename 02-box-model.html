@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Box Model — CSS Reference Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div id="progress"></div>
+
+<header class="header">
+  <button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">&#9776;</button>
+  <h1><span>CSS</span> Reference Guide</h1>
+  <div class="header-nav"><a href="index.html">All Topics</a></div>
+  <button class="theme-toggle" onclick="toggleTheme()">&#9790; Dark</button>
+</header>
+
+<nav class="sidebar" id="sidebar">
+  <a href="index.html" class="nav-back">&#8592; All Topics</a>
+  <div class="nav-group">
+    <div class="nav-group-title">Box Model</div>
+    <a href="#what-is-the-box-model">What Is the Box Model</a>
+    <a href="#content-area">Content Area</a>
+    <a href="#padding">Padding</a>
+    <a href="#border">Border</a>
+    <a href="#border-radius">Border Radius</a>
+    <a href="#outline">Outline</a>
+    <a href="#margin">Margin</a>
+    <a href="#margin-collapsing">Margin Collapsing</a>
+    <a href="#box-sizing">box-sizing</a>
+    <a href="#display-and-box-model">Display &amp; the Box Model</a>
+    <a href="#gotchas-and-tips">Gotchas &amp; Pro Tips</a>
+  </div>
+</nav>
+
+<main class="main">
+
+<!-- ==================== PAGE HERO ==================== -->
+<div class="page-hero">
+  <h1>The <span>Box Model</span></h1>
+  <p>Every element rendered on a webpage is a rectangular box. The CSS Box Model defines how content, padding, border, and margin combine to determine the total space an element occupies. Mastering it is essential to controlling layout.</p>
+  <div class="tags">
+    <span class="tag">margin</span>
+    <span class="tag">padding</span>
+    <span class="tag">border</span>
+    <span class="tag">box-sizing</span>
+    <span class="tag">outline</span>
+    <span class="tag">border-radius</span>
+    <span class="tag">margin collapsing</span>
+  </div>
+</div>
+
+<!-- ==================== 1. WHAT IS THE BOX MODEL ==================== -->
+<div class="section" id="what-is-the-box-model">
+  <h2>What Is the Box Model</h2>
+  <p>In CSS, every element generates a rectangular box. The <strong>box model</strong> describes how four concentric areas stack around the element's content:</p>
+  <ol>
+    <li><strong>Content</strong> &mdash; The actual text, image, or child elements inside the box.</li>
+    <li><strong>Padding</strong> &mdash; Transparent space between the content and the border.</li>
+    <li><strong>Border</strong> &mdash; A visible (or invisible) line surrounding the padding.</li>
+    <li><strong>Margin</strong> &mdash; Transparent space outside the border that separates the element from its neighbors.</li>
+  </ol>
+
+  <h3>Visual Diagram</h3>
+  <p>Below is a fully interactive representation of the box model, built with nested <code>&lt;div&gt;</code> elements. Each colored layer corresponds to one area of the model.</p>
+
+  <div class="live-example">
+    <div class="live-example-label">Live Example &mdash; Box Model Diagram</div>
+    <div style="display:flex; justify-content:center;">
+      <div style="background:#e67e22; padding:28px; border-radius:8px; text-align:center; font-family:'Fira Code',monospace; font-size:.78rem; color:#fff; position:relative;">
+        <div style="position:absolute; top:6px; left:50%; transform:translateX(-50%); font-weight:700; text-transform:uppercase; letter-spacing:.08em; font-size:.65rem; opacity:.9;">Margin</div>
+        <div style="background:#3498db; padding:24px; border-radius:6px; position:relative;">
+          <div style="position:absolute; top:4px; left:50%; transform:translateX(-50%); font-weight:700; text-transform:uppercase; letter-spacing:.08em; font-size:.65rem; opacity:.9;">Border</div>
+          <div style="background:#2ecc71; padding:22px; border-radius:4px; position:relative;">
+            <div style="position:absolute; top:4px; left:50%; transform:translateX(-50%); font-weight:700; text-transform:uppercase; letter-spacing:.08em; font-size:.65rem; opacity:.9;">Padding</div>
+            <div style="background:#9b59b6; padding:28px 40px; border-radius:3px; font-weight:700; font-size:.9rem; letter-spacing:.04em;">
+              Content
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p style="text-align:center; margin-top:14px; font-size:.82rem; color:var(--text-muted);">
+      <span style="color:#e67e22;">&#9632; Margin</span> &nbsp;
+      <span style="color:#3498db;">&#9632; Border</span> &nbsp;
+      <span style="color:#2ecc71;">&#9632; Padding</span> &nbsp;
+      <span style="color:#9b59b6;">&#9632; Content</span>
+    </p>
+  </div>
+
+  <h3>Total Element Size Calculation</h3>
+  <p>Under the default <code>content-box</code> model, the total width and height of an element are calculated as:</p>
+
+  <div class="code-block"><div class="code-header"><span>Formula</span><button class="copy-btn">Copy</button></div><pre>Total Width  = margin-left + border-left + padding-left + width + padding-right + border-right + margin-right
+Total Height = margin-top + border-top + padding-top + height + padding-bottom + border-bottom + margin-bottom</pre></div>
+
+  <div class="live-example">
+    <div class="live-example-label">Live Example &mdash; Total Size Calculation</div>
+    <div style="display:flex; gap:24px; align-items:flex-start; flex-wrap:wrap;">
+      <div style="flex:1; min-width:200px;">
+        <div style="width:200px; padding:20px; border:5px solid var(--accent); margin:15px; background:var(--bg-code); color:var(--text); font-size:.82rem; font-family:var(--font-code);">
+          width: 200px<br>
+          padding: 20px<br>
+          border: 5px<br>
+          margin: 15px
+        </div>
+      </div>
+      <div style="flex:1; min-width:200px; font-size:.85rem; line-height:2;">
+        <strong>Rendered content width:</strong> 200px<br>
+        <strong>+ padding-left + padding-right:</strong> 20 + 20 = 40px<br>
+        <strong>+ border-left + border-right:</strong> 5 + 5 = 10px<br>
+        <strong>Visible box width:</strong> 250px<br>
+        <strong>+ margin-left + margin-right:</strong> 15 + 15 = 30px<br>
+        <strong>Total space occupied:</strong> 280px
+      </div>
+    </div>
+  </div>
+
+  <div class="callout info">
+    <div class="callout-title">DevTools Tip</div>
+    <p>All modern browsers display the box model visually in DevTools. Right-click an element, choose "Inspect", and look for the box model diagram in the Computed or Layout panel. Hover over the diagram sections to see each area highlighted on the page.</p>
+  </div>
+</div>
+
+<!-- ==================== 2. CONTENT AREA ==================== -->
+<div class="section" id="content-area">
+  <h2>Content Area</h2>
+  <p>The <strong>content area</strong> is the innermost part of the box model. It holds the element's actual content &mdash; text, images, or child elements. The size of the content area is controlled by the <code>width</code> and <code>height</code> properties, along with their <code>min-</code> and <code>max-</code> variants.</p>
+
+  <h3>width &amp; height</h3>
+  <p>These properties set explicit dimensions for the content area. By default (with <code>box-sizing: content-box</code>), they do <em>not</em> include padding or border.</p>
+
+  <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre><span class="sel">.box</span> {
+  <span class="prop">width</span>: <span class="num">300</span><span class="unit">px</span>;
+  <span class="prop">height</span>: <span class="num">150</span><span class="unit">px</span>;
+}
+
+<span class="cmt">/* Auto is the default &mdash; block elements expand to fill parent width */</span>
+<span class="sel">.auto-box</span> {
+  <span class="prop">width</span>: <span class="val">auto</span>;   <span class="cmt">/* default */</span>
+  <span class="prop">height</span>: <span class="val">auto</span>;  <span class="cmt">/* grows with content */</span>
+}</pre></div>
+
+  <h3>min-width, max-width, min-height, max-height</h3>
+  <p>These constrain the box's dimensions, creating flexible but bounded layouts. They are essential for responsive design.</p>
+
+  <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre><span class="sel">.responsive-card</span> {
+  <span class="prop">width</span>: <span class="num">100</span><span class="unit">%</span>;
+  <span class="prop">max-width</span>: <span class="num">600</span><span class="unit">px</span>;   <span class="cmt">/* never wider than 600px */</span>
+  <span class="prop">min-width</span>: <span class="num">280</span><span class="unit">px</span>;   <span class="cmt">/* never narrower than 280px */</span>
+}
+
+<span class="sel">.text-container</span> {
+  <span class="prop">min-height</span>: <span class="num">200</span><span class="unit">px</span>;  <span class="cmt">/* at least this tall */</span>
+  <span class="prop">max-height</span>: <span class="num">80</span><span class="unit">vh</span>;   <span class="cmt">/* at most 80% of viewport */</span>
+  <span class="prop">overflow-y</span>: <span class="val">auto</span>;   <span class="cmt">/* scroll if content overflows */</span>
+}</pre></div>
+
+  <div class="live-example">
+    <div class="live-example-label">Live Example &mdash; min/max Constraints</div>
+    <div style="display:flex; gap:16px; flex-wrap:wrap;">
+      <div style="width:100%; max-width:300px; min-width:120px; min-height:80px; background:var(--bg-code); border:2px solid var(--accent); border-radius:6px; padding:14px; font-size:.82rem; font-family:var(--font-code); color:var(--text);">
+        width: 100%<br>max-width: 300px<br>min-width: 120px<br>min-height: 80px
+      </div>
+      <div style="width:50%; max-width:200px; height:auto; max-height:100px; overflow:auto; background:var(--bg-code); border:2px solid var(--accent2); border-radius:6px; padding:14px; font-size:.82rem; font-family:var(--font-code); color:var(--text);">
+        width: 50%<br>max-width: 200px<br>max-height: 100px<br>overflow: auto<br>(resize your browser to see these constraints in action)
+      </div>
+    </div>
+  </div>
+
+  <table>
+    <thead>
+      <tr><th>Property</th><th>Default</th><th>Applies To</th><th>Description</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>width</code></td><td><code>auto</code></td><td>All except inline</td><td>Sets the content width</td></tr>
+      <tr><td><code>height</code></td><td><code>auto</code></td><td>All except inline</td><td>Sets the content height</td></tr>
+      <tr><td><code>min-width</code></td><td><code>auto</code></td><td>All except inline</td><td>Minimum content width</td></tr>
+      <tr><td><code>max-width</code></td><td><code>none</code></td><td>All except inline</td><td>Maximum content width</td></tr>
+      <tr><td><code>min-height</code></td><td><code>auto</code></td><td>All except inline</td><td>Minimum content height</td></tr>
+      <tr><td><code>max-height</code></td><td><code>none</code></td><td>All except inline</td><td>Maximum content height</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout tip">
+    <div class="callout-title">Pro Tip</div>
+    <p>Prefer <code>max-width: 100%</code> on images and media to prevent them from overflowing their container: <code>img { max-width: 100%; height: auto; }</code>. This is one of the most common responsive patterns.</p>
+  </div>
+</div>
+
+<!-- ==================== 3. PADDING ==================== -->
+<div class="section" id="padding">
+  <h2>Padding</h2>
+  <p><strong>Padding</strong> is the transparent space between the content area and the border. It pushes the content inward. Padding is always non-negative (you cannot use negative values) and inherits the element's background color.</p>
+
+  <h3>Individual Padding Properties</h3>
+  <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre><span class="sel">.box</span> {
+  <span class="prop">padding-top</span>: <span class="num">20</span><span class="unit">px</span>;
+  <span class="prop">padding-right</span>: <span class="num">30</span><span class="unit">px</span>;
+  <span class="prop">padding-bottom</span>: <span class="num">20</span><span class="unit">px</span>;
+  <span class="prop">padding-left</span>: <span class="num">30</span><span class="unit">px</span>;
+}</pre></div>
+
+  <h3>Shorthand &mdash; padding</h3>
+  <p>The <code>padding</code> shorthand accepts 1 to 4 values, applied clockwise starting from the top:</p>
+
+  <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre><span class="cmt">/* 1 value: all four sides */</span>
+<span class="sel">.a</span> { <span class="prop">padding</span>: <span class="num">20</span><span class="unit">px</span>; }
+<span class="cmt">/* top=20  right=20  bottom=20  left=20 */</span>
+
+<span class="cmt">/* 2 values: vertical | horizontal */</span>
+<span class="sel">.b</span> { <span class="prop">padding</span>: <span class="num">10</span><span class="unit">px</span> <span class="num">30</span><span class="unit">px</span>; }
+<span class="cmt">/* top=10  right=30  bottom=10  left=30 */</span>
+
+<span class="cmt">/* 3 values: top | horizontal | bottom */</span>
+<span class="sel">.c</span> { <span class="prop">padding</span>: <span class="num">10</span><span class="unit">px</span> <span class="num">30</span><span class="unit">px</span> <span class="num">20</span><span class="unit">px</span>; }
+<span class="cmt">/* top=10  right=30  bottom=20  left=30 */</span>
+
+<span class="cmt">/* 4 values: top | right | bottom | left (clockwise) */</span>
+<span class="sel">.d</span> { <span class="prop">padding</span>: <span class="num">10</span><span class="unit">px</span> <span class="num">20</span><span class="unit">px</span> <span class="num">30</span><span class="unit">px</span> <span class="num">40</span><span class="unit">px</span>; }
+<span class="cmt">/* top=10  right=20  bottom=30  left=40 */</span></pre></div>
+
+  <div class="live-example">
+    <div class="live-example-label">Live Example &mdash; Padding Shorthand Values</div>
+    <div style="display:flex; gap:16px; flex-wrap:wrap;">
+      <div style="background:var(--accent); border-radius:6px; color:#fff; font-size:.75rem; font-family:var(--font-code);">
+        <div style="padding:20px; background:rgba(0,0,0,.3); border-radius:6px;">padding: 20px<br>(all sides equal)</div>
+      </div>
+      <div style="background:var(--accent2); border-radius:6px; color:#fff; font-size:.75rem; font-family:var(--font-code);">
+        <div style="padding:10px 40px; background:rgba(0,0,0,.3); border-radius:6px;">padding: 10px 40px<br>(vertical | horizontal)</div>
+      </div>
+      <div style="background:#2ecc71; border-radius:6px; color:#fff; font-size:.75rem; font-family:var(--font-code);">
+        <div style="padding:8px 30px 24px; background:rgba(0,0,0,.3); border-radius:6px;">padding: 8px 30px 24px<br>(top | horiz | bottom)</div>
+      </div>
+      <div style="background:#e67e22; border-radius:6px; color:#fff; font-size:.75rem; font-family:var(--font-code);">
+        <div style="padding:5px 15px 25px 40px; background:rgba(0,0,0,.3); border-radius:6px;">padding: 5px 15px 25px 40px<br>(top | right | bottom | left)</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Percentage Padding</h3>
+  <p>When you use a percentage value for padding, it is always calculated relative to the <strong>width</strong> of the containing block &mdash; even for vertical padding (<code>padding-top</code> and <code>padding-bottom</code>). This quirk is actually useful for creating aspect-ratio boxes.</p>
+
+  <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre><span class="cmt">/* Aspect ratio trick: 16:9 responsive box */</span>
+<span class="sel">.aspect-16-9</span> {
+  <span class="prop">width</span>: <span class="num">100</span><span class="unit">%</span>;
+  <span class="prop">padding-top</span>: <span class="num">56.25</span><span class="unit">%</span>;  <span class="cmt">/* 9/16 = 0.5625 = 56.25% */</span>
+  <span class="prop">height</span>: <span class="num">0</span>;
+  <span class="prop">position</span>: <span class="val">relative</span>;
+}
+
+<span class="sel">.aspect-16-9</span> &gt; <span class="sel">*</span> {
+  <span class="prop">position</span>: <span class="val">absolute</span>;
+  <span class="prop">inset</span>: <span class="num">0</span>;
+}</pre></div>
+
+  <div class="live-example">
+    <div class="live-example-label">Live Example &mdash; Percentage Padding (16:9 Aspect Ratio)</div>
+    <div style="width:100%; max-width:400px; padding-top:56.25%; height:0; position:relative; background:linear-gradient(135deg, var(--accent), var(--accent2)); border-radius:8px; overflow:hidden;">
+      <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; color:#fff; font-family:var(--font-code); font-size:.85rem; font-weight:600;">
+        16 : 9 Aspect Ratio Box<br>
+        <span style="font-size:.72rem; opacity:.8;">(resize the window to see it scale)</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout gotcha">
+    <div class="callout-title">Gotcha: Percentage Padding Direction</div>
+    <p><code>padding-top: 50%</code> and <code>padding-bottom: 50%</code> are resolved against the element's <em>containing block width</em>, not height. This catches many developers off guard. Modern CSS offers <code>aspect-ratio</code> as a cleaner alternative for most use cases.</p>
+  </div>
+</div>
+
+<!-- ==================== 4. BORDER ==================== -->
+<div class="section" id="border">
+  <h2>Border</h2>
+  <p>The <strong>border</strong> wraps around the padding and content. Unlike padding and margin, borders are <em>visible</em> by default (when given a style). A border has three sub-properties: <code>border-width</code>, <code>border-style</code>, and <code>border-color</code>.</p>
+
+  <h3>border-width</h3>
+  <p>Sets the thickness of the border. Accepts length values or keywords (<code>thin</code>, <code>medium</code>, <code>thick</code>).</p>
+
+  <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre><span class="sel">.box</span> {
+  <span class="prop">border-width</span>: <span class="num">2</span><span class="unit">px</span>;              <span class="cmt">/* all sides */</span>
+  <span class="prop">border-width</span>: <span class="num">1</span><span class="unit">px</span> <span class="num">3</span><span class="unit">px</span>;           <span class="cmt">/* vertical | horizontal */</span>
+  <span class="prop">border-width</span>: <span class="num">1</span><span class="unit">px</span> <span class="num">2</span><span class="unit">px</span> <span class="num">3</span><span class="unit">px</span> <span class="num">4</span><span class="unit">px</span>;  <span class="cmt">/* top | right | bottom | left */</span>
+}
+
+<span class="cmt">/* Individual sides */</span>
+<span class="sel">.box</span> {
+  <span class="prop">border-top-width</span>: <span class="num">3</span><span class="unit">px</span>;
+  <span class="prop">border-right-width</span>: <span class="num">1</span><span class="unit">px</span>;
+  <span class="prop">border-bottom-width</span>: <span class="num">3</span><span class="unit">px</span>;
+  <span class="prop">border-left-width</span>: <span class="num">1</span><span class="unit">px</span>;
+}</pre></div>
+
+  <h3>border-style</h3>
+  <p>Defines the line pattern of the border. The border is <strong>invisible</strong> until you set a style (default is <code>none</code>). CSS defines ten border styles:</p>
+
+  <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre><span class="sel">.box</span> { <span class="prop">border-style</span>: <span class="val">solid</span>; }    <span class="cmt">/* continuous line */</span>
+<span class="sel">.box</span> { <span class="prop">border-style</span>: <span class="val">dashed</span>; }   <span class="cmt">/* series of dashes */</span>
+<span class="sel">.box</span> { <span class="prop">border-style</span>: <span class="val">dotted</span>; }   <span class="cmt">/* series of dots */</span>
+<span class="sel">.box</span> { <span class="prop">border-style</span>: <span class="val">double</span>; }   <span class="cmt">/* two parallel lines */</span>
+<span class="sel">.box</span> { <span class="prop">border-style</span>: <span class="val">groove</span>; }   <span class="cmt">/* carved into the page */</span>
+<span class="sel">.box</span> { <span class="prop">border-style</span>: <span class="val">ridge</span>; }    <span class="cmt">/* opposite of groove */</span>
+<span class="sel">.box</span> { <span class="prop">border-style</span>: <span class="val">inset</span>; }    <span class="cmt">/* sunken appearance */</span>
+<span class="sel">.box</span> { <span class="prop">border-style</span>: <span class="val">outset</span>; }   <span class="cmt">/* raised appearance */</span>
+<span class="sel">.box</span> { <span class="prop">border-style</span>: <span class="val">none</span>; }     <span class="cmt">/* no border (default) */</span>
+<span class="sel">.box</span> { <span class="prop">border-style</span>: <span class="val">hidden</span>; }   <span class="cmt">/* same as none, except in table border collapsing */</span></pre></div>
+
+  <div class="live-example">
+    <div class="live-example-label">Live Example &mdash; All Border Styles</div>
+    <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(180px,1fr)); gap:14px;">
+      <div style="border:4px solid var(--accent); padding:14px; border-radius:4px; font-size:.78rem; font-family:var(--font-code); color:var(--text); text-align:center; background:var(--bg-code);">solid</div>
+      <div style="border:4px dashed var(--accent); padding:14px; border-radius:4px; font-size:.78rem; font-family:var(--font-code); color:var(--text); text-align:center; background:var(--bg-code);">dashed</div>
+      <div style="border:4px dotted var(--accent); padding:14px; border-radius:4px; font-size:.78rem; font-family:var(--font-code); color:var(--text); text-align:center; background:var(--bg-code);">dotted</div>
+      <div style="border:6px double var(--accent); padding:14px; border-radius:4px; font-size:.78rem; font-family:var(--font-code); color:var(--text); text-align:center; background:var(--bg-code);">double</div>
+      <div style="border:6px groove #888; padding:14px; border-radius:4px; font-size:.78rem; font-family:var(--font-code); color:var(--text); text-align:center; background:var(--bg-code);">groove</div>
+      <div style="border:6px ridge #888; padding:14px; border-radius:4px; font-size:.78rem; font-family:var(--font-code); color:var(--text); text-align:center; background:var(--bg-code);">ridge</div>
+      <div style="border:6px inset #888; padding:14px; border-radius:4px; font-size:.78rem; font-family:var(--font-code); color:var(--text); text-align:center; background:var(--bg-code);">inset</div>
+      <div style="border:6px outset #888; padding:14px; border-radius:4px; font-size:.78rem; font-family:var(--font-code); color:var(--text); text-align:center; background:var(--bg-code);">outset</div>
+      <div style="border:4px none var(--accent); padding:14px; border-radius:4px; font-size:.78rem; font-family:var(--font-code); color:var(--text); text-align:center; background:var(--bg-code);">none (invisible)</div>
+      <div style="border:4px hidden var(--accent); padding:14px; border-radius:4px; font-size:.78rem; font-family:var(--font-code); color:var(--text); text-align:center; background:var(--bg-code);">hidden (invisible)</div>
+    </div>
+  </div>
+
+  <h3>border-color</h3>
+  <p>Sets the color of the border. Defaults to the element's <code>color</code> property value (i.e., <code>currentColor</code>).</p>
+
+  <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre><span class="sel">.box</span> {
+  <span class="prop">border-color</span>: <span class="val">#e74c3c</span>;                          <span class="cmt">/* all sides */</span>
+  <span class="prop">border-color</span>: <span class="val">#e74c3c</span> <span class="val">#3498db</span>;                 <span class="cmt">/* vertical | horizontal */</span>
+  <span class="prop">border-color</span>: <span class="val">#e74c3c</span> <span class="val">#3498db</span> <span class="val">#2ecc71</span> <span class="val">#e67e22</span>; <span class="cmt">/* top | right | bottom | left */</span>
+}</pre></div>
+
+  <h3>border Shorthand</h3>
+  <p>The <code>border</code> shorthand sets width, style, and color in a single declaration. Order does not matter, but style is required for the border to appear.</p>
+
+  <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre><span class="sel">.box</span> {
+  <span class="prop">border</span>: <span class="num">2</span><span class="unit">px</span> <span class="val">solid</span> <span class="val">#3498db</span>;
+}
+
+<span class="cmt">/* Individual side shorthands */</span>
+<span class="sel">.box</span> {
+  <span class="prop">border-top</span>: <span class="num">3</span><span class="unit">px</span> <span class="val">dashed</span> <span class="val">#e74c3c</span>;
+  <span class="prop">border-right</span>: <span class="num">1</span><span class="unit">px</span> <span class="val">solid</span> <span class="val">#ccc</span>;
+  <span class="prop">border-bottom</span>: <span class="num">3</span><span class="unit">px</span> <span class="val">double</span> <span class="val">#2ecc71</span>;
+  <span class="prop">border-left</span>: <span class="num">1</span><span class="unit">px</span> <span class="val">solid</span> <span class="val">#ccc</span>;
+}</pre></div>
+
+  <div class="live-example">
+    <div class="live-example-label">Live Example &mdash; Mixed Border Sides</div>
+    <div style="display:flex; gap:20px; flex-wrap:wrap; align-items:center;">
+      <div style="border:3px solid var(--accent); padding:20px; font-size:.8rem; font-family:var(--font-code); color:var(--text); background:var(--bg-code); border-radius:6px;">
+        border: 3px solid
+      </div>
+      <div style="border-top:4px solid #e74c3c; border-right:4px dashed #3498db; border-bottom:4px dotted #2ecc71; border-left:4px double #e67e22; padding:20px; font-size:.8rem; font-family:var(--font-code); color:var(--text); background:var(--bg-code);">
+        each side different
+      </div>
+      <div style="border:none; border-left:4px solid var(--accent); padding:12px 20px; font-size:.8rem; font-family:var(--font-code); color:var(--text); background:var(--bg-code);">
+        border-left only<br>(blockquote style)
+      </div>
+      <div style="border:none; border-bottom:2px solid var(--accent2); padding:12px 20px; font-size:.8rem; font-family:var(--font-code); color:var(--text); background:var(--bg-code);">
+        border-bottom only<br>(underline style)
+      </div>
+    </div>
+  </div>
+
+  <div class="callout info">
+    <div class="callout-title">Note: border vs. border-top overrides</div>
+    <p>The <code>border</code> shorthand resets all four sides. If you write <code>border: 2px solid red; border-top: none;</code>, it works. But if you reverse the order to <code>border-top: none; border: 2px solid red;</code>, the top border reappears because the shorthand overwrites the individual property. Always put the shorthand first, then override specific sides.</p>
+  </div>
+</div>
+
+<!-- ==================== 5. BORDER-RADIUS ==================== -->
+<div class="section" id="border-radius">
+  <h2>Border Radius</h2>
+  <p>The <code>border-radius</code> property rounds the corners of an element's outer border edge. It is purely visual and does not affect the box model calculations.</p>
+
+  <h3>Single Value</h3>
+  <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre><span class="sel">.rounded</span> {
+  <span class="prop">border-radius</span>: <span class="num">8</span><span class="unit">px</span>;   <span class="cmt">/* all four corners */</span>
+}
+
+<span class="sel">.more-rounded</span> {
+  <span class="prop">border-radius</span>: <span class="num">20</span><span class="unit">px</span>;  <span class="cmt">/* more pronounced rounding */</span>
+}</pre></div>
+
+  <h3>Four Values (per corner)</h3>
+  <p>Values go clockwise: top-left, top-right, bottom-right, bottom-left.</p>
+  <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre><span class="sel">.custom-corners</span> {
+  <span class="prop">border-radius</span>: <span class="num">10</span><span class="unit">px</span> <span class="num">20</span><span class="unit">px</span> <span class="num">30</span><span class="unit">px</span> <span class="num">40</span><span class="unit">px</span>;
+  <span class="cmt">/* top-left: 10px  top-right: 20px  bottom-right: 30px  bottom-left: 40px */</span>
+}
+
+<span class="cmt">/* Individual corner properties */</span>
+<span class="sel">.box</span> {
+  <span class="prop">border-top-left-radius</span>: <span class="num">10</span><span class="unit">px</span>;
+  <span class="prop">border-top-right-radius</span>: <span class="num">20</span><span class="unit">px</span>;
+  <span class="prop">border-bottom-right-radius</span>: <span class="num">30</span><span class="unit">px</span>;
+  <span class="prop">border-bottom-left-radius</span>: <span class="num">0</span>;
+}</pre></div>
+
+  <h3>Elliptical Radii with /</h3>
+  <p>You can specify separate horizontal and vertical radii using a <code>/</code> separator, creating elliptical curves instead of circular ones.</p>
+  <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre><span class="sel">.elliptical</span> {
+  <span class="prop">border-radius</span>: <span class="num">50</span><span class="unit">px</span> / <span class="num">20</span><span class="unit">px</span>;
+  <span class="cmt">/* horizontal-radius: 50px  vertical-radius: 20px */</span>
+}
+
+<span class="sel">.organic</span> {
+  <span class="prop">border-radius</span>: <span class="num">30</span><span class="unit">%</span> <span class="num">70</span><span class="unit">%</span> <span class="num">70</span><span class="unit">%</span> <span class="num">30</span><span class="unit">%</span> / <span class="num">30</span><span class="unit">%</span> <span class="num">30</span><span class="unit">%</span> <span class="num">70</span><span class="unit">%</span> <span class="num">70</span><span class="unit">%</span>;
+  <span class="cmt">/* creates a blob / organic shape */</span>
+}</pre></div>
+
+  <h3>Circles and Pills</h3>
+  <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre><span class="cmt">/* Perfect circle (equal width and height required) */</span>
+<span class="sel">.circle</span> {
+  <span class="prop">width</span>: <span class="num">100</span><span class="unit">px</span>;
+  <span class="prop">height</span>: <span class="num">100</span><span class="unit">px</span>;
+  <span class="prop">border-radius</span>: <span class="num">50</span><span class="unit">%</span>;
+}
+
+<span class="cmt">/* Pill shape (works with any width) */</span>
+<span class="sel">.pill</span> {
+  <span class="prop">padding</span>: <span class="num">8</span><span class="unit">px</span> <span class="num">24</span><span class="unit">px</span>;
+  <span class="prop">border-radius</span>: <span class="num">9999</span><span class="unit">px</span>;  <span class="cmt">/* any very large value works */</span>
+}</pre></div>
+
+  <div class="live-example">
+    <div class="live-example-label">Live Example &mdash; Border Radius Variations</div>
+    <div style="display:flex; gap:20px; flex-wrap:wrap; align-items:center;">
+      <div style="width:80px; height:80px; background:var(--accent); border-radius:8px; display:flex; align-items:center; justify-content:center; color:#fff; font-size:.7rem; font-family:var(--font-code);">8px</div>
+      <div style="width:80px; height:80px; background:var(--accent); border-radius:20px; display:flex; align-items:center; justify-content:center; color:#fff; font-size:.7rem; font-family:var(--font-code);">20px</div>
+      <div style="width:80px; height:80px; background:var(--accent); border-radius:50%; display:flex; align-items:center; justify-content:center; color:#fff; font-size:.7rem; font-family:var(--font-code);">50%<br>circle</div>
+      <div style="padding:10px 30px; background:var(--accent2); border-radius:9999px; display:inline-flex; align-items:center; justify-content:center; color:#fff; font-size:.7rem; font-family:var(--font-code);">pill shape</div>
+      <div style="width:80px; height:80px; background:#2ecc71; border-radius:10px 30px 10px 30px; display:flex; align-items:center; justify-content:center; color:#fff; font-size:.65rem; font-family:var(--font-code); text-align:center;">10px 30px<br>10px 30px</div>
+      <div style="width:120px; height:80px; background:#e67e22; border-radius:50% / 30%; display:flex; align-items:center; justify-content:center; color:#fff; font-size:.65rem; font-family:var(--font-code); text-align:center;">elliptical<br>50% / 30%</div>
+      <div style="width:100px; height:100px; background:linear-gradient(135deg, var(--accent), var(--accent2)); border-radius:30% 70% 70% 30% / 30% 30% 70% 70%; display:flex; align-items:center; justify-content:center; color:#fff; font-size:.65rem; font-family:var(--font-code); text-align:center;">organic<br>blob</div>
+    </div>
+  </div>
+
+  <div class="callout tip">
+    <div class="callout-title">Tip: 50% vs large pixel values</div>
+    <p><code>border-radius: 50%</code> creates a circle only when the element is a square (equal width and height). For non-square elements, <code>50%</code> creates an ellipse. Use a large pixel value like <code>9999px</code> for pill-shaped buttons where the width varies.</p>
+  </div>
+</div>
+
+<!-- ==================== 6. OUTLINE ==================== -->
+<div class="section" id="outline">
+  <h2>Outline</h2>
+  <p>An <strong>outline</strong> is a line drawn <em>outside</em> the border edge. Unlike borders, outlines <strong>do not take up space</strong> in the layout and <strong>do not affect</strong> the box model. They can overlap adjacent content.</p>
+
+  <h3>Outline vs Border</h3>
+  <table>
+    <thead><tr><th>Feature</th><th>Border</th><th>Outline</th></tr></thead>
+    <tbody>
+      <tr><td>Affects layout / box size</td><td>Yes</td><td>No</td></tr>
+      <tr><td>Can differ per side</td><td>Yes</td><td>No (uniform on all sides)</td></tr>
+      <tr><td>Follows border-radius</td><td>Yes</td><td>Yes (modern browsers)</td></tr>
+      <tr><td>Can be offset</td><td>No</td><td>Yes (<code>outline-offset</code>)</td></tr>
+      <tr><td>Part of box model</td><td>Yes</td><td>No</td></tr>
+    </tbody>
+  </table>
+
+  <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre><span class="sel">.box</span> {
+  <span class="prop">outline</span>: <span class="num">3</span><span class="unit">px</span> <span class="val">solid</span> <span class="val">#e74c3c</span>;
+  <span class="prop">outline-offset</span>: <span class="num">5</span><span class="unit">px</span>;  <span class="cmt">/* space between border and outline */</span>
+}
+
+<span class="cmt">/* Individual properties */</span>
+<span class="sel">.box</span> {
+  <span class="prop">outline-width</span>: <span class="num">2</span><span class="unit">px</span>;
+  <span class="prop">outline-style</span>: <span class="val">dashed</span>;
+  <span class="prop">outline-color</span>: <span class="val">#3498db</span>;
+  <span class="prop">outline-offset</span>: <span class="num">4</span><span class="unit">px</span>;
+}</pre></div>
+
+  <div class="live-example">
+    <div class="live-example-label">Live Example &mdash; Outline vs Border</div>
+    <div style="display:flex; gap:40px; flex-wrap:wrap; align-items:flex-start;">
+      <div style="text-align:center;">
+        <div style="width:120px; height:80px; border:3px solid var(--accent); background:var(--bg-code); display:flex; align-items:center; justify-content:center; font-size:.75rem; font-family:var(--font-code); color:var(--text); border-radius:8px;">border</div>
+        <p style="font-size:.72rem; color:var(--text-muted); margin-top:8px;">Takes up layout space</p>
+      </div>
+      <div style="text-align:center;">
+        <div style="width:120px; height:80px; outline:3px solid #e74c3c; background:var(--bg-code); display:flex; align-items:center; justify-content:center; font-size:.75rem; font-family:var(--font-code); color:var(--text); border-radius:8px;">outline</div>
+        <p style="font-size:.72rem; color:var(--text-muted); margin-top:8px;">Does NOT take up space</p>
+      </div>
+      <div style="text-align:center;">
+        <div style="width:120px; height:80px; outline:3px dashed #2ecc71; outline-offset:6px; background:var(--bg-code); display:flex; align-items:center; justify-content:center; font-size:.75rem; font-family:var(--font-code); color:var(--text); border-radius:8px;">outline-offset<br>6px</div>
+        <p style="font-size:.72rem; color:var(--text-muted); margin-top:8px;">Pushed outward from box</p>
+      </div>
+      <div style="text-align:center;">
+        <div style="width:120px; height:80px; outline:3px solid #e67e22; outline-offset:-8px; background:var(--bg-code); display:flex; align-items:center; justify-content:center; font-size:.75rem; font-family:var(--font-code); color:var(--text); border-radius:8px;">negative<br>offset</div>
+        <p style="font-size:.72rem; color:var(--text-muted); margin-top:8px;">Negative offset goes inward</p>
+      </div>
+    </div>
+  </div>
+
+  <h3>Accessibility and Focus Rings</h3>
+  <p>Outlines are critical for keyboard accessibility. Browsers show a default outline when elements are focused via keyboard. <strong>Never remove the outline without providing an alternative visual indicator.</strong></p>
+
+  <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre><span class="cmt">/* WRONG &mdash; removes all focus indicators */</span>
+<span class="sel">*:focus</span> {
+  <span class="prop">outline</span>: <span class="val">none</span>;  <span class="cmt">/* Don't do this! */</span>
+}
+
+<span class="cmt">/* CORRECT &mdash; custom focus styles */</span>
+<span class="sel">*:focus-visible</span> {
+  <span class="prop">outline</span>: <span class="num">2</span><span class="unit">px</span> <span class="val">solid</span> <span class="val">#6c8cff</span>;
+  <span class="prop">outline-offset</span>: <span class="num">2</span><span class="unit">px</span>;
+}
+
+<span class="cmt">/* Hide outline for mouse clicks, show for keyboard */</span>
+<span class="sel">button:focus:not(:focus-visible)</span> {
+  <span class="prop">outline</span>: <span class="val">none</span>;
+}
+<span class="sel">button:focus-visible</span> {
+  <span class="prop">outline</span>: <span class="num">3</span><span class="unit">px</span> <span class="val">solid</span> <span class="val">#6c8cff</span>;
+  <span class="prop">outline-offset</span>: <span class="num">2</span><span class="unit">px</span>;
+  <span class="prop">border-radius</span>: <span class="num">4</span><span class="unit">px</span>;
+}</pre></div>
+
+  <div class="live-example">
+    <div class="live-example-label">Live Example &mdash; Focus Ring Demo (click and Tab through these)</div>
+    <div style="display:flex; gap:12px; flex-wrap:wrap;">
+      <button style="padding:10px 24px; border:1px solid var(--border); background:var(--bg-code); color:var(--text); border-radius:6px; cursor:pointer; font-family:var(--font-body); font-size:.85rem;">Button 1</button>
+      <button style="padding:10px 24px; border:1px solid var(--border); background:var(--bg-code); color:var(--text); border-radius:6px; cursor:pointer; font-family:var(--font-body); font-size:.85rem;">Button 2</button>
+      <input type="text" placeholder="Tab here to see focus" style="padding:10px 16px; border:1px solid var(--border); background:var(--bg-code); color:var(--text); border-radius:6px; font-family:var(--font-body); font-size:.85rem; width:200px;">
+    </div>
+    <p style="font-size:.75rem; color:var(--text-muted); margin-top:10px;">Press Tab to cycle through these elements and observe the browser's default focus ring (outline).</p>
+  </div>
+
+  <div class="callout gotcha">
+    <div class="callout-title">Accessibility Warning</div>
+    <p>Removing <code>outline</code> on interactive elements without providing an alternative (such as <code>box-shadow</code> or a border change) makes your site unusable for keyboard-only users. Use <code>:focus-visible</code> to customize focus styles without harming accessibility.</p>
+  </div>
+</div>
+
+<!-- ==================== 7. MARGIN ==================== -->
+<div class="section" id="margin">
+  <h2>Margin</h2>
+  <p><strong>Margin</strong> is the outermost layer of the box model &mdash; the transparent space outside the border that separates an element from its neighbors. Unlike padding, margins can be <strong>negative</strong> and can <strong>collapse</strong> with adjacent margins.</p>
+
+  <h3>Individual Properties &amp; Shorthand</h3>
+  <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre><span class="cmt">/* Individual sides */</span>
+<span class="sel">.box</span> {
+  <span class="prop">margin-top</span>: <span class="num">20</span><span class="unit">px</span>;
+  <span class="prop">margin-right</span>: <span class="num">15</span><span class="unit">px</span>;
+  <span class="prop">margin-bottom</span>: <span class="num">20</span><span class="unit">px</span>;
+  <span class="prop">margin-left</span>: <span class="num">15</span><span class="unit">px</span>;
+}
+
+<span class="cmt">/* Shorthand (same rules as padding: 1/2/3/4 values) */</span>
+<span class="sel">.a</span> { <span class="prop">margin</span>: <span class="num">20</span><span class="unit">px</span>; }                              <span class="cmt">/* all four sides */</span>
+<span class="sel">.b</span> { <span class="prop">margin</span>: <span class="num">10</span><span class="unit">px</span> <span class="num">30</span><span class="unit">px</span>; }                         <span class="cmt">/* vertical | horizontal */</span>
+<span class="sel">.c</span> { <span class="prop">margin</span>: <span class="num">10</span><span class="unit">px</span> <span class="num">30</span><span class="unit">px</span> <span class="num">20</span><span class="unit">px</span>; }                   <span class="cmt">/* top | horizontal | bottom */</span>
+<span class="sel">.d</span> { <span class="prop">margin</span>: <span class="num">10</span><span class="unit">px</span> <span class="num">20</span><span class="unit">px</span> <span class="num">30</span><span class="unit">px</span> <span class="num">40</span><span class="unit">px</span>; }             <span class="cmt">/* top | right | bottom | left */</span></pre></div>
+
+  <h3>Auto Centering</h3>
+  <p>Setting <code>margin-left</code> and <code>margin-right</code> to <code>auto</code> horizontally centers a <strong>block-level element with a declared width</strong>. This is one of the most fundamental centering techniques in CSS.</p>
+
+  <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre><span class="sel">.centered</span> {
+  <span class="prop">width</span>: <span class="num">600</span><span class="unit">px</span>;      <span class="cmt">/* must have an explicit width */</span>
+  <span class="prop">margin</span>: <span class="num">0</span> <span class="val">auto</span>;    <span class="cmt">/* top/bottom=0, left/right=auto */</span>
+}
+
+<span class="cmt">/* Also works with max-width for responsive centering */</span>
+<span class="sel">.responsive-centered</span> {
+  <span class="prop">max-width</span>: <span class="num">800</span><span class="unit">px</span>;
+  <span class="prop">margin-inline</span>: <span class="val">auto</span>;  <span class="cmt">/* modern logical property */</span>
+}</pre></div>
+
+  <div class="live-example">
+    <div class="live-example-label">Live Example &mdash; margin: auto Centering</div>
+    <div style="background:var(--bg-code); padding:20px; border-radius:8px; border:1px dashed var(--border);">
+      <div style="width:70%; margin:0 auto; background:var(--accent); padding:16px; border-radius:6px; text-align:center; color:#fff; font-family:var(--font-code); font-size:.8rem;">
+        width: 70% &nbsp;|&nbsp; margin: 0 auto
+      </div>
+    </div>
+    <div style="background:var(--bg-code); padding:20px; border-radius:8px; margin-top:12px; border:1px dashed var(--border);">
+      <div style="max-width:300px; margin:0 auto; background:var(--accent2); padding:16px; border-radius:6px; text-align:center; color:#fff; font-family:var(--font-code); font-size:.8rem;">
+        max-width: 300px<br>margin: 0 auto
+      </div>
+    </div>
+  </div>
+
+  <h3>Negative Margins</h3>
+  <p>Unlike padding, margins can be <strong>negative</strong>. Negative margins pull an element in the specified direction, or pull adjacent elements toward it.</p>
+
+  <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre><span class="cmt">/* Pull element upward */</span>
+<span class="sel">.overlap-up</span> {
+  <span class="prop">margin-top</span>: <span class="num">-20</span><span class="unit">px</span>;
+}
+
+<span class="cmt">/* Extend beyond parent padding */</span>
+<span class="sel">.full-bleed</span> {
+  <span class="prop">margin-left</span>: <span class="num">-20</span><span class="unit">px</span>;
+  <span class="prop">margin-right</span>: <span class="num">-20</span><span class="unit">px</span>;
+}</pre></div>
+
+  <div class="live-example">
+    <div class="live-example-label">Live Example &mdash; Negative Margins</div>
+    <div style="background:var(--bg-code); padding:24px; border-radius:8px; border:1px dashed var(--border); overflow:hidden;">
+      <div style="background:var(--accent); padding:14px; border-radius:6px; color:#fff; font-size:.78rem; font-family:var(--font-code); text-align:center; margin-bottom:12px;">
+        Normal box (no negative margin)
+      </div>
+      <div style="background:#e74c3c; padding:14px; border-radius:6px; color:#fff; font-size:.78rem; font-family:var(--font-code); text-align:center; margin-top:-20px; position:relative; z-index:1;">
+        margin-top: -20px (overlaps the box above)
+      </div>
+      <div style="background:#2ecc71; padding:14px; border-radius:6px; color:#fff; font-size:.78rem; font-family:var(--font-code); text-align:center; margin-top:16px; margin-left:-24px; margin-right:-24px;">
+        margin-left: -24px; margin-right: -24px (full bleed, extends beyond parent padding)
+      </div>
+    </div>
+  </div>
+
+  <h3>Percentage Margins</h3>
+  <p>Like percentage padding, <strong>all percentage margins</strong> (including top and bottom) are calculated relative to the <em>width</em> of the containing block.</p>
+
+  <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre><span class="sel">.box</span> {
+  <span class="prop">margin</span>: <span class="num">5</span><span class="unit">%</span>;  <span class="cmt">/* all four margins = 5% of parent's width */</span>
+}</pre></div>
+
+  <div class="callout info">
+    <div class="callout-title">Why percentages resolve to parent width</div>
+    <p>Both vertical and horizontal percentage margins resolve against the containing block's width for consistency. If vertical margins resolved against height, a circular dependency could occur: content height depends on margin, and margin depends on content height.</p>
+  </div>
+</div>
+
+<!-- ==================== 8. MARGIN COLLAPSING ==================== -->
+<div class="section" id="margin-collapsing">
+  <h2>Margin Collapsing</h2>
+  <p><strong>Margin collapsing</strong> is one of the most confusing behaviors in CSS. When the vertical margins of two block-level elements touch (with nothing between them), they merge into a single margin equal to the <em>larger</em> of the two. This only happens with <strong>vertical</strong> margins, never horizontal.</p>
+
+  <h3>When Margins Collapse</h3>
+  <p>There are three main scenarios:</p>
+
+  <h4>1. Adjacent Siblings</h4>
+  <p>When two block-level siblings are stacked vertically, the bottom margin of the first and the top margin of the second collapse into one.</p>
+
+  <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre><span class="sel">.box-a</span> { <span class="prop">margin-bottom</span>: <span class="num">30</span><span class="unit">px</span>; }
+<span class="sel">.box-b</span> { <span class="prop">margin-top</span>: <span class="num">20</span><span class="unit">px</span>; }
+
+<span class="cmt">/* Resulting gap between them = 30px (NOT 50px) */</span>
+<span class="cmt">/* The larger margin wins */</span></pre></div>
+
+  <div class="live-example">
+    <div class="live-example-label">Live Example &mdash; Adjacent Sibling Margin Collapse</div>
+    <div style="display:flex; gap:30px; flex-wrap:wrap;">
+      <div style="flex:1; min-width:200px;">
+        <p style="font-size:.78rem; font-weight:600; margin-bottom:8px; color:var(--accent);">Without collapse awareness (you might expect 50px):</p>
+        <div style="background:var(--bg-code); border:1px dashed var(--border); border-radius:6px; padding:4px; overflow:hidden;">
+          <div style="background:var(--accent); padding:12px; color:#fff; font-size:.75rem; font-family:var(--font-code); text-align:center; border-radius:4px; margin-bottom:30px;">margin-bottom: 30px</div>
+          <div style="background:var(--accent2); padding:12px; color:#fff; font-size:.75rem; font-family:var(--font-code); text-align:center; border-radius:4px; margin-top:20px;">margin-top: 20px</div>
+        </div>
+        <p style="font-size:.72rem; color:var(--text-muted); margin-top:6px;">Actual gap = <strong>30px</strong> (collapsed), not 50px</p>
+      </div>
+    </div>
+  </div>
+
+  <h4>2. Parent-Child Collapse</h4>
+  <p>If a parent has no top padding, border, or anything else separating its top edge from its first child's top margin, the child's top margin escapes and collapses with the parent's margin.</p>
+
+  <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre><span class="cmt">/* The child's margin-top "leaks" out of the parent */</span>
+<span class="sel">.parent</span> {
+  <span class="prop">margin-top</span>: <span class="num">0</span>;
+  <span class="cmt">/* No padding-top, no border-top */</span>
+}
+<span class="sel">.child</span> {
+  <span class="prop">margin-top</span>: <span class="num">40</span><span class="unit">px</span>;
+  <span class="cmt">/* This margin escapes the parent! */</span>
+}</pre></div>
+
+  <div class="live-example">
+    <div class="live-example-label">Live Example &mdash; Parent-Child Margin Collapse</div>
+    <div style="display:flex; gap:24px; flex-wrap:wrap;">
+      <div style="flex:1; min-width:200px;">
+        <p style="font-size:.78rem; font-weight:600; margin-bottom:8px; color:#e74c3c;">Collapsed (no barrier):</p>
+        <div style="background:rgba(231,76,60,.15); border:2px dashed #e74c3c; border-radius:6px;">
+          <div style="margin-top:30px; background:var(--accent); padding:14px; color:#fff; font-size:.75rem; font-family:var(--font-code); text-align:center; border-radius:4px;">child: margin-top: 30px<br>(margin escapes parent)</div>
+        </div>
+      </div>
+      <div style="flex:1; min-width:200px;">
+        <p style="font-size:.78rem; font-weight:600; margin-bottom:8px; color:#2ecc71;">Fixed (with padding):</p>
+        <div style="background:rgba(46,204,113,.15); border:2px dashed #2ecc71; border-radius:6px; padding-top:1px;">
+          <div style="margin-top:30px; background:var(--accent); padding:14px; color:#fff; font-size:.75rem; font-family:var(--font-code); text-align:center; border-radius:4px;">child: margin-top: 30px<br>(contained by parent's padding)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h4>3. Empty Blocks</h4>
+  <p>An element with no height, no padding, no border, and no content will have its own top and bottom margins collapse with each other.</p>
+
+  <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre><span class="cmt">/* This empty div's top and bottom margins collapse into one */</span>
+<span class="sel">.empty</span> {
+  <span class="prop">margin-top</span>: <span class="num">20</span><span class="unit">px</span>;
+  <span class="prop">margin-bottom</span>: <span class="num">30</span><span class="unit">px</span>;
+  <span class="cmt">/* Resulting margin = 30px (the larger one) */</span>
+}</pre></div>
+
+  <h3>How to Prevent Margin Collapsing</h3>
+  <p>Several techniques prevent margin collapse by introducing a separation between the margins:</p>
+
+  <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre><span class="cmt">/* 1. Add padding to the parent */</span>
+<span class="sel">.parent</span> { <span class="prop">padding-top</span>: <span class="num">1</span><span class="unit">px</span>; }
+
+<span class="cmt">/* 2. Add border to the parent */</span>
+<span class="sel">.parent</span> { <span class="prop">border-top</span>: <span class="num">1</span><span class="unit">px</span> <span class="val">solid</span> <span class="val">transparent</span>; }
+
+<span class="cmt">/* 3. Use overflow other than visible */</span>
+<span class="sel">.parent</span> { <span class="prop">overflow</span>: <span class="val">hidden</span>; }  <span class="cmt">/* or auto */</span>
+
+<span class="cmt">/* 4. Make parent a flex or grid container */</span>
+<span class="sel">.parent</span> { <span class="prop">display</span>: <span class="val">flex</span>; <span class="prop">flex-direction</span>: <span class="val">column</span>; }
+<span class="sel">.parent</span> { <span class="prop">display</span>: <span class="val">grid</span>; }
+
+<span class="cmt">/* 5. Use display: flow-root (creates new BFC) */</span>
+<span class="sel">.parent</span> { <span class="prop">display</span>: <span class="val">flow-root</span>; }</pre></div>
+
+  <div class="live-example">
+    <div class="live-example-label">Live Example &mdash; Preventing Margin Collapse</div>
+    <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(200px,1fr)); gap:16px;">
+      <div>
+        <p style="font-size:.72rem; font-weight:600; margin-bottom:6px; color:var(--text-muted);">overflow: hidden</p>
+        <div style="background:var(--bg-code); border:2px solid var(--border); border-radius:6px; overflow:hidden;">
+          <div style="margin:20px; background:var(--accent); padding:10px; color:#fff; font-size:.72rem; font-family:var(--font-code); text-align:center; border-radius:4px;">Contained margin</div>
+        </div>
+      </div>
+      <div>
+        <p style="font-size:.72rem; font-weight:600; margin-bottom:6px; color:var(--text-muted);">display: flex</p>
+        <div style="background:var(--bg-code); border:2px solid var(--border); border-radius:6px; display:flex; flex-direction:column;">
+          <div style="margin:20px; background:var(--accent2); padding:10px; color:#fff; font-size:.72rem; font-family:var(--font-code); text-align:center; border-radius:4px;">Contained margin</div>
+        </div>
+      </div>
+      <div>
+        <p style="font-size:.72rem; font-weight:600; margin-bottom:6px; color:var(--text-muted);">display: flow-root</p>
+        <div style="background:var(--bg-code); border:2px solid var(--border); border-radius:6px; display:flow-root;">
+          <div style="margin:20px; background:#2ecc71; padding:10px; color:#fff; font-size:.72rem; font-family:var(--font-code); text-align:center; border-radius:4px;">Contained margin</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout tip">
+    <div class="callout-title">Best Practice</div>
+    <p>To avoid margin collapsing surprises, many developers adopt a "single-direction margin" convention: only use <code>margin-bottom</code> (or <code>margin-top</code>) for vertical spacing, never both. This makes spacing predictable and eliminates collapsing between siblings.</p>
+  </div>
+
+  <div class="callout info">
+    <div class="callout-title">When margins do NOT collapse</div>
+    <p>Margins never collapse in these contexts: between flex items, between grid items, inline-level elements, floated elements, absolutely or fixed positioned elements, or elements with <code>overflow</code> other than <code>visible</code> on the parent.</p>
+  </div>
+</div>
+
+<!-- ==================== 9. BOX-SIZING ==================== -->
+<div class="section" id="box-sizing">
+  <h2>box-sizing</h2>
+  <p>The <code>box-sizing</code> property determines <em>what</em> the <code>width</code> and <code>height</code> properties refer to. It has two possible values, and understanding the difference is critical.</p>
+
+  <h3>content-box (default)</h3>
+  <p>With <code>content-box</code>, the <code>width</code> and <code>height</code> set only the <strong>content area</strong>. Padding and border are added <em>on top</em> of the declared dimensions.</p>
+
+  <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre><span class="sel">.content-box-demo</span> {
+  <span class="prop">box-sizing</span>: <span class="val">content-box</span>;  <span class="cmt">/* default */</span>
+  <span class="prop">width</span>: <span class="num">200</span><span class="unit">px</span>;
+  <span class="prop">padding</span>: <span class="num">20</span><span class="unit">px</span>;
+  <span class="prop">border</span>: <span class="num">5</span><span class="unit">px</span> <span class="val">solid</span>;
+  <span class="cmt">/* Rendered width = 200 + 20 + 20 + 5 + 5 = 250px */</span>
+}</pre></div>
+
+  <h3>border-box</h3>
+  <p>With <code>border-box</code>, the <code>width</code> and <code>height</code> include padding and border. The content area shrinks to accommodate them. This is usually what developers want.</p>
+
+  <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre><span class="sel">.border-box-demo</span> {
+  <span class="prop">box-sizing</span>: <span class="val">border-box</span>;
+  <span class="prop">width</span>: <span class="num">200</span><span class="unit">px</span>;
+  <span class="prop">padding</span>: <span class="num">20</span><span class="unit">px</span>;
+  <span class="prop">border</span>: <span class="num">5</span><span class="unit">px</span> <span class="val">solid</span>;
+  <span class="cmt">/* Rendered width = exactly 200px */</span>
+  <span class="cmt">/* Content area = 200 - 20 - 20 - 5 - 5 = 150px */</span>
+}</pre></div>
+
+  <h3>Visual Comparison</h3>
+  <div class="live-example">
+    <div class="live-example-label">Live Example &mdash; content-box vs border-box</div>
+    <p style="font-size:.78rem; color:var(--text-muted); margin-bottom:12px;">Both boxes have <code>width: 250px</code>, <code>padding: 20px</code>, <code>border: 5px solid</code>. Notice the difference in total rendered width.</p>
+    <div style="display:flex; flex-direction:column; gap:16px;">
+      <div>
+        <p style="font-size:.72rem; font-weight:600; margin-bottom:4px; color:#e74c3c;">content-box (default):</p>
+        <div style="background:var(--bg-code); padding:4px; border-radius:6px; border:1px dashed var(--border); display:inline-block;">
+          <div style="box-sizing:content-box; width:250px; padding:20px; border:5px solid #e74c3c; background:rgba(231,76,60,.1); font-size:.75rem; font-family:var(--font-code); color:var(--text); border-radius:4px;">
+            width: 250px (content only)<br>
+            + padding: 40px + border: 10px<br>
+            <strong>Total rendered: 300px</strong>
+          </div>
+        </div>
+      </div>
+      <div>
+        <p style="font-size:.72rem; font-weight:600; margin-bottom:4px; color:#2ecc71;">border-box:</p>
+        <div style="background:var(--bg-code); padding:4px; border-radius:6px; border:1px dashed var(--border); display:inline-block;">
+          <div style="box-sizing:border-box; width:250px; padding:20px; border:5px solid #2ecc71; background:rgba(46,204,113,.1); font-size:.75rem; font-family:var(--font-code); color:var(--text); border-radius:4px;">
+            width: 250px (total box)<br>
+            padding + border included<br>
+            <strong>Total rendered: 250px</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Universal Reset Pattern</h3>
+  <p>Nearly every modern CSS project applies <code>border-box</code> globally. The recommended pattern uses the <code>inherit</code> value on <code>*</code> so components that opt into a different model can change it on a parent and have children inherit it.</p>
+
+  <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre><span class="cmt">/* Universal box-sizing reset &mdash; industry standard */</span>
+<span class="sel">*,
+*::before,
+*::after</span> {
+  <span class="prop">box-sizing</span>: <span class="val">border-box</span>;
+}
+
+<span class="cmt">/* Alternative: inheritable pattern */</span>
+<span class="sel">html</span> {
+  <span class="prop">box-sizing</span>: <span class="val">border-box</span>;
+}
+<span class="sel">*,
+*::before,
+*::after</span> {
+  <span class="prop">box-sizing</span>: <span class="val">inherit</span>;
+}</pre></div>
+
+  <div class="callout tip">
+    <div class="callout-title">Always Use border-box</div>
+    <p>The <code>border-box</code> model is more intuitive: when you say <code>width: 300px</code>, the element is exactly 300px wide, regardless of padding and border. Every major CSS framework (Bootstrap, Tailwind, Normalize.css) applies this reset. Add it to the very top of your stylesheet.</p>
+  </div>
+</div>
+
+<!-- ==================== 10. DISPLAY AND THE BOX MODEL ==================== -->
+<div class="section" id="display-and-box-model">
+  <h2>Display and the Box Model</h2>
+  <p>The <code>display</code> property fundamentally changes how the box model applies to an element. The two key display types &mdash; <strong>block</strong> and <strong>inline</strong> &mdash; behave very differently.</p>
+
+  <h3>Block-Level Elements</h3>
+  <p>Block-level elements (<code>display: block</code>) get the <em>full</em> box model treatment:</p>
+  <ul>
+    <li>Expand to fill 100% of the parent's width by default.</li>
+    <li>Start on a new line.</li>
+    <li><code>width</code>, <code>height</code>, <code>margin</code>, <code>padding</code>, and <code>border</code> all work as expected.</li>
+    <li>Vertical margins collapse with adjacent blocks.</li>
+  </ul>
+
+  <h3>Inline Elements</h3>
+  <p>Inline elements (<code>display: inline</code>) have a <em>restricted</em> box model:</p>
+  <ul>
+    <li><code>width</code> and <code>height</code> are <strong>ignored</strong>.</li>
+    <li>Horizontal margin and padding work normally.</li>
+    <li>Vertical padding and border are rendered visually but do <strong>not push other content away</strong> (they overlap).</li>
+    <li>Vertical margin is <strong>completely ignored</strong>.</li>
+    <li>Do not start on a new line &mdash; they flow with text.</li>
+  </ul>
+
+  <h3>Inline-Block</h3>
+  <p><code>display: inline-block</code> gives you the best of both worlds: the element flows inline with text but respects all box model properties (width, height, vertical margin/padding).</p>
+
+  <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre><span class="cmt">/* Block: full box model, new line */</span>
+<span class="sel">.block</span> { <span class="prop">display</span>: <span class="val">block</span>; }
+
+<span class="cmt">/* Inline: width/height/vertical margin ignored */</span>
+<span class="sel">.inline</span> { <span class="prop">display</span>: <span class="val">inline</span>; }
+
+<span class="cmt">/* Inline-block: full box model, flows inline */</span>
+<span class="sel">.inline-block</span> { <span class="prop">display</span>: <span class="val">inline-block</span>; }</pre></div>
+
+  <div class="live-example">
+    <div class="live-example-label">Live Example &mdash; Block vs Inline vs Inline-Block</div>
+    <div style="background:var(--bg-code); padding:20px; border-radius:8px; border:1px dashed var(--border);">
+      <p style="font-size:.82rem; margin-bottom:12px; color:var(--text);">
+        Here is text with a
+        <span style="display:inline; width:200px; height:50px; margin:20px; padding:10px; background:rgba(108,140,255,.3); border:2px solid var(--accent); font-family:var(--font-code); font-size:.75rem;">display:inline (width/height ignored)</span>
+        element, followed by more text.
+      </p>
+      <p style="font-size:.82rem; margin-bottom:12px; color:var(--text);">
+        Here is text with a
+        <span style="display:inline-block; width:200px; height:50px; margin:10px; padding:10px; background:rgba(167,139,250,.3); border:2px solid var(--accent2); font-family:var(--font-code); font-size:.75rem; vertical-align:middle;">display:inline-block (width/height respected)</span>
+        element, followed by more text.
+      </p>
+      <div style="display:block; width:100%; margin-top:12px; padding:14px; background:rgba(46,204,113,.15); border:2px solid #2ecc71; font-family:var(--font-code); font-size:.75rem; border-radius:4px; color:var(--text);">
+        display: block &mdash; takes full width, starts on a new line
+      </div>
+    </div>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Property</th>
+        <th>block</th>
+        <th>inline</th>
+        <th>inline-block</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td><code>width</code> / <code>height</code></td><td>Respected</td><td>Ignored</td><td>Respected</td></tr>
+      <tr><td>Horizontal <code>margin</code></td><td>Respected</td><td>Respected</td><td>Respected</td></tr>
+      <tr><td>Vertical <code>margin</code></td><td>Respected (collapses)</td><td>Ignored</td><td>Respected</td></tr>
+      <tr><td>Horizontal <code>padding</code></td><td>Respected</td><td>Respected</td><td>Respected</td></tr>
+      <tr><td>Vertical <code>padding</code></td><td>Respected</td><td>Visual only (overlaps)</td><td>Respected</td></tr>
+      <tr><td>Line break behavior</td><td>New line</td><td>Flows inline</td><td>Flows inline</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout gotcha">
+    <div class="callout-title">Gotcha: Inline Elements and Vertical Padding</div>
+    <p>Vertical padding on inline elements is painted visually but does not affect line height or push surrounding content. This often causes overlapping backgrounds. If you need vertical spacing on an inline element, switch to <code>inline-block</code> or <code>inline-flex</code>.</p>
+  </div>
+</div>
+
+<!-- ==================== 11. GOTCHAS & PRO TIPS ==================== -->
+<div class="section" id="gotchas-and-tips">
+  <h2>Common Gotchas &amp; Pro Tips</h2>
+
+  <h3>Common Gotchas</h3>
+
+  <div class="callout gotcha">
+    <div class="callout-title">Gotcha 1: Forgetting box-sizing</div>
+    <p>Without <code>box-sizing: border-box</code>, setting <code>width: 100%</code> on an element with padding or border causes it to overflow its parent. This is the number one box model bug for beginners. Always apply the universal reset.</p>
+  </div>
+
+  <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre><span class="cmt">/* BUG: overflows parent because padding is added to 100% */</span>
+<span class="sel">.input</span> {
+  <span class="prop">width</span>: <span class="num">100</span><span class="unit">%</span>;
+  <span class="prop">padding</span>: <span class="num">16</span><span class="unit">px</span>;
+  <span class="cmt">/* box-sizing defaults to content-box */</span>
+  <span class="cmt">/* Rendered width = 100% + 32px &mdash; overflows! */</span>
+}
+
+<span class="cmt">/* FIX */</span>
+<span class="sel">.input</span> {
+  <span class="prop">width</span>: <span class="num">100</span><span class="unit">%</span>;
+  <span class="prop">padding</span>: <span class="num">16</span><span class="unit">px</span>;
+  <span class="prop">box-sizing</span>: <span class="val">border-box</span>;
+  <span class="cmt">/* Rendered width = exactly 100% */</span>
+}</pre></div>
+
+  <div class="live-example">
+    <div class="live-example-label">Live Example &mdash; 100% Width + Padding Overflow</div>
+    <div style="width:100%; max-width:500px; background:var(--bg-code); padding:20px; border-radius:8px; border:2px solid var(--border); overflow:auto;">
+      <p style="font-size:.72rem; font-weight:600; color:#e74c3c; margin-bottom:6px;">content-box (overflows):</p>
+      <div style="box-sizing:content-box; width:100%; padding:16px; border:3px solid #e74c3c; background:rgba(231,76,60,.1); font-size:.75rem; font-family:var(--font-code); color:var(--text); border-radius:4px; margin-bottom:16px;">
+        width:100% + padding:16px + border:3px = OVERFLOW
+      </div>
+      <p style="font-size:.72rem; font-weight:600; color:#2ecc71; margin-bottom:6px;">border-box (fits perfectly):</p>
+      <div style="box-sizing:border-box; width:100%; padding:16px; border:3px solid #2ecc71; background:rgba(46,204,113,.1); font-size:.75rem; font-family:var(--font-code); color:var(--text); border-radius:4px;">
+        width:100% including padding and border = FITS
+      </div>
+    </div>
+  </div>
+
+  <div class="callout gotcha">
+    <div class="callout-title">Gotcha 2: Margin Collapse in Unexpected Places</div>
+    <p>A common surprise: your first child's <code>margin-top</code> "escapes" its parent container, pushing the entire parent down instead of creating space inside the parent. Fix: add <code>padding-top: 1px</code>, <code>overflow: hidden</code>, or <code>display: flow-root</code> on the parent.</p>
+  </div>
+
+  <div class="callout gotcha">
+    <div class="callout-title">Gotcha 3: Inline Elements Ignore width/height</div>
+    <p>Setting <code>width</code> or <code>height</code> on a <code>&lt;span&gt;</code>, <code>&lt;a&gt;</code>, <code>&lt;strong&gt;</code>, or other inline elements has no effect. You must change the display to <code>inline-block</code>, <code>block</code>, <code>flex</code>, or <code>inline-flex</code> first.</p>
+  </div>
+
+  <div class="callout gotcha">
+    <div class="callout-title">Gotcha 4: Percentage Height Needs an Explicit Parent Height</div>
+    <p><code>height: 50%</code> only works if the parent has an explicit (non-auto) height. If the parent's height is <code>auto</code> (the default), the percentage height resolves to <code>auto</code> and is effectively ignored. For full-page layouts, set <code>html, body { height: 100%; }</code>.</p>
+  </div>
+
+  <div class="callout gotcha">
+    <div class="callout-title">Gotcha 5: Outline Does Not Follow border-radius (in Older Browsers)</div>
+    <p>In older browsers, outlines are always rectangular, even on elements with rounded corners. Modern browsers (Chrome 94+, Firefox 88+, Safari 16.4+) render outlines that follow <code>border-radius</code>. If you must support older browsers, use <code>box-shadow</code> instead for a rounded focus indicator.</p>
+  </div>
+
+  <h3>Pro Tips</h3>
+
+  <div class="callout tip">
+    <div class="callout-title">Tip 1: Use Logical Properties for Internationalization</div>
+    <p>Instead of <code>margin-left</code> / <code>padding-right</code>, use <code>margin-inline-start</code> / <code>padding-inline-end</code>. These logical properties adapt automatically for right-to-left (RTL) languages.</p>
+  </div>
+
+  <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre><span class="cmt">/* Physical (breaks in RTL) */</span>
+<span class="sel">.card</span> { <span class="prop">padding-left</span>: <span class="num">20</span><span class="unit">px</span>; <span class="prop">margin-right</span>: <span class="num">16</span><span class="unit">px</span>; }
+
+<span class="cmt">/* Logical (works in any writing mode) */</span>
+<span class="sel">.card</span> { <span class="prop">padding-inline-start</span>: <span class="num">20</span><span class="unit">px</span>; <span class="prop">margin-inline-end</span>: <span class="num">16</span><span class="unit">px</span>; }</pre></div>
+
+  <div class="callout tip">
+    <div class="callout-title">Tip 2: Debug with Outline, Not Border</div>
+    <p>When debugging layout, use <code>outline: 1px solid red</code> instead of <code>border</code>. Outlines do not affect layout or change the size of elements, so they will not shift things around while you are debugging.</p>
+  </div>
+
+  <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre><span class="cmt">/* Debugging helper: shows all element boxes without affecting layout */</span>
+<span class="sel">* </span>{
+  <span class="prop">outline</span>: <span class="num">1</span><span class="unit">px</span> <span class="val">solid</span> <span class="val">rgba(255, 0, 0, 0.2)</span>;
+}</pre></div>
+
+  <div class="callout tip">
+    <div class="callout-title">Tip 3: Use gap Instead of Margins Between Flex/Grid Items</div>
+    <p>Flex and Grid containers support the <code>gap</code> property, which creates consistent spacing between children without worrying about margin collapsing, first/last child margins, or negative margins to undo row margins. Prefer <code>gap</code> whenever possible.</p>
+  </div>
+
+  <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre><span class="cmt">/* OLD approach: margin on children with negative margin on parent */</span>
+<span class="sel">.grid</span> {
+  <span class="prop">display</span>: <span class="val">flex</span>;
+  <span class="prop">flex-wrap</span>: <span class="val">wrap</span>;
+  <span class="prop">margin</span>: <span class="num">-8</span><span class="unit">px</span>;
+}
+<span class="sel">.grid</span> &gt; <span class="sel">*</span> { <span class="prop">margin</span>: <span class="num">8</span><span class="unit">px</span>; }
+
+<span class="cmt">/* MODERN: clean gap property */</span>
+<span class="sel">.grid</span> {
+  <span class="prop">display</span>: <span class="val">flex</span>;
+  <span class="prop">flex-wrap</span>: <span class="val">wrap</span>;
+  <span class="prop">gap</span>: <span class="num">16</span><span class="unit">px</span>;
+}</pre></div>
+
+  <div class="callout tip">
+    <div class="callout-title">Tip 4: aspect-ratio Replaces the Padding Hack</div>
+    <p>Instead of the old <code>padding-top: 56.25%</code> trick for maintaining aspect ratios, modern CSS has a dedicated <code>aspect-ratio</code> property. It is cleaner, more readable, and does not require absolute positioning of children.</p>
+  </div>
+
+  <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre><span class="cmt">/* Modern aspect ratio */</span>
+<span class="sel">.video-container</span> {
+  <span class="prop">width</span>: <span class="num">100</span><span class="unit">%</span>;
+  <span class="prop">aspect-ratio</span>: <span class="num">16</span> / <span class="num">9</span>;
+}
+
+<span class="sel">.square</span> {
+  <span class="prop">width</span>: <span class="num">200</span><span class="unit">px</span>;
+  <span class="prop">aspect-ratio</span>: <span class="num">1</span>;  <span class="cmt">/* shorthand for 1/1 */</span>
+}</pre></div>
+
+  <div class="callout tip">
+    <div class="callout-title">Tip 5: box-shadow as a Pseudo-Border</div>
+    <p>You can use <code>box-shadow</code> with no blur and no spread to create a visual border that does not take up space (like outline but with per-side control and radius following). Multiple shadows let you create multi-colored borders or inset effects.</p>
+  </div>
+
+  <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre><span class="cmt">/* "Border" using box-shadow (no layout impact) */</span>
+<span class="sel">.shadow-border</span> {
+  <span class="prop">box-shadow</span>: <span class="num">0</span> <span class="num">0</span> <span class="num">0</span> <span class="num">3</span><span class="unit">px</span> <span class="val">#6c8cff</span>;
+  <span class="prop">border-radius</span>: <span class="num">8</span><span class="unit">px</span>;
+}
+
+<span class="cmt">/* Double border effect */</span>
+<span class="sel">.double-border</span> {
+  <span class="prop">box-shadow</span>:
+    <span class="num">0</span> <span class="num">0</span> <span class="num">0</span> <span class="num">3</span><span class="unit">px</span> <span class="val">#6c8cff</span>,
+    <span class="num">0</span> <span class="num">0</span> <span class="num">0</span> <span class="num">6</span><span class="unit">px</span> <span class="val">#a78bfa</span>;
+}</pre></div>
+
+  <div class="live-example">
+    <div class="live-example-label">Live Example &mdash; box-shadow as Border</div>
+    <div style="display:flex; gap:30px; flex-wrap:wrap; align-items:center;">
+      <div style="width:120px; height:80px; box-shadow:0 0 0 3px var(--accent); border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:.72rem; font-family:var(--font-code); color:var(--text); background:var(--bg-code);">
+        shadow<br>"border"
+      </div>
+      <div style="width:120px; height:80px; box-shadow:0 0 0 3px var(--accent), 0 0 0 6px var(--accent2); border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:.72rem; font-family:var(--font-code); color:var(--text); background:var(--bg-code);">
+        double<br>"border"
+      </div>
+      <div style="width:120px; height:80px; box-shadow:inset 0 0 0 3px var(--accent); border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:.72rem; font-family:var(--font-code); color:var(--text); background:var(--bg-code);">
+        inset<br>"border"
+      </div>
+    </div>
+  </div>
+
+  <h3>Quick Reference: Box Model Properties</h3>
+  <table>
+    <thead>
+      <tr><th>Area</th><th>Properties</th><th>Can Be Negative?</th><th>Affects Layout?</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Content</td><td><code>width</code>, <code>height</code>, <code>min-*</code>, <code>max-*</code></td><td>No</td><td>Yes</td></tr>
+      <tr><td>Padding</td><td><code>padding</code>, <code>padding-*</code></td><td>No</td><td>Yes</td></tr>
+      <tr><td>Border</td><td><code>border</code>, <code>border-*</code></td><td>No</td><td>Yes</td></tr>
+      <tr><td>Outline</td><td><code>outline</code>, <code>outline-*</code></td><td>No (offset can be)</td><td>No</td></tr>
+      <tr><td>Margin</td><td><code>margin</code>, <code>margin-*</code></td><td>Yes</td><td>Yes (collapses vertically)</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ==================== TOPIC NAV ==================== -->
+<div class="topic-nav">
+  <a href="01-css-basics.html">
+    <span class="label">Previous</span>
+    <span class="title">CSS Basics</span>
+  </a>
+  <a href="03-typography.html" class="next">
+    <span class="label">Next</span>
+    <span class="title">Typography</span>
+  </a>
+</div>
+
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>

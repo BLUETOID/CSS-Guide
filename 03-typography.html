@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Typography — CSS Reference Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet"><link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div id="progress"></div>
+<header class="header">
+  <button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">&#9776;</button>
+  <h1><span>CSS</span> Reference Guide</h1>
+  <div class="header-nav"><a href="index.html">All Topics</a></div>
+  <button class="theme-toggle" onclick="toggleTheme()">&#9790; Dark</button>
+</header>
+<nav class="sidebar" id="sidebar">
+  <a href="index.html" class="nav-back">&#8592; All Topics</a>
+  <div class="nav-group"><div class="nav-group-title">On This Page</div>
+    <a href="#font-family">font-family</a>
+    <a href="#font-size">font-size</a>
+    <a href="#font-weight">font-weight</a>
+    <a href="#font-style">font-style</a>
+    <a href="#line-height">line-height</a>
+    <a href="#letter-word-spacing">letter &amp; word spacing</a>
+    <a href="#text-align">text-align</a>
+    <a href="#text-decoration">text-decoration</a>
+    <a href="#text-transform">text-transform</a>
+    <a href="#text-overflow">text-overflow &amp; Clamp</a>
+    <a href="#font-face">@font-face</a>
+    <a href="#google-fonts">Google Fonts</a>
+    <a href="#fluid-typography">Fluid Typography</a>
+    <a href="#gotchas">Gotchas</a>
+    <a href="#pro-tips">Pro Tips</a>
+  </div>
+</nav>
+<main class="main">
+  <div class="page-hero">
+    <h1>Typography</h1>
+    <p>Master every CSS property that controls how text looks, reads, and responds across devices &mdash; from basic font stacks to advanced fluid sizing with <code>clamp()</code>.</p>
+    <div class="tags"><span>Fonts</span><span>Text</span><span>Readability</span><span>Responsive</span><span>@font-face</span></div>
+  </div>
+
+  <!-- ════════════════════════════════════════ font-family ════════════════════════════════════════ -->
+  <section class="section" id="font-family">
+    <h2>font-family</h2>
+    <p>The <code>font-family</code> property sets the typeface for an element. You supply a <strong>font stack</strong> &mdash; a prioritized list of family names. The browser walks the list and uses the first font it can find installed or loaded.</p>
+
+    <h3>Generic Font Families</h3>
+    <p>CSS defines five generic families that act as ultimate fallbacks. You should always end your stack with one.</p>
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre><span class="cmt">/* Generic families */</span>
+<span class="sel">body</span>  { <span class="prop">font-family</span>: <span class="val">serif</span>; }
+<span class="sel">code</span>  { <span class="prop">font-family</span>: <span class="val">monospace</span>; }
+<span class="sel">h1</span>    { <span class="prop">font-family</span>: <span class="val">sans-serif</span>; }
+<span class="sel">.hand</span> { <span class="prop">font-family</span>: <span class="val">cursive</span>; }
+<span class="sel">.fun</span>  { <span class="prop">font-family</span>: <span class="val">fantasy</span>; }</pre></div>
+
+    <h3>Font Stacks</h3>
+    <p>A practical font stack lists the ideal font first, similar alternatives next, and a generic last.</p>
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre><span class="sel">body</span> {
+  <span class="prop">font-family</span>: <span class="str">"Inter"</span>, <span class="str">"Segoe UI"</span>, <span class="val">Roboto</span>,
+               <span class="str">"Helvetica Neue"</span>, <span class="val">Arial</span>, <span class="val">sans-serif</span>;
+}
+
+<span class="sel">pre, code</span> {
+  <span class="prop">font-family</span>: <span class="str">"Fira Code"</span>, <span class="str">"Cascadia Code"</span>,
+               <span class="str">"JetBrains Mono"</span>, <span class="val">Consolas</span>, <span class="val">monospace</span>;
+}</pre></div>
+
+    <div class="callout info"><div class="callout-title">Quoting Rules</div><p>Font names that contain spaces (e.g. <code>"Fira Code"</code>) <strong>must</strong> be quoted. Single-word names like <code>Arial</code> and generic families like <code>sans-serif</code> should <strong>not</strong> be quoted.</p></div>
+
+    <div class="live-example"><div class="live-example-label">Live Example &mdash; Font Stacks</div>
+      <p style="font-family: Georgia, 'Times New Roman', serif; font-size: 1.1rem; margin-bottom: .75rem;">
+        <strong>Serif stack:</strong> Georgia, Times New Roman, serif &mdash; The quick brown fox jumps over the lazy dog.
+      </p>
+      <p style="font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; font-size: 1.1rem; margin-bottom: .75rem;">
+        <strong>Sans-serif stack:</strong> Segoe UI, Roboto, Helvetica Neue, Arial &mdash; The quick brown fox jumps over the lazy dog.
+      </p>
+      <p style="font-family: 'Fira Code', 'Cascadia Code', Consolas, monospace; font-size: 1rem; margin-bottom: .75rem;">
+        <strong>Monospace stack:</strong> Fira Code, Cascadia Code, Consolas &mdash; const x = 42;
+      </p>
+      <p style="font-family: 'Brush Script MT', 'Segoe Script', cursive; font-size: 1.2rem; margin-bottom: .75rem;">
+        <strong>Cursive stack:</strong> Brush Script MT, Segoe Script, cursive &mdash; Elegant handwriting feel.
+      </p>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════ font-size ════════════════════════════════════════ -->
+  <section class="section" id="font-size">
+    <h2>font-size</h2>
+    <p>Controls how large text appears. There are several unit systems; choosing the right one matters for accessibility and responsiveness.</p>
+
+    <h3>Common Units</h3>
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre><span class="cmt">/* Absolute */</span>
+<span class="sel">p</span> { <span class="prop">font-size</span>: <span class="num">16px</span>; }
+
+<span class="cmt">/* Relative to parent */</span>
+<span class="sel">p</span> { <span class="prop">font-size</span>: <span class="num">1.2em</span>; }
+
+<span class="cmt">/* Relative to root &lt;html&gt; */</span>
+<span class="sel">p</span> { <span class="prop">font-size</span>: <span class="num">1rem</span>; }
+
+<span class="cmt">/* Percentage (relative to parent) */</span>
+<span class="sel">p</span> { <span class="prop">font-size</span>: <span class="num">120%</span>; }</pre></div>
+
+    <div class="live-example"><div class="live-example-label">Live Example &mdash; px vs em vs rem vs %</div>
+      <div style="font-size: 16px; border-left: 3px solid #646cff; padding-left: 1rem; margin-bottom: .75rem;">
+        <strong>Parent: 16px</strong>
+        <p style="font-size: 16px; margin: .25rem 0;">16px &mdash; This is 16 pixels (absolute).</p>
+        <p style="font-size: 1.5em; margin: .25rem 0;">1.5em &mdash; 1.5 &times; parent = 24px.</p>
+        <p style="font-size: 1.5rem; margin: .25rem 0;">1.5rem &mdash; 1.5 &times; root (usually 24px).</p>
+        <p style="font-size: 120%; margin: .25rem 0;">120% &mdash; 120% of parent = 19.2px.</p>
+      </div>
+      <div style="font-size: 20px; border-left: 3px solid #f59e0b; padding-left: 1rem;">
+        <strong>Parent: 20px</strong>
+        <p style="font-size: 16px; margin: .25rem 0;">16px &mdash; Still 16px (absolute, ignores parent).</p>
+        <p style="font-size: 1.5em; margin: .25rem 0;">1.5em &mdash; 1.5 &times; 20px = <strong>30px</strong> (bigger!).</p>
+        <p style="font-size: 1.5rem; margin: .25rem 0;">1.5rem &mdash; Still 1.5 &times; root (unchanged).</p>
+        <p style="font-size: 120%; margin: .25rem 0;">120% &mdash; 120% of 20px = <strong>24px</strong> (bigger!).</p>
+      </div>
+    </div>
+
+    <div class="callout tip"><div class="callout-title">rem is Usually Best</div><p>Using <code>rem</code> keeps sizing relative to the root, making global adjustments easy and avoiding the compounding problem of nested <code>em</code> values. Set <code>html { font-size: 62.5%; }</code> to make <code>1rem = 10px</code> for easy math.</p></div>
+  </section>
+
+  <!-- ════════════════════════════════════════ font-weight ════════════════════════════════════════ -->
+  <section class="section" id="font-weight">
+    <h2>font-weight</h2>
+    <p>Sets the boldness of text. Values range from <strong>100</strong> (thinnest) to <strong>900</strong> (heaviest), in increments of 100. Keywords <code>normal</code> maps to 400, <code>bold</code> maps to 700.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre><span class="sel">h1</span>     { <span class="prop">font-weight</span>: <span class="num">700</span>; }  <span class="cmt">/* bold */</span>
+<span class="sel">p</span>      { <span class="prop">font-weight</span>: <span class="num">400</span>; }  <span class="cmt">/* normal */</span>
+<span class="sel">.light</span> { <span class="prop">font-weight</span>: <span class="num">300</span>; }
+<span class="sel">.heavy</span> { <span class="prop">font-weight</span>: <span class="num">900</span>; }
+<span class="sel">.bold</span>  { <span class="prop">font-weight</span>: <span class="val">bold</span>; }    <span class="cmt">/* keyword */</span>
+<span class="sel">.rel</span>   { <span class="prop">font-weight</span>: <span class="val">bolder</span>; } <span class="cmt">/* relative */</span></pre></div>
+
+    <div class="live-example"><div class="live-example-label">Live Example &mdash; Weight Scale 100 &ndash; 900</div>
+      <div style="font-family: 'Inter', sans-serif;">
+        <p style="font-weight: 100; font-size: 1.15rem; margin: .2rem 0;">100 &mdash; Thin: The quick brown fox</p>
+        <p style="font-weight: 200; font-size: 1.15rem; margin: .2rem 0;">200 &mdash; Extra Light: The quick brown fox</p>
+        <p style="font-weight: 300; font-size: 1.15rem; margin: .2rem 0;">300 &mdash; Light: The quick brown fox</p>
+        <p style="font-weight: 400; font-size: 1.15rem; margin: .2rem 0;">400 &mdash; Regular (normal): The quick brown fox</p>
+        <p style="font-weight: 500; font-size: 1.15rem; margin: .2rem 0;">500 &mdash; Medium: The quick brown fox</p>
+        <p style="font-weight: 600; font-size: 1.15rem; margin: .2rem 0;">600 &mdash; Semi Bold: The quick brown fox</p>
+        <p style="font-weight: 700; font-size: 1.15rem; margin: .2rem 0;">700 &mdash; Bold: The quick brown fox</p>
+        <p style="font-weight: 800; font-size: 1.15rem; margin: .2rem 0;">800 &mdash; Extra Bold: The quick brown fox</p>
+        <p style="font-weight: 900; font-size: 1.15rem; margin: .2rem 0;">900 &mdash; Black: The quick brown fox</p>
+      </div>
+    </div>
+
+    <div class="callout info"><div class="callout-title">Variable Fonts</div><p>Variable fonts support <strong>any</strong> weight between 1 and 1000 (e.g., <code>font-weight: 450</code>). If a non-variable font doesn't have the exact weight, the browser falls back to the nearest available one.</p></div>
+  </section>
+
+  <!-- ════════════════════════════════════════ font-style ════════════════════════════════════════ -->
+  <section class="section" id="font-style">
+    <h2>font-style</h2>
+    <p>Applies italic or oblique styling to text.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre><span class="sel">.normal</span>  { <span class="prop">font-style</span>: <span class="val">normal</span>; }
+<span class="sel">.italic</span>  { <span class="prop">font-style</span>: <span class="val">italic</span>; }
+<span class="sel">.oblique</span> { <span class="prop">font-style</span>: <span class="val">oblique</span>; }
+<span class="sel">.angled</span>  { <span class="prop">font-style</span>: <span class="val">oblique</span> <span class="num">15deg</span>; } <span class="cmt">/* custom angle */</span></pre></div>
+
+    <div class="live-example"><div class="live-example-label">Live Example &mdash; font-style</div>
+      <p style="font-style: normal; font-size: 1.1rem; margin: .3rem 0;"><strong>normal</strong> &mdash; Standard upright text.</p>
+      <p style="font-style: italic; font-size: 1.1rem; margin: .3rem 0;"><strong>italic</strong> &mdash; Uses the italic variant of the font.</p>
+      <p style="font-style: oblique; font-size: 1.1rem; margin: .3rem 0;"><strong>oblique</strong> &mdash; Slants the normal glyphs mechanically.</p>
+    </div>
+
+    <div class="callout info"><div class="callout-title">italic vs oblique</div><p><code>italic</code> uses specially designed italic glyphs from the font file. <code>oblique</code> simply slants the regular glyphs algorithmically. If no true italic exists, browsers fall back to oblique rendering.</p></div>
+  </section>
+
+  <!-- ════════════════════════════════════════ line-height ════════════════════════════════════════ -->
+  <section class="section" id="line-height">
+    <h2>line-height</h2>
+    <p>Sets the vertical spacing between lines of text. Crucial for readability.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre><span class="cmt">/* Unitless (recommended) — multiplier of font-size */</span>
+<span class="sel">p</span> { <span class="prop">line-height</span>: <span class="num">1.6</span>; }
+
+<span class="cmt">/* With units */</span>
+<span class="sel">p</span> { <span class="prop">line-height</span>: <span class="num">24px</span>; }
+<span class="sel">p</span> { <span class="prop">line-height</span>: <span class="num">1.5em</span>; }
+<span class="sel">p</span> { <span class="prop">line-height</span>: <span class="num">150%</span>; }</pre></div>
+
+    <div class="live-example"><div class="live-example-label">Live Example &mdash; Unitless vs Unit line-height</div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+        <div style="border: 1px solid rgba(100,108,255,.4); border-radius: 8px; padding: 1rem;">
+          <strong style="color: #646cff;">Unitless: 1.6</strong>
+          <p style="line-height: 1.6; font-size: .95rem; margin-top: .5rem;">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.
+          </p>
+        </div>
+        <div style="border: 1px solid rgba(245,158,11,.4); border-radius: 8px; padding: 1rem;">
+          <strong style="color: #f59e0b;">Unitless: 1.0</strong>
+          <p style="line-height: 1.0; font-size: .95rem; margin-top: .5rem;">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.
+          </p>
+        </div>
+      </div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem;">
+        <div style="border: 1px solid rgba(16,185,129,.4); border-radius: 8px; padding: 1rem;">
+          <strong style="color: #10b981;">Unitless: 2.0</strong>
+          <p style="line-height: 2.0; font-size: .95rem; margin-top: .5rem;">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+          </p>
+        </div>
+        <div style="border: 1px solid rgba(239,68,68,.4); border-radius: 8px; padding: 1rem;">
+          <strong style="color: #ef4444;">Fixed: 16px (on 14px font)</strong>
+          <p style="line-height: 16px; font-size: .95rem; margin-top: .5rem;">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout gotcha"><div class="callout-title">Always Use Unitless line-height</div><p>When you write <code>line-height: 24px</code> on a parent, children inherit the <strong>computed value</strong> (24px) regardless of their font size. With unitless <code>line-height: 1.5</code>, children inherit the <strong>multiplier</strong>, so spacing scales with each element's own font size. Unitless is almost always what you want.</p></div>
+  </section>
+
+  <!-- ════════════════════════════════════════ letter & word spacing ════════════════════════════════════════ -->
+  <section class="section" id="letter-word-spacing">
+    <h2>letter-spacing &amp; word-spacing</h2>
+    <p>Fine-tune the horizontal space between characters and words.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre><span class="sel">.tight</span>   { <span class="prop">letter-spacing</span>: <span class="num">-0.02em</span>; }
+<span class="sel">.normal</span>  { <span class="prop">letter-spacing</span>: <span class="val">normal</span>; }
+<span class="sel">.wide</span>    { <span class="prop">letter-spacing</span>: <span class="num">0.1em</span>; }
+<span class="sel">.heading</span> { <span class="prop">letter-spacing</span>: <span class="num">0.05em</span>; }
+
+<span class="sel">.word-tight</span> { <span class="prop">word-spacing</span>: <span class="num">-2px</span>; }
+<span class="sel">.word-wide</span>  { <span class="prop">word-spacing</span>: <span class="num">8px</span>; }</pre></div>
+
+    <div class="live-example"><div class="live-example-label">Live Example &mdash; Letter &amp; Word Spacing</div>
+      <p style="letter-spacing: -0.05em; font-size: 1.1rem; margin: .3rem 0;"><strong>letter-spacing: -0.05em</strong> &mdash; Tightly packed characters</p>
+      <p style="letter-spacing: normal; font-size: 1.1rem; margin: .3rem 0;"><strong>letter-spacing: normal</strong> &mdash; Default character spacing</p>
+      <p style="letter-spacing: 0.1em; font-size: 1.1rem; margin: .3rem 0;"><strong>letter-spacing: 0.1em</strong> &mdash; Wide character spacing</p>
+      <p style="letter-spacing: 0.25em; font-size: 1.1rem; margin: .3rem 0;"><strong>letter-spacing: 0.25em</strong> &mdash; Very wide character spacing</p>
+      <hr style="border-color: rgba(255,255,255,.1); margin: .75rem 0;">
+      <p style="word-spacing: -3px; font-size: 1.1rem; margin: .3rem 0;"><strong>word-spacing: -3px</strong> &mdash; Words pulled closer together</p>
+      <p style="word-spacing: normal; font-size: 1.1rem; margin: .3rem 0;"><strong>word-spacing: normal</strong> &mdash; Default word spacing</p>
+      <p style="word-spacing: 12px; font-size: 1.1rem; margin: .3rem 0;"><strong>word-spacing: 12px</strong> &mdash; Words pushed far apart</p>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════ text-align ════════════════════════════════════════ -->
+  <section class="section" id="text-align">
+    <h2>text-align</h2>
+    <p>Sets the horizontal alignment of inline-level content inside a block container.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre><span class="sel">.left</span>    { <span class="prop">text-align</span>: <span class="val">left</span>; }
+<span class="sel">.center</span>  { <span class="prop">text-align</span>: <span class="val">center</span>; }
+<span class="sel">.right</span>   { <span class="prop">text-align</span>: <span class="val">right</span>; }
+<span class="sel">.justify</span> { <span class="prop">text-align</span>: <span class="val">justify</span>; }</pre></div>
+
+    <div class="live-example"><div class="live-example-label">Live Example &mdash; text-align Values</div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+        <div style="border: 1px solid rgba(100,108,255,.4); border-radius: 8px; padding: 1rem;">
+          <strong style="color: #646cff;">text-align: left</strong>
+          <p style="text-align: left; font-size: .9rem; margin-top: .5rem;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore.</p>
+        </div>
+        <div style="border: 1px solid rgba(16,185,129,.4); border-radius: 8px; padding: 1rem;">
+          <strong style="color: #10b981;">text-align: center</strong>
+          <p style="text-align: center; font-size: .9rem; margin-top: .5rem;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore.</p>
+        </div>
+        <div style="border: 1px solid rgba(245,158,11,.4); border-radius: 8px; padding: 1rem;">
+          <strong style="color: #f59e0b;">text-align: right</strong>
+          <p style="text-align: right; font-size: .9rem; margin-top: .5rem;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore.</p>
+        </div>
+        <div style="border: 1px solid rgba(239,68,68,.4); border-radius: 8px; padding: 1rem;">
+          <strong style="color: #ef4444;">text-align: justify</strong>
+          <p style="text-align: justify; font-size: .9rem; margin-top: .5rem;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout gotcha"><div class="callout-title">Justify Creates "Rivers"</div><p><code>text-align: justify</code> can produce ugly gaps ("rivers of white space") in narrow containers or with long words. Always pair it with <code>hyphens: auto</code> and a <code>lang</code> attribute on the HTML element for best results.</p></div>
+  </section>
+
+  <!-- ════════════════════════════════════════ text-decoration ════════════════════════════════════════ -->
+  <section class="section" id="text-decoration">
+    <h2>text-decoration</h2>
+    <p>Adds decorative lines to text &mdash; underlines, overlines, line-throughs, and more. The shorthand bundles line, style, color, and thickness.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre><span class="cmt">/* Shorthand: line style color thickness */</span>
+<span class="sel">a</span> { <span class="prop">text-decoration</span>: <span class="val">underline</span>; }
+<span class="sel">.fancy</span> { <span class="prop">text-decoration</span>: <span class="val">underline wavy</span> <span class="val">#ef4444</span> <span class="num">2px</span>; }
+
+<span class="cmt">/* Individual longhands */</span>
+<span class="sel">.custom</span> {
+  <span class="prop">text-decoration-line</span>: <span class="val">underline overline</span>;
+  <span class="prop">text-decoration-style</span>: <span class="val">dashed</span>;
+  <span class="prop">text-decoration-color</span>: <span class="val">#646cff</span>;
+  <span class="prop">text-decoration-thickness</span>: <span class="num">3px</span>;
+  <span class="prop">text-underline-offset</span>: <span class="num">4px</span>;
+}</pre></div>
+
+    <div class="live-example"><div class="live-example-label">Live Example &mdash; text-decoration Styles</div>
+      <p style="text-decoration: underline; font-size: 1.15rem; margin: .5rem 0;"><strong>underline</strong> &mdash; The classic link look</p>
+      <p style="text-decoration: overline; font-size: 1.15rem; margin: .5rem 0;"><strong>overline</strong> &mdash; Line above the text</p>
+      <p style="text-decoration: line-through; font-size: 1.15rem; margin: .5rem 0;"><strong>line-through</strong> &mdash; Strikethrough text</p>
+      <p style="text-decoration: underline wavy #ef4444 2px; font-size: 1.15rem; margin: .5rem 0;"><strong>underline wavy red</strong> &mdash; Squiggly error style</p>
+      <p style="text-decoration: underline dotted #10b981 2px; font-size: 1.15rem; margin: .5rem 0;"><strong>underline dotted green</strong> &mdash; Abbreviation style</p>
+      <p style="text-decoration: underline dashed #646cff 2px; font-size: 1.15rem; margin: .5rem 0;"><strong>underline dashed blue</strong> &mdash; Custom dashed line</p>
+      <p style="text-decoration: underline double #f59e0b 2px; font-size: 1.15rem; margin: .5rem 0;"><strong>underline double amber</strong> &mdash; Double underline</p>
+      <p style="text-decoration: underline overline line-through; font-size: 1.15rem; margin: .5rem 0;"><strong>all three combined</strong> &mdash; underline + overline + line-through</p>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════ text-transform ════════════════════════════════════════ -->
+  <section class="section" id="text-transform">
+    <h2>text-transform</h2>
+    <p>Changes the capitalization of text visually, without altering the source HTML.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre><span class="sel">.upper</span>  { <span class="prop">text-transform</span>: <span class="val">uppercase</span>; }
+<span class="sel">.lower</span>  { <span class="prop">text-transform</span>: <span class="val">lowercase</span>; }
+<span class="sel">.cap</span>    { <span class="prop">text-transform</span>: <span class="val">capitalize</span>; }
+<span class="sel">.none</span>   { <span class="prop">text-transform</span>: <span class="val">none</span>; }</pre></div>
+
+    <div class="live-example"><div class="live-example-label">Live Example &mdash; text-transform</div>
+      <p style="font-size: 1.1rem; margin: .3rem 0;">
+        <strong>Source:</strong> the quick brown fox jumps over the lazy dog
+      </p>
+      <p style="text-transform: uppercase; font-size: 1.1rem; margin: .5rem 0; padding: .5rem; background: rgba(100,108,255,.1); border-radius: 6px;">
+        <strong>uppercase:</strong> the quick brown fox jumps over the lazy dog
+      </p>
+      <p style="text-transform: lowercase; font-size: 1.1rem; margin: .5rem 0; padding: .5rem; background: rgba(16,185,129,.1); border-radius: 6px;">
+        <strong>lowercase:</strong> THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG
+      </p>
+      <p style="text-transform: capitalize; font-size: 1.1rem; margin: .5rem 0; padding: .5rem; background: rgba(245,158,11,.1); border-radius: 6px;">
+        <strong>capitalize:</strong> the quick brown fox jumps over the lazy dog
+      </p>
+    </div>
+
+    <div class="callout tip"><div class="callout-title">Accessibility Tip</div><p>Screen readers ignore <code>text-transform</code> and read the original source text. If you need text to always be uppercase for semantic reasons, type it uppercase in the HTML. Use <code>text-transform</code> only for visual styling.</p></div>
+  </section>
+
+  <!-- ════════════════════════════════════════ text-overflow ════════════════════════════════════════ -->
+  <section class="section" id="text-overflow">
+    <h2>text-overflow &amp; Multi-line Clamp</h2>
+    <p>Control what happens when text overflows its container.</p>
+
+    <h3>Single-line Ellipsis</h3>
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre><span class="sel">.truncate</span> {
+  <span class="prop">white-space</span>: <span class="val">nowrap</span>;
+  <span class="prop">overflow</span>: <span class="val">hidden</span>;
+  <span class="prop">text-overflow</span>: <span class="val">ellipsis</span>;
+}</pre></div>
+
+    <div class="live-example"><div class="live-example-label">Live Example &mdash; Single-line Ellipsis</div>
+      <div style="max-width: 350px; border: 1px solid rgba(100,108,255,.4); border-radius: 8px; padding: 1rem;">
+        <p style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 1rem; margin: 0;">
+          This is a very long sentence that should be truncated with an ellipsis when it overflows the container boundary.
+        </p>
+      </div>
+      <p style="font-size: .85rem; opacity: .7; margin-top: .5rem;">Container width: 350px. The text is clipped and "..." appears.</p>
+    </div>
+
+    <h3>Multi-line Clamp</h3>
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre><span class="sel">.line-clamp</span> {
+  <span class="prop">display</span>: <span class="val">-webkit-box</span>;
+  <span class="prop">-webkit-line-clamp</span>: <span class="num">3</span>;
+  <span class="prop">-webkit-box-orient</span>: <span class="val">vertical</span>;
+  <span class="prop">overflow</span>: <span class="val">hidden</span>;
+}</pre></div>
+
+    <div class="live-example"><div class="live-example-label">Live Example &mdash; Multi-line Clamp (3 lines)</div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+        <div style="border: 1px solid rgba(16,185,129,.4); border-radius: 8px; padding: 1rem;">
+          <strong style="color: #10b981;">Clamped to 3 lines</strong>
+          <p style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; font-size: .9rem; margin-top: .5rem;">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+          </p>
+        </div>
+        <div style="border: 1px solid rgba(245,158,11,.4); border-radius: 8px; padding: 1rem;">
+          <strong style="color: #f59e0b;">Unclamped (same text)</strong>
+          <p style="font-size: .9rem; margin-top: .5rem;">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout info"><div class="callout-title">Browser Support</div><p>Despite the <code>-webkit-</code> prefix, line clamping works in all modern browsers including Firefox. It is part of the CSS Overflow Module Level 4 draft.</p></div>
+  </section>
+
+  <!-- ════════════════════════════════════════ @font-face ════════════════════════════════════════ -->
+  <section class="section" id="font-face">
+    <h2>@font-face</h2>
+    <p>Load custom font files directly. This gives you full control over which weights, styles, and formats you serve.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre><span class="at">@font-face</span> {
+  <span class="prop">font-family</span>: <span class="str">"MyCustomFont"</span>;
+  <span class="prop">src</span>: <span class="fn">url</span>(<span class="str">"fonts/custom.woff2"</span>) <span class="fn">format</span>(<span class="str">"woff2"</span>),
+       <span class="fn">url</span>(<span class="str">"fonts/custom.woff"</span>)  <span class="fn">format</span>(<span class="str">"woff"</span>);
+  <span class="prop">font-weight</span>: <span class="num">400</span>;
+  <span class="prop">font-style</span>: <span class="val">normal</span>;
+  <span class="prop">font-display</span>: <span class="val">swap</span>;
+}
+
+<span class="cmt">/* Bold variant */</span>
+<span class="at">@font-face</span> {
+  <span class="prop">font-family</span>: <span class="str">"MyCustomFont"</span>;
+  <span class="prop">src</span>: <span class="fn">url</span>(<span class="str">"fonts/custom-bold.woff2"</span>) <span class="fn">format</span>(<span class="str">"woff2"</span>);
+  <span class="prop">font-weight</span>: <span class="num">700</span>;
+  <span class="prop">font-style</span>: <span class="val">normal</span>;
+  <span class="prop">font-display</span>: <span class="val">swap</span>;
+}
+
+<span class="cmt">/* Usage */</span>
+<span class="sel">body</span> {
+  <span class="prop">font-family</span>: <span class="str">"MyCustomFont"</span>, <span class="val">sans-serif</span>;
+}</pre></div>
+
+    <h3>font-display Values</h3>
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre><span class="prop">font-display</span>: <span class="val">auto</span>;     <span class="cmt">/* browser decides */</span>
+<span class="prop">font-display</span>: <span class="val">block</span>;    <span class="cmt">/* invisible text until loaded (up to 3s) */</span>
+<span class="prop">font-display</span>: <span class="val">swap</span>;     <span class="cmt">/* show fallback immediately, swap when ready */</span>
+<span class="prop">font-display</span>: <span class="val">fallback</span>; <span class="cmt">/* tiny block period, short swap period */</span>
+<span class="prop">font-display</span>: <span class="val">optional</span>; <span class="cmt">/* browser may skip custom font entirely */</span></pre></div>
+
+    <div class="callout tip"><div class="callout-title">Use font-display: swap</div><p>For body text, <code>swap</code> provides the best user experience: text is immediately visible in the fallback font, then re-rendered when the custom font finishes loading. For decorative fonts, consider <code>optional</code>.</p></div>
+  </section>
+
+  <!-- ════════════════════════════════════════ Google Fonts ════════════════════════════════════════ -->
+  <section class="section" id="google-fonts">
+    <h2>Google Fonts</h2>
+    <p>Google Fonts hosts free, open-source web fonts. You can load them with a <code>&lt;link&gt;</code> tag or an <code>@import</code> rule.</p>
+
+    <h3>Method 1: Link Tag (Recommended)</h3>
+    <div class="code-block"><div class="code-header"><span>HTML</span><button class="copy-btn">Copy</button></div><pre><span class="cmt">&lt;!-- In the &lt;head&gt; --&gt;</span>
+<span class="kw">&lt;link</span> <span class="prop">rel</span>=<span class="str">"preconnect"</span> <span class="prop">href</span>=<span class="str">"https://fonts.googleapis.com"</span><span class="kw">&gt;</span>
+<span class="kw">&lt;link</span> <span class="prop">rel</span>=<span class="str">"preconnect"</span> <span class="prop">href</span>=<span class="str">"https://fonts.gstatic.com"</span> <span class="prop">crossorigin</span><span class="kw">&gt;</span>
+<span class="kw">&lt;link</span> <span class="prop">href</span>=<span class="str">"https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap"</span>
+      <span class="prop">rel</span>=<span class="str">"stylesheet"</span><span class="kw">&gt;</span></pre></div>
+
+    <h3>Method 2: CSS @import</h3>
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre><span class="at">@import</span> <span class="fn">url</span>(<span class="str">'https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap'</span>);
+
+<span class="sel">body</span> {
+  <span class="prop">font-family</span>: <span class="str">'Inter'</span>, <span class="val">sans-serif</span>;
+}</pre></div>
+
+    <div class="callout info"><div class="callout-title">Performance</div><p>The <code>&lt;link&gt;</code> method is faster because the browser starts downloading the font stylesheet in parallel with the rest of your CSS. <code>@import</code> blocks rendering until the import is resolved, adding latency.</p></div>
+  </section>
+
+  <!-- ════════════════════════════════════════ Fluid Typography ════════════════════════════════════════ -->
+  <section class="section" id="fluid-typography">
+    <h2>Fluid Typography with clamp()</h2>
+    <p>The <code>clamp()</code> function lets text scale smoothly between a minimum and maximum size based on the viewport width &mdash; no media queries needed.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre><span class="cmt">/* clamp(minimum, preferred, maximum) */</span>
+<span class="sel">h1</span> {
+  <span class="prop">font-size</span>: <span class="fn">clamp</span>(<span class="num">1.5rem</span>, <span class="num">4vw</span>, <span class="num">3rem</span>);
+}
+
+<span class="sel">p</span> {
+  <span class="prop">font-size</span>: <span class="fn">clamp</span>(<span class="num">0.9rem</span>, <span class="num">1.5vw</span>, <span class="num">1.125rem</span>);
+}
+
+<span class="cmt">/* Fluid spacing too */</span>
+<span class="sel">.section</span> {
+  <span class="prop">padding</span>: <span class="fn">clamp</span>(<span class="num">1rem</span>, <span class="num">3vw</span>, <span class="num">3rem</span>);
+}</pre></div>
+
+    <div class="live-example"><div class="live-example-label">Live Example &mdash; Fluid Typography with clamp()</div>
+      <div style="border: 1px solid rgba(100,108,255,.4); border-radius: 8px; padding: 1.5rem;">
+        <h3 style="font-size: clamp(1.25rem, 3vw, 2.5rem); margin: 0 0 .5rem 0; color: #646cff;">
+          This Heading Scales Fluidly
+        </h3>
+        <p style="font-size: clamp(0.85rem, 1.5vw, 1.1rem); line-height: 1.6; margin: 0;">
+          Resize the browser window to see this paragraph smoothly adjust. It will not go below 0.85rem or above 1.1rem, but between those bounds it scales proportionally with the viewport width. No media queries required!
+        </p>
+      </div>
+      <p style="font-size: .85rem; opacity: .7; margin-top: .5rem;">Try resizing your browser window to see the text grow and shrink smoothly.</p>
+    </div>
+
+    <h3>How clamp() Works</h3>
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre><span class="cmt">/*
+  clamp(MIN, PREFERRED, MAX)
+
+  - Below the breakpoint: font-size = MIN
+  - In the sweet spot:    font-size = PREFERRED (scales with vw)
+  - Above the breakpoint: font-size = MAX
+
+  Example calculation:
+  clamp(1rem, 2.5vw, 2rem)
+  At 320px viewport:  2.5vw = 8px   -- clamps to 1rem (16px)
+  At 800px viewport:  2.5vw = 20px  -- uses 20px (within range)
+  At 1400px viewport: 2.5vw = 35px  -- clamps to 2rem (32px)
+*/</span></pre></div>
+
+    <div class="callout tip"><div class="callout-title">Fluid Typography Formula</div><p>A common formula: <code>font-size: clamp(minSize, calc(minSize + (maxSize - minSize) * (100vw - minViewport) / (maxViewport - minViewport)), maxSize)</code>. Or simply use the shortcut: pick your min/max sizes and use roughly <code>2vw</code> to <code>5vw</code> as the preferred value.</p></div>
+  </section>
+
+  <!-- ════════════════════════════════════════ Gotchas ════════════════════════════════════════ -->
+  <section class="section" id="gotchas">
+    <h2>Common Gotchas</h2>
+
+    <div class="callout gotcha"><div class="callout-title">em Compounding</div><p>Nested <code>em</code> values compound. If a parent is <code>1.2em</code> and a child is also <code>1.2em</code>, the child renders at <code>1.2 x 1.2 = 1.44em</code> of the grandparent. Use <code>rem</code> to avoid this trap.</p></div>
+
+    <div class="callout gotcha"><div class="callout-title">Faux Bold &amp; Italic</div><p>If you set <code>font-weight: 700</code> but the loaded font only has 400, the browser will synthesize a "faux bold" that looks thicker but poorly kerned. Always load the actual weight variants you need via <code>@font-face</code> or Google Fonts.</p></div>
+
+    <div class="callout gotcha"><div class="callout-title">text-overflow Needs Three Properties</div><p><code>text-overflow: ellipsis</code> alone does nothing. You also need <code>overflow: hidden</code> and <code>white-space: nowrap</code>. All three are required for the ellipsis to appear.</p></div>
+
+    <div class="callout gotcha"><div class="callout-title">Font Loading Flash (FOUT/FOIT)</div><p><strong>FOUT</strong> (Flash of Unstyled Text): fallback font shown, then swapped. <strong>FOIT</strong> (Flash of Invisible Text): text hidden until font loads. Use <code>font-display: swap</code> and preload critical fonts to minimize these effects.</p></div>
+
+    <div class="callout gotcha"><div class="callout-title">line-height on Inputs</div><p>Form inputs don't always inherit <code>line-height</code> from the body. Always explicitly set <code>line-height</code> on <code>input</code>, <code>textarea</code>, and <code>button</code> elements.</p></div>
+  </section>
+
+  <!-- ════════════════════════════════════════ Pro Tips ════════════════════════════════════════ -->
+  <section class="section" id="pro-tips">
+    <h2>Pro Tips</h2>
+
+    <div class="callout tip"><div class="callout-title">System Font Stack</div><p>For maximum performance and a native feel, use the system font stack:<br><code>font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;</code></p></div>
+
+    <div class="callout tip"><div class="callout-title">Optimal Measure (Line Length)</div><p>For comfortable reading, keep body text between <strong>45 and 75 characters</strong> per line. Use <code>max-width: 65ch</code> on your text container &mdash; the <code>ch</code> unit equals the width of the "0" character.</p></div>
+
+    <div class="callout tip"><div class="callout-title">Modular Scale</div><p>Use a mathematical ratio (e.g., 1.25, the "Major Third") to create harmonious heading sizes:<br><code>h4: 1rem</code>, <code>h3: 1.25rem</code>, <code>h2: 1.563rem</code>, <code>h1: 1.953rem</code>.</p></div>
+
+    <div class="callout tip"><div class="callout-title">Preload Critical Fonts</div><p>Add <code>&lt;link rel="preload" href="font.woff2" as="font" type="font/woff2" crossorigin&gt;</code> in your <code>&lt;head&gt;</code> to start downloading fonts before CSS is even parsed.</p></div>
+
+    <div class="callout tip"><div class="callout-title">font-variant-numeric for Numbers</div><p>Use <code>font-variant-numeric: tabular-nums</code> for tabular data (aligns columns of numbers) and <code>font-variant-numeric: oldstyle-nums</code> for body text (numbers that blend with lowercase letters).</p></div>
+
+    <div class="callout tip"><div class="callout-title">Vertical Rhythm</div><p>Set all margins and padding as multiples of your base line-height to maintain a consistent vertical rhythm. If your line-height is 1.5rem, use 1.5rem, 3rem, and 4.5rem for spacing.</p></div>
+  </section>
+
+  <div class="topic-nav">
+    <a href="02-box-model.html"><span class="label">Previous</span><span class="title">Box Model</span></a>
+    <a href="04-colors-backgrounds.html" class="next"><span class="label">Next</span><span class="title">Colors &amp; Backgrounds</span></a>
+  </div>
+</main>
+<script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Transitions &amp; Animations — CSS Reference Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div id="progress"></div>
+<header class="header">
+  <button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">&#9776;</button>
+  <h1><span>CSS</span> Reference Guide</h1>
+  <div class="header-nav"><a href="index.html">All Topics</a></div>
+  <button class="theme-toggle" onclick="toggleTheme()">&#9790; Dark</button>
+</header>
+
+<nav class="sidebar" id="sidebar">
+  <a href="index.html" class="nav-back">&#8592; All Topics</a>
+  <div class="nav-group">
+    <div class="nav-group-title">On This Page</div>
+    <a href="#what-are-transitions">What Are Transitions</a>
+    <a href="#transition-property">transition-property</a>
+    <a href="#transition-duration">transition-duration</a>
+    <a href="#transition-timing">transition-timing-function</a>
+    <a href="#transition-delay">transition-delay</a>
+    <a href="#transition-shorthand">Transition Shorthand</a>
+    <a href="#transition-examples">Practical Transitions</a>
+    <a href="#what-are-animations">What Are Animations</a>
+    <a href="#keyframes">@keyframes</a>
+    <a href="#animation-properties">Animation Properties</a>
+    <a href="#animation-direction">animation-direction</a>
+    <a href="#animation-fill-mode">animation-fill-mode</a>
+    <a href="#animation-play-state">animation-play-state</a>
+    <a href="#animation-shorthand">Animation Shorthand</a>
+    <a href="#animation-examples">Practical Animations</a>
+    <a href="#performance">Performance</a>
+    <a href="#reduced-motion">prefers-reduced-motion</a>
+    <a href="#gotchas">Gotchas</a>
+    <a href="#pro-tips">Pro Tips</a>
+  </div>
+</nav>
+
+<main class="main">
+<div class="page-hero">
+  <h1>Transitions &amp; <span>Animations</span></h1>
+  <p>@keyframes, transition shorthand, timing functions, will-change, and animation performance — bring your UI to life.</p>
+  <div class="tags">
+    <span class="tag">Transitions</span>
+    <span class="tag">@keyframes</span>
+    <span class="tag">Timing Functions</span>
+    <span class="tag">Performance</span>
+    <span class="tag">will-change</span>
+  </div>
+</div>
+
+<!-- ==================== SECTION 1 ==================== -->
+<section class="section" id="what-are-transitions">
+<h2>What Are CSS Transitions</h2>
+<p>A CSS transition smoothly interpolates a property's value from one state to another over a given duration. Instead of changes happening instantly (e.g., a button changing color on hover), the browser animates between the two values.</p>
+
+<p>Transitions require a <strong>trigger</strong> — a pseudo-class (<code>:hover</code>, <code>:focus</code>), a class change via JavaScript, or any state change that alters a property value.</p>
+
+<div class="code-block">
+  <div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div>
+  <pre><span class="sel">.button</span> {
+  <span class="prop">background</span>: <span class="val">#6c8cff</span>;
+  <span class="prop">transition</span>: <span class="val">background 0.3s ease</span>;
+}
+<span class="sel">.button:hover</span> {
+  <span class="prop">background</span>: <span class="val">#4a6cf7</span>;  <span class="cmt">/* smoothly transitions to this */</span>
+}</pre>
+</div>
+
+<h3>Which Properties Can Be Transitioned?</h3>
+<p>Not every CSS property is animatable. The property must have identifiable intermediate values. Here are common transitionable properties:</p>
+<table>
+  <thead><tr><th>Category</th><th>Properties</th></tr></thead>
+  <tbody>
+    <tr><td>Color</td><td>color, background-color, border-color, outline-color, box-shadow color</td></tr>
+    <tr><td>Layout</td><td>width, height, max-width, max-height, padding, margin</td></tr>
+    <tr><td>Transform</td><td>transform (translate, rotate, scale, skew)</td></tr>
+    <tr><td>Opacity</td><td>opacity</td></tr>
+    <tr><td>Typography</td><td>font-size, letter-spacing, word-spacing, line-height</td></tr>
+    <tr><td>Border</td><td>border-width, border-radius, border-color</td></tr>
+    <tr><td>Position</td><td>top, right, bottom, left</td></tr>
+    <tr><td>Not Animatable</td><td>display, font-family, position, float, content</td></tr>
+  </tbody>
+</table>
+</section>
+
+<!-- ==================== SECTION 2 ==================== -->
+<section class="section" id="transition-property">
+<h2>transition-property</h2>
+<p>Specifies which CSS properties should be transitioned. You can target specific properties or use <code>all</code>.</p>
+
+<div class="code-block">
+  <div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div>
+  <pre><span class="cmt">/* Single property */</span>
+<span class="prop">transition-property</span>: <span class="val">background-color</span>;
+
+<span class="cmt">/* Multiple properties */</span>
+<span class="prop">transition-property</span>: <span class="val">background-color, transform, opacity</span>;
+
+<span class="cmt">/* All transitionable properties */</span>
+<span class="prop">transition-property</span>: <span class="val">all</span>;
+
+<span class="cmt">/* None (disable transitions) */</span>
+<span class="prop">transition-property</span>: <span class="val">none</span>;</pre>
+</div>
+
+<div class="live-example">
+  <div class="live-example-label">Live Example — Specific vs All</div>
+  <style>
+    .tp-demo { display: flex; gap: 16px; flex-wrap: wrap; }
+    .tp-demo .tp-box {
+      width: 120px; height: 80px; border-radius: 8px; display: flex;
+      align-items: center; justify-content: center; font-size: .78rem;
+      font-weight: 600; color: #fff; cursor: pointer;
+    }
+    .tp-demo .tp-specific {
+      background: #6c8cff; transition-property: transform;
+      transition-duration: 0.4s;
+    }
+    .tp-demo .tp-specific:hover { background: #e74c3c; transform: scale(1.15); }
+    .tp-demo .tp-all {
+      background: #6c8cff; transition-property: all;
+      transition-duration: 0.4s;
+    }
+    .tp-demo .tp-all:hover { background: #e74c3c; transform: scale(1.15); }
+  </style>
+  <div class="tp-demo">
+    <div class="tp-box tp-specific">transform only<br>(color snaps)</div>
+    <div class="tp-box tp-all">transition: all<br>(both smooth)</div>
+  </div>
+</div>
+
+<div class="callout tip">
+  <div class="callout-title">Pro Tip</div>
+  Using <code>transition-property: all</code> is convenient but can cause unexpected transitions on properties you didn't intend. Prefer listing specific properties for production code.
+</div>
+</section>
+
+<!-- ==================== SECTION 3 ==================== -->
+<section class="section" id="transition-duration">
+<h2>transition-duration</h2>
+<p>How long the transition takes. Values in seconds (<code>s</code>) or milliseconds (<code>ms</code>). A duration of <code>0s</code> means no transition (instant).</p>
+
+<div class="code-block">
+  <div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div>
+  <pre><span class="prop">transition-duration</span>: <span class="val">0.3s</span>;    <span class="cmt">/* 300 milliseconds */</span>
+<span class="prop">transition-duration</span>: <span class="val">300ms</span>;   <span class="cmt">/* same thing */</span>
+<span class="prop">transition-duration</span>: <span class="val">1s</span>;      <span class="cmt">/* one second */</span>
+
+<span class="cmt">/* Different durations per property */</span>
+<span class="prop">transition-property</span>: <span class="val">background, transform</span>;
+<span class="prop">transition-duration</span>: <span class="val">0.3s, 0.6s</span>;</pre>
+</div>
+
+<div class="live-example">
+  <div class="live-example-label">Live Example — Duration Comparison (Hover)</div>
+  <style>
+    .td-demo { display: flex; gap: 10px; flex-direction: column; }
+    .td-demo .td-bar-wrap { display: flex; align-items: center; gap: 12px; }
+    .td-demo .td-label { font-size: .78rem; color: var(--text-muted); min-width: 60px; font-family: var(--font-code); }
+    .td-demo .td-bar {
+      height: 32px; width: 80px; border-radius: 6px;
+      background: #6c8cff; transition-property: width; cursor: pointer;
+    }
+    .td-demo:hover .td-bar { width: 100%; }
+    .td-demo .td-100  { transition-duration: 0.1s; }
+    .td-demo .td-300  { transition-duration: 0.3s; }
+    .td-demo .td-600  { transition-duration: 0.6s; }
+    .td-demo .td-1000 { transition-duration: 1s; }
+    .td-demo .td-2000 { transition-duration: 2s; }
+  </style>
+  <div class="td-demo">
+    <div class="td-bar-wrap"><span class="td-label">0.1s</span><div class="td-bar td-100"></div></div>
+    <div class="td-bar-wrap"><span class="td-label">0.3s</span><div class="td-bar td-300"></div></div>
+    <div class="td-bar-wrap"><span class="td-label">0.6s</span><div class="td-bar td-600"></div></div>
+    <div class="td-bar-wrap"><span class="td-label">1.0s</span><div class="td-bar td-1000"></div></div>
+    <div class="td-bar-wrap"><span class="td-label">2.0s</span><div class="td-bar td-2000"></div></div>
+  </div>
+  <p style="font-size:.78rem;color:var(--text-muted);margin-top:8px;">Hover the area above to see all bars expand at different speeds.</p>
+</div>
+</section>
+
+<!-- ==================== SECTION 4 ==================== -->
+<section class="section" id="transition-timing">
+<h2>transition-timing-function</h2>
+<p>Controls the acceleration curve of the transition — how the intermediate values are distributed over time.</p>
+
+<h3>Built-in Keywords</h3>
+<table>
+  <thead><tr><th>Value</th><th>Behavior</th><th>cubic-bezier Equivalent</th></tr></thead>
+  <tbody>
+    <tr><td><code>ease</code></td><td>Slow start, fast middle, slow end (default)</td><td>cubic-bezier(0.25, 0.1, 0.25, 1)</td></tr>
+    <tr><td><code>linear</code></td><td>Constant speed throughout</td><td>cubic-bezier(0, 0, 1, 1)</td></tr>
+    <tr><td><code>ease-in</code></td><td>Slow start, accelerates</td><td>cubic-bezier(0.42, 0, 1, 1)</td></tr>
+    <tr><td><code>ease-out</code></td><td>Fast start, decelerates</td><td>cubic-bezier(0, 0, 0.58, 1)</td></tr>
+    <tr><td><code>ease-in-out</code></td><td>Slow start and end</td><td>cubic-bezier(0.42, 0, 0.58, 1)</td></tr>
+  </tbody>
+</table>
+
+<div class="live-example">
+  <div class="live-example-label">Live Example — All Timing Functions (Hover)</div>
+  <style>
+    .tf-demo { display: flex; flex-direction: column; gap: 8px; }
+    .tf-demo .tf-row { display: flex; align-items: center; gap: 12px; }
+    .tf-demo .tf-name { min-width: 90px; font-size: .78rem; font-family: var(--font-code); color: var(--text-muted); }
+    .tf-demo .tf-track { flex: 1; height: 6px; background: var(--border); border-radius: 3px; position: relative; }
+    .tf-demo .tf-dot {
+      width: 24px; height: 24px; border-radius: 50%; background: #6c8cff;
+      position: absolute; top: -9px; left: 0; transition-property: left;
+      transition-duration: 1.5s;
+    }
+    .tf-demo:hover .tf-dot { left: calc(100% - 24px); }
+    .tf-demo .tf-ease     .tf-dot { transition-timing-function: ease; }
+    .tf-demo .tf-linear   .tf-dot { transition-timing-function: linear; }
+    .tf-demo .tf-ease-in  .tf-dot { transition-timing-function: ease-in; }
+    .tf-demo .tf-ease-out .tf-dot { transition-timing-function: ease-out; }
+    .tf-demo .tf-eio      .tf-dot { transition-timing-function: ease-in-out; }
+    .tf-demo .tf-custom   .tf-dot { transition-timing-function: cubic-bezier(0.68, -0.55, 0.27, 1.55); background: #a78bfa; }
+  </style>
+  <div class="tf-demo">
+    <div class="tf-row"><span class="tf-name">ease</span><div class="tf-track tf-ease"><div class="tf-dot"></div></div></div>
+    <div class="tf-row"><span class="tf-name">linear</span><div class="tf-track tf-linear"><div class="tf-dot"></div></div></div>
+    <div class="tf-row"><span class="tf-name">ease-in</span><div class="tf-track tf-ease-in"><div class="tf-dot"></div></div></div>
+    <div class="tf-row"><span class="tf-name">ease-out</span><div class="tf-track tf-ease-out"><div class="tf-dot"></div></div></div>
+    <div class="tf-row"><span class="tf-name">ease-in-out</span><div class="tf-track tf-eio"><div class="tf-dot"></div></div></div>
+    <div class="tf-row"><span class="tf-name">bouncy</span><div class="tf-track tf-custom"><div class="tf-dot"></div></div></div>
+  </div>
+  <p style="font-size:.78rem;color:var(--text-muted);margin-top:8px;">Hover to see all dots race. The purple "bouncy" dot uses <code>cubic-bezier(0.68, -0.55, 0.27, 1.55)</code>.</p>
+</div>
+
+<h3>steps()</h3>
+<p>The <code>steps()</code> function divides the transition into equal jumps — useful for sprite sheet animations or typewriter effects.</p>
+<div class="code-block">
+  <div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div>
+  <pre><span class="cmt">/* 5 discrete steps */</span>
+<span class="prop">transition-timing-function</span>: <span class="fn">steps</span>(<span class="num">5</span>, <span class="val">jump-end</span>);
+
+<span class="cmt">/* Common sprite animation */</span>
+<span class="sel">.sprite</span> {
+  <span class="prop">width</span>: <span class="val">64px</span>;
+  <span class="prop">background</span>: <span class="fn">url</span>(<span class="str">'sheet.png'</span>);
+  <span class="prop">animation</span>: <span class="val">walk 0.6s</span> <span class="fn">steps</span>(<span class="num">8</span>) <span class="val">infinite</span>;
+}</pre>
+</div>
+</section>
+
+<!-- ==================== SECTION 5 ==================== -->
+<section class="section" id="transition-delay">
+<h2>transition-delay</h2>
+<p>Waits a specified time before the transition starts. Can be positive or negative.</p>
+
+<div class="code-block">
+  <div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div>
+  <pre><span class="prop">transition-delay</span>: <span class="val">0.2s</span>;    <span class="cmt">/* wait 200ms then start */</span>
+<span class="prop">transition-delay</span>: <span class="val">-0.3s</span>;   <span class="cmt">/* start 300ms into the transition */</span>
+
+<span class="cmt">/* Staggered transitions on multiple properties */</span>
+<span class="prop">transition-property</span>: <span class="val">opacity, transform</span>;
+<span class="prop">transition-duration</span>: <span class="val">0.4s, 0.4s</span>;
+<span class="prop">transition-delay</span>: <span class="val">0s, 0.15s</span>;  <span class="cmt">/* transform starts later */</span></pre>
+</div>
+
+<div class="live-example">
+  <div class="live-example-label">Live Example — Staggered Delays (Hover)</div>
+  <style>
+    .delay-demo { display: flex; gap: 8px; flex-wrap: wrap; }
+    .delay-demo .dd-box {
+      width: 50px; height: 50px; border-radius: 8px; background: #6c8cff;
+      transition: transform 0.4s ease, background 0.4s ease;
+    }
+    .delay-demo:hover .dd-box { transform: translateY(-20px); background: #a78bfa; }
+    .delay-demo .dd-box:nth-child(1) { transition-delay: 0s; }
+    .delay-demo .dd-box:nth-child(2) { transition-delay: 0.05s; }
+    .delay-demo .dd-box:nth-child(3) { transition-delay: 0.1s; }
+    .delay-demo .dd-box:nth-child(4) { transition-delay: 0.15s; }
+    .delay-demo .dd-box:nth-child(5) { transition-delay: 0.2s; }
+    .delay-demo .dd-box:nth-child(6) { transition-delay: 0.25s; }
+    .delay-demo .dd-box:nth-child(7) { transition-delay: 0.3s; }
+    .delay-demo .dd-box:nth-child(8) { transition-delay: 0.35s; }
+  </style>
+  <div class="delay-demo">
+    <div class="dd-box"></div><div class="dd-box"></div><div class="dd-box"></div><div class="dd-box"></div>
+    <div class="dd-box"></div><div class="dd-box"></div><div class="dd-box"></div><div class="dd-box"></div>
+  </div>
+  <p style="font-size:.78rem;color:var(--text-muted);margin-top:8px;">Hover to see the wave effect created by staggered delays.</p>
+</div>
+</section>
+
+<!-- ==================== SECTION 6 ==================== -->
+<section class="section" id="transition-shorthand">
+<h2>Transition Shorthand</h2>
+<p>The <code>transition</code> shorthand combines all four sub-properties in one declaration:</p>
+<div class="code-block">
+  <div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div>
+  <pre><span class="cmt">/* transition: property duration timing-function delay */</span>
+<span class="prop">transition</span>: <span class="val">background-color 0.3s ease 0s</span>;
+
+<span class="cmt">/* Multiple transitions */</span>
+<span class="prop">transition</span>: <span class="val">background 0.3s ease</span>,
+            <span class="val">transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)</span>,
+            <span class="val">box-shadow 0.3s ease 0.1s</span>;
+
+<span class="cmt">/* Shortcut for all properties */</span>
+<span class="prop">transition</span>: <span class="val">all 0.3s ease</span>;</pre>
+</div>
+</section>
+
+<!-- ==================== SECTION 7 ==================== -->
+<section class="section" id="transition-examples">
+<h2>Practical Transition Examples</h2>
+
+<div class="live-example">
+  <div class="live-example-label">Live Example — Button Hover Effects</div>
+  <style>
+    .btn-trans-demo { display: flex; gap: 12px; flex-wrap: wrap; }
+    .btn-trans-demo button {
+      padding: 10px 24px; border: none; border-radius: 8px; font-size: .85rem;
+      font-weight: 600; cursor: pointer; color: #fff;
+    }
+    .bte-lift {
+      background: #6c8cff; transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .bte-lift:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(108,140,255,.4); }
+    .bte-grow {
+      background: #2ecc71; transition: transform 0.2s ease;
+    }
+    .bte-grow:hover { transform: scale(1.08); }
+    .bte-glow {
+      background: #a78bfa; transition: box-shadow 0.3s ease;
+    }
+    .bte-glow:hover { box-shadow: 0 0 20px rgba(167,139,250,.6), 0 0 40px rgba(167,139,250,.3); }
+    .bte-slide {
+      background: #e74c3c; position: relative; overflow: hidden; z-index: 0;
+    }
+    .bte-slide::before {
+      content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+      background: rgba(255,255,255,.15); transition: left 0.3s ease; z-index: -1;
+    }
+    .bte-slide:hover::before { left: 0; }
+  </style>
+  <div class="btn-trans-demo">
+    <button class="bte-lift">Lift Effect</button>
+    <button class="bte-grow">Scale Grow</button>
+    <button class="bte-glow">Glow Effect</button>
+    <button class="bte-slide">Slide Shine</button>
+  </div>
+</div>
+
+<div class="live-example">
+  <div class="live-example-label">Live Example — Underline Nav Links</div>
+  <style>
+    .nav-trans-demo { display: flex; gap: 20px; }
+    .nav-trans-demo a {
+      text-decoration: none; color: var(--text); font-size: .9rem;
+      font-weight: 500; position: relative; padding-bottom: 4px;
+    }
+    .nav-trans-demo a::after {
+      content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px;
+      background: #6c8cff; transition: width 0.3s ease;
+    }
+    .nav-trans-demo a:hover::after { width: 100%; }
+  </style>
+  <div class="nav-trans-demo">
+    <a href="#">Home</a>
+    <a href="#">About</a>
+    <a href="#">Services</a>
+    <a href="#">Contact</a>
+  </div>
+</div>
+
+<div class="live-example">
+  <div class="live-example-label">Live Example — Card Hover</div>
+  <style>
+    .card-trans-demo {
+      background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px;
+      padding: 24px; max-width: 260px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    }
+    .card-trans-demo:hover {
+      transform: translateY(-6px); border-color: var(--accent);
+      box-shadow: 0 12px 32px rgba(0,0,0,.2);
+    }
+    .card-trans-demo h4 { margin-bottom: 6px; }
+    .card-trans-demo p { font-size: .82rem; color: var(--text-muted); }
+  </style>
+  <div class="card-trans-demo">
+    <h4>Hover Card</h4>
+    <p>This card lifts up, gets a stronger shadow, and highlights its border on hover using CSS transitions.</p>
+  </div>
+</div>
+</section>
+
+<!-- ==================== SECTION 8 ==================== -->
+<section class="section" id="what-are-animations">
+<h2>What Are CSS Animations</h2>
+<p>CSS animations differ from transitions in key ways:</p>
+<table>
+  <thead><tr><th>Feature</th><th>Transitions</th><th>Animations</th></tr></thead>
+  <tbody>
+    <tr><td>Trigger</td><td>Requires state change (:hover, class toggle)</td><td>Runs automatically (or on class add)</td></tr>
+    <tr><td>Keyframes</td><td>Only 2 states (from → to)</td><td>Multiple keyframes (0%, 25%, 50%…)</td></tr>
+    <tr><td>Looping</td><td>Cannot loop</td><td>Can loop infinitely</td></tr>
+    <tr><td>Direction</td><td>Forward only</td><td>Normal, reverse, alternate</td></tr>
+    <tr><td>Complexity</td><td>Simple state transitions</td><td>Complex multi-step sequences</td></tr>
+  </tbody>
+</table>
+</section>
+
+<!-- ==================== SECTION 9 ==================== -->
+<section class="section" id="keyframes">
+<h2>@keyframes</h2>
+<p>The <code>@keyframes</code> rule defines the stages of an animation. You give it a name and specify what should happen at each point in time.</p>
+
+<div class="code-block">
+  <div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div>
+  <pre><span class="cmt">/* Simple from/to */</span>
+<span class="at">@keyframes</span> <span class="val">fadeIn</span> {
+  <span class="kw">from</span> { <span class="prop">opacity</span>: <span class="val">0</span>; }
+  <span class="kw">to</span>   { <span class="prop">opacity</span>: <span class="val">1</span>; }
+}
+
+<span class="cmt">/* Percentage keyframes */</span>
+<span class="at">@keyframes</span> <span class="val">bounce</span> {
+  <span class="num">0%</span>   { <span class="prop">transform</span>: <span class="fn">translateY</span>(<span class="val">0</span>); }
+  <span class="num">40%</span>  { <span class="prop">transform</span>: <span class="fn">translateY</span>(<span class="val">-30px</span>); }
+  <span class="num">60%</span>  { <span class="prop">transform</span>: <span class="fn">translateY</span>(<span class="val">-15px</span>); }
+  <span class="num">80%</span>  { <span class="prop">transform</span>: <span class="fn">translateY</span>(<span class="val">-5px</span>); }
+  <span class="num">100%</span> { <span class="prop">transform</span>: <span class="fn">translateY</span>(<span class="val">0</span>); }
+}
+
+<span class="cmt">/* Multiple properties */</span>
+<span class="at">@keyframes</span> <span class="val">slideInFade</span> {
+  <span class="num">0%</span>   { <span class="prop">opacity</span>: <span class="val">0</span>; <span class="prop">transform</span>: <span class="fn">translateX</span>(<span class="val">-40px</span>); }
+  <span class="num">100%</span> { <span class="prop">opacity</span>: <span class="val">1</span>; <span class="prop">transform</span>: <span class="fn">translateX</span>(<span class="val">0</span>); }
+}</pre>
+</div>
+</section>
+
+<!-- ==================== SECTION 10 ==================== -->
+<section class="section" id="animation-properties">
+<h2>Animation Properties</h2>
+<p>Apply a keyframe animation to an element with these properties:</p>
+
+<div class="code-block">
+  <div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div>
+  <pre><span class="sel">.element</span> {
+  <span class="prop">animation-name</span>: <span class="val">bounce</span>;             <span class="cmt">/* name of @keyframes */</span>
+  <span class="prop">animation-duration</span>: <span class="val">0.8s</span>;           <span class="cmt">/* how long */</span>
+  <span class="prop">animation-timing-function</span>: <span class="val">ease</span>;    <span class="cmt">/* acceleration curve */</span>
+  <span class="prop">animation-delay</span>: <span class="val">0.2s</span>;              <span class="cmt">/* wait before starting */</span>
+  <span class="prop">animation-iteration-count</span>: <span class="val">3</span>;       <span class="cmt">/* how many times */</span>
+  <span class="prop">animation-direction</span>: <span class="val">alternate</span>;     <span class="cmt">/* forward then backward */</span>
+  <span class="prop">animation-fill-mode</span>: <span class="val">forwards</span>;      <span class="cmt">/* keep end state */</span>
+  <span class="prop">animation-play-state</span>: <span class="val">running</span>;      <span class="cmt">/* running or paused */</span>
+}</pre>
+</div>
+
+<h3>animation-iteration-count</h3>
+<div class="code-block">
+  <div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div>
+  <pre><span class="prop">animation-iteration-count</span>: <span class="val">1</span>;          <span class="cmt">/* play once (default) */</span>
+<span class="prop">animation-iteration-count</span>: <span class="val">3</span>;          <span class="cmt">/* play 3 times */</span>
+<span class="prop">animation-iteration-count</span>: <span class="val">infinite</span>;   <span class="cmt">/* loop forever */</span>
+<span class="prop">animation-iteration-count</span>: <span class="val">2.5</span>;        <span class="cmt">/* play 2.5 times, stop mid-animation */</span></pre>
+</div>
+</section>
+
+<!-- ==================== SECTION 11 ==================== -->
+<section class="section" id="animation-direction">
+<h2>animation-direction</h2>
+
+<div class="live-example">
+  <div class="live-example-label">Live Example — All Four Directions</div>
+  <style>
+    @keyframes adSlide { from { transform: translateX(0); } to { transform: translateX(200px); } }
+    .ad-demo { display: flex; flex-direction: column; gap: 12px; }
+    .ad-demo .ad-row { display: flex; align-items: center; gap: 12px; }
+    .ad-demo .ad-label { min-width: 130px; font-size: .78rem; font-family: var(--font-code); color: var(--text-muted); }
+    .ad-demo .ad-dot {
+      width: 28px; height: 28px; border-radius: 50%; background: #6c8cff;
+      animation: adSlide 1.5s ease-in-out infinite;
+    }
+    .ad-demo .ad-normal    { animation-direction: normal; }
+    .ad-demo .ad-reverse   { animation-direction: reverse; }
+    .ad-demo .ad-alternate { animation-direction: alternate; }
+    .ad-demo .ad-alt-rev   { animation-direction: alternate-reverse; }
+  </style>
+  <div class="ad-demo">
+    <div class="ad-row"><span class="ad-label">normal</span><div class="ad-dot ad-normal"></div></div>
+    <div class="ad-row"><span class="ad-label">reverse</span><div class="ad-dot ad-reverse"></div></div>
+    <div class="ad-row"><span class="ad-label">alternate</span><div class="ad-dot ad-alternate"></div></div>
+    <div class="ad-row"><span class="ad-label">alternate-reverse</span><div class="ad-dot ad-alt-rev"></div></div>
+  </div>
+</div>
+</section>
+
+<!-- ==================== SECTION 12 ==================== -->
+<section class="section" id="animation-fill-mode">
+<h2>animation-fill-mode</h2>
+<p>Controls what styles apply to the element <strong>before</strong> the animation starts and <strong>after</strong> it ends.</p>
+
+<table>
+  <thead><tr><th>Value</th><th>Before Animation</th><th>After Animation</th></tr></thead>
+  <tbody>
+    <tr><td><code>none</code></td><td>Element's own styles</td><td>Element's own styles (default)</td></tr>
+    <tr><td><code>forwards</code></td><td>Element's own styles</td><td>Keeps last keyframe's styles</td></tr>
+    <tr><td><code>backwards</code></td><td>Applies first keyframe (during delay)</td><td>Element's own styles</td></tr>
+    <tr><td><code>both</code></td><td>Applies first keyframe</td><td>Keeps last keyframe's styles</td></tr>
+  </tbody>
+</table>
+
+<div class="live-example">
+  <div class="live-example-label">Live Example — forwards vs none</div>
+  <style>
+    @keyframes fmSlide { from { transform: translateX(0); background: #6c8cff; } to { transform: translateX(160px); background: #2ecc71; } }
+    .fm-demo { display: flex; flex-direction: column; gap: 12px; }
+    .fm-demo .fm-row { display: flex; align-items: center; gap: 12px; }
+    .fm-demo .fm-label { min-width: 90px; font-size: .78rem; font-family: var(--font-code); color: var(--text-muted); }
+    .fm-demo .fm-box {
+      width: 50px; height: 34px; border-radius: 6px; background: #6c8cff;
+      animation: fmSlide 1.5s ease 0s 1;
+    }
+    .fm-demo .fm-none     { animation-fill-mode: none; }
+    .fm-demo .fm-forwards { animation-fill-mode: forwards; }
+    .fm-demo .fm-both     { animation-fill-mode: both; }
+  </style>
+  <div class="fm-demo">
+    <div class="fm-row"><span class="fm-label">none</span><div class="fm-box fm-none"></div></div>
+    <div class="fm-row"><span class="fm-label">forwards</span><div class="fm-box fm-forwards"></div></div>
+    <div class="fm-row"><span class="fm-label">both</span><div class="fm-box fm-both"></div></div>
+  </div>
+  <p style="font-size:.78rem;color:var(--text-muted);margin-top:6px;">After the animation ends: "none" snaps back, "forwards" stays at the end position.</p>
+</div>
+</section>
+
+<!-- ==================== SECTION 13 ==================== -->
+<section class="section" id="animation-play-state">
+<h2>animation-play-state</h2>
+<p>Pauses or resumes an animation. Commonly used with <code>:hover</code> to let users control animations.</p>
+
+<div class="code-block">
+  <div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div>
+  <pre><span class="sel">.spinner</span> {
+  <span class="prop">animation</span>: <span class="val">spin 2s linear infinite</span>;
+}
+<span class="sel">.spinner:hover</span> {
+  <span class="prop">animation-play-state</span>: <span class="val">paused</span>;
+}</pre>
+</div>
+
+<div class="live-example">
+  <div class="live-example-label">Live Example — Hover to Pause</div>
+  <style>
+    @keyframes psSpin { to { transform: rotate(360deg); } }
+    .ps-box {
+      width: 60px; height: 60px; border-radius: 12px; background: linear-gradient(135deg, #6c8cff, #a78bfa);
+      animation: psSpin 2s linear infinite; cursor: pointer; margin: 0 auto;
+    }
+    .ps-box:hover { animation-play-state: paused; }
+  </style>
+  <div style="text-align:center">
+    <div class="ps-box"></div>
+    <p style="font-size:.78rem;color:var(--text-muted);margin-top:8px;">Hover to pause the rotation.</p>
+  </div>
+</div>
+</section>
+
+<!-- ==================== SECTION 14 ==================== -->
+<section class="section" id="animation-shorthand">
+<h2>Animation Shorthand</h2>
+<div class="code-block">
+  <div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div>
+  <pre><span class="cmt">/* animation: name duration timing delay count direction fill-mode play-state */</span>
+<span class="prop">animation</span>: <span class="val">bounce 0.8s ease-in-out 0.2s infinite alternate forwards running</span>;
+
+<span class="cmt">/* In practice, most values are optional */</span>
+<span class="prop">animation</span>: <span class="val">fadeIn 0.5s ease</span>;
+<span class="prop">animation</span>: <span class="val">spin 1s linear infinite</span>;
+<span class="prop">animation</span>: <span class="val">slideUp 0.4s ease forwards</span>;
+
+<span class="cmt">/* Multiple animations on one element */</span>
+<span class="prop">animation</span>: <span class="val">fadeIn 0.5s ease</span>,
+            <span class="val">slideUp 0.6s ease 0.1s</span>;</pre>
+</div>
+</section>
+
+<!-- ==================== SECTION 15 ==================== -->
+<section class="section" id="animation-examples">
+<h2>Practical Animation Examples</h2>
+
+<h3>Loading Spinners</h3>
+<div class="live-example">
+  <div class="live-example-label">Live Example — Three Spinner Styles</div>
+  <style>
+    .spinner-row { display: flex; gap: 40px; justify-content: center; align-items: center; flex-wrap: wrap; padding: 20px 0; }
+
+    /* Spinner 1: Ring */
+    @keyframes ringSpin { to { transform: rotate(360deg); } }
+    .spin-ring {
+      width: 40px; height: 40px; border: 4px solid var(--border);
+      border-top-color: #6c8cff; border-radius: 50%;
+      animation: ringSpin 0.8s linear infinite;
+    }
+
+    /* Spinner 2: Dots */
+    @keyframes dotBounce { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1); } }
+    .spin-dots { display: flex; gap: 6px; }
+    .spin-dots span {
+      width: 12px; height: 12px; border-radius: 50%; background: #a78bfa;
+      animation: dotBounce 1.4s ease-in-out infinite;
+    }
+    .spin-dots span:nth-child(2) { animation-delay: 0.16s; }
+    .spin-dots span:nth-child(3) { animation-delay: 0.32s; }
+
+    /* Spinner 3: Pulse */
+    @keyframes pulseGrow { 0% { transform: scale(0.8); opacity: 1; } 100% { transform: scale(2); opacity: 0; } }
+    .spin-pulse {
+      width: 30px; height: 30px; border-radius: 50%; background: #2ecc71;
+      animation: pulseGrow 1.2s ease-out infinite;
+    }
+  </style>
+  <div class="spinner-row">
+    <div style="text-align:center">
+      <div class="spin-ring"></div>
+      <p style="font-size:.72rem;color:var(--text-muted);margin-top:8px;">Ring</p>
+    </div>
+    <div style="text-align:center">
+      <div class="spin-dots"><span></span><span></span><span></span></div>
+      <p style="font-size:.72rem;color:var(--text-muted);margin-top:8px;">Dots</p>
+    </div>
+    <div style="text-align:center">
+      <div class="spin-pulse"></div>
+      <p style="font-size:.72rem;color:var(--text-muted);margin-top:8px;">Pulse</p>
+    </div>
+  </div>
+</div>
+
+<h3>Attention Animations</h3>
+<div class="live-example">
+  <div class="live-example-label">Live Example — Shake, Bounce, Pulse</div>
+  <style>
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20% { transform: translateX(-8px); }
+      40% { transform: translateX(8px); }
+      60% { transform: translateX(-4px); }
+      80% { transform: translateX(4px); }
+    }
+    @keyframes bounceAtt {
+      0%, 100% { transform: translateY(0); }
+      30% { transform: translateY(-16px); }
+      50% { transform: translateY(-8px); }
+      70% { transform: translateY(-4px); }
+    }
+    @keyframes pulseAtt {
+      0% { box-shadow: 0 0 0 0 rgba(108,140,255,.5); }
+      70% { box-shadow: 0 0 0 16px rgba(108,140,255,0); }
+      100% { box-shadow: 0 0 0 0 rgba(108,140,255,0); }
+    }
+    .att-row { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
+    .att-box {
+      width: 80px; height: 60px; border-radius: 10px; display: flex;
+      align-items: center; justify-content: center; font-size: .75rem;
+      font-weight: 600; color: #fff; cursor: pointer;
+    }
+    .att-shake { background: #e74c3c; }
+    .att-shake:hover { animation: shake 0.5s ease; }
+    .att-bounce { background: #2ecc71; }
+    .att-bounce:hover { animation: bounceAtt 0.6s ease; }
+    .att-pulse { background: #6c8cff; }
+    .att-pulse:hover { animation: pulseAtt 1s ease infinite; }
+  </style>
+  <div class="att-row">
+    <div class="att-box att-shake">Shake</div>
+    <div class="att-box att-bounce">Bounce</div>
+    <div class="att-box att-pulse">Pulse</div>
+  </div>
+  <p style="font-size:.78rem;color:var(--text-muted);margin-top:8px;text-align:center;">Hover each box to trigger the animation.</p>
+</div>
+
+<h3>Gradient Animation</h3>
+<div class="live-example">
+  <div class="live-example-label">Live Example — Animated Gradient Background</div>
+  <style>
+    @keyframes gradShift {
+      0%   { background-position: 0% 50%; }
+      50%  { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .grad-anim {
+      width: 100%; height: 80px; border-radius: 10px;
+      background: linear-gradient(270deg, #6c8cff, #a78bfa, #e74c3c, #2ecc71);
+      background-size: 600% 600%;
+      animation: gradShift 6s ease infinite;
+    }
+  </style>
+  <div class="grad-anim"></div>
+</div>
+
+<h3>Typing Effect</h3>
+<div class="live-example">
+  <div class="live-example-label">Live Example — Typewriter</div>
+  <style>
+    @keyframes typewriter { from { width: 0; } to { width: 18ch; } }
+    @keyframes blink { 50% { border-color: transparent; } }
+    .type-demo {
+      font-family: var(--font-code); font-size: 1.1rem; color: #6c8cff;
+      overflow: hidden; white-space: nowrap; width: 0;
+      border-right: 3px solid #6c8cff;
+      animation: typewriter 2.5s steps(18) 0.5s forwards,
+                 blink 0.7s step-end infinite;
+    }
+  </style>
+  <div class="type-demo">Hello, CSS World!</div>
+</div>
+</section>
+
+<!-- ==================== SECTION 16 ==================== -->
+<section class="section" id="performance">
+<h2>Performance</h2>
+<p>Not all CSS properties are equal in animation performance. The browser rendering pipeline has three stages: <strong>Layout → Paint → Composite</strong>. Animating properties that only trigger compositing is the cheapest.</p>
+
+<h3>Property Cost Table</h3>
+<table>
+  <thead><tr><th>Tier</th><th>Properties</th><th>Cost</th></tr></thead>
+  <tbody>
+    <tr><td style="color:#2ecc71;font-weight:600">Composite Only</td><td>transform, opacity</td><td>Cheapest — GPU accelerated, no repaint</td></tr>
+    <tr><td style="color:#f39c12;font-weight:600">Paint</td><td>color, background, box-shadow, border-radius</td><td>Medium — repaint but no layout</td></tr>
+    <tr><td style="color:#e74c3c;font-weight:600">Layout</td><td>width, height, padding, margin, top, left, font-size</td><td>Expensive — triggers full layout recalculation</td></tr>
+  </tbody>
+</table>
+
+<div class="callout tip">
+  <div class="callout-title">The Golden Rule</div>
+  For 60fps animations, <strong>only animate <code>transform</code> and <code>opacity</code></strong>. These are the only properties that can be handled entirely by the GPU compositor without triggering layout or paint.
+</div>
+
+<h3>will-change</h3>
+<div class="code-block">
+  <div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div>
+  <pre><span class="cmt">/* Hint the browser to prepare for animation */</span>
+<span class="sel">.animated-element</span> {
+  <span class="prop">will-change</span>: <span class="val">transform, opacity</span>;
+}
+
+<span class="cmt">/* Apply on hover intent, remove when done */</span>
+<span class="sel">.card</span> {
+  <span class="prop">transition</span>: <span class="val">transform 0.3s ease</span>;
+}
+<span class="sel">.card:hover</span> {
+  <span class="prop">will-change</span>: <span class="val">transform</span>;
+  <span class="prop">transform</span>: <span class="fn">translateY</span>(<span class="val">-4px</span>);
+}</pre>
+</div>
+
+<div class="callout gotcha">
+  <div class="callout-title">Don't Overuse will-change</div>
+  Applying <code>will-change</code> to too many elements wastes GPU memory. Only use it on elements that actually animate, and consider removing it after the animation completes.
+</div>
+</section>
+
+<!-- ==================== SECTION 17 ==================== -->
+<section class="section" id="reduced-motion">
+<h2>prefers-reduced-motion</h2>
+<p>Some users experience motion sickness or have vestibular disorders. The <code>prefers-reduced-motion</code> media query lets you respect their system preference.</p>
+
+<div class="code-block">
+  <div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div>
+  <pre><span class="cmt">/* Approach 1: Remove animations for users who prefer reduced motion */</span>
+<span class="at">@media</span> (<span class="prop">prefers-reduced-motion</span>: <span class="val">reduce</span>) {
+  *, *::before, *::after {
+    <span class="prop">animation-duration</span>: <span class="val">0.01ms !important</span>;
+    <span class="prop">animation-iteration-count</span>: <span class="val">1 !important</span>;
+    <span class="prop">transition-duration</span>: <span class="val">0.01ms !important</span>;
+  }
+}
+
+<span class="cmt">/* Approach 2: Only add animations for users who are OK with motion */</span>
+<span class="sel">.element</span> {
+  <span class="prop">opacity</span>: <span class="val">1</span>;  <span class="cmt">/* default: no animation */</span>
+}
+
+<span class="at">@media</span> (<span class="prop">prefers-reduced-motion</span>: <span class="val">no-preference</span>) {
+  <span class="sel">.element</span> {
+    <span class="prop">animation</span>: <span class="val">fadeIn 0.5s ease</span>;
+  }
+}</pre>
+</div>
+
+<div class="callout info">
+  <div class="callout-title">Accessibility Matters</div>
+  Approach 2 (opt-in motion) is preferred because it treats motion as a progressive enhancement. Elements work without animation, and animation is added only when the user hasn't indicated a preference.
+</div>
+</section>
+
+<!-- ==================== SECTION 18 ==================== -->
+<section class="section" id="gotchas">
+<h2>Gotchas</h2>
+
+<div class="callout gotcha">
+  <div class="callout-title">1. display: none Cannot Be Transitioned</div>
+  Changing from <code>display: none</code> to <code>display: block</code> happens instantly — no transition. Workaround: use <code>opacity</code> and <code>visibility</code> together, or use <code>@starting-style</code> (modern CSS).
+</div>
+
+<div class="callout gotcha">
+  <div class="callout-title">2. Transitioning to auto</div>
+  <code>height: auto</code> cannot be transitioned. The browser doesn't know what numeric value "auto" resolves to ahead of time. Workaround: transition <code>max-height</code> from <code>0</code> to a large value, or use CSS Grid's <code>grid-template-rows: 0fr → 1fr</code> trick.
+</div>
+
+<div class="callout gotcha">
+  <div class="callout-title">3. Transitions on Page Load</div>
+  Transitions defined on elements fire on initial page load, causing a flash. Fix: add a <code>.no-transition</code> class to <code>&lt;body&gt;</code> and remove it after load, or defer the class that triggers transitions.
+</div>
+
+<div class="callout gotcha">
+  <div class="callout-title">4. Animation Name Conflicts</div>
+  <code>@keyframes</code> names are global. If two stylesheets define <code>@keyframes fadeIn</code>, the last one wins. Use unique, prefixed names (e.g., <code>myApp-fadeIn</code>) or CSS <code>@layer</code> to avoid conflicts.
+</div>
+
+<div class="callout gotcha">
+  <div class="callout-title">5. Transition on the Element, Not the State</div>
+  Always put the <code>transition</code> on the <strong>base element</strong>, not on <code>:hover</code>. If you put it on <code>:hover</code>, the return transition (mouse leave) won't be smooth.
+</div>
+
+<div class="code-block">
+  <div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div>
+  <pre><span class="cmt">/* WRONG — transition only applies during hover */</span>
+<span class="sel">.btn:hover</span> {
+  <span class="prop">background</span>: <span class="val">red</span>;
+  <span class="prop">transition</span>: <span class="val">background 0.3s</span>;
+}
+
+<span class="cmt">/* RIGHT — transition applies in both directions */</span>
+<span class="sel">.btn</span> {
+  <span class="prop">transition</span>: <span class="val">background 0.3s</span>;
+}
+<span class="sel">.btn:hover</span> {
+  <span class="prop">background</span>: <span class="val">red</span>;
+}</pre>
+</div>
+</section>
+
+<!-- ==================== SECTION 19 ==================== -->
+<section class="section" id="pro-tips">
+<h2>Pro Tips</h2>
+
+<div class="callout tip">
+  <div class="callout-title">1. Use transform Instead of Position Properties</div>
+  Instead of animating <code>top</code>/<code>left</code> (triggers layout), use <code>transform: translate()</code> (composite only). Same visual effect, dramatically better performance.
+</div>
+
+<div class="callout tip">
+  <div class="callout-title">2. cubic-bezier for Personality</div>
+  Custom curves add character to your UI. Try these popular curves:
+  <ul style="margin-top:6px">
+    <li><strong>Snappy:</strong> <code>cubic-bezier(0.4, 0, 0.2, 1)</code> — Material Design standard</li>
+    <li><strong>Bouncy:</strong> <code>cubic-bezier(0.68, -0.55, 0.27, 1.55)</code></li>
+    <li><strong>Swift out:</strong> <code>cubic-bezier(0.55, 0, 0.1, 1)</code></li>
+  </ul>
+</div>
+
+<div class="callout tip">
+  <div class="callout-title">3. Stagger Animations with CSS</div>
+  Use <code>animation-delay</code> with <code>nth-child()</code> for pure-CSS staggering without JavaScript:
+  <div class="code-block" style="margin-top:8px">
+    <div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div>
+    <pre><span class="sel">.item</span> {
+  <span class="prop">animation</span>: <span class="val">fadeInUp 0.5s ease both</span>;
+}
+<span class="sel">.item:nth-child(1)</span> { <span class="prop">animation-delay</span>: <span class="val">0.0s</span>; }
+<span class="sel">.item:nth-child(2)</span> { <span class="prop">animation-delay</span>: <span class="val">0.1s</span>; }
+<span class="sel">.item:nth-child(3)</span> { <span class="prop">animation-delay</span>: <span class="val">0.2s</span>; }
+<span class="sel">.item:nth-child(4)</span> { <span class="prop">animation-delay</span>: <span class="val">0.3s</span>; }
+
+<span class="cmt">/* Or use custom properties for dynamic staggering */</span>
+<span class="sel">.item</span> {
+  <span class="prop">animation-delay</span>: <span class="fn">calc</span>(<span class="fn">var</span>(<span class="val">--index</span>) * <span class="val">0.1s</span>);
+}
+<span class="cmt">/* &lt;div class="item" style="--index:0"&gt; */</span>
+<span class="cmt">/* &lt;div class="item" style="--index:1"&gt; */</span></pre>
+  </div>
+</div>
+
+<div class="callout tip">
+  <div class="callout-title">4. Debug Animations in DevTools</div>
+  Chrome DevTools has an <strong>Animations</strong> tab (More tools → Animations) that lets you inspect, slow down (25%/10% speed), replay, and scrub through CSS animations. Firefox has a similar tool in the Inspector panel.
+</div>
+
+<div class="callout tip">
+  <div class="callout-title">5. The max-height Trick for Accordion</div>
+  Since <code>height: auto</code> can't be transitioned, use <code>max-height</code> with a large value:
+  <div class="code-block" style="margin-top:8px">
+    <div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div>
+    <pre><span class="sel">.accordion-body</span> {
+  <span class="prop">max-height</span>: <span class="val">0</span>;
+  <span class="prop">overflow</span>: <span class="val">hidden</span>;
+  <span class="prop">transition</span>: <span class="val">max-height 0.4s ease</span>;
+}
+<span class="sel">.accordion.open .accordion-body</span> {
+  <span class="prop">max-height</span>: <span class="val">500px</span>; <span class="cmt">/* larger than content */</span>
+}
+
+<span class="cmt">/* Modern alternative with Grid: */</span>
+<span class="sel">.accordion-body</span> {
+  <span class="prop">display</span>: <span class="val">grid</span>;
+  <span class="prop">grid-template-rows</span>: <span class="val">0fr</span>;
+  <span class="prop">transition</span>: <span class="val">grid-template-rows 0.4s ease</span>;
+}
+<span class="sel">.accordion.open .accordion-body</span> {
+  <span class="prop">grid-template-rows</span>: <span class="val">1fr</span>;
+}</pre>
+  </div>
+</div>
+
+<div class="callout tip">
+  <div class="callout-title">6. Transition Durations Guide</div>
+  <ul style="margin-top:6px">
+    <li><strong>Micro-interactions</strong> (hover, focus): 100–200ms</li>
+    <li><strong>Small movements</strong> (tooltips, dropdowns): 200–300ms</li>
+    <li><strong>Medium movements</strong> (modals, panels): 300–500ms</li>
+    <li><strong>Large movements</strong> (page transitions): 500–800ms</li>
+    <li><strong>Anything over 1s</strong> feels sluggish for UI interactions</li>
+  </ul>
+</div>
+</section>
+
+<!-- ==================== NAV ==================== -->
+<div class="topic-nav">
+  <a href="10-css-variables.html">
+    <span class="label">Previous</span>
+    <span class="title">CSS Variables</span>
+  </a>
+  <a href="12-transforms.html" class="next">
+    <span class="label">Next</span>
+    <span class="title">Transforms</span>
+  </a>
+</div>
+
+</main>
+<script src="script.js"></script>
+</body>
+</html>

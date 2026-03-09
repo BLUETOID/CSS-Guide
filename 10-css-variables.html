@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CSS Variables — CSS Reference Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div id="progress"></div>
+<header class="header">
+  <button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">&#9776;</button>
+  <h1><span>CSS</span> Reference Guide</h1>
+  <div class="header-nav"><a href="index.html">All Topics</a></div>
+  <button class="theme-toggle" onclick="toggleTheme()">&#9790; Dark</button>
+</header>
+
+<nav class="sidebar" id="sidebar">
+  <a href="index.html" class="nav-back">&#8592; All Topics</a>
+  <div class="nav-group">
+    <div class="nav-group-title">On This Page</div>
+    <a href="#what-are-custom-properties">What Are Custom Properties</a>
+    <a href="#declaring-variables">Declaring Variables</a>
+    <a href="#root-scope">The :root Scope</a>
+    <a href="#using-var">Using var()</a>
+    <a href="#fallback-values">Fallback Values</a>
+    <a href="#scope-inheritance">Scope &amp; Inheritance</a>
+    <a href="#dynamic-theming">Dynamic Theming</a>
+    <a href="#component-variables">Component-Level Variables</a>
+    <a href="#variables-calc">Variables with calc()</a>
+    <a href="#variables-media-queries">Variables &amp; Media Queries</a>
+    <a href="#javascript-integration">JavaScript Integration</a>
+    <a href="#animation-property">Animation &amp; @property</a>
+    <a href="#practical-patterns">Practical Patterns</a>
+    <a href="#gotchas">Gotchas</a>
+    <a href="#pro-tips">Pro Tips</a>
+  </div>
+</nav>
+
+<main class="main">
+<div class="page-hero">
+  <h1>CSS <span>Variables</span></h1>
+  <p>Custom properties, :root scope, dynamic theming, fallback values, and JavaScript integration — the key to maintainable, dynamic stylesheets.</p>
+  <div class="tags">
+    <span class="tag">Custom Properties</span>
+    <span class="tag">Theming</span>
+    <span class="tag">var()</span>
+    <span class="tag">:root</span>
+    <span class="tag">Dynamic Styles</span>
+  </div>
+</div>
+
+<!-- ==================== SECTION 1 ==================== -->
+<section class="section" id="what-are-custom-properties">
+<h2>What Are CSS Custom Properties</h2>
+<p>CSS Custom Properties (commonly called CSS Variables) let you store values in named tokens that can be reused throughout your stylesheet. Unlike preprocessor variables (Sass <code>$color</code>, Less <code>@color</code>), CSS variables are <strong>live</strong> — they exist in the browser, cascade like any other property, inherit down the DOM tree, and can be changed at runtime with JavaScript.</p>
+
+<div class="code-block">
+  <div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div>
+  <pre><span class="cmt">/* Declare a custom property */</span>
+<span class="sel">:root</span> {
+  <span class="prop">--primary</span>: <span class="val">#6c8cff</span>;
+}
+
+<span class="cmt">/* Use it anywhere */</span>
+<span class="sel">.button</span> {
+  <span class="prop">background</span>: <span class="fn">var</span>(<span class="val">--primary</span>);
+}</pre>
+</div>
+
+<h3>CSS Variables vs Preprocessor Variables</h3>
+<table>
+  <thead><tr><th>Feature</th><th>CSS Variables</th><th>Sass / Less</th></tr></thead>
+  <tbody>
+    <tr><td>Runs in</td><td>The browser (live)</td><td>Build step (compiled away)</td></tr>
+    <tr><td>Cascade &amp; inherit</td><td>Yes</td><td>No</td></tr>
+    <tr><td>Change at runtime</td><td>Yes (JS, media queries, hover)</td><td>No</td></tr>
+    <tr><td>Scoped to selectors</td><td>Yes — any selector</td><td>Global or block scope only</td></tr>
+    <tr><td>DevTools inspection</td><td>Visible and editable</td><td>Compiled out</td></tr>
+    <tr><td>Fallback values</td><td>Built-in with var()</td><td>Requires mixin logic</td></tr>
+  </tbody>
+</table>
+
+<div class="callout info">
+  <div class="callout-title">Key Insight</div>
+  Because CSS variables are live in the browser, you can change a single variable and every element using it updates instantly — no rebuild needed.
+</div>
+</section>
+
+<!-- ==================== SECTION 2 ==================== -->
+<section class="section" id="declaring-variables">
+<h2>Declaring Variables</h2>
+<p>A custom property starts with two dashes (<code>--</code>) followed by a name. The name is <strong>case-sensitive</strong> and can contain letters, numbers, hyphens, and underscores.</p>
+
+<div class="code-block">
+  <div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div>
+  <pre><span class="cmt">/* Valid declarations */</span>
+<span class="sel">.element</span> {
+  <span class="prop">--color-primary</span>: <span class="val">#6c8cff</span>;
+  <span class="prop">--font-size-lg</span>: <span class="val">1.25rem</span>;
+  <span class="prop">--spacing-4</span>: <span class="val">16px</span>;
+  <span class="prop">--myComponent-bg</span>: <span class="val">hsl(220, 15%, 12%)</span>;
+  <span class="prop">--border_width</span>: <span class="val">2px</span>;
+  <span class="prop">--123</span>: <span class="val">red</span>;  <span class="cmt">/* valid but not recommended */</span>
+}
+
+<span class="cmt">/* Case-sensitive! These are TWO different variables */</span>
+<span class="sel">.box</span> {
+  <span class="prop">--myColor</span>: <span class="val">red</span>;
+  <span class="prop">--mycolor</span>: <span class="val">blue</span>;  <span class="cmt">/* different variable */</span>
+}</pre>
+</div>
+
+<h3>Where You Can Declare</h3>
+<p>Variables can be declared in <strong>any CSS selector</strong> — not just <code>:root</code>. They follow the same cascade and specificity rules as regular properties.</p>
+
+<div class="code-block">
+  <div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div>
+  <pre><span class="cmt">/* Global scope */</span>
+<span class="sel">:root</span>      { <span class="prop">--gap</span>: <span class="val">16px</span>; }
+
+<span class="cmt">/* Element scope */</span>
+<span class="sel">.card</span>      { <span class="prop">--gap</span>: <span class="val">24px</span>; }
+
+<span class="cmt">/* State scope */</span>
+<span class="sel">.card:hover</span> { <span class="prop">--gap</span>: <span class="val">32px</span>; }
+
+<span class="cmt">/* Media query scope */</span>
+<span class="at">@media</span> (<span class="prop">min-width</span>: <span class="val">768px</span>) {
+  <span class="sel">:root</span> { <span class="prop">--gap</span>: <span class="val">24px</span>; }
+}
+
+<span class="cmt">/* Inline style */</span>
+<span class="cmt">/* &lt;div style="--gap: 40px"&gt; */</span></pre>
+</div>
+</section>
+
+<!-- ==================== SECTION 3 ==================== -->
+<section class="section" id="root-scope">
+<h2>The :root Scope</h2>
+<p>The <code>:root</code> pseudo-class matches the document's root element (<code>&lt;html&gt;</code> in HTML). Because every element in the page inherits from it, variables declared on <code>:root</code> are effectively <strong>global</strong>.</p>
+
+<div class="callout info">
+  <div class="callout-title">:root vs html</div>
+  <code>:root</code> and <code>html</code> both select the same element, but <code>:root</code> has <strong>higher specificity</strong> (0,1,0 vs 0,0,1). By convention, global variables go on <code>:root</code>.
+</div>
+
+<h3>Organized :root Block</h3>
+<div class="code-block">
+  <div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div>
+  <pre><span class="sel">:root</span> {
+  <span class="cmt">/* ── Colors ── */</span>
+  <span class="prop">--color-primary</span>: <span class="val">#6c8cff</span>;
+  <span class="prop">--color-secondary</span>: <span class="val">#a78bfa</span>;
+  <span class="prop">--color-success</span>: <span class="val">#2ecc71</span>;
+  <span class="prop">--color-danger</span>: <span class="val">#e74c3c</span>;
+  <span class="prop">--color-text</span>: <span class="val">#e2e4e9</span>;
+  <span class="prop">--color-muted</span>: <span class="val">#9ca3af</span>;
+
+  <span class="cmt">/* ── Spacing ── */</span>
+  <span class="prop">--space-1</span>: <span class="val">4px</span>;
+  <span class="prop">--space-2</span>: <span class="val">8px</span>;
+  <span class="prop">--space-3</span>: <span class="val">12px</span>;
+  <span class="prop">--space-4</span>: <span class="val">16px</span>;
+  <span class="prop">--space-6</span>: <span class="val">24px</span>;
+  <span class="prop">--space-8</span>: <span class="val">32px</span>;
+
+  <span class="cmt">/* ── Typography ── */</span>
+  <span class="prop">--font-body</span>: <span class="val">'Inter', system-ui, sans-serif</span>;
+  <span class="prop">--font-code</span>: <span class="val">'Fira Code', monospace</span>;
+  <span class="prop">--font-size-sm</span>: <span class="val">0.875rem</span>;
+  <span class="prop">--font-size-base</span>: <span class="val">1rem</span>;
+  <span class="prop">--font-size-lg</span>: <span class="val">1.25rem</span>;
+  <span class="prop">--font-size-xl</span>: <span class="val">1.5rem</span>;
+
+  <span class="cmt">/* ── Layout ── */</span>
+  <span class="prop">--radius</span>: <span class="val">8px</span>;
+  <span class="prop">--sidebar-w</span>: <span class="val">280px</span>;
+  <span class="prop">--header-h</span>: <span class="val">58px</span>;
+  <span class="prop">--transition</span>: <span class="val">0.25s ease</span>;
+}</pre>
+</div>
+
+<div class="live-example">
+  <div class="live-example-label">Live Example — Variables in Action</div>
+  <style>
+    .var-demo-root {
+      --demo-primary: #6c8cff;
+      --demo-radius: 8px;
+      --demo-space: 16px;
+      display: flex; gap: 12px; flex-wrap: wrap;
+    }
+    .var-demo-root .vd-box {
+      background: var(--demo-primary);
+      border-radius: var(--demo-radius);
+      padding: var(--demo-space);
+      color: #fff; font-size: .85rem; font-weight: 600;
+    }
+  </style>
+  <div class="var-demo-root">
+    <div class="vd-box">--primary</div>
+    <div class="vd-box" style="--demo-primary: #a78bfa">--secondary</div>
+    <div class="vd-box" style="--demo-primary: #2ecc71">--success</div>
+    <div class="vd-box" style="--demo-primary: #e74c3c">--danger</div>
+  </div>
+</div>
+</section>
+
+<!-- ==================== SECTION 4 ==================== -->
+<section class="section" id="using-var">
+<h2>Using var()</h2>
+<p>The <code>var()</code> function retrieves the value of a custom property. It can be used anywhere a value is expected in a CSS property.</p>
+
+<div class="code-block">
+  <div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div>
+  <pre><span class="sel">.card</span> {
+  <span class="cmt">/* Simple usage */</span>
+  <span class="prop">color</span>: <span class="fn">var</span>(<span class="val">--color-text</span>);
+  <span class="prop">padding</span>: <span class="fn">var</span>(<span class="val">--space-4</span>);
+  <span class="prop">border-radius</span>: <span class="fn">var</span>(<span class="val">--radius</span>);
+
+  <span class="cmt">/* Inside other functions */</span>
+  <span class="prop">background</span>: <span class="fn">hsl</span>(<span class="fn">var</span>(<span class="val">--hue</span>), <span class="num">80%</span>, <span class="num">60%</span>);
+  <span class="prop">width</span>: <span class="fn">calc</span>(<span class="num">100%</span> - <span class="fn">var</span>(<span class="val">--sidebar-w</span>));
+  <span class="prop">transition</span>: <span class="val">all</span> <span class="fn">var</span>(<span class="val">--transition</span>);
+  <span class="prop">font-family</span>: <span class="fn">var</span>(<span class="val">--font-body</span>);
+
+  <span class="cmt">/* In shorthand properties */</span>
+  <span class="prop">margin</span>: <span class="fn">var</span>(<span class="val">--space-4</span>) <span class="fn">var</span>(<span class="val">--space-6</span>);
+  <span class="prop">border</span>: <span class="num">1px</span> <span class="val">solid</span> <span class="fn">var</span>(<span class="val">--border-color</span>);
+}</pre>
+</div>
+
+<h3>Using in calc()</h3>
+<div class="code-block">
+  <div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div>
+  <pre><span class="sel">:root</span> {
+  <span class="prop">--base-size</span>: <span class="val">16px</span>;
+  <span class="prop">--scale</span>: <span class="val">1.25</span>;
+}
+
+<span class="sel">h1</span> { <span class="prop">font-size</span>: <span class="fn">calc</span>(<span class="fn">var</span>(<span class="val">--base-size</span>) * <span class="fn">var</span>(<span class="val">--scale</span>) * <span class="fn">var</span>(<span class="val">--scale</span>) * <span class="fn">var</span>(<span class="val">--scale</span>)); }
+<span class="sel">h2</span> { <span class="prop">font-size</span>: <span class="fn">calc</span>(<span class="fn">var</span>(<span class="val">--base-size</span>) * <span class="fn">var</span>(<span class="val">--scale</span>) * <span class="fn">var</span>(<span class="val">--scale</span>)); }
+<span class="sel">h3</span> { <span class="prop">font-size</span>: <span class="fn">calc</span>(<span class="fn">var</span>(<span class="val">--base-size</span>) * <span class="fn">var</span>(<span class="val">--scale</span>)); }</pre>
+</div>
+
+<div class="live-example">
+  <div class="live-example-label">Live Example — Variables in calc()</div>
+  <style>
+    .calc-demo { --base: 14px; --scale: 1.3; }
+    .calc-demo h4 { font-size: calc(var(--base) * var(--scale) * var(--scale) * var(--scale)); margin: 4px 0; color: var(--accent); }
+    .calc-demo h5 { font-size: calc(var(--base) * var(--scale) * var(--scale)); margin: 4px 0; color: var(--accent2); }
+    .calc-demo h6 { font-size: calc(var(--base) * var(--scale)); margin: 4px 0; color: var(--text); }
+    .calc-demo p  { font-size: var(--base); margin: 4px 0; color: var(--text-muted); }
+  </style>
+  <div class="calc-demo">
+    <h4>Heading 1 — scale^3</h4>
+    <h5>Heading 2 — scale^2</h5>
+    <h6>Heading 3 — scale^1</h6>
+    <p>Body text — base size</p>
+  </div>
+</div>
+</section>
+
+<!-- ==================== SECTION 5 ==================== -->
+<section class="section" id="fallback-values">
+<h2>Fallback Values</h2>
+<p>The second argument to <code>var()</code> is a fallback value used when the variable is not defined or is invalid.</p>
+
+<div class="code-block">
+  <div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div>
+  <pre><span class="cmt">/* Simple fallback */</span>
+<span class="prop">color</span>: <span class="fn">var</span>(<span class="val">--text-color</span>, <span class="val">#333</span>);
+
+<span class="cmt">/* Fallback to another variable */</span>
+<span class="prop">color</span>: <span class="fn">var</span>(<span class="val">--link-color</span>, <span class="fn">var</span>(<span class="val">--primary</span>, <span class="val">blue</span>));
+
+<span class="cmt">/* Fallback with commas (entire rest is the fallback) */</span>
+<span class="prop">font-family</span>: <span class="fn">var</span>(<span class="val">--font-stack</span>, <span class="val">Inter, Helvetica, sans-serif</span>);
+
+<span class="cmt">/* The comma separates variable name from fallback */</span>
+<span class="cmt">/* Everything after the first comma is the fallback */</span>
+<span class="prop">background</span>: <span class="fn">var</span>(<span class="val">--bg</span>, <span class="val">linear-gradient(to right, #6c8cff, #a78bfa)</span>);</pre>
+</div>
+
+<div class="live-example">
+  <div class="live-example-label">Live Example — Fallback in Action</div>
+  <style>
+    .fallback-demo { display: flex; gap: 12px; flex-wrap: wrap; }
+    .fallback-demo .fb-box {
+      padding: 16px 24px; border-radius: 8px; font-size: .85rem; font-weight: 600; color: #fff;
+      background: var(--fb-color, #6c8cff); /* fallback is blue */
+    }
+  </style>
+  <div class="fallback-demo">
+    <div class="fb-box">No --fb-color set (fallback: blue)</div>
+    <div class="fb-box" style="--fb-color: #e74c3c">--fb-color: red</div>
+    <div class="fb-box" style="--fb-color: #2ecc71">--fb-color: green</div>
+  </div>
+</div>
+
+<div class="callout gotcha">
+  <div class="callout-title">Comma Gotcha</div>
+  Everything after the <strong>first comma</strong> is the fallback. So <code>var(--font, Inter, sans-serif)</code> has a fallback of <code>Inter, sans-serif</code> (including the comma). This is actually useful for font stacks!
+</div>
+</section>
+
+<!-- ==================== SECTION 6 ==================== -->
+<section class="section" id="scope-inheritance">
+<h2>Scope &amp; Inheritance</h2>
+<p>CSS variables follow the same cascade and inheritance rules as regular CSS properties. A variable set on a parent is available to all its descendants. A variable set on a more specific selector overrides the inherited value for that subtree.</p>
+
+<div class="code-block">
+  <div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div>
+  <pre><span class="sel">:root</span>     { <span class="prop">--color</span>: <span class="val">blue</span>; }
+<span class="sel">.sidebar</span>  { <span class="prop">--color</span>: <span class="val">green</span>; }   <span class="cmt">/* overrides for .sidebar subtree */</span>
+<span class="sel">.alert</span>    { <span class="prop">--color</span>: <span class="val">red</span>; }     <span class="cmt">/* overrides for .alert subtree */</span>
+
+<span class="cmt">/* All these use var(--color) but get different values */</span>
+<span class="sel">.text</span> { <span class="prop">color</span>: <span class="fn">var</span>(<span class="val">--color</span>); }</pre>
+</div>
+
+<div class="live-example">
+  <div class="live-example-label">Live Example — Scoping &amp; Inheritance</div>
+  <style>
+    .scope-demo { --sc-color: #6c8cff; display: flex; gap: 12px; flex-wrap: wrap; }
+    .scope-demo .sc-box {
+      padding: 16px 20px; border-radius: 8px; font-size: .85rem; font-weight: 600;
+      border: 2px solid var(--sc-color); color: var(--sc-color);
+    }
+    .scope-demo .sc-green { --sc-color: #2ecc71; }
+    .scope-demo .sc-red   { --sc-color: #e74c3c; }
+    .scope-demo .sc-purple { --sc-color: #a78bfa; }
+  </style>
+  <div class="scope-demo">
+    <div class="sc-box">Inherited (blue)</div>
+    <div class="sc-box sc-green">Overridden (green)
+      <div class="sc-box" style="margin-top:8px">Child inherits green</div>
+    </div>
+    <div class="sc-box sc-red">Overridden (red)</div>
+    <div class="sc-box sc-purple">Overridden (purple)</div>
+  </div>
+</div>
+
+<div class="callout info">
+  <div class="callout-title">Inheritance vs Cascade</div>
+  If a variable is set on <code>.parent</code> and also on <code>.parent .child</code>, the child's declaration wins for the child and its descendants. This is standard CSS cascade behavior applied to custom properties.
+</div>
+</section>
+
+<!-- ==================== SECTION 7 ==================== -->
+<section class="section" id="dynamic-theming">
+<h2>Dynamic Theming</h2>
+<p>CSS variables make theming trivial. Define all your design tokens as variables, then swap them by changing a single attribute or class on the root element.</p>
+
+<div class="code-block">
+  <div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div>
+  <pre><span class="cmt">/* Dark theme (default) */</span>
+<span class="sel">[data-theme="dark"]</span> {
+  <span class="prop">--bg</span>: <span class="val">#0f1117</span>;
+  <span class="prop">--bg-card</span>: <span class="val">#1a1d27</span>;
+  <span class="prop">--text</span>: <span class="val">#e2e4e9</span>;
+  <span class="prop">--border</span>: <span class="val">#2a2d3a</span>;
+  <span class="prop">--accent</span>: <span class="val">#6c8cff</span>;
+}
+
+<span class="cmt">/* Light theme */</span>
+<span class="sel">[data-theme="light"]</span> {
+  <span class="prop">--bg</span>: <span class="val">#f5f6fa</span>;
+  <span class="prop">--bg-card</span>: <span class="val">#ffffff</span>;
+  <span class="prop">--text</span>: <span class="val">#1a1d27</span>;
+  <span class="prop">--border</span>: <span class="val">#e0e2e9</span>;
+  <span class="prop">--accent</span>: <span class="val">#4a6cf7</span>;
+}
+
+<span class="cmt">/* Components just use the variables */</span>
+<span class="sel">.card</span> {
+  <span class="prop">background</span>: <span class="fn">var</span>(<span class="val">--bg-card</span>);
+  <span class="prop">color</span>: <span class="fn">var</span>(<span class="val">--text</span>);
+  <span class="prop">border</span>: <span class="num">1px</span> <span class="val">solid</span> <span class="fn">var</span>(<span class="val">--border</span>);
+}</pre>
+</div>
+
+<div class="code-block">
+  <div class="code-header"><span>JavaScript</span><button class="copy-btn">Copy</button></div>
+  <pre><span class="cmt">// Toggle theme</span>
+<span class="kw">function</span> <span class="fn">toggleTheme</span>() {
+  <span class="kw">const</span> html = document.documentElement;
+  html.dataset.theme = html.dataset.theme === <span class="str">'dark'</span> ? <span class="str">'light'</span> : <span class="str">'dark'</span>;
+  localStorage.setItem(<span class="str">'theme'</span>, html.dataset.theme);
+}</pre>
+</div>
+
+<div class="live-example">
+  <div class="live-example-label">Live Example — Mini Theme Switcher</div>
+  <style>
+    .theme-demo {
+      --td-bg: #1a1d27; --td-text: #e2e4e9; --td-accent: #6c8cff; --td-border: #2a2d3a;
+      background: var(--td-bg); color: var(--td-text); padding: 24px; border-radius: 8px;
+      border: 1px solid var(--td-border); transition: all .3s ease;
+    }
+    .theme-demo.light-mode {
+      --td-bg: #f5f6fa; --td-text: #1a1d27; --td-accent: #4a6cf7; --td-border: #e0e2e9;
+    }
+    .theme-demo h4 { color: var(--td-accent); margin-bottom: 8px; }
+    .theme-demo p { font-size: .85rem; margin-bottom: 12px; }
+    .theme-demo button {
+      background: var(--td-accent); color: #fff; border: none; padding: 8px 16px;
+      border-radius: 6px; cursor: pointer; font-size: .85rem;
+    }
+  </style>
+  <div class="theme-demo" id="themeDemoBox">
+    <h4>Themed Card</h4>
+    <p>This card switches between dark and light by changing CSS variables on the container. Click the button!</p>
+    <button onclick="document.getElementById('themeDemoBox').classList.toggle('light-mode')">Toggle Theme</button>
+  </div>
+</div>
+</section>
+
+<!-- ==================== SECTION 8 ==================== -->
+<section class="section" id="component-variables">
+<h2>Component-Level Variables</h2>
+<p>Scope variables to individual components to create self-contained, configurable UI elements. This is the pattern behind many modern CSS component libraries.</p>
+
+<div class="code-block">
+  <div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div>
+  <pre><span class="sel">.btn</span> {
+  <span class="cmt">/* Component-level defaults */</span>
+  <span class="prop">--btn-bg</span>: <span class="val">#6c8cff</span>;
+  <span class="prop">--btn-text</span>: <span class="val">#fff</span>;
+  <span class="prop">--btn-radius</span>: <span class="val">6px</span>;
+  <span class="prop">--btn-padding</span>: <span class="val">8px 20px</span>;
+
+  <span class="prop">background</span>: <span class="fn">var</span>(<span class="val">--btn-bg</span>);
+  <span class="prop">color</span>: <span class="fn">var</span>(<span class="val">--btn-text</span>);
+  <span class="prop">border-radius</span>: <span class="fn">var</span>(<span class="val">--btn-radius</span>);
+  <span class="prop">padding</span>: <span class="fn">var</span>(<span class="val">--btn-padding</span>);
+  <span class="prop">border</span>: <span class="val">none</span>;
+  <span class="prop">cursor</span>: <span class="val">pointer</span>;
+  <span class="prop">font-weight</span>: <span class="val">600</span>;
+}
+
+<span class="cmt">/* Variants just override the variables */</span>
+<span class="sel">.btn--danger</span>  { <span class="prop">--btn-bg</span>: <span class="val">#e74c3c</span>; }
+<span class="sel">.btn--success</span> { <span class="prop">--btn-bg</span>: <span class="val">#2ecc71</span>; }
+<span class="sel">.btn--outline</span> {
+  <span class="prop">--btn-bg</span>: <span class="val">transparent</span>;
+  <span class="prop">--btn-text</span>: <span class="val">#6c8cff</span>;
+  <span class="prop">border</span>: <span class="num">2px</span> <span class="val">solid</span> <span class="fn">var</span>(<span class="val">--btn-text</span>);
+}
+<span class="sel">.btn--lg</span>     { <span class="prop">--btn-padding</span>: <span class="val">12px 32px</span>; <span class="prop">--btn-radius</span>: <span class="val">10px</span>; }</pre>
+</div>
+
+<div class="live-example">
+  <div class="live-example-label">Live Example — Button Variants</div>
+  <style>
+    .btn-demo { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+    .btn-demo .bd-btn {
+      --bd-bg: #6c8cff; --bd-text: #fff; --bd-pad: 8px 20px; --bd-rad: 6px;
+      background: var(--bd-bg); color: var(--bd-text); padding: var(--bd-pad);
+      border-radius: var(--bd-rad); border: 2px solid var(--bd-bg);
+      font-weight: 600; font-size: .85rem; cursor: pointer; transition: all .2s;
+    }
+    .btn-demo .bd-btn:hover { opacity: .85; }
+    .btn-demo .bd-danger  { --bd-bg: #e74c3c; }
+    .btn-demo .bd-success { --bd-bg: #2ecc71; }
+    .btn-demo .bd-outline { --bd-bg: transparent; --bd-text: #6c8cff; border-color: #6c8cff; }
+    .btn-demo .bd-lg { --bd-pad: 12px 32px; --bd-rad: 10px; }
+  </style>
+  <div class="btn-demo">
+    <button class="bd-btn">Primary</button>
+    <button class="bd-btn bd-danger">Danger</button>
+    <button class="bd-btn bd-success">Success</button>
+    <button class="bd-btn bd-outline">Outline</button>
+    <button class="bd-btn bd-lg">Large</button>
+  </div>
+</div>
+</section>
+
+<!-- ==================== SECTION 9 ==================== -->
+<section class="section" id="variables-calc">
+<h2>Variables with calc()</h2>
+<p>Combining variables with <code>calc()</code> lets you build dynamic spacing, sizing, and layout systems from a set of base tokens.</p>
+
+<div class="code-block">
+  <div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div>
+  <pre><span class="sel">:root</span> {
+  <span class="prop">--space-unit</span>: <span class="val">8px</span>;
+}
+
+<span class="sel">.box</span> {
+  <span class="prop">padding</span>: <span class="fn">calc</span>(<span class="fn">var</span>(<span class="val">--space-unit</span>) * <span class="num">2</span>);    <span class="cmt">/* 16px */</span>
+  <span class="prop">margin</span>:  <span class="fn">calc</span>(<span class="fn">var</span>(<span class="val">--space-unit</span>) * <span class="num">3</span>);    <span class="cmt">/* 24px */</span>
+  <span class="prop">gap</span>:     <span class="fn">calc</span>(<span class="fn">var</span>(<span class="val">--space-unit</span>) * <span class="num">1.5</span>);  <span class="cmt">/* 12px */</span>
+}</pre>
+</div>
+
+<div class="live-example">
+  <div class="live-example-label">Live Example — Spacing Scale</div>
+  <style>
+    .space-demo { --su: 8px; display: flex; flex-direction: column; gap: 6px; }
+    .space-demo .sp-row { display: flex; align-items: center; gap: 12px; }
+    .space-demo .sp-bar {
+      background: linear-gradient(90deg, #6c8cff, #a78bfa);
+      height: 28px; border-radius: 4px; min-width: 10px;
+    }
+    .space-demo .sp-label { font-size: .78rem; color: var(--text-muted); min-width: 100px; font-family: var(--font-code); }
+  </style>
+  <div class="space-demo">
+    <div class="sp-row"><span class="sp-label">--space-1: 4px</span><div class="sp-bar" style="width: calc(8px * 0.5 * 6)"></div></div>
+    <div class="sp-row"><span class="sp-label">--space-2: 8px</span><div class="sp-bar" style="width: calc(8px * 1 * 6)"></div></div>
+    <div class="sp-row"><span class="sp-label">--space-3: 12px</span><div class="sp-bar" style="width: calc(8px * 1.5 * 6)"></div></div>
+    <div class="sp-row"><span class="sp-label">--space-4: 16px</span><div class="sp-bar" style="width: calc(8px * 2 * 6)"></div></div>
+    <div class="sp-row"><span class="sp-label">--space-6: 24px</span><div class="sp-bar" style="width: calc(8px * 3 * 6)"></div></div>
+    <div class="sp-row"><span class="sp-label">--space-8: 32px</span><div class="sp-bar" style="width: calc(8px * 4 * 6)"></div></div>
+    <div class="sp-row"><span class="sp-label">--space-12: 48px</span><div class="sp-bar" style="width: calc(8px * 6 * 6)"></div></div>
+    <div class="sp-row"><span class="sp-label">--space-16: 64px</span><div class="sp-bar" style="width: calc(8px * 8 * 6)"></div></div>
+  </div>
+</div>
+</section>
+
+<!-- ==================== SECTION 10 ==================== -->
+<section class="section" id="variables-media-queries">
+<h2>Variables &amp; Media Queries</h2>
+<p>You can redefine variable values inside media queries to create responsive designs without duplicating properties.</p>
+
+<div class="code-block">
+  <div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div>
+  <pre><span class="sel">:root</span> {
+  <span class="prop">--container-padding</span>: <span class="val">16px</span>;
+  <span class="prop">--font-size-hero</span>: <span class="val">1.8rem</span>;
+  <span class="prop">--grid-columns</span>: <span class="val">1</span>;
+}
+
+<span class="at">@media</span> (<span class="prop">min-width</span>: <span class="val">768px</span>) {
+  <span class="sel">:root</span> {
+    <span class="prop">--container-padding</span>: <span class="val">32px</span>;
+    <span class="prop">--font-size-hero</span>: <span class="val">2.5rem</span>;
+    <span class="prop">--grid-columns</span>: <span class="val">2</span>;
+  }
+}
+
+<span class="at">@media</span> (<span class="prop">min-width</span>: <span class="val">1200px</span>) {
+  <span class="sel">:root</span> {
+    <span class="prop">--container-padding</span>: <span class="val">48px</span>;
+    <span class="prop">--font-size-hero</span>: <span class="val">3.5rem</span>;
+    <span class="prop">--grid-columns</span>: <span class="val">3</span>;
+  }
+}
+
+<span class="cmt">/* Components automatically respond */</span>
+<span class="sel">.container</span> { <span class="prop">padding</span>: <span class="fn">var</span>(<span class="val">--container-padding</span>); }
+<span class="sel">.hero h1</span>   { <span class="prop">font-size</span>: <span class="fn">var</span>(<span class="val">--font-size-hero</span>); }
+<span class="sel">.grid</span>      { <span class="prop">grid-template-columns</span>: <span class="fn">repeat</span>(<span class="fn">var</span>(<span class="val">--grid-columns</span>), <span class="val">1fr</span>); }</pre>
+</div>
+
+<div class="callout tip">
+  <div class="callout-title">Pro Tip</div>
+  By changing variables in media queries rather than rewriting property declarations, you keep your component CSS clean and change responsive behavior in one central place.
+</div>
+
+<div class="callout gotcha">
+  <div class="callout-title">Limitation</div>
+  You <strong>cannot use CSS variables inside the media query condition itself</strong>. This does NOT work: <code>@media (min-width: var(--breakpoint))</code>. The condition is evaluated before custom properties are resolved. Use environment variables (<code>env()</code>) or preprocessor variables for that.
+</div>
+</section>
+
+<!-- ==================== SECTION 11 ==================== -->
+<section class="section" id="javascript-integration">
+<h2>JavaScript Integration</h2>
+<p>One of the most powerful features of CSS variables is that JavaScript can read and write them at runtime, enabling dynamic, interactive styling.</p>
+
+<h3>Reading Variables</h3>
+<div class="code-block">
+  <div class="code-header"><span>JavaScript</span><button class="copy-btn">Copy</button></div>
+  <pre><span class="cmt">// Read from :root / computed style</span>
+<span class="kw">const</span> root = document.documentElement;
+<span class="kw">const</span> accent = <span class="fn">getComputedStyle</span>(root)
+  .<span class="fn">getPropertyValue</span>(<span class="str">'--accent'</span>);
+
+<span class="cmt">// Read from a specific element</span>
+<span class="kw">const</span> card = document.<span class="fn">querySelector</span>(<span class="str">'.card'</span>);
+<span class="kw">const</span> cardBg = <span class="fn">getComputedStyle</span>(card)
+  .<span class="fn">getPropertyValue</span>(<span class="str">'--card-bg'</span>);</pre>
+</div>
+
+<h3>Writing Variables</h3>
+<div class="code-block">
+  <div class="code-header"><span>JavaScript</span><button class="copy-btn">Copy</button></div>
+  <pre><span class="cmt">// Set on :root (affects everything)</span>
+document.documentElement.style
+  .<span class="fn">setProperty</span>(<span class="str">'--accent'</span>, <span class="str">'#ff6b6b'</span>);
+
+<span class="cmt">// Set on a specific element</span>
+card.style.<span class="fn">setProperty</span>(<span class="str">'--card-bg'</span>, <span class="str">'#2a2d3a'</span>);
+
+<span class="cmt">// Remove (revert to inherited/default)</span>
+card.style.<span class="fn">removeProperty</span>(<span class="str">'--card-bg'</span>);</pre>
+</div>
+
+<div class="live-example">
+  <div class="live-example-label">Live Example — Interactive Color Changer</div>
+  <style>
+    .js-demo { display: flex; gap: 16px; flex-wrap: wrap; align-items: center; }
+    .js-demo-box {
+      --jd-hue: 220; --jd-size: 80px;
+      width: var(--jd-size); height: var(--jd-size); border-radius: 12px;
+      background: hsl(var(--jd-hue), 70%, 60%); transition: all .3s ease;
+    }
+    .js-demo label { font-size: .82rem; color: var(--text-muted); }
+    .js-demo input[type="range"] { width: 160px; cursor: pointer; }
+  </style>
+  <div class="js-demo">
+    <div class="js-demo-box" id="jsBox"></div>
+    <div>
+      <div><label>Hue: <input type="range" min="0" max="360" value="220" oninput="document.getElementById('jsBox').style.setProperty('--jd-hue', this.value)"></label></div>
+      <div style="margin-top:8px"><label>Size: <input type="range" min="40" max="160" value="80" oninput="document.getElementById('jsBox').style.setProperty('--jd-size', this.value + 'px')"></label></div>
+    </div>
+  </div>
+</div>
+
+<h3>Mouse-Tracking Example</h3>
+<div class="code-block">
+  <div class="code-header"><span>JavaScript</span><button class="copy-btn">Copy</button></div>
+  <pre>document.<span class="fn">addEventListener</span>(<span class="str">'mousemove'</span>, (e) => {
+  document.documentElement.style.<span class="fn">setProperty</span>(
+    <span class="str">'--mouse-x'</span>, e.clientX + <span class="str">'px'</span>
+  );
+  document.documentElement.style.<span class="fn">setProperty</span>(
+    <span class="str">'--mouse-y'</span>, e.clientY + <span class="str">'px'</span>
+  );
+});
+
+<span class="cmt">/* CSS */</span>
+<span class="sel">.spotlight</span> {
+  <span class="prop">background</span>: <span class="fn">radial-gradient</span>(
+    circle at <span class="fn">var</span>(<span class="val">--mouse-x</span>) <span class="fn">var</span>(<span class="val">--mouse-y</span>),
+    <span class="val">rgba(108,140,255,.2)</span>, <span class="val">transparent</span> <span class="num">300px</span>
+  );
+}</pre>
+</div>
+</section>
+
+<!-- ==================== SECTION 12 ==================== -->
+<section class="section" id="animation-property">
+<h2>Animation &amp; @property</h2>
+<p>By default, CSS variables <strong>cannot be animated</strong> with transitions or keyframes because the browser doesn't know what type of value they hold. The <code>@property</code> rule fixes this by registering a custom property with a specific syntax (type).</p>
+
+<h3>The Problem</h3>
+<div class="code-block">
+  <div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div>
+  <pre><span class="cmt">/* This WON'T animate smoothly — it snaps */</span>
+<span class="sel">:root</span> { <span class="prop">--hue</span>: <span class="val">0</span>; }
+<span class="sel">.box</span> {
+  <span class="prop">background</span>: <span class="fn">hsl</span>(<span class="fn">var</span>(<span class="val">--hue</span>), <span class="num">80%</span>, <span class="num">60%</span>);
+  <span class="prop">transition</span>: <span class="val">--hue 1s</span>; <span class="cmt">/* browser ignores this */</span>
+}
+<span class="sel">.box:hover</span> { <span class="prop">--hue</span>: <span class="val">180</span>; }</pre>
+</div>
+
+<h3>The Solution: @property</h3>
+<div class="code-block">
+  <div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div>
+  <pre><span class="at">@property</span> <span class="val">--hue</span> {
+  <span class="prop">syntax</span>: <span class="str">'&lt;number&gt;'</span>;
+  <span class="prop">initial-value</span>: <span class="val">0</span>;
+  <span class="prop">inherits</span>: <span class="val">false</span>;
+}
+
+<span class="sel">.box</span> {
+  <span class="prop">background</span>: <span class="fn">hsl</span>(<span class="fn">var</span>(<span class="val">--hue</span>), <span class="num">80%</span>, <span class="num">60%</span>);
+  <span class="prop">transition</span>: <span class="val">--hue 1s ease</span>; <span class="cmt">/* NOW it works! */</span>
+}
+<span class="sel">.box:hover</span> { <span class="prop">--hue</span>: <span class="val">180</span>; }</pre>
+</div>
+
+<h3>@property Syntax Types</h3>
+<table>
+  <thead><tr><th>Syntax String</th><th>Accepts</th><th>Example</th></tr></thead>
+  <tbody>
+    <tr><td><code>&lt;number&gt;</code></td><td>Any number</td><td>42, 3.14</td></tr>
+    <tr><td><code>&lt;integer&gt;</code></td><td>Whole numbers</td><td>1, 200</td></tr>
+    <tr><td><code>&lt;length&gt;</code></td><td>Length values</td><td>16px, 2rem</td></tr>
+    <tr><td><code>&lt;percentage&gt;</code></td><td>Percentages</td><td>50%</td></tr>
+    <tr><td><code>&lt;color&gt;</code></td><td>Color values</td><td>#ff0, rgb(…)</td></tr>
+    <tr><td><code>&lt;angle&gt;</code></td><td>Angles</td><td>45deg, 1turn</td></tr>
+    <tr><td><code>&lt;length-percentage&gt;</code></td><td>Length or %</td><td>10px, 50%</td></tr>
+    <tr><td><code>*</code></td><td>Any value</td><td>(no animation)</td></tr>
+  </tbody>
+</table>
+
+<div class="live-example">
+  <div class="live-example-label">Live Example — Animated Gradient with @property</div>
+  <style>
+    @property --ap-angle {
+      syntax: '<angle>';
+      initial-value: 0deg;
+      inherits: false;
+    }
+    .prop-demo {
+      width: 100%; height: 100px; border-radius: 10px;
+      background: conic-gradient(from var(--ap-angle), #6c8cff, #a78bfa, #e74c3c, #2ecc71, #6c8cff);
+      animation: propSpin 3s linear infinite;
+    }
+    @keyframes propSpin {
+      to { --ap-angle: 360deg; }
+    }
+  </style>
+  <div class="prop-demo"></div>
+  <p style="font-size:.8rem; color:var(--text-muted); margin-top:8px;">The conic-gradient above animates smoothly because <code>--ap-angle</code> is registered with <code>@property</code> as <code>&lt;angle&gt;</code>.</p>
+</div>
+</section>
+
+<!-- ==================== SECTION 13 ==================== -->
+<section class="section" id="practical-patterns">
+<h2>Practical Patterns</h2>
+
+<h3>Design Token System</h3>
+<div class="code-block">
+  <div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div>
+  <pre><span class="sel">:root</span> {
+  <span class="cmt">/* ── Primitive tokens ── */</span>
+  <span class="prop">--blue-50</span>:  <span class="val">#eff6ff</span>;
+  <span class="prop">--blue-500</span>: <span class="val">#3b82f6</span>;
+  <span class="prop">--blue-900</span>: <span class="val">#1e3a5f</span>;
+  <span class="prop">--gray-100</span>: <span class="val">#f3f4f6</span>;
+  <span class="prop">--gray-800</span>: <span class="val">#1f2937</span>;
+
+  <span class="cmt">/* ── Semantic tokens (reference primitives) ── */</span>
+  <span class="prop">--color-primary</span>: <span class="fn">var</span>(<span class="val">--blue-500</span>);
+  <span class="prop">--color-bg</span>:      <span class="fn">var</span>(<span class="val">--gray-100</span>);
+  <span class="prop">--color-text</span>:    <span class="fn">var</span>(<span class="val">--gray-800</span>);
+
+  <span class="cmt">/* ── Component tokens (reference semantic) ── */</span>
+  <span class="prop">--btn-bg</span>:      <span class="fn">var</span>(<span class="val">--color-primary</span>);
+  <span class="prop">--card-bg</span>:     <span class="fn">var</span>(<span class="val">--color-bg</span>);
+  <span class="prop">--heading-color</span>: <span class="fn">var</span>(<span class="val">--color-text</span>);
+}</pre>
+</div>
+
+<h3>Z-Index Management</h3>
+<div class="code-block">
+  <div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div>
+  <pre><span class="sel">:root</span> {
+  <span class="prop">--z-dropdown</span>: <span class="val">100</span>;
+  <span class="prop">--z-sticky</span>:   <span class="val">200</span>;
+  <span class="prop">--z-overlay</span>:  <span class="val">300</span>;
+  <span class="prop">--z-modal</span>:    <span class="val">400</span>;
+  <span class="prop">--z-toast</span>:    <span class="val">500</span>;
+  <span class="prop">--z-tooltip</span>:  <span class="val">600</span>;
+}
+
+<span class="sel">.modal</span>   { <span class="prop">z-index</span>: <span class="fn">var</span>(<span class="val">--z-modal</span>); }
+<span class="sel">.tooltip</span> { <span class="prop">z-index</span>: <span class="fn">var</span>(<span class="val">--z-tooltip</span>); }</pre>
+</div>
+
+<h3>Responsive Typography Scale</h3>
+<div class="code-block">
+  <div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div>
+  <pre><span class="sel">:root</span> {
+  <span class="prop">--text-xs</span>:   <span class="fn">clamp</span>(<span class="val">0.7rem</span>,  <span class="val">0.65rem + 0.25vw</span>, <span class="val">0.8rem</span>);
+  <span class="prop">--text-sm</span>:   <span class="fn">clamp</span>(<span class="val">0.8rem</span>,  <span class="val">0.75rem + 0.3vw</span>,  <span class="val">0.9rem</span>);
+  <span class="prop">--text-base</span>: <span class="fn">clamp</span>(<span class="val">0.9rem</span>,  <span class="val">0.85rem + 0.35vw</span>, <span class="val">1.05rem</span>);
+  <span class="prop">--text-lg</span>:   <span class="fn">clamp</span>(<span class="val">1.1rem</span>,  <span class="val">1rem + 0.5vw</span>,    <span class="val">1.35rem</span>);
+  <span class="prop">--text-xl</span>:   <span class="fn">clamp</span>(<span class="val">1.3rem</span>,  <span class="val">1.1rem + 0.8vw</span>,  <span class="val">1.8rem</span>);
+  <span class="prop">--text-2xl</span>:  <span class="fn">clamp</span>(<span class="val">1.6rem</span>,  <span class="val">1.3rem + 1.2vw</span>,  <span class="val">2.5rem</span>);
+  <span class="prop">--text-3xl</span>:  <span class="fn">clamp</span>(<span class="val">2rem</span>,    <span class="val">1.5rem + 2vw</span>,    <span class="val">3.5rem</span>);
+}</pre>
+</div>
+
+<h3>Color Palette from HSL</h3>
+<div class="code-block">
+  <div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div>
+  <pre><span class="sel">:root</span> {
+  <span class="prop">--hue</span>: <span class="val">220</span>;
+  <span class="prop">--primary-50</span>:  <span class="fn">hsl</span>(<span class="fn">var</span>(<span class="val">--hue</span>), <span class="num">90%</span>, <span class="num">95%</span>);
+  <span class="prop">--primary-100</span>: <span class="fn">hsl</span>(<span class="fn">var</span>(<span class="val">--hue</span>), <span class="num">85%</span>, <span class="num">85%</span>);
+  <span class="prop">--primary-300</span>: <span class="fn">hsl</span>(<span class="fn">var</span>(<span class="val">--hue</span>), <span class="num">80%</span>, <span class="num">70%</span>);
+  <span class="prop">--primary-500</span>: <span class="fn">hsl</span>(<span class="fn">var</span>(<span class="val">--hue</span>), <span class="num">75%</span>, <span class="num">55%</span>);
+  <span class="prop">--primary-700</span>: <span class="fn">hsl</span>(<span class="fn">var</span>(<span class="val">--hue</span>), <span class="num">70%</span>, <span class="num">40%</span>);
+  <span class="prop">--primary-900</span>: <span class="fn">hsl</span>(<span class="fn">var</span>(<span class="val">--hue</span>), <span class="num">65%</span>, <span class="num">25%</span>);
+}
+
+<span class="cmt">/* Change ONE variable to shift the entire palette! */</span></pre>
+</div>
+
+<div class="live-example">
+  <div class="live-example-label">Live Example — HSL Palette Generator</div>
+  <style>
+    .palette-demo { display: flex; flex-wrap: wrap; gap: 6px; }
+    .palette-demo .swatch {
+      --pd-hue: 220;
+      width: 60px; height: 48px; border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: .65rem; font-weight: 600;
+    }
+    .palette-demo .sw-50  { background: hsl(var(--pd-hue), 90%, 95%); color: #333; }
+    .palette-demo .sw-100 { background: hsl(var(--pd-hue), 85%, 85%); color: #333; }
+    .palette-demo .sw-200 { background: hsl(var(--pd-hue), 80%, 75%); color: #333; }
+    .palette-demo .sw-300 { background: hsl(var(--pd-hue), 80%, 65%); color: #fff; }
+    .palette-demo .sw-400 { background: hsl(var(--pd-hue), 75%, 55%); color: #fff; }
+    .palette-demo .sw-500 { background: hsl(var(--pd-hue), 70%, 48%); color: #fff; }
+    .palette-demo .sw-600 { background: hsl(var(--pd-hue), 65%, 40%); color: #fff; }
+    .palette-demo .sw-700 { background: hsl(var(--pd-hue), 60%, 32%); color: #fff; }
+    .palette-demo .sw-800 { background: hsl(var(--pd-hue), 55%, 24%); color: #fff; }
+    .palette-demo .sw-900 { background: hsl(var(--pd-hue), 50%, 16%); color: #fff; }
+  </style>
+  <div style="margin-bottom:10px">
+    <label style="font-size:.82rem;color:var(--text-muted)">Hue: <input type="range" min="0" max="360" value="220" style="width:200px;cursor:pointer" oninput="document.querySelectorAll('.palette-demo .swatch').forEach(s=>s.style.setProperty('--pd-hue',this.value))"></label>
+  </div>
+  <div class="palette-demo">
+    <div class="swatch sw-50">50</div>
+    <div class="swatch sw-100">100</div>
+    <div class="swatch sw-200">200</div>
+    <div class="swatch sw-300">300</div>
+    <div class="swatch sw-400">400</div>
+    <div class="swatch sw-500">500</div>
+    <div class="swatch sw-600">600</div>
+    <div class="swatch sw-700">700</div>
+    <div class="swatch sw-800">800</div>
+    <div class="swatch sw-900">900</div>
+  </div>
+</div>
+</section>
+
+<!-- ==================== SECTION 14 ==================== -->
+<section class="section" id="gotchas">
+<h2>Gotchas</h2>
+
+<div class="callout gotcha">
+  <div class="callout-title">1. Variables Can't Be Used in Property Names</div>
+  <code>var(--prop-name): value;</code> does NOT work. Variables can only replace <strong>values</strong>, not property names or selectors.
+</div>
+
+<div class="callout gotcha">
+  <div class="callout-title">2. Cyclic Dependencies</div>
+  If <code>--a</code> references <code>--b</code> and <code>--b</code> references <code>--a</code>, both become <strong>invalid at computed-value time</strong>. The browser treats them as if they were never set and falls back to the property's initial value (not the var() fallback).
+</div>
+
+<div class="callout gotcha">
+  <div class="callout-title">3. Invalid at Computed-Value Time</div>
+  If a variable holds a value that's invalid for the property it's used in (e.g., <code>--size: red; width: var(--size)</code>), the property gets the <strong>initial value</strong> — not the inherit or fallback. This is different from a normal syntax error!
+</div>
+
+<div class="callout gotcha">
+  <div class="callout-title">4. Can't Use in Media Query Conditions</div>
+  <code>@media (min-width: var(--bp))</code> does NOT work. Media conditions are evaluated before custom properties are resolved. Use preprocessor variables or hard-code breakpoints.
+</div>
+
+<div class="callout gotcha">
+  <div class="callout-title">5. Case Sensitivity</div>
+  <code>--myColor</code> and <code>--mycolor</code> are <strong>different variables</strong>. This is unlike regular CSS properties which are case-insensitive. Stick to a consistent naming convention (e.g., kebab-case).
+</div>
+
+<div class="callout gotcha">
+  <div class="callout-title">6. Empty Variables Are Valid</div>
+  <code>--empty: ;</code> (with a space after the colon) is a <strong>valid</strong> declaration. This can cause hard-to-debug issues where the variable exists but holds whitespace.
+</div>
+</section>
+
+<!-- ==================== SECTION 15 ==================== -->
+<section class="section" id="pro-tips">
+<h2>Pro Tips</h2>
+
+<div class="callout tip">
+  <div class="callout-title">1. Naming Conventions</div>
+  Use a consistent system. Popular patterns:
+  <ul style="margin-top:6px">
+    <li><strong>By category:</strong> <code>--color-primary</code>, <code>--font-size-lg</code>, <code>--space-4</code></li>
+    <li><strong>By component:</strong> <code>--btn-bg</code>, <code>--card-radius</code>, <code>--nav-height</code></li>
+    <li><strong>Layered tokens:</strong> primitive → semantic → component (like the design token pattern above)</li>
+  </ul>
+</div>
+
+<div class="callout tip">
+  <div class="callout-title">2. Debug in DevTools</div>
+  In Chrome/Firefox DevTools, custom properties appear in the Computed tab. You can edit them live in the Elements panel. Firefox's DevTools even show a color swatch for variables that hold color values.
+</div>
+
+<div class="callout tip">
+  <div class="callout-title">3. Use Unitless Values for Flexibility</div>
+  Store unitless numbers and add units with calc(): <code>--columns: 3; grid-template-columns: repeat(var(--columns), 1fr);</code> — This makes it easy to change via JS without worrying about units.
+</div>
+
+<div class="callout tip">
+  <div class="callout-title">4. Component API Pattern</div>
+  Document which variables a component exposes. This creates a clean customization API:
+  <div class="code-block" style="margin-top:8px">
+    <div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div>
+    <pre><span class="cmt">/*
+ * .alert Component API:
+ * --alert-bg      Background color  (default: #fff3cd)
+ * --alert-border  Border color      (default: #ffc107)
+ * --alert-text    Text color        (default: #664d03)
+ * --alert-radius  Corner radius     (default: 8px)
+ */</span>
+<span class="sel">.alert</span> {
+  <span class="prop">background</span>: <span class="fn">var</span>(<span class="val">--alert-bg</span>, <span class="val">#fff3cd</span>);
+  <span class="prop">border</span>: <span class="num">1px</span> <span class="val">solid</span> <span class="fn">var</span>(<span class="val">--alert-border</span>, <span class="val">#ffc107</span>);
+  <span class="prop">color</span>: <span class="fn">var</span>(<span class="val">--alert-text</span>, <span class="val">#664d03</span>);
+  <span class="prop">border-radius</span>: <span class="fn">var</span>(<span class="val">--alert-radius</span>, <span class="val">8px</span>);
+  <span class="prop">padding</span>: <span class="val">12px 16px</span>;
+}</pre>
+  </div>
+</div>
+
+<div class="callout tip">
+  <div class="callout-title">5. Performance</div>
+  CSS variables are very fast. The browser resolves them during style computation, similar to how it resolves <code>inherit</code>. Even hundreds of variables have negligible performance impact. The only caveat: animating variables without <code>@property</code> triggers a full style recalculation.
+</div>
+
+<div class="callout tip">
+  <div class="callout-title">6. Browser Support</div>
+  CSS Custom Properties are supported in all modern browsers (Chrome 49+, Firefox 31+, Safari 9.1+, Edge 15+). <code>@property</code> has more limited support (Chrome 85+, Safari 15.4+, Firefox 128+). Use <code>@supports</code> for progressive enhancement.
+</div>
+</section>
+
+<!-- ==================== NAV ==================== -->
+<div class="topic-nav">
+  <a href="09-pseudo-classes-elements.html">
+    <span class="label">Previous</span>
+    <span class="title">Pseudo-classes &amp; Elements</span>
+  </a>
+  <a href="11-transitions-animations.html" class="next">
+    <span class="label">Next</span>
+    <span class="title">Transitions &amp; Animations</span>
+  </a>
+</div>
+
+</main>
+<script src="script.js"></script>
+</body>
+</html>

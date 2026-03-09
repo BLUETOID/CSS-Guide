@@ -1,0 +1,668 @@
+<!DOCTYPE html><html lang="en" data-theme="dark"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Selectors Deep Dive &mdash; CSS Reference Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet"><link rel="stylesheet" href="styles.css">
+</head><body>
+<div id="progress"></div>
+
+<header class="header"><button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">&#9776;</button><h1><span>CSS</span> Reference Guide</h1><div class="header-nav"><a href="index.html">All Topics</a></div><button class="theme-toggle" onclick="toggleTheme()">&#9790; Dark</button></header>
+
+<nav class="sidebar" id="sidebar">
+  <a href="index.html" class="nav-back">&#8592; All Topics</a>
+  <div class="nav-group">
+    <div class="nav-group-title">On This Page</div>
+    <a href="#combinators">Combinators</a>
+    <a href="#attribute-selectors">Attribute Selectors</a>
+    <a href="#is">:is()</a>
+    <a href="#where">:where()</a>
+    <a href="#has">:has()</a>
+    <a href="#not">:not()</a>
+    <a href="#compound">Compound Selectors</a>
+    <a href="#specificity">Specificity</a>
+    <a href="#performance">Selector Performance</a>
+    <a href="#nesting">Native CSS Nesting</a>
+    <a href="#gotchas">Gotchas</a>
+    <a href="#pro-tips">Pro Tips</a>
+    <a href="#browser-support">Browser Support</a>
+  </div>
+</nav>
+
+<main class="main">
+  <div class="page-hero">
+    <h1>Selectors Deep Dive</h1>
+    <p>Master advanced CSS selectors including combinators, pseudo-classes like :has() and :is(), attribute selectors, specificity rules, and native CSS nesting.</p>
+    <div class="tags"><span>Selectors</span><span>:has()</span><span>:is()</span><span>Specificity</span><span>Nesting</span><span>Combinators</span></div>
+  </div>
+
+  <!-- ==================== COMBINATORS ==================== -->
+  <div class="section" id="combinators">
+    <h2>Combinators</h2>
+    <p>Combinators define relationships between selectors. They let you target elements based on their position relative to other elements in the DOM tree.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="cmt">/* Descendant (space) — any nested depth */</span>
+<span class="sel">article p</span> { <span class="prop">color</span>: <span class="val">#ccc</span>; }
+<span class="cmt">/* Matches: &lt;article&gt;&lt;div&gt;&lt;p&gt; (any depth) */</span>
+
+<span class="cmt">/* Child (>) — direct children only */</span>
+<span class="sel">ul > li</span> { <span class="prop">list-style</span>: <span class="val">none</span>; }
+<span class="cmt">/* Matches: &lt;ul&gt;&lt;li&gt; but NOT &lt;ul&gt;&lt;ol&gt;&lt;li&gt; */</span>
+
+<span class="cmt">/* Adjacent sibling (+) — immediately next */</span>
+<span class="sel">h2 + p</span> { <span class="prop">margin-top</span>: <span class="num">0</span>; }
+<span class="cmt">/* Matches the first &lt;p&gt; right after &lt;h2&gt; */</span>
+
+<span class="cmt">/* General sibling (~) — any following sibling */</span>
+<span class="sel">h2 ~ p</span> { <span class="prop">font-size</span>: <span class="num">0.95rem</span>; }
+<span class="cmt">/* Matches ALL &lt;p&gt; siblings after the &lt;h2&gt; */</span>
+</pre></div>
+
+    <div class="live-example">
+      <div class="live-example-label">Live Example &mdash; Combinators in Action</div>
+      <style>
+        .comb-demo { padding: 1rem; border: 2px dashed rgba(255,255,255,0.1); border-radius: 12px; font-size: 0.85rem; }
+        .comb-demo .parent { padding: 1rem; border: 1px solid rgba(102,126,234,0.3); border-radius: 8px; margin: 0.5rem 0; }
+        .comb-demo .parent > .child-direct { padding: 0.5rem; background: rgba(102,126,234,0.15); border-radius: 6px; margin: 0.4rem 0; border-left: 3px solid #667eea; }
+        .comb-demo .parent .nested { padding: 0.5rem; margin: 0.4rem 0 0.4rem 1rem; border-left: 3px dashed rgba(102,126,234,0.3); }
+        .comb-siblings .sib-heading { font-weight: 700; color: #f5576c; margin-bottom: 0.3rem; }
+        .comb-siblings .sib-heading + .sib-para { color: #43e97b; font-weight: 600; }
+        .comb-siblings .sib-heading ~ .sib-para { font-style: italic; opacity: 0.8; }
+      </style>
+      <div class="comb-demo">
+        <p style="font-weight:600;margin-bottom:0.5rem;opacity:0.7;">Child (<code>&gt;</code>) vs Descendant (space):</p>
+        <div class="parent">
+          <div class="child-direct">Direct child (matched by <code>&gt;</code>)</div>
+          <div class="child-direct">Direct child (matched by <code>&gt;</code>)
+            <div class="nested">Nested descendant (only matched by space, not <code>&gt;</code>)</div>
+          </div>
+        </div>
+        <p style="font-weight:600;margin:1rem 0 0.5rem;opacity:0.7;">Adjacent (<code>+</code>) vs General (<code>~</code>) sibling:</p>
+        <div class="comb-siblings">
+          <div class="sib-heading">Heading (h2)</div>
+          <div class="sib-para">First para &mdash; matched by both <code>+</code> and <code>~</code> (green, bold)</div>
+          <div class="sib-para">Second para &mdash; matched only by <code>~</code> (italic)</div>
+          <div class="sib-para">Third para &mdash; matched only by <code>~</code> (italic)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== ATTRIBUTE SELECTORS ==================== -->
+  <div class="section" id="attribute-selectors">
+    <h2>Attribute Selectors</h2>
+    <p>Target elements based on their HTML attributes and attribute values. Extremely powerful for styling links, form elements, and data-attribute driven UIs.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="cmt">/* Has the attribute (any value) */</span>
+<span class="sel">[title]</span>       { <span class="prop">cursor</span>: <span class="val">help</span>; }
+
+<span class="cmt">/* Exact match */</span>
+<span class="sel">[type="email"]</span> { <span class="prop">border-color</span>: <span class="val">#667eea</span>; }
+
+<span class="cmt">/* Starts with (^=) */</span>
+<span class="sel">[href^="https"]</span> { <span class="prop">color</span>: <span class="val">#43e97b</span>; }
+
+<span class="cmt">/* Ends with ($=) */</span>
+<span class="sel">[href$=".pdf"]</span>  { <span class="prop">color</span>: <span class="val">#f5576c</span>; }
+
+<span class="cmt">/* Contains (*=) */</span>
+<span class="sel">[class*="btn"]</span>  { <span class="prop">cursor</span>: <span class="val">pointer</span>; }
+
+<span class="cmt">/* Case-insensitive flag (i) */</span>
+<span class="sel">[href$=".PDF" i]</span> { <span class="prop">color</span>: <span class="val">#f5576c</span>; }
+
+<span class="cmt">/* Whitespace-separated word match (~=) */</span>
+<span class="sel">[class~="active"]</span> { <span class="prop">font-weight</span>: <span class="val">bold</span>; }
+
+<span class="cmt">/* Starts with value or value- (|=) for lang attributes */</span>
+<span class="sel">[lang|="en"]</span> { <span class="prop">quotes</span>: <span class="str">"\201C"</span> <span class="str">"\201D"</span>; }
+</pre></div>
+
+    <div class="live-example">
+      <div class="live-example-label">Live Example &mdash; Styled Links by Attribute</div>
+      <style>
+        .attr-demo { display: flex; flex-direction: column; gap: 0.8rem; padding: 1.5rem; }
+        .attr-demo a { text-decoration: none; padding: 0.6rem 1rem; border-radius: 8px; font-weight: 500; font-size: 0.85rem; transition: transform 0.2s, box-shadow 0.2s; display: inline-block; }
+        .attr-demo a:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+        .attr-demo a[href^="https"] { color: #43e97b; background: rgba(67,233,123,0.1); border: 1px solid rgba(67,233,123,0.25); }
+        .attr-demo a[href$=".pdf"] { color: #f5576c; background: rgba(245,87,108,0.1); border: 1px solid rgba(245,87,108,0.25); }
+        .attr-demo a[href*="github"] { color: #a18cd1; background: rgba(161,140,209,0.1); border: 1px solid rgba(161,140,209,0.25); }
+        .attr-demo a[href^="mailto"] { color: #4facfe; background: rgba(79,172,254,0.1); border: 1px solid rgba(79,172,254,0.25); }
+        .attr-demo .attr-label { font-size: 0.72rem; font-family: 'Fira Code', monospace; opacity: 0.5; margin-left: 0.5rem; }
+      </style>
+      <div class="attr-demo">
+        <div><a href="https://example.com">Secure External Link</a><span class="attr-label">[href^="https"] &rarr; green</span></div>
+        <div><a href="/docs/guide.pdf">Download PDF Guide</a><span class="attr-label">[href$=".pdf"] &rarr; red</span></div>
+        <div><a href="https://github.com/user">GitHub Profile</a><span class="attr-label">[href*="github"] &rarr; purple</span></div>
+        <div><a href="mailto:hello@example.com">Email Us</a><span class="attr-label">[href^="mailto"] &rarr; blue</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== :is() ==================== -->
+  <div class="section" id="is">
+    <h2>:is() &mdash; Matches-Any Pseudo-class</h2>
+    <p><code>:is()</code> takes a comma-separated list of selectors and matches if any of them match. It greatly reduces repetition. Its specificity equals the <strong>most specific</strong> selector in the list.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="cmt">/* Without :is() — repetitive */</span>
+<span class="sel">header a:hover</span>,
+<span class="sel">nav a:hover</span>,
+<span class="sel">footer a:hover</span> {
+  <span class="prop">color</span>: <span class="val">#667eea</span>;
+}
+
+<span class="cmt">/* With :is() — clean! */</span>
+<span class="sel">:is(header, nav, footer) a:hover</span> {
+  <span class="prop">color</span>: <span class="val">#667eea</span>;
+}
+
+<span class="cmt">/* Works nested too */</span>
+<span class="sel">article :is(h1, h2, h3)</span> {
+  <span class="prop">font-weight</span>: <span class="num">700</span>;
+  <span class="prop">line-height</span>: <span class="num">1.2</span>;
+}
+
+<span class="cmt">/* Combining with other selectors */</span>
+<span class="sel">.card :is(img, video, picture)</span> {
+  <span class="prop">border-radius</span>: <span class="num">8px</span>;
+  <span class="prop">width</span>: <span class="num">100%</span>;
+}
+</pre></div>
+
+    <div class="live-example">
+      <div class="live-example-label">Live Example &mdash; :is() Reducing Repetition</div>
+      <style>
+        .is-demo { padding: 1.5rem; }
+        .is-demo :is(h3, h4, h5) { background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin: 0.8rem 0 0.3rem; }
+        .is-demo :is(h3, h4, h5) + p { opacity: 0.7; font-size: 0.85rem; margin: 0 0 0.5rem; }
+      </style>
+      <div class="is-demo">
+        <h3>Heading 3</h3>
+        <p>This paragraph follows h3 and gets styled via adjacent sibling.</p>
+        <h4>Heading 4</h4>
+        <p>Same style applied to all heading levels using :is(h3, h4, h5).</p>
+        <h5>Heading 5</h5>
+        <p>One selector rule styles all three heading levels with gradient text.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== :where() ==================== -->
+  <div class="section" id="where">
+    <h2>:where() &mdash; Zero Specificity</h2>
+    <p><code>:where()</code> works exactly like <code>:is()</code> but its specificity is always <strong>zero</strong>. This makes it perfect for base styles that are easy to override.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="cmt">/* :where() has zero specificity — easily overridden */</span>
+<span class="sel">:where(article, section, aside) p</span> {
+  <span class="prop">line-height</span>: <span class="num">1.7</span>;
+  <span class="prop">color</span>: <span class="val">#b0b0c0</span>;
+}
+
+<span class="cmt">/* This single class easily overrides the :where rule */</span>
+<span class="sel">.highlight</span> {
+  <span class="prop">color</span>: <span class="val">#f5576c</span>;   <span class="cmt">/* wins because :where = 0 specificity */</span>
+}
+
+<span class="cmt">/* Great for CSS resets */</span>
+<span class="sel">:where(h1, h2, h3, h4, h5, h6)</span> {
+  <span class="prop">margin</span>: <span class="num">0</span>;
+  <span class="prop">font-size</span>: <span class="val">inherit</span>;
+  <span class="prop">font-weight</span>: <span class="val">inherit</span>;
+}
+
+<span class="cmt">/* vs :is() comparison */</span>
+<span class="sel">:is(article, section) p</span> { }   <span class="cmt">/* specificity: 0-0-2 (element + element) */</span>
+<span class="sel">:where(article, section) p</span> { } <span class="cmt">/* specificity: 0-0-1 (only p counts) */</span>
+</pre></div>
+
+    <div class="live-example">
+      <div class="live-example-label">Live Example &mdash; :where() vs :is() Specificity</div>
+      <style>
+        .where-demo { padding: 1.5rem; }
+        :where(.where-demo) .where-base { color: #b0b0c0; font-size: 0.9rem; margin: 0.3rem 0; }
+        .where-demo .where-override { color: #43e97b; font-weight: 600; font-size: 0.9rem; margin: 0.3rem 0; }
+        /* The override class easily wins over :where because :where has 0 specificity */
+      </style>
+      <div class="where-demo">
+        <p class="where-base">This uses :where() styling &mdash; gray text (zero specificity).</p>
+        <p class="where-base where-override">This has a simple class override &mdash; green text wins easily because :where() = 0 specificity.</p>
+      </div>
+    </div>
+
+    <div class="callout info">
+      <div class="callout-title">When to Use :is() vs :where()</div>
+      <p>Use <code>:is()</code> for your application styles where normal specificity is desired. Use <code>:where()</code> for utility/reset/library styles that consumers should easily override.</p>
+    </div>
+  </div>
+
+  <!-- ==================== :has() ==================== -->
+  <div class="section" id="has">
+    <h2>:has() &mdash; The Parent Selector</h2>
+    <p>The long-awaited "parent selector." <code>:has()</code> selects an element if it <strong>contains</strong> a descendant matching the argument. It can also check for adjacent siblings, states, and more.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="cmt">/* Card with image gets different layout */</span>
+<span class="sel">.card:has(img)</span> {
+  <span class="prop">grid-template-rows</span>: <span class="val">auto</span> <span class="num">1fr</span>;
+}
+
+<span class="cmt">/* Card without image */</span>
+<span class="sel">.card:not(:has(img))</span> {
+  <span class="prop">padding</span>: <span class="num">2rem</span>;
+}
+
+<span class="cmt">/* Form validation — label color based on input state */</span>
+<span class="sel">label:has(+ input:invalid)</span> {
+  <span class="prop">color</span>: <span class="val">#f5576c</span>;
+}
+
+<span class="sel">label:has(+ input:valid)</span> {
+  <span class="prop">color</span>: <span class="val">#43e97b</span>;
+}
+
+<span class="cmt">/* Style parent based on child hover */</span>
+<span class="sel">.nav:has(a:hover)</span> {
+  <span class="prop">background</span>: <span class="fn">rgba</span>(<span class="num">102</span>,<span class="num">126</span>,<span class="num">234</span>,<span class="num">0.1</span>);
+}
+
+<span class="cmt">/* Page has a specific element */</span>
+<span class="sel">body:has(.modal.open)</span> {
+  <span class="prop">overflow</span>: <span class="val">hidden</span>;
+}
+</pre></div>
+
+    <div class="live-example">
+      <div class="live-example-label">Live Example &mdash; :has() Card With/Without Image</div>
+      <style>
+        .has-demo-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; padding: 1rem 0; }
+        .has-card { border-radius: 14px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); transition: transform 0.3s, box-shadow 0.3s; }
+        .has-card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
+        .has-card:has(img) { display: grid; grid-template-rows: 140px 1fr; }
+        .has-card:not(:has(img)) { padding: 1.5rem; background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(118,75,162,0.1)); }
+        .has-card img { width: 100%; height: 140px; object-fit: cover; display: block; }
+        .has-card .has-card-body { padding: 1.2rem; }
+        .has-card .has-card-body h4 { margin: 0 0 0.4rem; font-size: 1rem; }
+        .has-card .has-card-body p { margin: 0; font-size: 0.82rem; opacity: 0.7; line-height: 1.5; }
+      </style>
+      <div class="has-demo-grid">
+        <div class="has-card">
+          <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='200'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23667eea'/%3E%3Cstop offset='100%25' stop-color='%23764ba2'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='400' height='200' fill='url(%23g)'/%3E%3Ctext x='200' y='110' text-anchor='middle' fill='white' font-size='18' font-family='sans-serif'%3EImage Placeholder%3C/text%3E%3C/svg%3E" alt="placeholder">
+          <div class="has-card-body">
+            <h4>Card With Image</h4>
+            <p>:has(img) applies grid-template-rows for a structured layout.</p>
+          </div>
+        </div>
+        <div class="has-card">
+          <div class="has-card-body">
+            <h4>Card Without Image</h4>
+            <p>:not(:has(img)) gives this card extra padding and a gradient background instead.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="live-example">
+      <div class="live-example-label">Live Example &mdash; :has() Form Validation</div>
+      <style>
+        .has-form-demo { padding: 1.5rem; max-width: 400px; }
+        .has-form-group { margin-bottom: 1rem; }
+        .has-form-group label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.3rem; transition: color 0.3s; }
+        .has-form-group:has(input:focus:invalid) label { color: #f5576c; }
+        .has-form-group:has(input:focus:valid) label { color: #43e97b; }
+        .has-form-group input { width: 100%; padding: 0.6rem 0.8rem; border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; background: rgba(255,255,255,0.05); color: inherit; font-size: 0.85rem; outline: none; transition: border-color 0.3s; box-sizing: border-box; }
+        .has-form-group input:focus { border-color: #667eea; }
+        .has-form-group input:focus:invalid { border-color: #f5576c; }
+        .has-form-group input:focus:valid { border-color: #43e97b; }
+      </style>
+      <div class="has-form-demo">
+        <div class="has-form-group">
+          <label>Email Address</label>
+          <input type="email" placeholder="user@example.com" required>
+        </div>
+        <div class="has-form-group">
+          <label>Username (min 3 chars)</label>
+          <input type="text" minlength="3" placeholder="yourname" required>
+        </div>
+        <p style="font-size:0.78rem;opacity:0.5;">Type in the fields &mdash; labels change color based on validity using :has(input:valid) and :has(input:invalid).</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== :not() ==================== -->
+  <div class="section" id="not">
+    <h2>:not() &mdash; Negation Pseudo-class</h2>
+    <p>Matches elements that do <strong>not</strong> match the given selector. The modern version accepts complex selector lists.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="cmt">/* All paragraphs except .intro */</span>
+<span class="sel">p:not(.intro)</span> {
+  <span class="prop">font-size</span>: <span class="num">0.95rem</span>;
+}
+
+<span class="cmt">/* All links except those with .no-style */</span>
+<span class="sel">a:not(.no-style)</span> {
+  <span class="prop">text-decoration</span>: <span class="val">underline</span>;
+  <span class="prop">color</span>: <span class="val">#667eea</span>;
+}
+
+<span class="cmt">/* All inputs except submit and reset */</span>
+<span class="sel">input:not([type="submit"]):not([type="reset"])</span> {
+  <span class="prop">border</span>: <span class="num">1px</span> <span class="val">solid</span> <span class="val">#ccc</span>;
+  <span class="prop">padding</span>: <span class="num">0.5rem</span>;
+}
+
+<span class="cmt">/* Modern: comma-separated list in :not() */</span>
+<span class="sel">:not(h1, h2, h3, h4, h5, h6)</span> {
+  <span class="cmt">/* matches everything except headings */</span>
+}
+
+<span class="cmt">/* Last child without border */</span>
+<span class="sel">li:not(:last-child)</span> {
+  <span class="prop">border-bottom</span>: <span class="num">1px</span> <span class="val">solid</span> <span class="fn">rgba</span>(<span class="num">255</span>,<span class="num">255</span>,<span class="num">255</span>,<span class="num">0.1</span>);
+}
+</pre></div>
+
+    <div class="live-example">
+      <div class="live-example-label">Live Example &mdash; :not() Excluding Items</div>
+      <style>
+        .not-demo-list { list-style: none; padding: 0; margin: 0; }
+        .not-demo-list li { padding: 0.7rem 1rem; font-size: 0.85rem; }
+        .not-demo-list li:not(:last-child) { border-bottom: 1px solid rgba(255,255,255,0.08); }
+        .not-demo-list li:not(.disabled) { cursor: pointer; }
+        .not-demo-list li:not(.disabled):hover { background: rgba(102,126,234,0.1); }
+        .not-demo-list li.disabled { opacity: 0.35; text-decoration: line-through; }
+      </style>
+      <ul class="not-demo-list">
+        <li>Active item (hoverable)</li>
+        <li>Another active item</li>
+        <li class="disabled">Disabled item (no hover, line-through via :not)</li>
+        <li>Active item (no bottom border via :not(:last-child))</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ==================== COMPOUND SELECTORS ==================== -->
+  <div class="section" id="compound">
+    <h2>Compound Selectors</h2>
+    <p>Combine multiple selectors without whitespace to require all conditions on the same element.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="cmt">/* Element + class */</span>
+<span class="sel">a.primary</span> { <span class="prop">color</span>: <span class="val">#667eea</span>; }
+
+<span class="cmt">/* Element + attribute */</span>
+<span class="sel">input[required]</span> { <span class="prop">border-left</span>: <span class="num">3px</span> <span class="val">solid</span> <span class="val">#f5576c</span>; }
+
+<span class="cmt">/* Multiple classes */</span>
+<span class="sel">.btn.primary.large</span> { <span class="prop">font-size</span>: <span class="num">1.2rem</span>; }
+
+<span class="cmt">/* Class + pseudo-class */</span>
+<span class="sel">.card:hover:not(.disabled)</span> {
+  <span class="prop">transform</span>: <span class="fn">translateY</span>(<span class="num">-4px</span>);
+}
+
+<span class="cmt">/* Element + multiple pseudo-classes */</span>
+<span class="sel">li:first-child:last-child</span> {
+  <span class="cmt">/* only child (when there's exactly one li) */</span>
+  <span class="prop">border-radius</span>: <span class="num">8px</span>;
+}
+</pre></div>
+  </div>
+
+  <!-- ==================== SPECIFICITY ==================== -->
+  <div class="section" id="specificity">
+    <h2>Specificity Calculation</h2>
+    <p>Specificity determines which CSS rule wins when multiple rules target the same element. It is calculated as a three-part value: <strong>(ID, CLASS, ELEMENT)</strong>.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="cmt">/*  Specificity:  (ID - CLASS - ELEMENT)  */</span>
+
+<span class="sel">p</span>                      <span class="cmt">/* 0-0-1 */</span>
+<span class="sel">.card</span>                  <span class="cmt">/* 0-1-0 */</span>
+<span class="sel">#hero</span>                  <span class="cmt">/* 1-0-0 */</span>
+<span class="sel">p.intro</span>                <span class="cmt">/* 0-1-1 */</span>
+<span class="sel">#hero .title</span>           <span class="cmt">/* 1-1-0 */</span>
+<span class="sel">div#hero p.intro</span>       <span class="cmt">/* 1-1-2 */</span>
+<span class="sel">.card .title a:hover</span>   <span class="cmt">/* 0-2-1  (:hover = class-level) */</span>
+<span class="sel">[type="email"]</span>         <span class="cmt">/* 0-1-0  (attributes = class-level) */</span>
+<span class="sel">::before</span>               <span class="cmt">/* 0-0-1  (pseudo-elements = element-level) */</span>
+
+<span class="cmt">/* :is() takes the highest specificity in its list */</span>
+<span class="sel">:is(.card, #hero) p</span>    <span class="cmt">/* 1-0-1  (#hero is highest) */</span>
+
+<span class="cmt">/* :where() is always zero */</span>
+<span class="sel">:where(.card, #hero) p</span> <span class="cmt">/* 0-0-1  (:where = 0 specificity) */</span>
+
+<span class="cmt">/* :not() and :has() use the specificity of their argument */</span>
+<span class="sel">p:not(.intro)</span>          <span class="cmt">/* 0-1-1  (.intro contributes class-level) */</span>
+<span class="sel">.card:has(img)</span>         <span class="cmt">/* 0-1-1  */</span>
+</pre></div>
+
+    <div class="live-example">
+      <div class="live-example-label">Live Example &mdash; Specificity Battle</div>
+      <style>
+        .spec-demo { padding: 1rem; }
+        .spec-demo .spec-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+        .spec-demo .spec-table th { text-align: left; padding: 0.6rem 0.8rem; border-bottom: 2px solid rgba(102,126,234,0.3); font-weight: 600; }
+        .spec-demo .spec-table td { padding: 0.5rem 0.8rem; border-bottom: 1px solid rgba(255,255,255,0.06); font-family: 'Fira Code', monospace; font-size: 0.78rem; }
+        .spec-demo .spec-table td:last-child { font-family: 'Inter', sans-serif; }
+        .spec-demo .spec-score { display: inline-block; padding: 0.15rem 0.5rem; border-radius: 4px; font-weight: 600; }
+        .spec-demo .score-low  { background: rgba(67,233,123,0.15); color: #43e97b; }
+        .spec-demo .score-mid  { background: rgba(102,126,234,0.15); color: #667eea; }
+        .spec-demo .score-high { background: rgba(245,87,108,0.15); color: #f5576c; }
+      </style>
+      <div class="spec-demo">
+        <table class="spec-table">
+          <thead><tr><th>Selector</th><th>Specificity</th><th>Level</th></tr></thead>
+          <tbody>
+            <tr><td>*</td><td><span class="spec-score score-low">0-0-0</span></td><td>Universal</td></tr>
+            <tr><td>p</td><td><span class="spec-score score-low">0-0-1</span></td><td>Element</td></tr>
+            <tr><td>.card</td><td><span class="spec-score score-mid">0-1-0</span></td><td>Class</td></tr>
+            <tr><td>[type="email"]</td><td><span class="spec-score score-mid">0-1-0</span></td><td>Attribute</td></tr>
+            <tr><td>.card .title</td><td><span class="spec-score score-mid">0-2-0</span></td><td>Two classes</td></tr>
+            <tr><td>#hero</td><td><span class="spec-score score-high">1-0-0</span></td><td>ID</td></tr>
+            <tr><td>#hero .title p</td><td><span class="spec-score score-high">1-1-1</span></td><td>ID + class + element</td></tr>
+            <tr><td>style=""</td><td><span class="spec-score score-high">Inline</span></td><td>Beats all selectors</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== PERFORMANCE ==================== -->
+  <div class="section" id="performance">
+    <h2>Selector Performance</h2>
+    <p>Browsers read selectors <strong>right to left</strong>. While selector performance rarely matters in practice, understanding it helps you write better CSS.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="cmt">/* SLOWER: browser finds ALL p, then checks ancestors */</span>
+<span class="sel">body div.container ul li a p</span> { }
+
+<span class="cmt">/* FASTER: browser finds .card-title directly */</span>
+<span class="sel">.card-title</span> { }
+
+<span class="cmt">/* Performance ranking (fastest to slowest):
+   1. ID           #hero
+   2. Class        .card
+   3. Element      p
+   4. Attribute    [type]
+   5. Universal    *
+   6. Combinators  .a .b > .c
+*/</span>
+</pre></div>
+
+    <div class="callout info">
+      <div class="callout-title">Don't Over-Optimize</div>
+      <p>Modern browsers are incredibly fast at matching selectors. A page with thousands of elements and hundreds of rules still resolves in milliseconds. Write readable, maintainable selectors first. Only optimize if profiling reveals a real bottleneck.</p>
+    </div>
+  </div>
+
+  <!-- ==================== NATIVE NESTING ==================== -->
+  <div class="section" id="nesting">
+    <h2>Native CSS Nesting (&amp;)</h2>
+    <p>CSS now supports nesting natively (no preprocessor needed). The <code>&amp;</code> symbol represents the parent selector, similar to Sass/SCSS.</p>
+
+    <div class="code-block"><div class="code-header"><span>CSS</span><button class="copy-btn">Copy</button></div><pre>
+<span class="cmt">/* Native CSS Nesting */</span>
+<span class="sel">.card</span> {
+  <span class="prop">padding</span>: <span class="num">1.5rem</span>;
+  <span class="prop">border-radius</span>: <span class="num">12px</span>;
+
+  <span class="cmt">/* Nested child selector */</span>
+  <span class="sel">& .title</span> {
+    <span class="prop">font-size</span>: <span class="num">1.2rem</span>;
+    <span class="prop">font-weight</span>: <span class="num">700</span>;
+  }
+
+  <span class="cmt">/* Nested pseudo-class */</span>
+  <span class="sel">&:hover</span> {
+    <span class="prop">transform</span>: <span class="fn">translateY</span>(<span class="num">-4px</span>);
+  }
+
+  <span class="cmt">/* Nested pseudo-element */</span>
+  <span class="sel">&::after</span> {
+    <span class="prop">content</span>: <span class="str">""</span>;
+  }
+
+  <span class="cmt">/* & at the end — parent becomes qualifier */</span>
+  <span class="sel">.dark-theme &</span> {
+    <span class="prop">background</span>: <span class="val">#1a1a2e</span>;
+    <span class="cmt">/* Compiles to: .dark-theme .card */</span>
+  }
+
+  <span class="cmt">/* Nested media query */</span>
+  <span class="at">@media</span> (<span class="prop">width</span> < <span class="num">768px</span>) {
+    <span class="prop">padding</span>: <span class="num">1rem</span>;
+  }
+}
+
+<span class="cmt">/* Deeply nested */</span>
+<span class="sel">.nav</span> {
+  <span class="sel">& .menu</span> {
+    <span class="sel">& .item</span> {
+      <span class="sel">&:hover</span> {
+        <span class="prop">color</span>: <span class="val">#667eea</span>;
+        <span class="cmt">/* Result: .nav .menu .item:hover */</span>
+      }
+    }
+  }
+}
+</pre></div>
+
+    <div class="callout tip">
+      <div class="callout-title">Nesting Best Practice</div>
+      <p>Avoid nesting more than 3 levels deep. Deep nesting creates high-specificity selectors and makes CSS harder to maintain. Think of nesting as a convenience, not a requirement for every rule.</p>
+    </div>
+
+    <div class="callout info">
+      <div class="callout-title">& is Optional for Element Selectors (with conditions)</div>
+      <p>For element type selectors, you must use <code>&</code>: write <code>& p { }</code> not <code>p { }</code> inside a nested context. For class, ID, and pseudo-selectors, <code>&</code> is implied: <code>&:hover</code> and <code>&.active</code> work as expected.</p>
+    </div>
+  </div>
+
+  <!-- ==================== GOTCHAS ==================== -->
+  <div class="section" id="gotchas">
+    <h2>Gotchas</h2>
+
+    <div class="callout gotcha">
+      <div class="callout-title">:is() Forgives, :has() Can Be Slow</div>
+      <p><code>:is()</code> and <code>:where()</code> are forgiving selector lists &mdash; if one selector is invalid, the rest still work. However, <code>:has()</code> involving complex selectors can be performance-intensive on large DOMs. Avoid <code>*:has()</code> on the universal selector.</p>
+    </div>
+
+    <div class="callout gotcha">
+      <div class="callout-title">:is() Takes Highest Specificity</div>
+      <p><code>:is(.card, #hero)</code> takes the specificity of <code>#hero</code> (1-0-0) for the entire selector. If you just wanted class-level specificity, use <code>:where()</code> instead or separate the selectors.</p>
+    </div>
+
+    <div class="callout gotcha">
+      <div class="callout-title">:has() Cannot Be Nested</div>
+      <p>You cannot nest <code>:has()</code> inside another <code>:has()</code>. <code>.a:has(.b:has(.c))</code> is invalid. You can, however, use <code>:has()</code> with other pseudo-classes: <code>.card:has(img):not(.featured)</code> works fine.</p>
+    </div>
+
+    <div class="callout gotcha">
+      <div class="callout-title">Nesting Specificity Adds Up</div>
+      <p>Native CSS nesting produces the same selectors as writing them flat. <code>.a { & .b { & .c { } } }</code> creates <code>.a .b .c</code> with specificity 0-3-0. Deep nesting means high specificity, making overrides difficult.</p>
+    </div>
+  </div>
+
+  <!-- ==================== PRO TIPS ==================== -->
+  <div class="section" id="pro-tips">
+    <h2>Pro Tips</h2>
+
+    <div class="callout tip">
+      <div class="callout-title">:has() for State-Driven Styling</div>
+      <p>Use <code>:has()</code> to style parent elements based on child state without JavaScript: <code>form:has(:invalid) .submit { opacity: 0.5; }</code> disables the submit button appearance when any field is invalid.</p>
+    </div>
+
+    <div class="callout tip">
+      <div class="callout-title">Attribute Selectors for Icon Systems</div>
+      <p>Use <code>[class^="icon-"]</code> or <code>[class*=" icon-"]</code> to apply base icon styles to any element with an icon class, regardless of which specific icon it is.</p>
+    </div>
+
+    <div class="callout tip">
+      <div class="callout-title">:where() for Library CSS</div>
+      <p>If you are building a component library, wrap your selectors in <code>:where()</code> so consumers can override styles with a single class. This is what modern CSS resets (like Josh Comeau's) use.</p>
+    </div>
+
+    <div class="callout tip">
+      <div class="callout-title">Specificity Escape Hatch</div>
+      <p>If you need to override high-specificity rules without <code>!important</code>, you can stack <code>:is()</code> or repeat a class: <code>.card.card</code> has specificity 0-2-0 and beats 0-1-0 without resorting to IDs or inline styles.</p>
+    </div>
+
+    <div class="callout tip">
+      <div class="callout-title">Combine :has() with Sibling Combinators</div>
+      <p><code>:has()</code> is not limited to descendants. <code>.input:has(+ .error)</code> selects an input that has an adjacent sibling with class <code>.error</code>. This lets you style elements based on what comes <em>after</em> them.</p>
+    </div>
+  </div>
+
+  <!-- ==================== BROWSER SUPPORT ==================== -->
+  <div class="section" id="browser-support">
+    <h2>Browser Support</h2>
+    <p>Modern selector support across major browsers (as of 2025).</p>
+
+    <div class="live-example">
+      <div class="live-example-label">Browser Compatibility Table</div>
+      <style>
+        .compat-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+        .compat-table th { text-align: left; padding: 0.7rem 0.6rem; border-bottom: 2px solid rgba(102,126,234,0.3); font-weight: 600; font-size: 0.78rem; }
+        .compat-table td { padding: 0.55rem 0.6rem; border-bottom: 1px solid rgba(255,255,255,0.06); }
+        .compat-table td:first-child { font-family: 'Fira Code', monospace; font-size: 0.78rem; }
+        .compat-yes { color: #43e97b; font-weight: 600; }
+        .compat-partial { color: #fee140; font-weight: 600; }
+        .compat-no  { color: #f5576c; font-weight: 600; }
+      </style>
+      <table class="compat-table">
+        <thead>
+          <tr><th>Feature</th><th>Chrome</th><th>Firefox</th><th>Safari</th><th>Edge</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>:is()</td><td class="compat-yes">88+</td><td class="compat-yes">78+</td><td class="compat-yes">14+</td><td class="compat-yes">88+</td></tr>
+          <tr><td>:where()</td><td class="compat-yes">88+</td><td class="compat-yes">78+</td><td class="compat-yes">14+</td><td class="compat-yes">88+</td></tr>
+          <tr><td>:has()</td><td class="compat-yes">105+</td><td class="compat-yes">121+</td><td class="compat-yes">15.4+</td><td class="compat-yes">105+</td></tr>
+          <tr><td>:not() (multi-arg)</td><td class="compat-yes">88+</td><td class="compat-yes">84+</td><td class="compat-yes">9+</td><td class="compat-yes">88+</td></tr>
+          <tr><td>CSS Nesting (&amp;)</td><td class="compat-yes">120+</td><td class="compat-yes">117+</td><td class="compat-yes">17.2+</td><td class="compat-yes">120+</td></tr>
+          <tr><td>[attr i] (case-insensitive)</td><td class="compat-yes">49+</td><td class="compat-yes">47+</td><td class="compat-yes">9+</td><td class="compat-yes">79+</td></tr>
+          <tr><td>Attribute selectors</td><td class="compat-yes">1+</td><td class="compat-yes">1+</td><td class="compat-yes">3+</td><td class="compat-yes">12+</td></tr>
+          <tr><td>Combinators (>, +, ~)</td><td class="compat-yes">1+</td><td class="compat-yes">1+</td><td class="compat-yes">1+</td><td class="compat-yes">12+</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ==================== NAV ==================== -->
+  <div class="topic-nav">
+    <a href="14-css-functions.html">
+      <span class="label">Previous</span>
+      <span class="title">CSS Functions</span>
+    </a>
+    <a href="16-logical-properties.html" class="next">
+      <span class="label">Next</span>
+      <span class="title">Logical Properties</span>
+    </a>
+  </div>
+</main>
+
+<script src="script.js"></script>
+</body></html>
